@@ -1,0 +1,875 @@
+
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ជំពូកទី ១ - ASP.NET Core API & SQL Server</title>
+    <link href="https://fonts.googleapis.com/css2?family=Koulen&family=Siemreap&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --bg-dark: #0F172A; --bg-card: #FFFFFF; --text-main: #1E293B; --text-muted: #475569;
+            --accent-blue: #0284C7; --accent-green: #059669; --accent-yellow: #D97706; --accent-red: #DC2626;
+            --accent-purple: #512BD4; --header-footer-bg: #F5F3FF; --code-bg: #0F172A;
+            --border-light: #E2E8F0;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { 
+            background-color: var(--bg-dark); 
+            font-family: 'Siemreap', 'Khmer OS Siemreap', sans-serif; 
+            overflow: hidden; 
+            height: 100vh; 
+            width: 100vw; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+        }
+        
+        /* Layouts */
+        .slide-deck { 
+            width: 100vw; 
+            height: 100vh; 
+            position: relative; 
+            background: #FAFAFA; 
+            border-radius: 0; 
+            overflow: hidden; 
+            display: flex; 
+            flex-direction: column; 
+        }
+        .slide-wrapper { 
+            height: 86vh; 
+            position: relative; 
+            overflow: hidden; 
+            background-color: #F8FAFC; 
+        }
+        .slide { 
+            display: none; 
+            width: 100%; 
+            height: 100%; 
+            padding: 3vh 5vw; 
+            flex-direction: column; 
+            justify-content: flex-start; 
+            animation: slideIn 0.3s ease-out; 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            overflow: hidden; 
+        }
+        .slide.active { display: flex; }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Global Header */
+        .global-header { 
+            height: 8vh;
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 0 5vw; 
+            border-bottom: 4px solid var(--accent-purple); 
+            background-color: var(--header-footer-bg); 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05); 
+            z-index: 10; 
+            position: relative;
+        }
+        .header-item { display: flex; flex-direction: column; align-items: center; gap: 4px; width: 15vw; }
+        .header-item img { height: 3.5vh; object-fit: contain; }
+        .header-item span { font-size: 0.8vw; font-weight: bold; color: var(--accent-purple); text-align: center; font-family: 'Koulen', sans-serif; }
+        .header-center h1 { font-family: 'Koulen', sans-serif; font-size: 1.5vw; color: var(--accent-purple); margin: 0; font-weight: normal; }
+        .header-center p { font-family: 'Siemreap', 'Khmer OS Siemreap', sans-serif; font-size: 0.85vw; color: #64748B; margin: 0; font-weight: bold; text-align: center; }
+
+        /* Typography (Decreased Sizing by ~20% for Optimal Fit) */
+        h1 { font-family: 'Koulen', sans-serif; font-size: 4.0vw; text-align: center; color: var(--text-main); font-weight: normal; line-height: 1.3; }
+        h2.slide-title { font-family: 'Koulen', sans-serif; font-size: 2.5vw; font-weight: normal; border-bottom: 0.3vw solid var(--accent-purple); padding-bottom: 0.5vh; margin-bottom: 1.5vh; color: var(--text-main); display: inline-block; text-align: left !important; }
+        .content-body { 
+            height: calc(100% - 6vh); 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: flex-start; 
+            gap: 1.5vh; 
+            width: 100%; 
+            overflow: hidden; 
+        }
+        
+        p, li, td { font-size: 1.45vw; line-height: 1.6; color: var(--text-main); text-align: left !important; }
+        .highlight { color: var(--accent-purple); font-weight: bold; }
+        .keyword-icon { color: var(--accent-purple); margin-right: 0.5vw; width: 1.5vw; text-align: center; display: inline-block; }
+
+        /* Content Blocks */
+        .two-column { 
+            display: grid; 
+            grid-template-columns: 1.1fr 0.9fr; 
+            gap: 2.5vw; 
+            height: 100%; 
+            align-items: center; 
+            padding-bottom: 1vh;
+        }
+        .card-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5vw; height: 100%; align-content: center; }
+        .card { background: var(--bg-card); padding: 1.8vh 2vw; border-radius: 1vw; border-left: 0.8vw solid var(--accent-purple); box-shadow: 0 4px 15px rgba(0,0,0,0.03); display: flex; flex-direction: column; justify-content: center; }
+        .card h4 { font-size: 2.0vw; color: var(--accent-purple); margin-bottom: 0.5vh; font-family: 'Koulen', sans-serif; font-weight: normal; text-align: left !important;}
+        .card p { font-size: 1.3vw; line-height: 1.5; text-align: left !important; }
+
+        /* Visual Frame and Schematics Fallback (Enlarged) */
+        .visual-frame { 
+            background: #FFFFFF; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            height: 100%; 
+            max-height: 48vh; 
+            width: 100%; 
+            border-radius: 1vw; 
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06); 
+            padding: 1vw; 
+            border: 1px solid #E2E8F0;
+            overflow: hidden;
+            position: relative;
+        }
+        .visual-frame img { max-height: 100%; max-width: 100%; object-fit: contain; border-radius: 0.5vw;}
+        
+        /* Schematic fallback block when image fails to load */
+        .schematic-fallback {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            background: #F1F5F9;
+            color: #475569;
+            padding: 1.5vw;
+            text-align: center;
+            border-radius: 0.5vw;
+        }
+        
+        /* Code Block */
+        .code-container { 
+            background: var(--code-bg); 
+            border-radius: 1vw; 
+            padding: 2.5vh 2vw 1.5vh 2vw; 
+            position: relative; 
+            border: 1px solid #334155; 
+            width: 100%; 
+            max-height: 44vh; 
+            overflow-y: auto; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        .code-container pre { color: #10B981; font-family: 'Fira Code', monospace; font-size: 1.2vw; line-height: 1.5; overflow-x: auto;}
+        .code-label { position: absolute; top: 0; left: 2vw; background: var(--accent-purple); color: white; padding: 4px 15px; border-radius: 0 0 8px 8px; font-size: 0.9vw; font-weight: bold; z-index: 2; font-family: 'Koulen', sans-serif;}
+        .copy-btn { position: absolute; top: 12px; right: 12px; padding: 6px 15px; cursor: pointer; background: var(--accent-blue); color: white; border: none; border-radius: 6px; font-family: 'Koulen', sans-serif; font-size: 0.9vw; transition: 0.3s; z-index: 5; font-weight: normal;}
+        .copy-btn:hover { background: #0369A1; }
+
+        /* Notification Badge */
+        .workbook-note { background: #FEF9C3; border: 1px dashed var(--accent-yellow); padding: 1.5vh 2vw; border-radius: 10px; color: #854D0E; font-size: 1.2vw; display: flex; align-items: center; gap: 12px; font-weight: bold; margin-top: 1vh; box-shadow: 0 4px 6px rgba(0,0,0,0.02); text-align: left !important; }
+        .exercise-badge { background: var(--accent-yellow); color: var(--text-main); padding: 6px 20px; border-radius: 6px; font-weight: bold; font-size: 1.2vw; margin-bottom: 1vh; display: inline-block; border: 1px solid #B45309; font-family: 'Koulen', sans-serif;}
+
+        /* Table */
+        table { width: 100%; border-collapse: collapse; background: white; border-radius: 1vw; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
+        th, td { border: 1px solid #E2E8F0; padding: 1.2vh 1.8vw; text-align: left; vertical-align: middle;}
+        th { background: var(--accent-purple); color: white; font-family: 'Koulen', sans-serif; font-size: 1.35vw; font-weight: normal;}
+
+        /* Global Footer */
+        .global-footer { 
+            height: 6vh;
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            width: 100%; 
+            padding: 0 5vw; 
+            border-top: 3px solid var(--accent-purple); 
+            background-color: var(--header-footer-bg); 
+            z-index: 10; 
+        }
+        .footer-left { display: flex; align-items: center; gap: 1.5vw; }
+        .footer-left img { border-radius: 50%; border: 2px solid var(--accent-purple); width: 3.5vh; height: 3.5vh; object-fit: cover; box-shadow: 0 4px 8px rgba(0,0,0,0.1);}
+        .footer-left span { font-size: 1.2vw; font-weight: bold; color: var(--text-main); font-family: 'Koulen', sans-serif; }
+        .slide-counter { font-size: 1.1vw; color: white; font-family: 'Koulen', sans-serif; font-weight: normal; background: var(--accent-purple); padding: 0.6vh 2vw; border-radius: 5vw; box-shadow: 0 2px 8px rgba(81,43,212,0.3); }
+        
+        /* Navigation Buttons */
+        .nav-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(81, 43, 212, 0.1); border: none; width: 4.5vw; height: 4.5vw; border-radius: 50%; color: var(--accent-purple); font-size: 2vw; cursor: pointer; z-index: 9999; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; }
+        .nav-btn:hover { background: var(--accent-purple); color: white; box-shadow: 0 4px 15px rgba(81,43,212,0.4); transform: translateY(-50%) scale(1.1); }
+        #prevBtn { left: 1.5vw; }
+        #nextBtn { right: 1.5vw; }
+
+        .print-only-footer { display: none !important; }
+
+        /* Professional A4 Landscape Printing */
+        @media print {
+            *, *::before, *::after {
+                animation: none !important;
+                transition: none !important;
+                box-shadow: none !important;
+            }
+            @page {
+                size: A4 landscape;
+                margin: 0;
+            }
+            html, body { 
+                background: none !important; 
+                background-color: #FFFFFF !important;
+                overflow: visible !important; 
+                height: 210mm !important; 
+                width: 297mm !important; 
+                display: block !important;
+                font-family: 'Siemreap', 'Khmer OS Siemreap', sans-serif !important;
+            }
+            .slide-deck { 
+                width: 297mm !important; 
+                height: 210mm !important; 
+                box-shadow: none !important; 
+                background: transparent !important; 
+                overflow: visible !important; 
+                display: block !important;
+                border: none !important; 
+                border-radius: 0 !important;
+            }
+            .slide-wrapper { display: block !important; overflow: visible !important; height: auto !important;}
+            .slide { 
+                display: flex !important; 
+                flex-direction: column !important; 
+                position: relative !important; 
+                opacity: 1 !important;
+                visibility: visible !important;
+                width: 297mm !important; 
+                height: 210mm !important; 
+                page-break-inside: avoid !important;
+                page-break-after: always !important;
+                overflow: hidden !important; 
+                box-sizing: border-box !important;
+                padding: 10mm 15mm 20mm 15mm !important; 
+                background: white !important;
+                border: none !important;
+                border-radius: 0 !important;
+            }
+            .global-header {
+                margin: -10mm -15mm 15px -15mm !important;
+                padding: 5mm 15mm !important;
+                height: auto !important;
+                border-bottom: 2px solid var(--accent-purple) !important;
+            }
+            .global-header img { height: 10mm !important; }
+            .global-header h1 { font-size: 15pt !important; }
+            .global-header p { font-size: 9pt !important; }
+            
+            .slide-title { font-size: 24pt !important; margin-bottom: 12px !important; padding-bottom: 4px !important; border-bottom-width: 3px !important; text-align: left !important; }
+            .content-body { overflow: hidden !important; height: auto !important; gap: 10px !important; }
+            p, li, td { font-size: 13.5pt !important; line-height: 1.5 !important; text-align: left !important; }
+            .card h4 { font-size: 16pt !important; margin-bottom: 4px !important; text-align: left !important; }
+            .card { padding: 12px 18px !important; }
+            .card-grid { gap: 12px !important; }
+            .two-column { gap: 20px !important; }
+            pre, code { font-size: 11pt !important; padding: 8px 12px !important; }
+            
+            .slide-deck > .global-footer { display: none !important; }
+
+            .print-only-footer { 
+                display: flex !important; 
+                position: absolute !important; 
+                bottom: 0 !important; 
+                left: 0 !important; 
+                width: 100% !important;
+                height: 15mm !important;
+                padding: 0 15mm !important; 
+                background-color: var(--header-footer-bg) !important;
+                border-top: 1px solid var(--border-light) !important;
+                align-items: center !important; 
+                justify-content: space-between !important;
+                border-radius: 0 !important;
+                box-sizing: border-box !important;
+                z-index: 1000 !important;
+            }
+            .print-only-footer .footer-left {
+                display: flex !important;
+                align-items: center !important;
+                gap: 4mm !important;
+                width: auto !important;
+            }
+            .print-only-footer .footer-left img { 
+                width: 9mm !important; 
+                height: 9mm !important; 
+                border: 2px solid var(--accent-purple) !important;
+                border-radius: 50% !important;
+                display: block !important;
+            }
+            .print-only-footer .footer-left span { 
+                font-size: 11pt !important; 
+                font-family: 'Koulen', sans-serif !important;
+                white-space: nowrap !important;
+                display: inline-block !important;
+            }
+            .print-only-footer .slide-counter { 
+                font-size: 11pt !important; 
+                font-family: 'Koulen', sans-serif !important;
+                padding: 2px 10px !important; 
+                border: 1px solid var(--border-light) !important;
+                background: #FFF !important;
+                white-space: nowrap !important;
+                display: inline-block !important;
+            }
+            .visual-frame { min-height: 140px !important; }
+            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+        }
+    </style>
+</head>
+<body onclick="navigate(event)">
+
+<div class="slide-deck" id="deck">
+
+    <button class="nav-btn" id="prevBtn" onclick="prevSlide(event)" aria-label="Previous"><i class="fa-solid fa-chevron-left"></i></button>
+    <button class="nav-btn" id="nextBtn" onclick="nextSlide(event)" aria-label="Next"><i class="fa-solid fa-chevron-right"></i></button>
+
+    <template id="headerTemplate">
+        <div class="global-header">
+            <div class="header-item">
+                <img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo">
+                <span>សាកលវិទ្យាល័យអង្គរ</span>
+            </div>
+            <div class="header-center">
+                <h1>បច្ចេកវិទ្យា ASP.NET និងប្រព័ន្ធគ្រប់គ្រងមូលដ្ឋានទិន្នន័យ SQL Server</h1>
+                <p>មហាវិទ្យាល័យវិទ្យាសាស្ត្រ និងបច្ចេកវិទ្យា</p>
+            </div>
+            <div class="header-item">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg" alt=".NET Logo">
+                <span>ASP.NET Core API</span>
+            </div>
+        </div>
+    </template>
+
+    <div class="slide-wrapper" id="slideWrapper">
+    </div>
+
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" alt="Professor">
+            <span>សាស្ត្រាចារ្យបង្រៀន៖ សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="slide-counter" id="slideCounter">ស្លាយទី ១ នៃ ៤៨</div>
+    </div>
+</div>
+
+<script>
+    const slideWrapper = document.getElementById('slideWrapper');
+    const headerHTML = document.getElementById('headerTemplate').innerHTML;
+    
+    const khNums = ["០", "១", "២", "៣", "៤", "៥", "៦", "៧", "៨", "៩"];
+    function toKh(n) { return n.toString().split('').map(d => khNums[parseInt(d)]).join(''); }
+
+    // Visual image fallbacks to avoid broken images if local images are not present
+    function handleImgError(imageElement, fallbackType) {
+        imageElement.style.display = 'none';
+        const fallbackBox = imageElement.nextElementSibling;
+        if (fallbackBox && fallbackBox.classList.contains('schematic-fallback')) {
+            fallbackBox.style.display = 'flex';
+            
+            // Render beautiful HTML schemas based on slide type
+            if (fallbackType === 'mvc') {
+                fallbackBox.innerHTML = `
+                    <div style="font-family:'Koulen',sans-serif; color:var(--accent-purple); font-size:1.6vw; margin-bottom:1vh;">ASP.NET MVC Web Architecture</div>
+                    <div style="display:flex; gap:1vw; align-items:center; justify-content:center; width:100%;">
+                        <div style="background:#E2E8F0; padding:8px 12px; border-radius:6px; font-size:1vw;">Client Browser</div>
+                        <i class="fa-solid fa-arrow-right" style="color:var(--accent-purple);"></i>
+                        <div style="background:var(--header-footer-bg); border:1px solid var(--accent-purple); padding:8px 12px; border-radius:6px; font-size:1vw;">Controller (C)</div>
+                        <i class="fa-solid fa-arrow-right" style="color:var(--accent-purple);"></i>
+                        <div style="background:#DCFCE7; padding:8px 12px; border-radius:6px; font-size:1vw;">Model (M)</div>
+                    </div>
+                    <div style="margin-top:1.5vh; font-size:0.9vw; color:#64748B;">[ ដំណើរការលំហូរទិន្នន័យ៖ Request &rarr; Controller &rarr; Model &rarr; DB ]</div>
+                `;
+            } else if (fallbackType === 'directory1') {
+                fallbackBox.innerHTML = `
+                    <div style="font-family:'Koulen',sans-serif; color:var(--accent-purple); font-size:1.4vw; margin-bottom:1vh;">Project Base Files (ឯកសារគោល)</div>
+                    <div style="text-align:left; font-family:'Fira Code',monospace; font-size:1.1vw; background:#0F172A; color:#38BDF8; padding:1.5vh; border-radius:8px; width:90%;">
+                        📁 <span style="color:#A7F3D0;">SchoolApi/</span><br>
+                        &nbsp;&nbsp;📄 <span style="color:#FDE047;">Program.cs</span> <span style="color:#64748B;">(Entry point & Services)</span><br>
+                        &nbsp;&nbsp;📄 <span style="color:#FDE047;">appsettings.json</span> <span style="color:#64748B;">(Connection String)</span><br>
+                        &nbsp;&nbsp;📄 <span style="color:#FDE047;">SchoolApi.csproj</span> <span style="color:#64748B;">(NuGet Packages)</span>
+                    </div>
+                `;
+            } else if (fallbackType === 'directory2') {
+                fallbackBox.innerHTML = `
+                    <div style="font-family:'Koulen',sans-serif; color:var(--accent-purple); font-size:1.4vw; margin-bottom:1vh;">Project Logic Directories (ថតឯកសារ)</div>
+                    <div style="text-align:left; font-family:'Fira Code',monospace; font-size:1.1vw; background:#0F172A; color:#38BDF8; padding:1.5vh; border-radius:8px; width:90%;">
+                        📁 <span style="color:#A7F3D0;">SchoolApi/</span><br>
+                        &nbsp;&nbsp;📁 <span style="color:#38BDF8;">Controllers/</span> &rarr; <span style="color:#64748B;">StudentController.cs</span><br>
+                        &nbsp;&nbsp;📁 <span style="color:#38BDF8;">Models/</span> &rarr; <span style="color:#64748B;">Student.cs</span><br>
+                        &nbsp;&nbsp;📁 <span style="color:#38BDF8;">Properties/</span> &rarr; <span style="color:#64748B;">launchSettings.json</span>
+                    </div>
+                `;
+            } else if (fallbackType === 'json') {
+                fallbackBox.innerHTML = `
+                    <div style="font-family:'Koulen',sans-serif; color:var(--accent-purple); font-size:1.4vw; margin-bottom:1vh;">JSON Key-Value Pairs Schema</div>
+                    <div style="text-align:left; font-family:'Fira Code',monospace; font-size:1.1vw; background:#0F172A; color:#F472B6; padding:1.5vh; border-radius:8px; width:90%;">
+                        {<br>
+                        &nbsp;&nbsp;<span style="color:#38BDF8;">"id"</span>: <span style="color:#F59E0B;">1</span>,<br>
+                        &nbsp;&nbsp;<span style="color:#38BDF8;">"name"</span>: <span style="color:#A7F3D0;">"Soeurng LIM"</span>,<br>
+                        &nbsp;&nbsp;<span style="color:#38BDF8;">"major"</span>: <span style="color:#A7F3D0;">"Computer Science"</span><br>
+                        }
+                    </div>
+                `;
+            } else if (fallbackType === 'jsoncpi') {
+                fallbackBox.innerHTML = `
+                    <div style="font-family:'Koulen',sans-serif; color:var(--accent-purple); font-size:1.3vw; margin-bottom:1vh;">Central API Integration (Cross-Platform)</div>
+                    <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:0.5vw; text-align:center; width:100%; font-size:0.9vw;">
+                        <div style="background:#EFF6FF; padding:8px; border-radius:6px; border:1px solid #BFDBFE;">📱 iOS / Android App</div>
+                        <div style="background:#F0FDF4; padding:8px; border-radius:6px; border:1px solid #BBF7D0;">💻 Web Application</div>
+                        <div style="background:#FFFBEB; padding:8px; border-radius:6px; border:1px solid #FDE68A;">⚙️ IoT / External APIs</div>
+                    </div>
+                    <div style="margin-top:1.5vh; font-size:1.1vw; font-weight:bold; color:var(--accent-purple);">&uarr; &darr; Connects seamlessly via Central REST API</div>
+                `;
+            } else if (fallbackType === 'postman') {
+                fallbackBox.innerHTML = `
+                    <div style="font-family:'Koulen',sans-serif; color:#EF5B25; font-size:1.5vw; margin-bottom:1vh;"><i class="fa-solid fa-space-shuttle"></i> Postman API Client Mock</div>
+                    <div style="text-align:left; font-family:'Fira Code',monospace; font-size:1vw; background:#1E1E24; color:#FFF; padding:1vh; border-radius:8px; width:95%;">
+                        <span style="color:#10B981; font-weight:bold;">GET</span> <span style="color:#38BDF8;">http://localhost:5000/api/students</span><br>
+                        <hr style="border:0.5px solid #444; margin:5px 0;">
+                        <span style="color:#64748B;">Status:</span> <span style="color:#10B981; font-weight:bold;">200 OK</span> &nbsp;&nbsp; <span style="color:#64748B;">Time:</span> <span style="color:#F59E0B;">12 ms</span>
+                    </div>
+                `;
+            } else if (fallbackType === 'github-desktop') {
+                fallbackBox.innerHTML = `
+                    <div style="font-family:'Koulen',sans-serif; color:var(--accent-purple); font-size:1.4vw; margin-bottom:1vh;"><i class="fa-brands fa-github-alt"></i> GitHub Desktop GUI Client</div>
+                    <div style="display:flex; flex-direction:column; gap:8px; width:90%; font-size:1vw;">
+                        <div style="background:#F1F5F9; border-left:4px solid var(--accent-purple); padding:8px; text-align:left;">✔️ <b>Clone:</b> Download code repository from Cloud</div>
+                        <div style="background:#F1F5F9; border-left:4px solid var(--accent-green); padding:8px; text-align:left;">✔️ <b>Commit:</b> Record incremental code updates locally</div>
+                        <div style="background:#F1F5F9; border-left:4px solid var(--accent-blue); padding:8px; text-align:left;">✔️ <b>Push/Pull:</b> Synchronize edits with remote repository</div>
+                    </div>
+                `;
+            }
+        }
+    }
+
+    const chapterData = [
+        // 1. COVER SLIDE
+        { t: "COVER", type: "cover" },
+
+        // 2. PROFESSOR SLIDE
+        { t: "ព័ត៌មានសាស្ត្រាចារ្យ និងមុខវិជ្ជា", type: "prof" },
+
+        // 3. OUTLINE
+        { t: "មាតិកាជំពូកទី ១ (Chapter Contents)", type: "table", rows: [
+            ["ចំណុច", "ខ្លឹមសារមេរៀន (Topics)"],
+            ["<b>១.១</b>", "ពាក្យពេញ (Abbreviations) និងទិដ្ឋភាពទូទៅនៃបច្ចេកវិទ្យា .NET"],
+            ["<b>១.២</b>", "ការស្វែងយល់ពី Application Programming Interface (API) ស៊ីជម្រៅ"],
+            ["<b>១.៣</b>", "ស្ថាបត្យកម្ម MVC និងការប្រៀបធៀបជាមួយ Web API (លម្អិត)"],
+            ["<b>១.៤</b>", "ការស្វែងយល់ពីប្រព័ន្ធគ្រប់គ្រងមូលដ្ឋានទិន្នន័យ SQL Server"],
+            ["<b>១.៥</b>", "របៀបចូលទៅប្រើប្រាស់ និងរៀបចំឧបករណ៍ (Environment Setup)"],
+            ["<b>១.៦</b>", "របៀបចូលទៅប្រើប្រាស់ .NET CLI និងការបង្កើត Project ថ្មី"],
+            ["<b>១.៧</b>", "ការគ្រប់គ្រងកូដជាមួយ Git និងកម្មវិធី GitHub Desktop (GUI)"],
+            ["<b>១.៨</b>", "លំហាត់អនុវត្តន៍គំរូទាំង ៣ (Comprehensive Practical Labs)"]
+        ]},
+
+        // 4. OBJECTIVES
+        { t: "វត្ថុបំណងនៃជំពូកទី ១ (Chapter Objectives)", type: "list", c: [
+            "• <b class='highlight'>យល់ដឹងពីមូលដ្ឋានគ្រឹះ៖</b> អាចពន្យល់ពីទិដ្ឋភាពទូទៅនៃ .NET Core, ASP.NET Core និងអត្ថប្រយោជន៍របស់វា។",
+            "• <b class='highlight'>ស្គាល់ពី API៖</b> យល់ច្បាស់ពីតួនាទីរបស់ API ជាស្ពានភ្ជាប់ទំនាក់ទំនងរវាងកម្មវិធី និងទម្រង់ទិន្នន័យ JSON។",
+            "• <b class='highlight'>យល់ពី MVC & API៖</b> អាចពន្យល់ពីស្ថាបត្យកម្ម Model-View-Controller (MVC) និងការប្រៀបធៀបរបស់វាជាមួយ Web API។",
+            "• <b class='highlight'>រៀបចំឧបករណ៍៖</b> ចេះរៀបចំ Environment សម្រាប់ការអភិវឌ្ឍន៍ ដោយដំឡើង និងប្រើប្រាស់ .NET SDK, VS Code, C# Dev Kit, SQL Server និង Postman។",
+            "• <b class='highlight'>ប្រើប្រាស់ .NET CLI៖</b> អាចប្រើប្រាស់ Command Line ដើម្បីបង្កើត ចងក្រង (build) និងដំណើរការ (run) គម្រោង ASP.NET Core Web API ដំបូងរបស់ខ្លួន។",
+            "• <b class='highlight'>គ្រប់គ្រងកូដ៖</b> យល់ដឹងពីមូលដ្ឋានគ្រឹះនៃ Git និងអាចប្រើប្រាស់ GitHub Desktop ដើម្បីគ្រប់គ្រងកំណែកូដ និងរក្សាទុកគម្រោងលើ Cloud។"
+        ]},
+
+        // 5. ABBREVIATIONS
+        { t: "១.១ ពាក្យពេញ និងអក្សរកាត់សំខាន់ៗ (Abbreviations)", type: "table", rows: [
+            ["អក្សរកាត់", "ពាក្យពេញ (Full Form)", "អត្ថន័យសង្ខេប"],
+            ["<b>API</b>", "<b>A</b>pplication <b>P</b>rogramming <b>I</b>nterface", "ស្ពានភ្ជាប់ទំនាក់ទំនងរវាងកម្មវិធីពីរផ្សេងគ្នា"],
+            ["<b>ASP</b>", "<b>A</b>ctive <b>S</b>erver <b>P</b>ages", "បច្ចេកវិទ្យាសម្រាប់បង្កើត Web/API របស់ Microsoft"],
+            ["<b>MVC</b>", "<b>M</b>odel-<b>V</b>iew-<b>C</b>ontroller", "ស្ថាបត្យកម្មបែងចែករចនាសម្ព័ន្ធកូដជា ៣ ផ្នែក"],
+            ["<b>SDK</b>", "<b>S</b>oftware <b>D</b>evelopment <b>K</b>it", "កញ្ចប់ឧបករណ៍ចាំបាច់សម្រាប់សរសេរកូដ"],
+            ["<b>JSON</b>", "<b>J</b>ava<b>S</b>cript <b>O</b>bject <b>N</b>otation", "ទម្រង់ទិន្នន័យស្រាល សម្រាប់ការបញ្ជូន Data"],
+            ["<b>CLI</b>", "<b>C</b>ommand <b>L</b>ine <b>I</b>nterface", "ការបញ្ជាកុំព្យូទ័រតាមរយៈការវាយអក្សរ"]
+        ]},
+
+        // 6. WHAT IS .NET CORE?
+        { t: "១.១ តើអ្វីទៅជា .NET Core?", type: "split", img: "https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg", fallback: "none", c: "<b>.NET Core</b> (ឥឡូវហៅថា .NET 8) គឺជា Platform កូដបើកចំហ (Open-source) ដ៏មានអានុភាពបង្កើតដោយ Microsoft សម្រាប់អភិវឌ្ឍន៍កម្មវិធីគ្រប់ប្រភេទ។<br><br><b>ហេតុអ្វីត្រូវជ្រើសរើស .NET?</b><br><ul style='margin-left:1.5vw; margin-top:1vh;'><li style='margin-bottom:1vh;'><b class='highlight'>Cross-Platform:</b> ដំណើរការបានលើ Windows, macOS, និង Linux ដោយរលូន。</li><li style='margin-bottom:1vh;'><b class='highlight'>High Performance:</b> មានល្បឿនលឿនខ្លាំង និងស៊ី Memory តិចជាងមុន។</li><li><b class='highlight'>Security:</b> មានសុវត្ថិភាពខ្ពស់ សមស្របសម្រាប់ប្រព័ន្ធធនាគារ (Enterprise Level)។</li></ul>" },
+        
+        // 7. .NET FRAMEWORK VS .NET 8
+        { t: "១.១ ប្រវត្តិ និងការវិវត្តន៍ (.NET Framework vs .NET 8)", type: "table", rows: [
+            ["លក្ខណៈវិនិច្ឆ័យ", ".NET Framework (ជំនាន់ចាស់)", ".NET Core / .NET 8 (ជំនាន់ថ្មី)"],
+            ["ប្រព័ន្ធប្រតិបត្តិការ (OS)", "ដំណើរការបានតែលើ Windows ប៉ុណ្ណោះ", "Windows, Linux, macOS (Cross-Platform)"],
+            ["កូដ (Source Code)", "កម្មសិទ្ធិរបស់ Microsoft ទាំងស្រុង", "កូដបើកចំហ (Open-source)"],
+            ["ល្បឿន (Performance)", "យឺត និងប្រើប្រាស់ Memory ច្រើន", "លឿនខ្លាំង និងស្រាល (Lightweight)"],
+            ["ការដំឡើង (Deployment)", "ត្រូវដំឡើង Framework ពេញក្នុងម៉ាស៊ីន", "អាចដាក់បញ្ចូលក្នុងកញ្ចប់តែមួយ (Self-contained)"]
+        ]},
+
+        // 8. WHAT IS ASP.NET CORE?
+        { t: "១.១ អ្វីទៅជា ASP.NET Core?", type: "split", img: "https://images.unsplash.com/photo-1542831371-29b0f74f9713?auto=format&fit=crop&w=1200&q=80", fallback: "none", c: "<b>ASP.NET Core</b> គឺជា Framework រងរបស់ .NET ដែលត្រូវបានរចនាឡើងយ៉ាងពិសេសសម្រាប់តែការបង្កើត <b>Web Applications</b> និង <b>Application Programming Interface (API)</b> ប៉ុណ្ណោះ។<br><br>វារួមបញ្ចូលនូវឧបករណ៍ស្រាប់ៗ (Built-in Tools) ដូចជា ការគ្រប់គ្រងសុវត្ថិភាព (Authentication), ការកំណត់ផ្លូវ (Routing), និងការភ្ជាប់ជាមួយប្រព័ន្ធមូលដ្ឋានទិន្នន័យ <b>SQL Server</b> បានយ៉ាងងាយស្រួល។" },
+
+        // 9. WHAT IS API?
+        { t: "១.២ តើអ្វីទៅជា API? (Application Programming Interface)", type: "split", img: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&q=80", fallback: "none", c: "<b>API</b> គឺជាស្ពានចម្លងទិន្នន័យ។ វាអនុញ្ញាតឱ្យកម្មវិធីពីរផ្សេងគ្នាអាចសន្ទនាគ្នាបានដោយគ្មានបញ្ហា។<br><br><b>ឧទាហរណ៍ជាក់ស្តែង៖</b><br>នៅពេលលោកគ្រូប្រើ App ទិញទំនិញ App នោះត្រូវហៅ <b>API</b> របស់ធនាគារ (ឧ: ABA Pay) ដើម្បីឆែកមើលការទូទាត់ប្រាក់ និងកាត់លុយពីគណនី។<br><br>ក្នុងមេរៀននេះ យើងផ្តោតលើ <b>RESTful API</b> ដែលបញ្ជូនទិន្នន័យជាទម្រង់ <b>JSON</b> ល្បឿនលឿន។" },
+
+        // 10. API ANALOGY
+        { t: "១.២ ករណីសិក្សា៖ អ្នករត់តុក្នុងហាងអាហារ (API Analogy)", type: "split", img: "https://images.unsplash.com/photo-1590846406792-0adc7f938f1d?auto=format&fit=crop&w=1200&q=80", fallback: "none", c: "<b>ការប្រៀបធៀបដើម្បីងាយស្រមៃ៖</b><br><br>១. <b>ភ្ញៀវ (Client):</b> អ្នកប្រើប្រាស់ Web ឬ Mobile App ដែលត្រូវការទិន្នន័យ។<br>២. <b>អ្នករត់តុ (API):</b> ទទួលសំណើ (Request) ពីភ្ញៀវ រួចយកបញ្ជីម្ហូបទៅប្រាប់ចុងភៅនៅខាងក្រោយ។<br>៣. <b>ចុងភៅ (Server/Database):</b> ចាត់ចែងរៀបចំទិន្នន័យដែលស្នើសុំ (ធ្វើម្ហូប) រួចផ្ញើអាហារ (Data/JSON Response) ត្រឡប់មកវិញតាមរយៈអ្នករត់តុ (API)។" },
+
+        // 11. API METHODS
+        { t: "១.២ ប្រភេទនៃ API Methods (RESTful HTTP Verbs)", type: "grid", c: [
+            { h: "<i class='fa-solid fa-download keyword-icon'></i> GET (អាន)", p: "ប្រើសម្រាប់ស្នើសុំទាញយកទិន្នន័យពី Server មកបង្ហាញ។ ប្រៀបដូចជាការអានសៀវភៅ ឬមើលបញ្ជីឈ្មោះសិស្ស។" },
+            { h: "<i class='fa-solid fa-upload keyword-icon'></i> POST (បញ្ចូល)", p: "ប្រើសម្រាប់ផ្ញើទិន្នន័យថ្មីទៅរក្សាទុកក្នុង Database។ ប្រៀបដូចជាការចុះឈ្មោះបង្កើតគណនីថ្មី។" },
+            { h: "<i class='fa-solid fa-pen-to-square keyword-icon'></i> PUT (កែប្រែ)", p: "ប្រើសម្រាប់ធ្វើបច្ចុប្បន្នភាព (Update) ព័ត៌មានចាស់ដែលមានស្រាប់ឱ្យទៅជាព័ត៌មានថ្មីទាំងស្រុង។" },
+            { h: "<i class='fa-solid fa-trash-can keyword-icon'></i> DELETE (លុប)", p: "ប្រើសម្រាប់បញ្ជាលុបទិន្នន័យណាមួយចេញពីប្រព័ន្ធទាំងស្រុង។" }
+        ]},
+
+        // 12. HTTP STATUS CODES
+        { t: "១.២ លេខកូដឆ្លើយតបរបស់ API (HTTP Status Codes)", type: "grid", c: [
+            { h: "<span style='color:var(--accent-green);'>200 OK</span>", p: "សំណើទទួលបានជោគជ័យ។ ទិន្នន័យត្រូវបានបញ្ជូនត្រឡប់ទៅវិញដោយរលូន។" },
+            { h: "<span style='color:var(--accent-blue);'>201 Created</span>", p: "ទិន្នន័យថ្មី (POST) ត្រូវបានបង្កើត និងរក្សាទុកក្នុង Database ជោគជ័យ។" },
+            { h: "<span style='color:var(--accent-yellow);'>400 Bad Request</span>", p: "សំណើមានកំហុស។ អ្នកប្រើប្រាស់អាចបញ្ជូនទិន្នន័យខុសទម្រង់ ឬខ្វះចន្លោះ។" },
+            { h: "<span style='color:var(--accent-red);'>404 Not Found</span>", p: "រកមិនឃើញទិន្នន័យ ឬអាសយដ្ឋាន API (URL) ដែលបានស្នើសុំនោះទេក្នុងប្រព័ន្ធ។" },
+            { h: "<span style='color:var(--accent-red);'>500 Internal Error</span>", p: "មានកំហុសកើតឡើងនៅលើ Server (កូដធ្លាក់ Error) ដែលអ្នកអភិវឌ្ឍន៍ត្រូវជួសជុល។" }
+        ]},
+
+        // 13. MVC ARCHITECTURE
+        { t: "១.៣ ស្ថាបត្យកម្ម Model-View-Controller (MVC) ពិស្តារ", type: "grid", c: [
+            { h: "<i class='fa-solid fa-database keyword-icon'></i> Model (M)", p: "តំណាងឱ្យទិន្នន័យ (Data Structure) និងមានតួនាទីទំនាក់ទំនងផ្ទាល់ជាមួយ <b>SQL Server Database</b>។ វាជាអ្នករក្សាទុក និងផ្តល់ទិន្នន័យនៅពេលមានការស្នើសុំ។" },
+            { h: "<i class='fa-solid fa-display keyword-icon'></i> View (V)", p: "ផ្ទាំងបង្ហាញ (User Interface) ដែលអ្នកប្រើប្រាស់មើលឃើញ។ នៅក្នុងមេរៀន API នេះ View ត្រូវបានជំនួសដោយទម្រង់ទិន្នន័យ <b>JSON Response</b> ដែល Client App យកទៅបង្ហាញបន្ត។" },
+            { h: "<i class='fa-solid fa-gears keyword-icon'></i> Controller (C)", p: "ខួរក្បាលអ្នកចាត់ចែង (Logic Controller) ទទួលសំណើ (HTTP Request) ពីអ្នកប្រើប្រាស់ បញ្ជាទៅ Model ឱ្យធ្វើការ រួចទាញទិន្នន័យមកប្រគល់ឱ្យ View បង្ហាញវិញ។" }
+        ]},
+
+        // 14. MVC DIAGRAM WITH FALLBACK
+        { t: "១.៣ ដ្យាក្រាមលំហូរការងារ MVC ក្នុង ASP.NET", type: "split", img: "images/mvc.jpg", fallback: "mvc", c: "<b>តើ MVC ធ្វើការជាមួយគ្នាយ៉ាងដូចម្តេច?</b><br><br>១. អ្នកប្រើប្រាស់ធ្វើសកម្មភាព (ឧ: ចុចប៊ូតុងស្វែងរកសិស្ស)។<br>២. សំណើ (HTTP Request) ត្រូវបានបញ្ជូនទៅកាន់ <b class='highlight'>Controller</b>។<br>៣. Controller ពិនិត្យសំណើ រួចបញ្ជាទៅកាន់ <b class='highlight'>Model</b> ឱ្យទៅទាញយកទិន្នន័យក្នុង SQL Database។<br>៤. Model បញ្ជូនទិន្នន័យត្រឡប់មក Controller វិញ។<br>៥. Controller យកទិន្នន័យនោះបំប្លែងជា JSON រួចឆ្លើយតប (Response) ទៅកាន់ <b class='highlight'>View</b> (App/Browser)។" },
+
+        // 15. PIZZA ANALOGY
+        { t: "១.៣ ករណីសិក្សាជាក់ស្តែង៖ ការកម្មង់ Pizza", type: "split", img: "https://images.unsplash.com/photo-1534308983496-4fabb1a015ee?auto=format&fit=crop&w=1200&q=80", fallback: "none", c: "<b>ដើម្បីឱ្យកាន់តែងាយស្រួលយល់ សូមប្រៀបធៀប MVC ទៅនឹងការកម្ម៉ង់ Pizza៖</b><br><br>🍕 <b class='highlight'>View:</b> ជាកាតាឡុក (Menu) ឬអេក្រង់ទូរស័ព្ទដែលអ្នកចុចរើស Pizza។<br>🍕 <b class='highlight'>Controller:</b> ជាអ្នកគិតលុយ (Cashier) ដែលទទួលការកម្ម៉ង់ពីអ្នក ហើយស្រែកប្រាប់ទៅចុងភៅឱ្យធ្វើនំ។<br>🍕 <b class='highlight'>Model:</b> ជាចុងភៅ និងទូទឹកកក ដែលមានតួនាទីលាយម្សៅ ដាក់គ្រឿង និងដុតនំឱ្យឆ្អិន រួចហុចប្រអប់ Pizza មកឱ្យអ្នកគិតលុយវិញ។" },
+
+        // 16. STUDENT SYSTEM
+        { t: "១.៣ ករណីសិក្សា៖ ប្រព័ន្ធគ្រប់គ្រងសិស្សរបស់សាកលវិទ្យាល័យ", type: "list", c: [
+            "ឧទាហរណ៍៖ សាកលវិទ្យាល័យចង់បង្កើត App សម្រាប់សិស្សមើលពិន្ទុ៖",
+            "<b>១. តួនាទី Model:</b> បង្កើត Class ឈ្មោះ <code>Student</code> ដែលមាន Id, Name, និង Score។ វាភ្ជាប់ទៅកាន់ SQL Server ដើម្បីទាញយកពិន្ទុពិតប្រាកដ។",
+            "<b>២. តួនាទី View:</b> បង្កើតផ្ទាំង App ទូរស័ព្ទដែលមានប៊ូតុង 'មើលពិន្ទុ' និងកន្លែងបង្ហាញពិន្ទុបន្ទាប់ពីទាញយកបានពី API។",
+            "<b>៣. តួនាទី Controller:</b> បង្កើត <code>StudentController</code>។ នៅពេលសិស្សចុចប៊ូតុង Controller នឹងសួរ Model ថា 'សុំពិន្ទុសិស្សឈ្មោះ ក' រួចបញ្ជូនទិន្នន័យនោះទៅឱ្យ View បង្ហាញ។"
+        ]},
+
+        // 17. MVC vs WEB API DEFINITIONS
+        { t: "១.៣.១ ការប្រៀបធៀប ASP.NET Core MVC និង Web API", type: "grid", c: [
+            { h: "<i class='fa-solid fa-display keyword-icon'></i> ASP.NET Core MVC (Server-Rendered)", p: "ជា Monolithic Web App ដែល Render ផ្ទាំងទំព័រ HTML/CSS (Razor View Engine .cshtml) នៅលើ Server ទាំងស្រុង រួចទើបបញ្ជូនទំព័រពេញលេញទៅកាន់ Web Browser របស់អ្នកប្រើប្រាស់។" },
+            { h: "<i class='fa-solid fa-server keyword-icon'></i> ASP.NET Core Web API (Headless Backend)", p: "ជាប្រព័ន្ធ Backend សុទ្ធសាធដែលគ្មានផ្ទាំងទម្រង់ View ផ្ទាល់ខ្លួនទេ ប៉ុន្តែវាបញ្ជូនទិន្នន័យសុទ្ធជាទម្រង់ <b>JSON</b> ទៅកាន់ Client ផ្សេងៗ (React, Web Apps, Mobile, Flutter, iOS, Android)។" }
+        ]},
+
+        // 18. MVC vs WEB API PROCESS & COMPARISON
+        { t: "១.៣.២ លំហូរដំណើរការការងារ (Workflow: MVC vs Web API)", type: "table", rows: [
+            ["លក្ខណៈវិនិច្ឆ័យ", "ASP.NET Core MVC", "ASP.NET Core Web API"],
+            ["ទម្រង់ឆ្លើយតប (Response)", "HTML / CSS / JS (Razor View)", "JSON (ឬ XML) ទិន្នន័យសុទ្ធ"],
+            ["បច្ចេកវិទ្យា View", "ប្រើប្រាស់ Razor Engine (.cshtml)", "គ្មាន View (Client ជាអ្នកចាត់ចែង View)"],
+            ["Controller Base Class", "បន្តពូជពី Class <code>Controller</code>", "បន្តពូជពី Class <code>ControllerBase</code>"],
+            ["ការកំណត់ផ្លូវ (Routing)", "Conventional / MapControllerRoute", "Attribute Routing (ឧ: <code>[Route(\"api/[controller]\")]</code>)"]
+        ]},
+
+        // 19. SQL SERVER
+        { t: "១.៤ ប្រព័ន្ធគ្រប់គ្រងមូលដ្ឋានទិន្នន័យ SQL Server", type: "split", img: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&q=80", fallback: "none", c: "<b>SQL Server</b> គឺជាប្រព័ន្ធគ្រប់គ្រងមូលដ្ឋានទិន្នន័យទំនាក់ទំនង (RDBMS) ដ៏រឹងមាំសម្រាប់ក្រុមហ៊ុនធំៗ (Enterprise) ដែលបង្កើតដោយ Microsoft។<br><br><b>ហេតុអ្វីប្រើ SQL Server ជាមួយ .NET?</b><br><ul style='margin-left:2vw;'><li style='margin-bottom:10px;'>វាជាផលិតផល Microsoft ដូចគ្នា ដូចនេះវាមានភាពត្រូវគ្នា (Integration) ១០០% តាមរយៈបច្ចេកវិទ្យា <b>Entity Framework Core</b>។</li><li>មានល្បឿនលឿន សុវត្ថិភាពខ្ពស់ និងរក្សាទិន្នន័យបានរាប់លានជួរ។</li></ul>" },
+
+        // 20. ENVIRONMENT SETUP
+        { t: "១.៥ របៀបចូលទៅប្រើប្រាស់ និងរៀបចំឧបករណ៍ (Environment Setup)", type: "grid", c: [
+            { h: "<i class='fa-solid fa-box-open keyword-icon'></i> ១. .NET 8.0 SDK", p: "ទាញយកពីវេបសាយ <code>dot.net/download</code>។ បន្ទាប់មកដំឡើងតាមទម្រង់ Next > Next > Finish ជាការស្រេច។ វាមានផ្ទុក Compiler សម្រាប់ Run កូដ C#។" },
+            { h: "<i class='fa-solid fa-code keyword-icon'></i> ២. Visual Studio Code", p: "ទាញយកពី <code>code.visualstudio.com</code>។ វាជា IDE ដ៏ស្រាល និងលឿន។ យើងមិនប្រើ VS ធំទេ ដើម្បីសន្សំសំចៃ Memory កុំព្យូទ័រ និងងាយស្រួលដល់និស្សិតគ្រប់គ្នា។" },
+            { h: "<i class='fa-solid fa-plug keyword-icon'></i> ៣. C# Dev Kit (Extension)", p: "បើក VS Code > ចូលទៅ Extensions (ប៊ូតុងទី 5 ខាងឆ្វេង) > ស្វែងរក 'C# Dev Kit' រួចចុច Install ដើម្បីផ្តល់មុខងារ Auto-complete។" },
+            { h: "<i class='fa-solid fa-database keyword-icon'></i> ៤. SQL Server Express", p: "ទាញយកពីវេបសាយ Microsoft សម្រាប់ប្រើជា Database ផ្ទុកទិន្នន័យ និងទាញយក SSMS សម្រាប់មើលតារាងទិន្នន័យដោយផ្ទាល់។" }
+        ]},
+
+        // 21. LAB 1.1
+        { t: "លំហាត់អនុវត្តន៍ (Practical Labs)", type: "exercise", h: "Lab 1.1: Environment Setup", p: "១. ដំឡើង .NET 8.0 SDK, VS Code, និង C# Dev Kit Extension លើកុំព្យូទ័ររបស់អ្នក។<br>២. បើក Terminal ក្នុង VS Code ពិនិត្យមើលដោយវាយបញ្ជា <code>dotnet --version</code>។" },
+
+        // 22. POSTMAN WITH FALLBACK
+        { t: "១.៥ ឧបករណ៍ជំនួយ៖ Postman (API Testing Tool)", type: "split", img: "images/postman.jpg", fallback: "postman", c: "<b>Postman</b> គឺជាកម្មវិធីដ៏ពេញនិយមបំផុតសម្រាប់អ្នកអភិវឌ្ឍន៍ Backend ក្នុងការធ្វើតេស្តសាកល្បង API មុននឹងបញ្ជូនទៅឱ្យអ្នកអភិវឌ្ឍន៍ Frontend ប្រើប្រាស់។<br><br><b>មុខងារសំខាន់ៗ៖</b><br>១. អាចសាកល្បងបាញ់សំណើ GET, POST, PUT, DELETE បានយ៉ាងងាយស្រួល។<br>២. បង្ហាញលទ្ធផល JSON Response យ៉ាងច្បាស់លាស់ និងមានពណ៌ស្រស់ស្អាត។<br>៣. អាចរក្សាទុកប្រវត្តិសំណើ (History) សម្រាប់ធ្វើតេស្តលើកក្រោយ។" },
+
+        // 23. .NET CLI INTRO
+        { t: "១.៦ របៀបចូលទៅប្រើប្រាស់ .NET CLI", type: "split", img: "https://images.unsplash.com/photo-1629654297299-c8506221ca97?auto=format&fit=crop&w=1200&q=80", fallback: "none", c: "<b>Command Line Interface (CLI)</b> គឺជាការបញ្ជាកុំព្យូទ័រតាមរយៈអក្សរ។<br><br><b>របៀបបើក Terminal ក្នុង VS Code៖</b><br>១. បើកកម្មវិធី VS Code<br>២. ចុច Menu 'Terminal' នៅខាងលើ > 'New Terminal'<br>៣. ឬចុច Keyboard Shortcut: <code>Ctrl + ~</code> (ប៊ូតុងខាងក្រោម Esc)<br><br>នៅពេលផ្ទាំងខ្មៅចេញមកខាងក្រោម លោកគ្រូអាចវាយបញ្ជា <code>dotnet --version</code> ដើម្បីបញ្ជាក់។" },
+
+        // 24. .NET CLI COMMANDS
+        { t: "១.៦ ស្គាល់បញ្ជា .NET CLI ចាំបាច់ដំបូង", type: "grid", c: [
+            { h: "<code>dotnet --version</code>", p: "បញ្ជាសម្រាប់ពិនិត្យមើលជំនាន់របស់ .NET SDK ដែលបានដំឡើងនៅក្នុងកុំព្យូទ័រ។ វាជួយប្រាកដថាយើងដំឡើងបានត្រឹមត្រូវ។" },
+            { h: "<code>dotnet new webapi</code>", p: "បញ្ជាសម្រាប់បង្កើតគម្រោង ASP.NET Core API ថ្មីដោយស្វ័យប្រវត្តិ។ (អាចបន្ថែម <code>-n ឈ្មោះ</code> ដើម្បីដាក់ឈ្មោះ Project)" },
+            { h: "<code>dotnet build</code>", p: "បញ្ជាសម្រាប់ចងក្រងកូដ (Compile) មុនពេលដំណើរការ ដើម្បីពិនិត្យរកមើលកំហុស (Errors) ផ្សេងៗក្នុង Syntax។" },
+            { h: "<code>dotnet run</code>", p: "បញ្ជាសម្រាប់ដំណើរការកម្មវិធីឱ្យចេញជា Web Server ជាក់ស្តែងនៅលើ Localhost ដើម្បីឱ្យយើងអាចធ្វើតេស្ត API បាន។" }
+        ]},
+
+        // 25. PROJECT CREATION COMMANDS
+        { t: "១.៦ ការបង្កើត Project ដំបូង (CLI Commands)", type: "code", code: "dotnet new webapi -n SchoolApi\ncd SchoolApi\ndotnet build\ndotnet run", desc: "សូមវាយបញ្ជាខាងលើចូលទៅក្នុង Terminal (CMD ឬ PowerShell) ជាបន្តបន្ទាប់ ដើម្បីបង្កើតគម្រោងថ្មី និងដំណើរការវា។" },
+
+        // 26. LAB 1.2
+        { t: "លំហាត់អនុវត្តន៍ (Practical Labs)", type: "exercise", h: "Lab 1.2: API Creation & Run", p: "១. ប្រើបញ្ជា <code>dotnet new webapi -n SchoolSystem</code> ដើម្បីបង្កើតគម្រោង។<br>២. ចូលទៅ Folder នោះដោយប្រើបញ្ជា <code>cd SchoolSystem</code> រួចវាយបញ្ជា <code>dotnet run</code>។ ធ្វើតេស្តមើលលទ្ធផល JSON លើ Browser។" },
+
+        // 27. PROJECT STRUCTURE 1 WITH FALLBACK
+        { t: "១.៦ រចនាសម្ព័ន្ធ Project Directory (ឯកសារគោល)", type: "split", img: "images/Directory1.jpg", fallback: "directory1", c: "បន្ទាប់ពី Run command បង្កើត Project រួច យើងនឹងឃើញរចនាសម្ព័ន្ធឯកសារសំខាន់ៗ៖<br><br><ul style='margin-left:2vw;'><li style='margin-bottom:15px;'><b class='highlight'>Program.cs:</b> ឯកសារគោល ចំណុចចាប់ផ្តើមនៃកម្មវិធី (Entry point)។ ជាកន្លែងដែលយើងចុះឈ្មោះសេវាកម្ម (Services) និងកំណត់ Middleware ផ្សេងៗ។</li><li style='margin-bottom:15px;'><b class='highlight'>appsettings.json:</b> កន្លែងផ្ទុកការកំណត់ (Configurations) ដូចជា Connection String ដើម្បីភ្ជាប់ទៅ SQL Server ឬការកំណត់សុវត្ថិភាព។</li><li><b class='highlight'>[ឈ្មោះគម្រោង].csproj:</b> ឯកសារកំណត់ពី Packages ឬបណ្ណាល័យ (Libraries) ដែលបានប្រើប្រាស់ក្នុង Project។</li></ul>" },
+
+        // 28. PROJECT STRUCTURE 2 WITH FALLBACK
+        { t: "១.៦ រចនាសម្ព័ន្ធ Project Directory (ថតឯកសារ)", type: "split", img: "images/Directory2.jpg", fallback: "directory2", c: "ថត (Folders) សំខាន់ៗសម្រាប់ការសរសេរកូដ៖<br><br><ul style='margin-left:2vw;'><li style='margin-bottom:15px;'><b class='highlight'>Controllers/ :</b> សម្រាប់ផ្ទុកឯកសារ Controller (ឧ. <code>StudentsController.cs</code>) ដែលមានតួនាទីចាត់ចែង API Logic និងឆ្លើយតបទៅកាន់ HTTP Requests (GET, POST...)។</li><li style='margin-bottom:15px;'><b class='highlight'>Models/ :</b> (អ្នកអាចបង្កើតបន្ថែម) សម្រាប់ផ្ទុក Class នៃទិន្នន័យ (ឧ. <code>Student.cs</code>) ដែលត្រូវភ្ជាប់ជាមួយតារាង Database។</li><li><b class='highlight'>Properties/launchSettings.json:</b> សម្រាប់កំណត់ Port (ឧ. http://localhost:5000) នៅពេល Run កម្មវិធី។</li></ul>" },
+
+        // 29. CONTROLLER C# CODE
+        { t: "១.៦ ការសរសេរ Controller ដំបូង (C# Code)", type: "code", code: `using Microsoft.AspNetCore.Mvc;
+
+namespace SchoolApi.Controllers
+{
+    [ApiController]
+    [Route("api/[controller]")]
+    public class StudentsController : ControllerBase
+    {
+        // កំណត់ HTTP GET Method សម្រាប់អានទិន្នន័យ
+        [HttpGet]
+        public IActionResult GetStudent()
+        {
+            // ឆ្លើយតបជាទម្រង់ JSON ជាមួយនឹងលេខកូដ 200 OK
+            return Ok(new { 
+                Id = 1, 
+                Name = "Soeurng LIM", 
+                Major = "Computer Science" 
+            });
+        }
+    }
+}`, desc: "នេះគឺជាកូដ C# សម្រាប់បង្កើត 'StudentsController' សាមញ្ញ ដែលមាន Method GET មួយសម្រាប់បញ្ចេញទិន្នន័យ។" },
+
+        // 30. LAB 1.3
+        { t: "លំហាត់អនុវត្តន៍ (Practical Labs)", type: "exercise", h: "Lab 1.3: C# Controller Coding", p: "១. នៅក្នុង VS Code សូមបង្កើត File ឈ្មោះ <code>TestController.cs</code> ថ្មីមួយ។<br>២. សរសេរកូដ C# ឱ្យ Return ឈ្មោះ និងលេខសម្គាល់និស្សិតរបស់អ្នកជាទម្រង់ JSON Response។" },
+
+        // 31. JSON FORMAT WITH FALLBACK
+        { t: "១.៦ អ្វីទៅជា JSON Format? (ទម្រង់ទិន្នន័យ)", type: "split", img: "images/JSON.jpg", fallback: "json", c: "<b>JSON (JavaScript Object Notation)</b> គឺជាទម្រង់ទិន្នន័យស្តង់ដារដែល API ភាគច្រើនប្រើប្រាស់ដើម្បីបញ្ជូនទិន្នន័យឆ្លើយតប (Response) ទៅកាន់ Client។<br><br><b>អត្ថប្រយោជន៍របស់ JSON:</b><br><ul style='margin-left:2vw;'><li style='margin-bottom:10px;'>មានទម្ងន់ស្រាល (Lightweight) និងបញ្ជូនទិន្នន័យបានលឿន។</li><li style='margin-bottom:10px;'>ងាយស្រួលអានទាំងមនុស្ស និងកុំព្យូទ័រ។</li><li>រៀបចំទិន្នន័យជាទម្រង់ <code>\"Key\": \"Value\"</code> ដែលមានភាពច្បាស់លាស់។</li></ul>" },
+
+        // 32. WHY API WITH FALLBACK
+        { t: "១.៦ ករណីសិក្សា៖ ហេតុអ្វីត្រូវប្រើ API?", type: "split", img: "images/JSONCPI.jpg", fallback: "jsoncpi", c: "<b>API តែមួយ ប្រើបានគ្រប់ឧបករណ៍ (Cross-Platform Integration)៖</b><br><br>ក្នុងយុគសម័យនេះ ក្រុមហ៊ុនដូចជា Grab, ធនាគារ ABA ឬ Facebook មិនសរសេរ Backend កូដ ៣ដងផ្សេងគ្នាសម្រាប់ Website, iOS និង Android ទេ។<br><br>ពួកគេបង្កើត <b>Central API</b> តែមួយ រួចអនុញ្ញាតឱ្យកម្មវិធីគ្រប់ប្រភេទបាញ់សំណើហៅទិន្នន័យ JSON យកទៅប្រើប្រាស់តាមតម្រូវការ។ នេះហៅថា <b>ការសន្សំសំចៃធនធាន និងពេលវេលាអភិវឌ្ឍន៍ (Efficiency)</b> យ៉ាងពិតប្រាកដ។" },
+
+        // 33. GIT & GITHUB
+        { t: "១.៧ ការគ្រប់គ្រងកូដជាមួយ Git និង GitHub", type: "list", c: [
+            "<b>Git:</b> ឧបករណ៍សម្រាប់កត់ត្រារាល់ការផ្លាស់ប្តូរកូដ (Version Control System) ក្នុងកុំព្យូទ័រផ្ទាល់។ វាការពារការបាត់បង់កូដនៅពេលកុំព្យូទ័រខូច និងអនុញ្ញាតឱ្យយើងត្រឡប់ទៅរកទម្រង់ដើមវិញពេលមាន Error (Undo)។",
+            "<b>GitHub:</b> ជា Cloud Platform (Server លើអ៊ីនធឺណិត) សម្រាប់ផ្ទុកកូដ Git នោះ និងអនុញ្ញាតឱ្យ Developers ជាច្រើននាក់អាចធ្វើការសហការគ្នា (Team Collaboration) លើគម្រោងតែមួយបានយ៉ាងងាយស្រួល។"
+        ]},
+
+        // 34. GITHUB DESKTOP WITH FALLBACK
+        { t: "១.៧ ប្រើប្រាស់កម្មវិធី GitHub Desktop (GUI)", type: "split", img: "images/github-desktop.jpg", fallback: "github-desktop", c: "<b>ដំណោះស្រាយសម្រាប់អ្នកមិនចង់វាយ Commands ស្មុគស្មាញ៖</b><br><br><b>GitHub Desktop</b> គឺជាកម្មវិធី (Graphical User Interface) ដែលជួយឱ្យការគ្រប់គ្រងកូដ Git កាន់តែងាយស្រួលដោយគ្រាន់តែប្រើ Mouse ចុច។<br><br><ul style='margin-left:2vw;'><li style='margin-bottom:10px;'><b class='highlight'>Clone:</b> ចុចទាញយកគម្រោងពី Cloud មកកុំព្យូទ័រ។</li><li style='margin-bottom:10px;'><b class='highlight'>Commit:</b> ចុចដើម្បីកត់ត្រាការផ្លាស់ប្តូរកូដដែលបានសរសេរថ្មីៗ。</li><li><b class='highlight'>Push / Pull:</b> ចុចដើម្បីបញ្ជូនកូដឡើងលើ GitHub ឬទាញយកកូដថ្មីពីមិត្តរួមក្រុម។</li></ul>" },
+
+        // 35. GIT COMMAND LINE
+        { t: "១.៧ ការប្រើប្រាស់ Git តាមរយៈ Command Line", type: "code", code: "git init\ngit add .\ngit commit -m \"Initial commit for School API\"\ngit branch -M main\ngit remote add origin https://github.com/YourUsername/SchoolApi.git\ngit push -u origin main", desc: "សម្រាប់អ្នកចង់អនុវត្តតាមបែប Professional ទាំងនេះគឺជាបញ្ជា (Commands) ចាំបាច់ៗ ត្រូវវាយក្នុង Terminal ដើម្បីរុញកូដទៅ GitHub។" },
+
+        // 36. LAB 1.4
+        { t: "លំហាត់អនុវត្តន៍ (Practical Labs)", type: "exercise", h: "Lab 1.4: GitHub Cloud Sync", p: "១. បង្កើត Repository ថ្មីនៅលើ GitHub ឈ្មោះ 'ASPNet-Lab1'។<br>២. ប្រើប្រាស់កម្មវិធី <b>GitHub Desktop</b> ដើម្បី Add Local Repo នោះ រួច Commit និង Push កូដគម្រោងរបស់អ្នកឡើង។" },
+
+        // 37. EXERCISE 1 (BOOK API)
+        { t: "១.៨ លំហាត់គំរូទី ១៖ Web API សម្រាប់គ្រប់គ្រងសៀវភៅ (Book API)", type: "exercise", h: "លំហាត់ទី ១: Book API (GET Request)", p: "<b>ប្រធានលំហាត់៖</b> ចូរអភិវឌ្ឍន៍ Web API ដែលអនុញ្ញាតឲ្យ Client ទាញយកបញ្ជីសៀវភៅទាំងអស់ និងទាញយកសៀវភៅជាក់លាក់ណាមួយតាមរយៈលេខសម្គាល់ ID (GET Method) ដោយប្រើប្រាស់ Static Memory List។<br><br><span style='color: var(--accent-purple);'>[បញ្ជាក់៖ ដំណោះស្រាយកូដលម្អិតពេញលេញមានផ្ដល់ជូននៅក្នុង Handout]</span>" },
+
+        // 38. EXERCISE 1 STRUCTURE
+        { t: "១.៨ រចនាសម្ព័ន្ធឯកសារ លំហាត់ទី ១ (Book API)", type: "list", c: [
+            "សម្រាប់លំហាត់ទី ១ នេះ និស្សិតត្រូវរៀបចំបង្កើតឯកសារគន្លឹះចំនួន ២ ដូចខាងក្រោម៖",
+            "• <b>១. ឯកសារ Model (<code>Models/Book.cs</code>):</b> សម្រាប់កំណត់ទម្រង់ទិន្នន័យសៀវភៅ រួមមាន Properties: <code>Id (int)</code>, <code>Title (string)</code>, <code>Author (string)</code>, និង <code>Price (decimal)</code>។",
+            "• <b>២. ឯកសារ Controller (<code>Controllers/BooksController.cs</code>):</b> បង្កើត API Controller បន្តពូជពី <code>ControllerBase</code> ដោយប្រើប្រាស់ Attribute <code>[Route(\"api/[controller]\")]</code>។",
+            "• <b>៣. Endpoints ចាំបាច់៖</b>",
+            "&nbsp;&nbsp;&nbsp;&nbsp;- <code>GET /api/books</code> -> ដើម្បីទាញយកបញ្ជីសៀវភៅទាំងអស់ពី Static List។",
+            "&nbsp;&nbsp;&nbsp;&nbsp;- <code>GET /api/books/{id}</code> -> ដើម្បីស្វែងរក និងទាញយកសៀវភៅតាមលេខ ID។",
+            "• <i class='fa-solid fa-book-open' style='color: var(--accent-purple);'></i> <i>ណែនាំ៖ សរសេរកូដអនុវត្តន៍ដោយផ្អែកលើគំរូក្នុង <b>Handout - ទំព័រទី ៣</b>។</i>"
+        ]},
+
+        // 39. EXERCISE 2 (COURSE MVC)
+        { t: "១.៨ លំហាត់គំរូទី ២៖ កម្មវិធី MVC បង្ហាញព័ត៌មានវគ្គសិក្សា", type: "exercise", h: "លំហាត់ទី ២: Course Display App (MVC - GET to View)", p: "<b>ប្រធានលំហាត់៖</b> ចូរបង្កើតគម្រោង ASP.NET Core MVC ដើម្បីបង្ហាញបញ្ជីវគ្គសិក្សារបស់សាកលវិទ្យាល័យ។ ទិន្នន័យត្រូវបញ្ជូនពី Controller ទៅកាន់ Razor View (.cshtml) ដើម្បី Render ជាតារាង HTML បង្ហាញនៅលើ Web Browser។<br><br><span style='color: var(--accent-purple);'>[បញ្ជាក់៖ ដំណោះស្រាយកូដលម្អិតពេញលេញមានផ្ដល់ជូននៅក្នុង Handout]</span>" },
+
+        // 40. EXERCISE 2 STRUCTURE
+        { t: "១.៨ រចនាសម្ព័ន្ធឯកសារ លំហាត់ទី ២ (Course MVC)", type: "list", c: [
+            "សម្រាប់លំហាត់ទី ២ នេះ និស្សិតត្រូវរៀបចំបង្កើត និងកែសម្រួលឯកសារចំនួន ៣ ដូចខាងក្រោម៖",
+            "• <b>១. ឯកសារ Model (<code>Models/Course.cs</code>):</b> សម្រាប់ផ្ទុកទិន្នន័យវគ្គសិក្សា រួមមាន Properties: <code>Id (int)</code>, <code>Title (string)</code>, <code>DurationHours (int)</code>, និង <code>Instructor (string)</code>។",
+            "• <b>២. ឯកសារ Controller (<code>Controllers/CourseController.cs</code>):</b> បង្កើត Controller បន្តពូជពី <code>Controller</code> (MVC) និងសរសេរ Action Method <code>Index()</code> ដើម្បីបញ្ជូនបញ្ជីទិន្នន័យទៅកាន់ View តាមរយៈ <code>return View(courses);</code>។",
+            "• <b>៣. ឯកសារ View (<code>Views/Course/Index.cshtml</code>):</b> ប្រើប្រាស់ Razor Syntax <code>@model IEnumerable&lt;CourseMvc.Models.Course&gt;</code> និងកូដ loops (<code>@foreach</code>) ដើម្បីបង្ហាញព័ត៌មានជាតារាង HTML ស្អាត។",
+            "• <i class='fa-solid fa-book-open' style='color: var(--accent-purple);'></i> <i>ណែនាំ៖ សរសេរកូដអនុវត្តន៍ដោយផ្អែកលើគំរូក្នុង <b>Handout - ទំព័រទី ៥</b>។</i>"
+        ]},
+
+        // 41. EXERCISE 3 (STUDENT REGISTER POST)
+        { t: "១.៨ លំហាត់គំរូទី ៣៖ Web API សម្រាប់ចុះឈ្មោះសិស្ស (POST)", type: "exercise", h: "លំហាត់ទី ៣: Student Register (API - POST with Validation)", p: "<b>ប្រធានលំហាត់៖</b> ចូរអភិវឌ្ឍន៍ Web API ដែលទទួលយកសំណើ HTTP POST រួមជាមួយទិន្នន័យជាទម្រង់ JSON ដើម្បីចុះឈ្មោះសិស្សថ្មី។ ប្រព័ន្ធត្រូវតែផ្ទៀងផ្ទាត់លក្ខខណ្ឌ Validation (ដូចជា៖ តម្រូវឲ្យមានឈ្មោះ និងអាយុត្រូវនៅចន្លោះ ១៨-៦០ឆ្នាំ)។<br><br><span style='color: var(--accent-purple);'>[បញ្ជាក់៖ ដំណោះស្រាយកូដលម្អិតពេញលេញមានផ្ដល់ជូននៅក្នុង Handout]</span>" },
+
+        // 42. EXERCISE 3 STRUCTURE
+        { t: "១.៨ រចនាសម្ព័ន្ធឯកសារ លំហាត់ទី ៣ (Student POST API)", type: "list", c: [
+            "សម្រាប់លំហាត់ទី ៣ នេះ និស្សិតត្រូវរៀបចំបង្កើតឯកសារចំនួន ២ ដូចខាងក្រោម៖",
+            "• <b>១. ឯកសារ Model (<code>Models/Student.cs</code>):</b> កំណត់លក្ខខណ្ឌសុពលភាពទិន្នន័យ (Data Annotations) ដូចជា [Required] លើឈ្មោះ និងជំនាញ និងប្រើប្រាស់ [Range(18, 60)] លើអាយុរបស់និស្សិត។",
+            "• <b>២. ឯកសារ Controller (<code>Controllers/StudentsController.cs</code>):</b> បង្កើត HTTP POST Method ទទួល JSON តាមរយៈ Parameter [FromBody] Student newStudent ។",
+            "• <b>៣. Logic ផ្ទៀងផ្ទាត់៖</b> ប្រើប្រាស់លក្ខខណ្ឌ <code>if (!ModelState.IsValid)</code> ដើម្បីឆ្លើយតបទៅកាន់ Client វិញជាលទ្ធផល Error 400 Bad Request ប្រសិនបើទិន្នន័យផ្ញើមកខុសលក្ខខណ្ឌកំណត់។",
+            "• <i class='fa-solid fa-book-open' style='color: var(--accent-purple);'></i> <i>ណែនាំ៖ សរសេរកូដអនុវត្តន៍ដោយផ្អែកលើគំរូក្នុង <b>Handout - ទំព័រទី ៨</b>។</i>"
+        ]},
+
+        // 43. GLOSSARY 1
+        { t: "ពន្យល់ពាក្យគន្លឹះ (Glossary) - ភាគទី ១", type: "table", rows: [
+            ["ពាក្យបច្គេកទេស", "ការពន្យល់ជាភាសាខ្មែរ"],
+            ["<b>SDK</b>", "Software Development Kit: កញ្ចប់ឧបករណ៍សរសេរកម្មវិធី។"],
+            ["<b>API</b>", "Application Programming Interface: ស្ពានភ្ជាប់ទំនាក់ទំនងរវាងកម្មវិធីពីរផ្សេងគ្នា។"],
+            ["<b>RESTful</b>", "ស្តង់ដាររចនា API ដែលប្រើប្រាស់ HTTP Methods ដូចជា (GET, POST, PUT, DELETE)។"],
+            ["<b>JSON</b>", "JavaScript Object Notation: ទម្រង់ទិន្នន័យស្រាល និងពេញនិយមបំផុតសម្រាប់ការបញ្ជូន Data។"],
+            ["<b>MVC</b>", "Model-View-Controller: ស្ថាបត្យកម្មបែងចែករចនាសម្ព័ន្ធកូដជា ៣ ផ្នែក។"]
+        ]},
+
+        // 44. GLOSSARY 2
+        { t: "ពន្យល់ពាក្យគន្លឹះ (Glossary) - ភាគទី ២", type: "table", rows: [
+            ["ពាក្យបច្ចេកទេស", "ការពន្យល់ជាភាសាខ្មែរ"],
+            ["<b>CLI</b>", "Command Line Interface: ការបញ្ជាកុំព្យូទ័រតាមរយៈការវាយអក្សរជាបញ្ជា (Commands)។"],
+            ["<b>GUI</b>", "Graphical User Interface: ការបញ្ជាកុំព្យូទ័រតាមរយៈការចុច Mouse លើរូបតំណាង (Icons)។"],
+            ["<b>Repository</b>", "ឃ្លាំងសម្រាប់ផ្ទុកកូដ និងប្រវត្តិការផ្លាស់ប្តូរកូដនៅលើប្រព័ន្ធ GitHub។"],
+            ["<b>Commit</b>", "ការកត់ត្រាទុកនូវរាល់ការផ្លាស់ប្តូរកូដនីមួយៗទៅក្នុង Local History។"],
+            ["<b>RDBMS</b>", "Relational Database Management System: ប្រព័ន្ធគ្រប់គ្រងមូលដ្ឋានទិន្នន័យទំនាក់ទំនង (ដូចជា SQL Server)។"]
+        ]},
+
+        // 45. SUMMARY
+        { t: "សេចក្តីសង្ខេបជំពូកទី ១ (Summary)", type: "list", c: [
+            "• <b class='highlight'>.NET Core និង ASP.NET:</b> ជា Platform កូដបើកចំហដ៏រឹងមាំសម្រាប់អភិវឌ្ឍន៍ Web API ដែលអាចដំណើរការបានគ្រប់ប្រព័ន្ធប្រតិបត្តិការ។",
+            "• <b class='highlight'>API ជាអ្នករត់តុ:</b> មានតួនាទីទទួលសំណើពីអ្នកប្រើប្រាស់ (Client App) យកទៅកាន់ Server និង Database រួចនាំយកទិន្នន័យ (JSON) ត្រឡប់មកវិញ។",
+            "• <b class='highlight'>MVC vs API:</b> MVC ផ្ដល់ផលជាទំព័រ HTML (Server Rendered HTML) រីឯ Web API ផ្ដល់ត្រឡប់តែទិន្នន័យ JSON សុទ្ធ (Headless Backend)។",
+            "• <b class='highlight'>Tools & Setup:</b> ការចេះប្រើប្រាស់ .NET SDK, VS Code, និង .NET CLI គឺជាមូលដ្ឋានគ្រឹះដំបូងបំផុតសម្រាប់ Developers។",
+            "• <b class='highlight'>Version Control:</b> ការប្រើប្រាស់ Git និង GitHub Desktop គឺជារឿងចាំបាច់បំផុត ដើម្បីរក្សាសុវត្ថិភាពកូដ និងធ្វើការងារជាក្រុម។"
+        ]},
+
+        // 46. REFERENCES
+        { t: "ឯកសារយោង និងគន្ថនិទ្ទេស (References)", type: "list", c: [
+            "• <b>Microsoft Learn (ASP.NET Core Docs):</b> <i style='color:var(--accent-blue);'>https://learn.microsoft.com/en-us/aspnet/core/</i>",
+            "• <b>Microsoft Learn (.NET CLI Reference):</b> <i style='color:var(--accent-blue);'>https://learn.microsoft.com/en-us/dotnet/core/tools/</i>",
+            "• <b>Mozilla Developer Network (JSON):</b> <i style='color:var(--accent-blue);'>https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/JSON</i>",
+            "• <b>GitHub Desktop Documentation:</b> <i style='color:var(--accent-blue);'>https://docs.github.com/en/desktop</i>",
+            "• <b>សៀវភៅគោល:</b> Freeman, A. (2024). <i>Pro ASP.NET Core 8</i>. Apress. (10th Edition)"
+        ]},
+
+        // 47. NEW SLIDE: NEXT CHAPTER INTRODUCTION
+        { t: "ជំពូកបន្ទាប់៖ ជំពូកទី ២ - មូលដ្ឋាន C# សម្រាប់ API", type: "split", img: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1200&q=80", fallback: "none", c: "<b>ជំពូកទី ២៖ មូលដ្ឋាន C# សម្រាប់ API</b><br><br>នៅក្នុងជំពូកបន្ទាប់ និស្សិតនឹងសិក្សាស្វែងយល់លម្អិតអំពី៖<br><ul style='margin-left:2vw; margin-top:1.5vh;'><li style='margin-bottom:1vh;'><b class='highlight'>C# Basics:</b> Variables, Data Types & Operators</li><li style='margin-bottom:1vh;'><b class='highlight'>Control Flow:</b> Loops (for, foreach, while) & Conditions (if-else)</li><li style='margin-bottom:1vh;'><b class='highlight'>OOP Concepts:</b> Classes, Objects & Properties ក្នុង OOP</li><li><b class='highlight'>Model Mapping:</b> គ្រោងទិន្នន័យដើម្បីត្រៀមបញ្ជូនទៅប្រព័ន្ធ API</li></ul>" }
+    ];
+
+    // INJECTION ENGINE
+    chapterData.forEach((item, index) => {
+        const slide = document.createElement('div');
+        slide.className = 'slide';
+        
+        let bodyContent = '';
+        if(item.type === "cover") {
+            bodyContent = `
+                <div style="text-align: center; margin: auto; width: 100%;">
+                    <div style="margin-bottom: 2vh; display: flex; flex-direction: column; align-items: center;">
+                        <img src="images/Logo.png" style="height: 8vw;" alt="Angkor University Logo" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'">
+                        <h2 style="font-family: 'Koulen', sans-serif; color: var(--text-main); font-size: 2.8vw; margin: 10px 0 0 0; font-weight: normal;">សាកលវិទ្យាល័យអង្គរ</h2>
+                    </div>
+                    <h3 style="font-family: 'Siemreap', sans-serif; font-size: 1.4vw; color: var(--text-muted); margin-bottom: 2vh; text-align: center !important;">មុខវិជ្ជា៖ បច្ចេកវិទ្យា ASP.NET និងប្រព័ន្ធគ្រប់គ្រងមូលដ្ឋានទិន្នន័យ SQL Server</h3>
+                    <div style="background: var(--accent-purple); color: white; padding: 1vh 3vw; border-radius: 5vw; display: inline-block; font-size: 1.2vw; font-weight: bold; margin-bottom: 2vh; box-shadow: 0 10px 20px rgba(81, 43, 212, 0.3); font-family: 'Koulen', sans-serif;">ឯកសារមេរៀន (Lecture Presentation) | ជំពូកទី ១</div>
+                    <h1 style="max-width: 90%; margin: 0 auto; line-height: 1.3; font-family: 'Koulen', sans-serif; font-size: 2.4vw;">សេចក្ដីផ្ដើម .NET Core, VS Code, MVC vs API និងការគ្រប់គ្រងកូដតាម GitHub</h1>
+                    <div style="margin-top: 3.5vh; display: flex; gap: 4vw; justify-content: center; align-items: center;">
+                        <div style="text-align: center; background: white; padding: 10px; border-radius: 50%; box-shadow: 0 5px 15px rgba(0,0,0,0.05); display: flex;"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg" style="height: 3.5vw; object-fit: contain;"></div>
+                        <div style="text-align: center; background: white; padding: 10px; border-radius: 50%; box-shadow: 0 5px 15px rgba(0,0,0,0.05); display: flex;"><img src="https://upload.wikimedia.org/wikipedia/commons/9/9a/Visual_Studio_Code_1.35_icon.svg" style="height: 3.5vw; object-fit: contain;"></div>
+                        <div style="text-align: center; background: white; padding: 10px; border-radius: 50%; box-shadow: 0 5px 15px rgba(0,0,0,0.05); display: flex;"><img src="images/sqlserverlog.jpg" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/8/87/Sql_server_logo.png'" style="height: 3.5vw; object-fit: contain;"></div>
+                        <div style="text-align: center; background: white; padding: 10px; border-radius: 50%; box-shadow: 0 5px 15px rgba(0,0,0,0.05); display: flex;"><img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" style="height: 3.5vw; object-fit: contain;"></div>
+                    </div>
+                </div>`;
+            slide.innerHTML = `<div id="h-placeholder-${index+1}"></div> ${bodyContent}`;
+        } else if(item.type === "prof") {
+            bodyContent = `
+                <div class="two-column">
+                    <div style="text-align: center; display: flex; justify-content: center; align-items: center; height: 100%;">
+                        <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" style="width: 17vw; height: 17vw; border-radius: 50%; border: 6px solid var(--accent-purple); object-fit: cover; box-shadow: 0 10px 25px rgba(0,0,0,0.2);">
+                    </div>
+                    <div class="card" style="border-top: 5px solid var(--accent-purple); border-left: none;">
+                        <h3 style="font-size: 2.2vw; color: var(--accent-purple); font-family: 'Koulen', sans-serif; margin-bottom: 1vh; font-weight: normal; text-align: left !important;">សាស្ត្រាចារ្យបង្រៀន សឿង លីម <span style="font-size: 1.4vw; color: var(--text-muted); font-family: 'Fira Code', monospace;">(Soeurng LIM)</span></h3>
+                        <p style="font-size:1.3vw; margin-bottom:0.5vh;"><b><i class="fa-solid fa-graduation-cap keyword-icon"></i> កម្រិតគុណវុឌ្ឍិ៖</b> បរិញ្ញាបត្រជាន់ខ្ពស់ - ព័ត៌មានវិទ្យា</p>
+                        <p style="font-size:1.3vw; margin-bottom:0.5vh;"><b><i class="fa-solid fa-envelope keyword-icon"></i> អ៊ីម៉ែល៖</b> soeurnglim@gmail.com</p>
+                        <p style="font-size:1.3vw; margin-bottom:0.5vh;"><b><i class="fa-solid fa-phone keyword-icon"></i> ទូរស័ព្ទ៖</b> ០៦១ ២២៧ ៩៣៣</p>
+                        <hr style="margin: 1vh 0; border: 1px solid #E2E8F0;">
+                        <p style="font-size:1.3vw;"><b><i class="fa-solid fa-star keyword-icon"></i> ក្រេឌីតមុខវិជ្ជា៖</b> ៣ ក្រេឌីត (IT401-WebAPI)</p>
+                    </div>
+                </div>`;
+            slide.innerHTML = `<div id="h-placeholder-${index+1}"></div> <h2 class="slide-title"><i class="fa-solid fa-user-tie"></i> ${item.t}</h2> <div class="content-body">${bodyContent}</div>`;
+        } else if(item.type === "split") {
+            let imgStyle = 'object-fit: contain; width: 100%; height: 100%; border-radius: 1vw;';
+            bodyContent = `
+                <div class="two-column">
+                    <div class="card" style="border:none; background:transparent; padding:0; box-shadow:none;">
+                        <p style="font-size:1.45vw; line-height: 1.6;">${item.c}</p>
+                    </div>
+                    <div class="visual-frame">
+                        <img src="${item.img}" style="${imgStyle}" onerror="handleImgError(this, '${item.fallback}')">
+                        <div class="schematic-fallback"></div>
+                    </div>
+                </div>`;
+            slide.innerHTML = `<div id="h-placeholder-${index+1}"></div> <h2 class="slide-title">${item.t}</h2> <div class="content-body">${bodyContent}</div>`;
+        } else if(item.type === "grid") {
+            bodyContent = `<div class="card-grid" style="height: auto;">${item.c.map(c => `<div class="card" style="padding: 1.5vh 1.8vw;"><h4>${c.h}</h4><p style="font-size:1.3vw; line-height: 1.5;">${c.p}</p></div>`).join('')}</div>`;
+            slide.innerHTML = `<div id="h-placeholder-${index+1}"></div> <h2 class="slide-title">${item.t}</h2> <div class="content-body">${bodyContent}</div>`;
+        } else if(item.type === "list") {
+            bodyContent = `<div class="card" style="padding:3vh 4vw;"><ul style="list-style:none; line-height:1.9;">${item.c.map(l => `<li style="margin-bottom:0.8vh; font-size:1.45vw; text-align: left !important;">${l}</li>`).join('')}</ul></div>`;
+            slide.innerHTML = `<div id="h-placeholder-${index+1}"></div> <h2 class="slide-title">${item.t}</h2> <div class="content-body">${bodyContent}</div>`;
+        } else if(item.type === "table") {
+            let trs = item.rows.map((row, i) => {
+                if (i === 0) return `<tr>${row.map(th => `<th>${th}</th>`).join('')}</tr>`;
+                return `<tr>${row.map(td => `<td>${td}</td>`).join('')}</tr>`;
+            }).join('');
+            bodyContent = `<table style="font-size: 1.3vw;">${trs}</table>`;
+            slide.innerHTML = `<div id="h-placeholder-${index+1}"></div> <h2 class="slide-title">${item.t}</h2> <div class="content-body">${bodyContent}</div>`;
+        } else if(item.type === "code") {
+            let safeHtml = item.code.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+            let safeString = item.code.replace(/\\/g, '\\\\').replace(/`/g, '\\`').replace(/\n/g, '\\n');
+            bodyContent = `<div class="code-container" style="max-height: 42vh;"><div class="code-label">CODE SNIPPET</div><button class="copy-btn" onclick="navigator.clipboard.writeText(\`${safeString}\`); this.innerText='Copied!'; setTimeout(()=>this.innerText='Copy', 2000);"><i class="fa-regular fa-copy"></i> Copy</button><pre><code>${safeHtml}</code></pre></div><p style="margin-top:5px; font-weight:bold; font-size: 1.45vw; text-align: left !important;"><i class="fa-solid fa-circle-info" style="color:var(--accent-blue);"></i> ${item.desc}</p>`;
+            slide.innerHTML = `<div id="h-placeholder-${index+1}"></div> <h2 class="slide-title">${item.t}</h2> <div class="content-body">${bodyContent}</div>`;
+        } else if(item.type === "exercise") {
+            bodyContent = `<div class="exercise-badge"><i class="fa-solid fa-laptop-code"></i> លំហាត់អនុវត្តន៍ (Practical Lab)</div><div class="card" style="border-left-color: var(--accent-yellow); padding: 2vh 3vw;"><h4>${item.h}</h4><p style="font-size: 1.45vw;">${item.p}</p></div><div class="workbook-note" style="padding: 1vh 2vw; margin-top: 1vh;"><i class="fa-solid fa-book-journal-whills"></i> កំណត់សម្គាល់៖ សូមអនុវត្តកិច្ចការនេះតាមការណែនាំលម្អិតដែលមាននៅក្នុងសៀវភៅលំហាត់ (Lab Workbook) របស់លោកគ្រូ។</div>`;
+            slide.innerHTML = `<div id="h-placeholder-${index+1}"></div> <h2 class="slide-title"><i class="fa-solid fa-laptop-code" style="color:var(--accent-yellow);"></i> ${item.t}</h2> <div class="content-body">${bodyContent}</div>`;
+            slideWrapper.appendChild(slide);
+            return; 
+        }
+
+        slideWrapper.appendChild(slide);
+    });
+
+    // FINAL QA SLIDE
+    const finalSlide = document.createElement('div');
+    finalSlide.className = 'slide';
+    finalSlide.innerHTML = `
+        <div id="h-placeholder-final"></div>
+        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; text-align: center; margin: auto;">
+            <h1 style="font-size: 5vw; color: var(--accent-purple); margin-bottom: 2vh; font-family: 'Koulen', sans-serif;"><i class="fa-solid fa-comments"></i> សំណួរ និងចម្លើយ ?</h1>
+            <p style="font-size: 2.1vw; color: var(--text-muted); margin-bottom: 4vh; text-align: center !important;">សូមអរគុណនិស្សិតទាំងអស់សម្រាប់ការយកចិត្តទុកដាក់!</p>
+            <div style="display: flex; gap: 2vw; justify-content: center;">
+                <div style="background: #FFFFFF; padding: 1.8vh 3vw; border-radius: 5vw; border: 2px solid var(--accent-purple); box-shadow: 0 10px 20px rgba(0,0,0,0.05);">
+                    <p style="margin: 0; font-weight: bold; font-size: 1.6vw; color: var(--accent-purple); text-align: center !important;"><i class="fa-solid fa-envelope"></i> soeurnglim@gmail.com</p>
+                </div>
+                <div style="background: #FFFFFF; padding: 1.8vh 3vw; border-radius: 5vw; border: 2px solid #0088cc; box-shadow: 0 10px 20px rgba(0,0,0,0.05);">
+                    <p style="margin: 0; font-weight: bold; font-size: 1.6vw; color: #0088cc; text-align: center !important;"><i class="fa-brands fa-telegram"></i> ០៦១ ២២៧ ៩៣៣</p>
+                </div>
+            </div>
+        </div>
+    `;
+    slideWrapper.appendChild(finalSlide);
+
+    // Apply Headers
+    document.querySelectorAll('[id^="h-placeholder"]').forEach((p, i) => {
+        if(i > 0 && i < chapterData.length + 1) {
+            p.outerHTML = headerHTML;
+        } else {
+            p.outerHTML = ""; 
+        }
+    });
+
+    // Interaction Logic
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+    const counter = document.getElementById('slideCounter');
+    let currentIdx = 0;
+
+    // Clone footer to each slide for print mode
+    const originalFooter = document.querySelector('.global-footer');
+    slides.forEach((slide, idx) => {
+        const slideFooter = originalFooter.cloneNode(true);
+        slideFooter.classList.remove('global-footer'); 
+        slideFooter.classList.add('print-only-footer'); 
+        const counterEl = slideFooter.querySelector('.slide-counter');
+        if (counterEl) {
+            counterEl.innerHTML = `ស្លាយទី ${toKh(idx + 1)} នៃ ${toKh(totalSlides)}`;
+        }
+        slide.appendChild(slideFooter);
+    });
+
+    function updateSlide(idx) {
+        slides.forEach(s => s.classList.remove('active'));
+        slides[idx].classList.add('active');
+        currentIdx = idx;
+        counter.innerHTML = `ស្លាយទី ${toKh(idx + 1)} នៃ ${toKh(totalSlides)}`;
+    }
+
+    window.nextSlide = function(e) { if(e) e.stopPropagation(); if (currentIdx < totalSlides - 1) updateSlide(currentIdx + 1); }
+    window.prevSlide = function(e) { if(e) e.stopPropagation(); if (currentIdx > 0) updateSlide(currentIdx - 1); }
+
+    window.navigate = function(e) {
+        if (e.target.closest('code') || e.target.closest('pre') || e.target.closest('.copy-btn') || e.target.closest('.nav-btn')) return;
+    }
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === "ArrowRight" || e.key === " " || e.key === "PageDown") { window.nextSlide(); } 
+        else if (e.key === "ArrowLeft" || e.key === "PageUp") { window.prevSlide(); }
+    });
+
+    // Start
+    updateSlide(0);
+</script>
+</body>
+</html>
