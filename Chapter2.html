@@ -1,0 +1,837 @@
+
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ជំពូកទី ២ - ASP.NET Core MVC & SQL Server</title>
+    <link href="https://fonts.googleapis.com/css2?family=Koulen&family=Siemreap&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --bg-dark: #0F172A; --bg-card: #FFFFFF; --text-main: #1E293B; --text-muted: #475569;
+            --accent-blue: #0284C7; --accent-green: #059669; --accent-yellow: #D97706; --accent-red: #DC2626;
+            --accent-purple: #512BD4; --header-footer-bg: #F5F3FF; --code-bg: #0F172A;
+            --border-light: #E2E8F0;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { 
+            background-color: var(--bg-dark); 
+            font-family: 'Siemreap', 'Khmer OS Siemreap', sans-serif; 
+            overflow: hidden; 
+            height: 100vh; 
+            width: 100vw; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+        }
+        
+        /* Layouts */
+        .slide-deck { 
+            width: 100vw; 
+            height: 100vh; 
+            position: relative; 
+            background: #FAFAFA; 
+            border-radius: 0; 
+            overflow: hidden; 
+            display: flex; 
+            flex-direction: column; 
+        }
+        .slide-wrapper { 
+            height: 86vh; 
+            position: relative; 
+            overflow: hidden; 
+            background-color: #F8FAFC; 
+        }
+        .slide { 
+            display: none; 
+            width: 100%; 
+            height: 100%; 
+            padding: 3vh 5vw; 
+            flex-direction: column; 
+            justify-content: flex-start; 
+            animation: slideIn 0.3s ease-out; 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            overflow: hidden; 
+        }
+        .slide.active { display: flex; }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Global Header */
+        .global-header { 
+            height: 8vh;
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 0 5vw; 
+            border-bottom: 4px solid var(--accent-purple); 
+            background-color: var(--header-footer-bg); 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05); 
+            z-index: 10; 
+            position: relative;
+        }
+        .header-item { display: flex; flex-direction: column; align-items: center; gap: 4px; width: 15vw; }
+        .header-item img { height: 3.8vh; object-fit: contain; }
+        .header-item span { font-size: 0.9vw; font-weight: bold; color: var(--accent-purple); text-align: center; font-family: 'Koulen', sans-serif; }
+        .header-center h1 { font-family: 'Koulen', sans-serif; font-size: 1.6vw; color: var(--accent-purple); margin: 0; font-weight: normal; }
+        .header-center p { font-family: 'Siemreap', 'Khmer OS Siemreap', sans-serif; font-size: 0.9vw; color: #64748B; margin: 0; font-weight: bold; text-align: center; }
+
+        /* Typography & Sizes increased for higher legibility */
+        h1 { font-family: 'Koulen', sans-serif; font-size: 4.5vw; text-align: center; color: var(--text-main); font-weight: normal; line-height: 1.3; }
+        h2.slide-title { font-family: 'Koulen', sans-serif; font-size: 2.5vw; font-weight: normal; border-bottom: 0.35vw solid var(--accent-purple); padding-bottom: 0.6vh; margin-bottom: 2vh; color: var(--text-main); display: inline-block; text-align: left !important; }
+        .content-body { 
+            height: calc(100% - 6vh); 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: flex-start; 
+            gap: 1.8vh; 
+            width: 100%; 
+            overflow: hidden; 
+        }
+        
+        p, li, td { font-size: 1.45vw; line-height: 1.6; color: var(--text-main); text-align: left !important; }
+        .highlight { color: var(--accent-purple); font-weight: bold; }
+        .keyword-icon { color: var(--accent-purple); margin-right: 0.5vw; width: 1.8vw; text-align: center; display: inline-block; }
+
+        /* Content Blocks */
+        .two-column { 
+            display: grid; 
+            grid-template-columns: 1.150fr 0.850fr; 
+            gap: 2.5vw; 
+            height: 100%; 
+            align-items: center; 
+            padding-bottom: 1.5vh;
+        }
+        .card-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5vw; height: 100%; align-content: center; }
+        .card { background: var(--bg-card); padding: 2vh 2.2vw; border-radius: 1vw; border-left: 0.8vw solid var(--accent-purple); box-shadow: 0 4px 15px rgba(0,0,0,0.03); display: flex; flex-direction: column; justify-content: center; }
+        .card h4 { font-size: 1.9vw; color: var(--accent-purple); margin-bottom: 0.6vh; font-family: 'Koulen', sans-serif; font-weight: normal; text-align: left !important;}
+        .card p { font-size: 1.35vw; line-height: 1.5; text-align: left !important; }
+
+        /* Visual Frame and Schematic Integration */
+        .visual-frame { 
+            background: #FFFFFF; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            height: 100%; 
+            max-height: 52vh; 
+            width: 100%; 
+            border-radius: 1vw; 
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06); 
+            padding: 1.2vw; 
+            border: 1px solid #E2E8F0;
+            overflow: hidden;
+            position: relative;
+        }
+        .visual-frame img { max-height: 100%; max-width: 100%; object-fit: contain; border-radius: 0.5vw;}
+        
+        /* Schematic Design Block */
+        .schematic-box {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            background: #F8FAFC;
+            border-radius: 0.5vw;
+        }
+        
+        /* Code Block */
+        .code-container { 
+            background: var(--code-bg); 
+            border-radius: 1vw; 
+            padding: 2.8vh 2.2vw 1.8vh 2.2vw; 
+            position: relative; 
+            border: 1px solid #334155; 
+            width: 100%; 
+            max-height: 46vh; 
+            overflow-y: auto; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        .code-container pre { color: #10B981; font-family: 'Fira Code', monospace; font-size: 1.2vw; line-height: 1.5; overflow-x: auto;}
+        .code-label { position: absolute; top: 0; left: 2.2vw; background: var(--accent-purple); color: white; padding: 4px 15px; border-radius: 0 0 8px 8px; font-size: 0.85vw; font-weight: bold; z-index: 2; font-family: 'Koulen', sans-serif;}
+        .copy-btn { position: absolute; top: 12px; right: 12px; padding: 6px 15px; cursor: pointer; background: var(--accent-blue); color: white; border: none; border-radius: 6px; font-family: 'Koulen', sans-serif; font-size: 0.85vw; transition: 0.3s; z-index: 5; font-weight: normal;}
+        .copy-btn:hover { background: #0369A1; }
+
+        /* Notification Badge */
+        .workbook-note { background: #FEF9C3; border: 1px dashed var(--accent-yellow); padding: 1.6vh 2vw; border-radius: 10px; color: #854D0E; font-size: 1.2vw; display: flex; align-items: center; gap: 14px; font-weight: bold; margin-top: 1vh; box-shadow: 0 4px 6px rgba(0,0,0,0.02); text-align: left !important; }
+        .exercise-badge { background: var(--accent-yellow); color: var(--text-main); padding: 6px 20px; border-radius: 6px; font-weight: bold; font-size: 1.2vw; margin-bottom: 1vh; display: inline-block; border: 1px solid #B45309; font-family: 'Koulen', sans-serif;}
+
+        /* Table (Increased sizes) */
+        table { width: 100%; border-collapse: collapse; background: white; border-radius: 1vw; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
+        th, td { border: 1px solid #E2E8F0; padding: 1.4vh 1.8vw; text-align: left; vertical-align: middle;}
+        th { background: var(--accent-purple); color: white; font-family: 'Koulen', sans-serif; font-size: 1.4vw; font-weight: normal;}
+        td { font-size: 1.35vw; }
+
+        /* Global Footer */
+        .global-footer { 
+            height: 6vh;
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            width: 100%; 
+            padding: 0 5vw; 
+            border-top: 3px solid var(--accent-purple); 
+            background-color: var(--header-footer-bg); 
+            z-index: 10; 
+        }
+        .footer-left { display: flex; align-items: center; gap: 1.5vw; }
+        .footer-left img { border-radius: 50%; border: 2px solid var(--accent-purple); width: 3.8vh; height: 3.8vh; object-fit: cover; box-shadow: 0 4px 8px rgba(0,0,0,0.1);}
+        .footer-left span { font-size: 1.2vw; font-weight: bold; color: var(--text-main); font-family: 'Koulen', sans-serif; }
+        .slide-counter { font-size: 1.1vw; color: white; font-family: 'Koulen', sans-serif; font-weight: normal; background: var(--accent-purple); padding: 0.6vh 2vw; border-radius: 5vw; box-shadow: 0 2px 8px rgba(81,43,212,0.3); }
+        
+        /* Navigation Buttons */
+        .nav-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(81, 43, 212, 0.1); border: none; width: 4.5vw; height: 4.5vw; border-radius: 50%; color: var(--accent-purple); font-size: 2vw; cursor: pointer; z-index: 9999; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; }
+        .nav-btn:hover { background: var(--accent-purple); color: white; box-shadow: 0 4px 15px rgba(81,43,212,0.4); transform: translateY(-50%) scale(1.1); }
+        #prevBtn { left: 1.5vw; }
+        #nextBtn { right: 1.5vw; }
+
+        .print-only-footer { display: none !important; }
+
+        /* Professional A4 Landscape Printing (Increased font sizes for hand-out reading) */
+        @media print {
+            *, *::before, *::after {
+                animation: none !important;
+                transition: none !important;
+                box-shadow: none !important;
+            }
+            @page {
+                size: A4 landscape;
+                margin: 0;
+            }
+            html, body { 
+                background: none !important; 
+                background-color: #FFFFFF !important;
+                overflow: visible !important; 
+                height: 210mm !important; 
+                width: 297mm !important; 
+                display: block !important;
+                font-family: 'Siemreap', 'Khmer OS Siemreap', sans-serif !important;
+            }
+            .slide-deck { 
+                width: 297mm !important; 
+                height: 210mm !important; 
+                box-shadow: none !important; 
+                background: transparent !important; 
+                overflow: visible !important; 
+                display: block !important;
+                border: none !important; 
+                border-radius: 0 !important;
+            }
+            .slide-wrapper { display: block !important; overflow: visible !important; height: auto !important;}
+            .slide { 
+                display: flex !important; 
+                flex-direction: column !important; 
+                position: relative !important; 
+                opacity: 1 !important;
+                visibility: visible !important;
+                width: 297mm !important; 
+                height: 210mm !important; 
+                page-break-inside: avoid !important;
+                page-break-after: always !important;
+                overflow: hidden !important; 
+                box-sizing: border-box !important;
+                padding: 10mm 15mm 20mm 15mm !important; 
+                background: white !important;
+                border: none !important;
+                border-radius: 0 !important;
+            }
+            .global-header {
+                margin: -10mm -15mm 15px -15mm !important;
+                padding: 5mm 15mm !important;
+                height: auto !important;
+                border-bottom: 2px solid var(--accent-purple) !important;
+            }
+            .global-header img { height: 11mm !important; }
+            .global-header h1 { font-size: 16pt !important; }
+            .global-header p { font-size: 10pt !important; }
+            
+            .slide-title { font-size: 24pt !important; margin-bottom: 14px !important; padding-bottom: 4px !important; border-bottom-width: 3px !important; text-align: left !important; }
+            .content-body { overflow: hidden !important; height: auto !important; gap: 12px !important; }
+            p, li, td { font-size: 13.5pt !important; line-height: 1.6 !important; text-align: left !important; }
+            .card h4 { font-size: 16.5pt !important; margin-bottom: 4px !important; text-align: left !important; }
+            .card { padding: 14px 20px !important; }
+            .card-grid { gap: 14px !important; }
+            .two-column { gap: 22px !important; }
+            pre, code { font-size: 11pt !important; padding: 10px 14px !important; }
+            
+            .slide-deck > .global-footer { display: none !important; }
+
+            .print-only-footer { 
+                display: flex !important; 
+                position: absolute !important; 
+                bottom: 0 !important; 
+                left: 0 !important; 
+                width: 100% !important;
+                height: 15mm !important;
+                padding: 0 15mm !important; 
+                background-color: var(--header-footer-bg) !important;
+                border-top: 1px solid var(--border-light) !important;
+                align-items: center !important; 
+                justify-content: space-between !important;
+                border-radius: 0 !important;
+                box-sizing: border-box !important;
+                z-index: 1000 !important;
+            }
+            .print-only-footer .footer-left {
+                display: flex !important;
+                align-items: center !important;
+                gap: 4mm !important;
+                width: auto !important;
+            }
+            .print-only-footer .footer-left img { 
+                width: 10mm !important; 
+                height: 10mm !important; 
+                border: 2px solid var(--accent-purple) !important;
+                border-radius: 50% !important;
+                display: block !important;
+            }
+            .print-only-footer .footer-left span { 
+                font-size: 11pt !important; 
+                font-family: 'Koulen', sans-serif !important;
+                white-space: nowrap !important;
+                display: inline-block !important;
+            }
+            .print-only-footer .slide-counter { 
+                font-size: 11pt !important; 
+                font-family: 'Koulen', sans-serif !important;
+                padding: 2px 10px !important; 
+                border: 1px solid var(--border-light) !important;
+                background: #FFF !important;
+                white-space: nowrap !important;
+                display: inline-block !important;
+            }
+            .visual-frame { min-height: 150px !important; }
+            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+        }
+    </style>
+</head>
+<body onclick="navigate(event)">
+
+<div class="slide-deck" id="deck">
+
+    <button class="nav-btn" id="prevBtn" onclick="prevSlide(event)" aria-label="Previous"><i class="fa-solid fa-chevron-left"></i></button>
+    <button class="nav-btn" id="nextBtn" onclick="nextSlide(event)" aria-label="Next"><i class="fa-solid fa-chevron-right"></i></button>
+
+    <template id="headerTemplate">
+        <div class="global-header">
+            <div class="header-item">
+                <img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo">
+                <span>សាកលវិទ្យាល័យអង្គរ</span>
+            </div>
+            <div class="header-center">
+                <h1>បច្ចេកវិទ្យា ASP.NET និងប្រព័ន្ធគ្រប់គ្រងមូលដ្ឋានទិន្នន័យ SQL Server</h1>
+                <p>មហាវិទ្យាល័យវិទ្យាសាស្ត្រ និងបច្ចេកវិទ្យា</p>
+            </div>
+            <div class="header-item">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg" alt=".NET Logo">
+                <span>ASP.NET Core MVC</span>
+            </div>
+        </div>
+    </template>
+
+    <div class="slide-wrapper" id="slideWrapper">
+    </div>
+
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" alt="Professor">
+            <span>សាស្ត្រាចារ្យបង្រៀន៖ សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="slide-counter" id="slideCounter">ស្លាយទី ១ នៃ ២៣</div>
+    </div>
+</div>
+
+<script>
+    const slideWrapper = document.getElementById('slideWrapper');
+    const headerHTML = document.getElementById('headerTemplate').innerHTML;
+    
+    const khNums = ["០", "១", "២", "៣", "៤", "៥", "៦", "៧", "៨", "៩"];
+    function toKh(n) { return n.toString().split('').map(d => khNums[parseInt(d)]).join(''); }
+
+    // Visual schematics rendered dynamically in HTML/CSS
+    const schematics = {
+        datapassing: `
+            <div class="schematic-box" style="padding: 1vw;">
+                <div style="font-family:'Koulen',sans-serif; color:var(--accent-purple); font-size:1.6vw; margin-bottom:1.5vh; text-align:center;">MVC Weakly-Typed Data Flow</div>
+                <div style="display:flex; flex-direction:column; gap:1vh; width:95%; align-items:center;">
+                    <!-- Controller Box -->
+                    <div style="background:#EFF6FF; border:2px solid #2563EB; width:100%; padding:1vh; border-radius:8px; display:flex; justify-content:space-between; align-items:center;">
+                        <span style="font-family:'Koulen',sans-serif; color:#1E40AF; font-size:1.2vw;"><i class="fa-solid fa-gear"></i> Controller Action</span>
+                        <div style="font-family:'Fira Code', monospace; font-size:0.95vw; background:#FFFFFF; padding:4px 8px; border-radius:4px; border:1px solid #BFDBFE; color:#1E293B;">
+                            ViewBag.Name = "Dara";<br>ViewData["Role"] = "Admin";
+                        </div>
+                    </div>
+                    <!-- Connector arrow down -->
+                    <i class="fa-solid fa-arrow-down" style="color:var(--accent-purple); font-size:1.5vw;"></i>
+                    <!-- View Rendering Box -->
+                    <div style="background:#F0FDF4; border:2px solid #16A34A; width:100%; padding:1vh; border-radius:8px; display:flex; justify-content:space-between; align-items:center;">
+                        <span style="font-family:'Koulen',sans-serif; color:#14532D; font-size:1.2vw;"><i class="fa-solid fa-code"></i> Razor View (.cshtml)</span>
+                        <div style="font-family:'Fira Code', monospace; font-size:0.95vw; background:#FFFFFF; padding:4px 8px; border-radius:4px; border:1px solid #BBF7D0; color:#1E293B;">
+                            &lt;h1&gt;@ViewBag.Name&lt;/h1&gt;<br>&lt;p&gt;@ViewData["Role"]&lt;/p&gt;
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `,
+        razorcompile: `
+            <div class="schematic-box" style="padding: 1vw;">
+                <div style="font-family:'Koulen',sans-serif; color:var(--accent-purple); font-size:1.6vw; margin-bottom:1.5vh; text-align:center;">Razor Engine Compilation</div>
+                <div style="display:flex; justify-content:space-between; align-items:center; width:100%; gap:0.5vw;">
+                    <div style="background:#FFE4E6; border:1.5px solid #F43F5E; border-radius:8px; padding:1vh; width:30%; text-align:center;">
+                        <b style="font-size:1vw; color:#9F1239; font-family:'Koulen',sans-serif;">Razor Code (.cshtml)</b>
+                        <div style="font-size:0.8vw; color:#475569; margin-top:5px; font-family:'Fira Code', monospace;">@if (active) { ... }</div>
+                    </div>
+                    <div style="display:flex; flex-direction:column; align-items:center; width:35%;">
+                        <i class="fa-solid fa-gears" style="color:var(--accent-purple); font-size:2vw; margin-bottom:4px;"></i>
+                        <span style="font-size:0.9vw; font-weight:bold; color:var(--accent-purple); text-align:center;">Razor Engine Rendering (Server-Side)</span>
+                    </div>
+                    <div style="background:#ECFDF5; border:1.5px solid #10B981; border-radius:8px; padding:1vh; width:30%; text-align:center;">
+                        <b style="font-size:1vw; color:#065F46; font-family:'Koulen',sans-serif;">Pure HTML (Browser)</b>
+                        <div style="font-size:0.8vw; color:#475569; margin-top:5px; font-family:'Fira Code', monospace;">&lt;div class="act"&gt;...&lt;/div&gt;</div>
+                    </div>
+                </div>
+            </div>
+        `,
+        oopmodel: `
+            <div class="schematic-box" style="padding: 1vw;">
+                <div style="font-family:'Koulen',sans-serif; color:var(--accent-purple); font-size:1.6vw; margin-bottom:1.5vh; text-align:center;">C# Model Schema</div>
+                <div style="background:#FFF; border:2px solid #512BD4; border-radius:8px; width:90%; padding:1.5vh; font-family:'Fira Code', monospace; font-size:1vw; color:#1E293B;">
+                    <span style="color:#2563EB; font-weight:bold;">public class</span> <span style="color:#D97706; font-weight:bold;">Student</span> {<br>
+                    &nbsp;&nbsp;<span style="color:#2563EB;">public int</span> Id { <span style="color:#059669;">get; set;</span> }<br>
+                    &nbsp;&nbsp;<span style="color:#2563EB;">public string</span> Name { <span style="color:#059669;">get; set;</span> }<br>
+                    &nbsp;&nbsp;<span style="color:#2563EB;">public string</span> Major { <span style="color:#059669;">get; set;</span> }<br>
+                    }
+                </div>
+                <span style="font-size:0.9vw; color:#64748B; margin-top:1vh;">[ Represents Database Schema / Form Structure ]</span>
+            </div>
+        `,
+        modelbinding: `
+            <div class="schematic-box" style="padding: 1vw;">
+                <div style="font-family:'Koulen',sans-serif; color:var(--accent-purple); font-size:1.6vw; margin-bottom:1vh; text-align:center;">Strongly-Typed Model Passing</div>
+                <div style="display:flex; justify-content:space-around; align-items:center; width:100%; gap:1vw;">
+                    <div style="background:#F8FAFC; border:1px dashed #3B82F6; padding:1vh; border-radius:8px; width:45%; text-align:left;">
+                        <span style="font-size:0.9vw; font-weight:bold; color:#1E3A8A; font-family:'Koulen',sans-serif; display:block; margin-bottom:4px;">1. IN CONTROLLER</span>
+                        <div style="font-family:'Fira Code', monospace; font-size:0.8vw; color:#1E293B; background:#FFF; padding:6px; border-radius:4px; border:1px solid #E2E8F0;">
+                            var std = new Student();<br>return View(std);
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-right-long" style="color:var(--accent-purple); font-size:1.5vw;"></i>
+                    <div style="background:#F8FAFC; border:1px dashed #10B981; padding:1vh; border-radius:8px; width:45%; text-align:left;">
+                        <span style="font-size:0.9vw; font-weight:bold; color:#064E3B; font-family:'Koulen',sans-serif; display:block; margin-bottom:4px;">2. IN CSHTML VIEW</span>
+                        <div style="font-family:'Fira Code', monospace; font-size:0.8vw; color:#1E293B; background:#FFF; padding:6px; border-radius:4px; border:1px solid #E2E8F0;">
+                            @model SchoolApp.Student<br>&lt;h1&gt;@Model.Name&lt;/h1&gt;
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `
+    };
+
+    function handleImgError(imageElement, fallbackType) {
+        imageElement.style.display = 'none';
+        const fallbackBox = imageElement.nextElementSibling;
+        if (fallbackBox && fallbackBox.classList.contains('schematic-fallback')) {
+            fallbackBox.style.display = 'flex';
+            if (schematics[fallbackType]) {
+                fallbackBox.innerHTML = schematics[fallbackType];
+            } else {
+                fallbackBox.innerHTML = `<div style="font-size:1vw; color:#94A3B8;"><i class="fa-solid fa-image" style="font-size:2vw;"></i><br>Image Fallback</div>`;
+            }
+        }
+    }
+
+    const chapterData = [
+        // 1. COVER SLIDE
+        { t: "COVER", type: "cover" },
+
+        // 2. PROFESSOR SLIDE
+        { t: "ព័ត៌មានសាស្ត្រាចារ្យ និងមុខវិជ្ជា", type: "prof" },
+
+        // 3. OUTLINE
+        { t: "មាតិកាជំពូកទី ២ (Chapter Contents)", type: "table", rows: [
+            ["ចំណុច", "ខ្លឹមសារមេរៀនលម្អិត (Detailed Course Topics)"],
+            ["<b>២.១</b>", "អថេរ និងប្រភេទទិន្នន័យគ្រឹះក្នុង MVC (C# Variables & passing data to Views via ViewData/ViewBag)"],
+            ["<b>២.២</b>", "ប្រព័ន្ធលក្ខខណ្ឌ និងរង្វិលជុំ Razor ក្នុង View (Razor Controls, @if, @foreach in CSHTML)"],
+            ["<b>២.៣</b>", "ស្ថាបត្យកម្មគ្រឹះ OOP សម្រាប់ MVC Models (Encapsulation, Class and Object as Data Models)"],
+            ["<b>២.៤</b>", "ការសរសេរ Class Properties & Constructors សម្រាប់ទម្រង់ ViewModel"],
+            ["<b>២.៥</b>", "ការយល់ដឹងពីការបញ្ជូន និងបង្ហាញទិន្នន័យ Model ទៅកាន់ Razor Views (Strongly-typed Views)"]
+        ]},
+
+        // 4. OBJECTIVES
+        { t: "វត្ថុបំណងនៃជំពូកទី ២ (Chapter Objectives)", type: "list", c: [
+            "បន្ទាប់ពីបញ្ចប់ការសិក្សាជំពូកទី ២ នេះ និស្សិតនឹងមានសមត្ថភាព៖",
+            "• <b class='highlight'>គ្រប់គ្រងការបញ្ជូនទិន្នន័យគ្រឹះ៖</b> ចេះប្រកាសអថេរ C# និងផ្ទេរទិន្នន័យទៅកាន់ Razor Views តាមរយៈ ViewData និង ViewBag បានត្រឹមត្រូវ។",
+            "• <b class='highlight'>រចនាកូដឌីណាមិកក្នុង View៖</b> យល់ច្បាស់ពីរបៀបប្រើប្រាស់ប្រព័ន្ធលក្ខខណ្ឌ (@if-else) និងរង្វិលជុំ (@foreach) របស់ Razor Syntax ក្នុងឯកសារ .cshtml។",
+            "• <b class='highlight'>បង្កើត MVC Models៖</b> អាចសរសេរ C# Class គំរូជា Models ដើម្បីរៀបចំរចនាសម្ព័ន្ធទិន្នន័យរបស់កម្មវិធីបានយ៉ាងមានរបៀប។",
+            "• <b class='highlight'>យល់ពី Form Model Binding៖</b> យល់ដឹងពីការសាងសង់ Properties ដើម្បីផ្ទុកទិន្នន័យ និងឆ្លងកាត់ការបញ្ចូលព័ត៌មានពី Form របស់គម្រោង MVC។",
+            "• <b class='highlight'>អភិវឌ្ឍន៍ជំនាញជាក់ស្តែង៖</b> មានសមត្ថភាពដោះស្រាយបញ្ហា Logic និងបង្កើតទំព័រ View បង្ហាញព័ត៌មានជាលក្ខណៈ Server-Side Rendering។"
+        ]},
+
+        // 5. SECTION 2.1 - VARIABLES & DATA TYPES (STRUCTURED)
+        { 
+            t: "២.១ អថេរ និងការបញ្ជូនទិន្នន័យទៅកាន់ Views (C# Variables & ViewData/ViewBag)", 
+            type: "structured", 
+            fallback: "datapassing",
+            definition: "នៅក្នុងប្រព័ន្ធ <b>ASP.NET Core MVC</b> អថេរ (Variables) ត្រូវបានប្រើប្រាស់សម្រាប់ចាត់ចែងទិន្នន័យនៅក្នុង Controller។ ដើម្បីបញ្ជូនទិន្នន័យជាលក្ខណៈស្រាល (Weakly-typed Data) ពី Controller ទៅកាន់ Razor View (.cshtml) គេប្រើប្រាស់ <b>ViewData</b> (Dictionary ប្រភេទ Key-Value ត្រូវការ Cast ប្រភេទត្រឡប់វិញបើប្រើ Object) ឬ <b>ViewBag</b> (Dynamic Property មិនបាច់ Cast)។",
+            syntax: "// នៅក្នុង Controller\nViewData[\"PageTitle\"] = \"Home Page\";\nViewBag.Message = \"Welcome to MVC!\";\n\n// នៅក្នុង View (.cshtml)\n<h2>@ViewData[\"PageTitle\"]</h2>\n<p>@ViewBag.Message</p>",
+            caseTitle: "ករណីសិក្សា៖ ការផ្ទេរព័ត៌មានចំណងជើង និងទិន្នន័យស្ថិតិរបស់ទំព័រ Dashboard ទៅកាន់ View",
+            caseCode: "// Controller Action\npublic IActionResult Index() {\n    ViewData[\"PageTitle\"] = \"Product Dashboard\";\n    ViewBag.TotalProducts = 150;\n    ViewBag.IsAdmin = true;\n    return View();\n}",
+            labNote: "មេរៀននេះមានលំហាត់អនុវត្តជាក់ស្តែង <b>Lab 2.1: Controller to View Data Passing (ស្លាយទី ៨)</b> ដើម្បីបង្កើតទំព័របង្ហាញទិន្នន័យទូទៅ។"
+        },
+
+        // 6. SECTION 2.1 - PRIMITIVE TYPES TABLE
+        { t: "២.១ ប្រភេទទិន្នន័យគ្រឹះក្នុង C# (C# Primitive Types in MVC)", type: "table", rows: [
+            ["ប្រភេទទិន្នន័យ", "ពាក្យបច្ចេកទេស", "តម្លៃគំរូ", "ការប្រើប្រាស់ក្នុង MVC Pattern"],
+            ["<b>int</b>", "Integer (ចំនួនគត់)", "10, 250, -5", "ប្រើសម្រាប់ ID របស់ Model ឬលេខរៀងទំព័រ Page Number"],
+            ["<b>double</b>", "Double Precision Float", "19.99, -3.14", "ប្រើសម្រាប់ទិន្នន័យកូអរដោនេ ឬទសភាគទូទៅ"],
+            ["<b>decimal</b>", "Financial Decimal", "29.99m, 0.05m", "ប្រើសម្រាប់តម្លៃលុយកាក់ទំនិញ (Price) ក្នុង Model ព្រោះគ្មានបញ្ហា Rounding"],
+            ["<b>string</b>", "String (អត្ថបទ)", "\"Dara\", \"MVC Page\"", "ប្រើសម្រាប់ឈ្មោះ បុគ្គលិក អត្ថបទ HTML ឬចំណងជើង View"],
+            ["<b>bool</b>", "Boolean (ពិត/មិនពិត)", "true, false", "ប្រើសម្រាប់ការត្រួតពិនិត្យលក្ខខណ្ឌបង្ហាញ HTML ក្នុង Razor"]
+        ]},
+
+        // 7. SECTION 2.1 - VARIABLES CODE
+        { t: "២.១ ការប្រកាសអថេរ និងការបង្ហាញលើ View (Variables & Razor Code)", type: "code", code: `// ១. នៅក្នុង Controller Action
+public IActionResult Profile()
+{
+    ViewData["Title"] = "Student Profile";
+    ViewBag.StudentId = 101;
+    ViewBag.StudentName = "Dara SOK";
+    ViewBag.TotalScore = 95.50m;
+    ViewBag.IsPassed = true;
+    return View();
+}
+
+<!-- ២. នៅក្នុងឯកសារ Profile.cshtml -->
+<h2>@ViewData["Title"]</h2>
+<p>ID: @ViewBag.StudentId</p>
+<p>Name: @ViewBag.StudentName</p>
+<p>Score: @ViewBag.TotalScore</p>
+<p>Status: @(ViewBag.IsPassed ? "Passed" : "Failed")</p>`, desc: "សញ្ញា @ ត្រូវបានប្រើប្រាស់នៅក្នុងឯកសារ .cshtml ដើម្បីចាប់ផ្តើមសរសេរកូដ C# រួមបញ្ចូលជាមួយ HTML ហៅថា Razor Syntax។" },
+
+        // 8. LAB 2.1
+        { t: "លំហាត់អនុវត្តន៍ (Practical Labs)", type: "exercise", h: "Lab 2.1: Controller Data Passing", p: "<b>ប្រធានលំហាត់៖</b> ចូរបង្កើត Controller Action មួយដែលប្រកាសអថេរសម្រាប់រក្សាទុកព័ត៌មានហាងលក់ទំនិញរួមមាន ShopName, Address, OpenHours រួចប្រើប្រាស់ <code>ViewBag</code> ដើម្បីបញ្ជូនទៅកាន់ View និងបង្ហាញព័ត៌មានទាំងនោះជាទម្រង់ HTML card ស្អាត។<br><br><span style='color: var(--accent-purple);'>[ដំណោះស្រាយកូដពេញលេញមានផ្ដល់ជូននៅក្នុង Handout - ទំព័រទី ២១]</span>" },
+
+        // 9. SECTION 2.2a - CONTROL FLOWS (STRUCTURED)
+        { 
+            t: "២.២ លក្ខខណ្ឌត្រួតពិនិត្យ Razor ក្នុង View (@if-else in Razor)", 
+            type: "structured", 
+            fallback: "razorcompile",
+            definition: "នៅក្នុងប្រព័ន្ធ <b>ASP.NET Core MVC</b> លក្ខខណ្ឌ C# ត្រូវបានប្រើប្រាស់ដោយផ្ទាល់ក្នុងឯកសារ Razor (.cshtml) ដោយប្រើនិមិត្តសញ្ញ gateway <b>@if</b>។ វាដើរតួនាទីយ៉ាងសំខាន់ក្នុងការកំណត់ថាតើ HTML ផ្នែកណាមួយត្រូវបង្ហាញ ឬលាក់បាំងទៅតាមស្ថានភាពទិន្នន័យជាក់ស្តែងរបស់ Model។",
+            syntax: "@if (លក្ខខណ្ឌ) {\n    <!-- ប្លុក HTML បើលក្ខខណ្ឌពិត -->\n} else {\n    <!-- ប្លុក HTML បើលក្ខខណ្ឌមិនពិត -->\n}",
+            caseTitle: "ករណីសិក្សា៖ ការបង្ហាញ Status Badge (In Stock / Out of Stock) លើទំព័រផលិតផល",
+            caseCode: "@if (ViewBag.StockQty > 0) {\n    <span class=\"badge badge-success\">មានទំនិញក្នុងស្តុក</span>\n} else {\n    <span class=\"badge badge-danger\">ទំនិញអស់ពីស្តុក</span>\n}",
+            labNote: "មេរៀននេះមានលំហាត់អនុវត្តជាក់ស្តែង <b>Lab 2.2: Loops & Dynamic Collections Rendering (ស្លាយទី ១២)</b> ដើម្បីបង្កើត UI ឌីណាមិក។"
+        },
+
+        // 10. SECTION 2.2b - LOOPS (STRUCTURED)
+        { 
+            t: "២.២ ការប្រើប្រាស់រង្វិលជុំ Razor ក្នុង View (@foreach in Razor)", 
+            type: "structured", 
+            fallback: "razorcompile",
+            definition: "<b>រង្វិលជុំ (Loops)</b> នៅក្នុង MVC ត្រូវបានប្រើប្រាស់ជាទូទៅបំផុតនៅក្នុងឯកសារ View (.cshtml) តាមរយៈ <b>@foreach</b>។ វាដើរតួនាទីបំលែងទិន្នន័យប្រភេទបញ្ជី (Lists / Collections) ដែលបញ្ជូនមកពី Controller ឱ្យទៅជាជួរតារាង HTML (<tr>) ឬបញ្ជីរាយនាម (<ul>) ដោយស្វ័យប្រវត្តនៅផ្នែក Server-side។",
+            syntax: "@foreach (var item in Collection) {\n    <li>@item.PropertyName</li>\n}",
+            caseTitle: "ករណីសិក្សា៖ ការបង្កើតតារាង HTML បង្ហាញបញ្ជីឈ្មោះមុខវិជ្ជាសិក្សាចេញពី Controller",
+            caseCode: "@* កូដនៅក្នុង View .cshtml *@\n<ul>\n    @foreach (var subject in ViewBag.SubjectList) {\n        <li>@subject</li>\n    }\n</ul>",
+            labNote: "មេរៀននេះមានលំហាត់អនុវត្តជាក់ស្តែង <b>Lab 2.2: Loops & Dynamic Collections Rendering (ស្លាយទី ១២)</b>។"
+        },
+
+        // 11. SECTION 2.2 - LOOP C# CODE
+        { t: "២.២ របៀបប្រើប្រាស់រង្វិលជុំ @foreach ក្នុង Razor (Razor View Loop)", type: "code", code: `// ១. នៅក្នុង Controller Action
+public IActionResult StudentList()
+{
+    List<string> students = new() { "Dara SOK", "Cheata SENG", "Sokha PHEN" };
+    ViewBag.StudentList = students;
+    return View();
+}
+
+<!-- ២. នៅក្នុងឯកសារ StudentList.cshtml -->
+<h3>បញ្ជីរាយនាមនិស្សិត</h3>
+<table class="table">
+    <tr><th>ឈ្មោះនិស្សិត</th></tr>
+    @foreach (var name in ViewBag.StudentList)
+    {
+        <tr>
+            <td>@name</td>
+        </tr>
+    }
+</table>`, desc: "រង្វិលជុំ @foreach របស់ Razor នឹងបង្កើតកូដ <tr> ឌីណាមិកនៅលើ Server រួចបញ្ជូនតែ HTML សុទ្ធសាធទៅកាន់ Browser របស់ User។" },
+
+        // 12. LAB 2.2
+        { t: "លំហាត់អនុវត្តន៍ (Practical Labs)", type: "exercise", h: "Lab 2.2: Loops & Collections in Razor", p: "<b>ប្រធានលំហាត់៖</b> ចូរសរសេរ Controller បញ្ជូនបញ្ជីឈ្មោះទំនិញ (List of strings) ទៅកាន់ View រួចសរសេររង្វិលជុំ <code>@foreach</code> នៅក្នុងឯកសារ <code>.cshtml</code> ដើម្បីបង្កើតជាបញ្ជីរាយនាមទំនិញស្អាតមួយ។<br><br><span style='color: var(--accent-purple);'>[ដំណោះស្រាយកូដពេញលេញមានផ្ដល់ជូននៅក្នុង Handout - ទំព័រទី ២២]</span>" },
+
+        // 13. SECTION 2.3 & 2.4 - OOP CONCEPT (STRUCTURED)
+        { 
+            t: "២.៣ & ២.៤ ស្ថាបត្យកម្ម OOP សម្រាប់ Models (MVC Classes & Properties)", 
+            type: "structured", 
+            fallback: "oopmodel",
+            definition: "នៅក្នុង MVC <b>Model (M)</b> ត្រូវបានតំណាងដោយ <b>C# Class</b>។ Model ផ្ទុកនូវលក្ខណៈសម្បត្តិ (Properties) តំណាងឲ្យរចនាសម្ព័ន្ធទិន្នន័យ (Database Table ឬ Form ViewModel)។ properties មានតួនាទីគ្រប់គ្រងការផ្ទេរទិន្នន័យ និងពិនិត្យទម្រង់ទិន្នន័យ (Validation attributes) យ៉ាងមានសុវត្ថិភាពខ្ពស់។",
+            syntax: "public class Product {\n    public int Id { get; set; }\n    public string Name { get; set; } = string.Empty;\n    public decimal Price { get; set; }\n}",
+            caseTitle: "ករណីសិក្សា៖ ការបង្កើត Model Class សម្រាប់រក្សាទិន្នន័យផលិតផលដែលត្រូវបង្ហាញលើ View",
+            caseCode: "namespace ShopApp.Models {\n    public class Product {\n        public int Id { get; set; }\n        public string Name { get; set; } = string.Empty;\n        public decimal Price { get; set; }\n    }\n}",
+            labNote: "មេរៀននេះមានលំហាត់អនុវត្តជាក់ស្តែង <b>Lab 2.3: Creating Custom C# Class & ViewModel (ស្លាយទី ១៥)</b>។"
+        },
+
+        // 14. SECTION 2.4 - C# CLASS CODE
+        { t: "២.៤ ការបង្កើត Class Model និងការសរសេរ Properties (C# MVC Model)", type: "code", code: `namespace SchoolApp.Models
+{
+    // ការបង្កើត Class Model ឈ្មោះ Student
+    public class Student
+    {
+        // និយមន័យ Properties (get, set)
+        public int Id { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string Major { get; set; } = string.Empty;
+        
+        // Constructor សម្រាប់ផ្ដល់តម្លៃដំបូងដល់គំរូទិន្នន័យ
+        public Student(int id, string name, string major)
+        {
+            Id = id;
+            Name = name;
+            Major = major;
+        }
+    }
+}`, desc: "Class Model នេះត្រូវបានប្រើប្រាស់ដើម្បីបង្កើត Strongly-typed View ដែលជួយការពារការសរសេរកូដខុសប្រភេទ Data Type។" },
+
+        // 15. LAB 2.3
+        { t: "លំហាត់អនុវត្តន៍ (Practical Labs)", type: "exercise", h: "Lab 2.3: Creating Custom C# Class", p: "<b>ប្រធានលំហាត់៖</b> ចូរបង្កើត Class មួយឈ្មោះ <code>Product</code> នៅក្នុង Folder <code>Models</code> ដែលមាន Properties: Id, Name, Price, Qty និងបង្កើត Constructor មួយសម្រាប់ទទួលតម្លៃដំបូង រួចសរសេរ Action ក្នុង Controller ដើម្បីបញ្ជូន Model Object នេះទៅកាន់ View។<br><br><span style='color: var(--accent-purple);'>[ដំណោះស្រាយកូដពេញលេញមានផ្ដល់ជូននៅក្នុង Handout - ទំព័រទី ២៤]</span>" },
+
+        // 16. SECTION 2.5 - SERVER-SIDE RENDERING (STRUCTURED)
+        { 
+            t: "២.៥ ការបញ្ជូន Model ទៅកាន់ Strongly-typed View", 
+            type: "structured", 
+            fallback: "modelbinding",
+            definition: "ជំនួសឱ្យការបំប្លែងទៅជា JSON (ដូចក្នុង Web API) ស្ថាបត្យកម្ម <b>ASP.NET Core MVC</b> ប្រើប្រាស់វិធីសាស្ត្រ <b>Server-Side Rendering (SSR)</b>។ Controller នឹងបញ្ជូន Model Object ដោយផ្ទាល់ទៅកាន់ View តាមរយៈ <code>return View(model)</code> រួចហើយ Razor Engine នឹងច្របាច់ទិន្នន័យបញ្ចូលក្នុង HTML បង្កើតបានជាទំព័រវេបសាយភ្លាមៗនៅលើ Server។",
+            syntax: "// នៅក្នុង Controller Action\nreturn View(studentObject);\n\n// នៅក្នុង View .cshtml (Strongly-typed)\n@model SchoolApp.Models.Student\n<h3>@Model.Name</h3>",
+            caseTitle: "ករណីសិក្សា៖ ការបង្កើតទំព័រព័ត៌មានលម្អិតរបស់សិស្ស (Details View) ដោយប្រើ Strongly-typed Model",
+            caseCode: "@model SchoolApp.Models.Student\n\n<div class=\"card\">\n    <h4>ឈ្មោះ៖ @Model.Name</h4>\n    <p>ជំនាញ៖ @Model.Major</p>\n</div>",
+            labNote: "ចំណុចគន្លឹះនេះជាមូលដ្ឋានគ្រឹះសម្រាប់ការរៀបចំទម្រង់ Views ក្នុង <b>ជំពូកទី ៣ (ទំព័រទី ២៩)</b> របស់សៀវភៅលំហាត់។"
+        },
+
+        // 17. GLOSSARY 1
+        { t: "ពន្យល់ពាក្យគន្លឹះ (Glossary)", type: "table", rows: [
+            ["ពាក្យបច្ចេកទេស", "ការពន្យល់ជាភាសាខ្មែរ"],
+            ["<b>Model (M)</b>", "ផ្នែកគ្រប់គ្រងទិន្នន័យ និង Logic របស់កម្មវិធី (ជាទូទៅជា C# Class)។"],
+            ["<b>View (V)</b>", "ផ្នែកបង្ហាញ Interface ទៅកាន់ User (ឯកសារ .cshtml ប្រើប្រាស់ Razor Syntax)។"],
+            ["<b>Controller (C)</b>", "អ្នកទទួលសំណើ (Request) ចាត់ចែងទិន្នន័យ និងបញ្ជាទៅកាន់ View ឱ្យបង្ហាញទំព័រ។"],
+            ["<b>ViewData & ViewBag</b>", "យន្តការបញ្ជូនទិន្នន័យរយៈពេលខ្លីពី Controller ទៅកាន់ View។"],
+            ["<b>Strongly-typed View</b>", "ទំព័រ View ដែលត្រូវបានកំណត់ភ្ជាប់ជាមួយ Class Model ច្បាស់លាស់។"],
+            ["<b>Server-Side Rendering</b>", "ដំណើរការបង្កើតកូដ HTML ពេញលេញនៅលើ Server មុននឹងបញ្ជូនទៅកាន់ Client Browser។"]
+        ]},
+
+        // 18. SUMMARY
+        { t: "សេចក្តីសង្ខេបជំពូកទី ២ (Summary)", type: "list", c: [
+            "• <b class='highlight'>C# Strongly-typed:</b> រាល់អថេរ (Variables) ទាំងអស់ត្រូវតែកំណត់ប្រភេទទិន្នន័យជានិច្ច ដើម្បីទប់ស្កាត់កំហុសកូដក្នុងគម្រោង MVC។",
+            "• <b class='highlight'>ViewData & ViewBag:</b> ជាឧបករណ៍ដ៏មានប្រយោជន៍សម្រាប់ផ្ទេរទិន្នន័យទូទៅ ឬសារជូនដំណឹងពី Controller ទៅកាន់ View។",
+            "• <b class='highlight'>Razor Control Flows:</b> ការចេះប្រើប្រាស់ @if និង @foreach របស់ Razor ជួយបង្កើតទំព័រ HTML ឌីណាមិកតាមទិន្នន័យរបស់ Server។",
+            "• <b class='highlight'>MVC Models & Properties:</b> Class Model គឺជាគ្រោងឆ្អឹងទិន្នន័យដ៏រឹងមាំសម្រាប់ទំនាក់ទំនងរវាង Controller និង View។",
+            "• <b class='highlight'>Model-to-View Rendering:</b> ASP.NET Core MVC ប្រើប្រាស់វិធីសាស្ត្រ Server-Side Rendering ដើម្បីបញ្ចូល Model ទៅក្នុង View ឌីណាមិក។"
+        ]},
+
+        // 19. REFERENCES
+        { t: "ឯកសារយោង និងគន្ថនិទ្ទេស (References)", type: "list", c: [
+            "• <b>Microsoft Learn (ASP.NET Core MVC Overview):</b> <i style='color:var(--accent-blue);'>https://learn.microsoft.com/en-us/aspnet/core/mvc/overview</i>",
+            "• <b>Microsoft Learn (Razor Syntax Docs):</b> <i style='color:var(--accent-blue);'>https://learn.microsoft.com/en-us/aspnet/core/mvc/views/razor</i>",
+            "• <b>Microsoft Learn (Passing Data to Views):</b> <i style='color:var(--accent-blue);'>https://learn.microsoft.com/en-us/aspnet/core/mvc/views/overview</i>",
+            "• <b>សៀវភៅគោល:</b> Freeman, A. (2024). <i>Pro ASP.NET Core MVC 8</i>. Apress. (10th Edition)"
+        ]},
+
+        // 20. NEXT CHAPTER PREVIEW
+        { t: "ជំពូកបន្ទាប់៖ ជំពូកទី ៣ - Controllers, Actions & Views ក្នុង MVC", type: "split", img: "https://images.unsplash.com/photo-1542831371-29b0f74f9713?auto=format&fit=crop&w=1200&q=80", fallback: "none", c: "<b>ជំពូកទី ៣៖ Controllers & Views ក្នុង MVC</b><br><br>បន្ទាប់ពីយល់ដឹងពីការបង្កើត Models និងការសរសេរកូដ C# Razor មូលដ្ឋានរួច ជំពូកបន្ទាប់យើងនឹងសិក្សាពី៖<br><ul style='margin-left:2vw; margin-top:1.5vh;'><li style='margin-bottom:1vh;'><b class='highlight'>Controller Actions:</b> ការបង្កើត Action Methods ទទួលយកសំណើ (GET, POST)</li><li style='margin-bottom:1vh;'><b class='highlight'>View Routing:</b> ការគ្រប់គ្រងផ្លូវនាំទៅកាន់ទំព័រវេបសាយ (URL Routes)</li><li><b class='highlight'>Layout Views:</b> របៀបបង្កើតទំព័រគំរូ Layout (Header/Footer) រួមគ្នា</li></ul>" }
+    ];
+
+    // INJECTION ENGINE
+    chapterData.forEach((item, index) => {
+        const slide = document.createElement('div');
+        slide.className = 'slide';
+        
+        let bodyContent = '';
+        if(item.type === "cover") {
+            bodyContent = `
+                <div style="text-align: center; margin: auto; width: 100%;">
+                    <div style="margin-bottom: 2vh; display: flex; flex-direction: column; align-items: center;">
+                        <img src="images/Logo.png" style="height: 8.5vw;" alt="Angkor University Logo" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'">
+                        <h2 style="font-family: 'Koulen', sans-serif; color: var(--text-main); font-size: 3.2vw; margin: 10px 0 0 0; font-weight: normal;">សាកលវិទ្យាល័យអង្គរ</h2>
+                    </div>
+                    <h3 style="font-family: 'Siemreap', sans-serif; font-size: 1.6vw; color: var(--text-muted); margin-bottom: 2.5vh; text-align: center !important;">មុខវិជ្ជា៖ បច្ចេកវិទ្យា ASP.NET និងប្រព័ន្ធគ្រប់គ្រងមូលដ្ឋានទិន្នន័យ SQL Server</h3>
+                    <div style="background: var(--accent-purple); color: white; padding: 1.2vh 3.5vw; border-radius: 5vw; display: inline-block; font-size: 1.4vw; font-weight: bold; margin-bottom: 2.5vh; box-shadow: 0 10px 20px rgba(81, 43, 212, 0.3); font-family: 'Koulen', sans-serif;">ឯកសារមេរៀន (Lecture Presentation) | ជំពូកទី ២</div>
+                    <h1 style="max-width: 90%; margin: 0 auto; line-height: 1.3; font-family: 'Koulen', sans-serif; font-size: 2.6vw;">មូលដ្ឋានគ្រឹះភាសា C# សម្រាប់ MVC និងគោលការណ៍ Object-Oriented Programming (OOP)</h1>
+                    <div style="margin-top: 4vh; display: flex; gap: 4vw; justify-content: center; align-items: center;">
+                        <div style="text-align: center; background: white; padding: 10px; border-radius: 50%; box-shadow: 0 5px 15px rgba(0,0,0,0.05); display: flex;"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg" style="height: 3.8vw; object-fit: contain;"></div>
+                        <div style="text-align: center; background: white; padding: 10px; border-radius: 50%; box-shadow: 0 5px 15px rgba(0,0,0,0.05); display: flex;"><img src="https://upload.wikimedia.org/wikipedia/commons/9/9a/Visual_Studio_Code_1.35_icon.svg" style="height: 3.8vw; object-fit: contain;"></div>
+                        <div style="text-align: center; background: white; padding: 10px; border-radius: 50%; box-shadow: 0 5px 15px rgba(0,0,0,0.05); display: flex;"><img src="images/sqlserverlog.jpg" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/8/87/Sql_server_logo.png'" style="height: 3.8vw; object-fit: contain;"></div>
+                        <div style="text-align: center; background: white; padding: 10px; border-radius: 50%; box-shadow: 0 5px 15px rgba(0,0,0,0.05); display: flex;"><img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" style="height: 3.8vw; object-fit: contain;"></div>
+                    </div>
+                </div>`;
+            slide.innerHTML = `<div id="h-placeholder-${index+1}"></div> ${bodyContent}`;
+        } else if(item.type === "prof") {
+            bodyContent = `
+                <div class="two-column">
+                    <div style="text-align: center; display: flex; justify-content: center; align-items: center; height: 100%;">
+                        <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" style="width: 18vw; height: 18vw; border-radius: 50%; border: 6px solid var(--accent-purple); object-fit: cover; box-shadow: 0 10px 25px rgba(0,0,0,0.2);">
+                    </div>
+                    <div class="card" style="border-top: 5px solid var(--accent-purple); border-left: none;">
+                        <h3 style="font-size: 2.3vw; color: var(--accent-purple); font-family: 'Koulen', sans-serif; margin-bottom: 1.2vh; font-weight: normal; text-align: left !important;">សាស្ត្រាចារ្យបង្រៀន សឿង លីម <span style="font-size: 1.5vw; color: var(--text-muted); font-family: 'Fira Code', monospace;">(Soeurng LIM)</span></h3>
+                        <p style="font-size:1.45vw; margin-bottom:0.6vh;"><b><i class="fa-solid fa-graduation-cap keyword-icon"></i> កម្រិតគុណវុឌ្ឍិ៖</b> បរិញ្ញាបត្រជាន់ខ្ពស់ - ព័ត៌មានវិទ្យា</p>
+                        <p style="font-size:1.45vw; margin-bottom:0.6vh;"><b><i class="fa-solid fa-envelope keyword-icon"></i> អ៊ីម៉ែល៖</b> soeurnglim@gmail.com</p>
+                        <p style="font-size:1.45vw; margin-bottom:0.6vh;"><b><i class="fa-solid fa-phone keyword-icon"></i> ទូរស័ព្ទ៖</b> ០៦១ ២២៧ ៩៣៣</p>
+                        <hr style="margin: 1.5vh 0; border: 1px solid #E2E8F0;">
+                        <p style="font-size:1.45vw;"><b><i class="fa-solid fa-star keyword-icon"></i> ក្រេឌីតមុខវិជ្ជា៖</b> ៣ ក្រេឌីត (IT401-WebAPI)</p>
+                    </div>
+                </div>`;
+            slide.innerHTML = `<div id="h-placeholder-${index+1}"></div> <h2 class="slide-title"><i class="fa-solid fa-user-tie"></i> ${item.t}</h2> <div class="content-body">${bodyContent}</div>`;
+        } else if(item.type === "split") {
+            let imgStyle = 'object-fit: contain; width: 100%; height: 100%; border-radius: 1vw;';
+            bodyContent = `
+                <div class="two-column">
+                    <div class="card" style="border:none; background:transparent; padding:0; box-shadow:none;">
+                        <p style="font-size:1.5vw; line-height: 1.6;">${item.c}</p>
+                    </div>
+                    <div class="visual-frame">
+                        <img src="${item.img}" style="${imgStyle}" onerror="handleImgError(this, '${item.fallback}')">
+                        <div class="schematic-fallback"></div>
+                    </div>
+                </div>`;
+            slide.innerHTML = `<div id="h-placeholder-${index+1}"></div> <h2 class="slide-title">${item.t}</h2> <div class="content-body">${bodyContent}</div>`;
+        } else if(item.type === "structured") {
+            bodyContent = `
+                <div style="display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 1.8vw; height: 100%; align-items: stretch; padding-bottom: 1.5vh;">
+                    <!-- Left Column: Def & Syntax -->
+                    <div style="display: flex; flex-direction: column; gap: 1.5vh; height: 100%;">
+                        <div class="card" style="border-left-color: var(--accent-purple); padding: 1.8vh 2vw; flex: 1; justify-content: flex-start;">
+                            <h4 style="font-size: 1.6vw; margin-bottom: 0.6vh; display: flex; align-items: center; gap: 0.5vw;">
+                                <i class="fa-solid fa-book-bookmark" style="color: var(--accent-purple);"></i> ១. និយមន័យ (Definition)
+                            </h4>
+                            <p style="font-size: 1.35vw; line-height: 1.5;">${item.definition}</p>
+                        </div>
+                        <div class="card" style="border-left-color: var(--accent-blue); padding: 1.8vh 2vw; flex: 1.1; justify-content: flex-start;">
+                            <h4 style="font-size: 1.6vw; margin-bottom: 0.6vh; display: flex; align-items: center; gap: 0.5vw;">
+                                <i class="fa-solid fa-code" style="color: var(--accent-blue);"></i> ២. ទម្រង់ទូទៅ (Syntax)
+                            </h4>
+                            <div style="background: var(--code-bg); padding: 1vh 1.2vw; border-radius: 6px; font-family: 'Fira Code', monospace; font-size: 1.1vw; color: #10B981; overflow-x: auto; margin-top: 0.5vh; white-space: pre; line-height: 1.4;">${item.syntax}</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Right Column: Visual Schematic Diagram -->
+                    <div style="display: flex; flex-direction: column; gap: 1.5vh; height: 100%; justify-content: space-between;">
+                        <div class="visual-frame" style="flex: 1.2;">
+                            <!-- Using standard transparent pixel as placeholder to trigger handleImgError -->
+                            <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" style="display:none;" onerror="handleImgError(this, '${item.fallback}')">
+                            <div class="schematic-fallback" style="display:flex; width:100%; height:100%;"></div>
+                        </div>
+                        
+                        <div class="workbook-note" style="margin-top: 0; padding: 1.5vh 2vw; border-radius: 8px; border-color: var(--accent-yellow); font-size: 1.25vw; gap: 0.8vw; background-color: #FFFDF0;">
+                            <i class="fa-solid fa-circle-exclamation" style="font-size: 2vw; color: var(--accent-yellow);"></i>
+                            <div>
+                                <span style="font-weight: bold; color: #B45309; font-size: 1.3vw; font-family:'Koulen', sans-serif; display:block; margin-bottom:2px;">៣. ព័ត៌មានលំហាត់ក្នុងស្លាយ (Practice Exercises)</span>
+                                ${item.labNote}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            slide.innerHTML = `<div id="h-placeholder-${index+1}"></div> <h2 class="slide-title">${item.t}</h2> <div class="content-body" style="height: calc(100% - 6vh);">${bodyContent}</div>`;
+        } else if(item.type === "grid") {
+            bodyContent = `<div class="card-grid" style="height: auto;">${item.c.map(c => `<div class="card" style="padding: 1.8vh 2vw;"><h4>${c.h}</h4><p style="font-size:1.35vw; line-height: 1.5;">${c.p}</p></div>`).join('')}</div>`;
+            slide.innerHTML = `<div id="h-placeholder-${index+1}"></div> <h2 class="slide-title">${item.t}</h2> <div class="content-body">${bodyContent}</div>`;
+        } else if(item.type === "list") {
+            bodyContent = `<div class="card" style="padding:3.5vh 4vw;"><ul style="list-style:none; line-height:1.9;">${item.c.map(l => `<li style="margin-bottom:1vh; font-size:1.5vw; text-align: left !important;">${l}</li>`).join('')}</ul></div>`;
+            slide.innerHTML = `<div id="h-placeholder-${index+1}"></div> <h2 class="slide-title">${item.t}</h2> <div class="content-body">${bodyContent}</div>`;
+        } else if(item.type === "table") {
+            let trs = item.rows.map((row, i) => {
+                if (i === 0) return `<tr>${row.map(th => `<th>${th}</th>`).join('')}</tr>`;
+                return `<tr>${row.map(td => `<td>${td}</td>`).join('')}</tr>`;
+            }).join('');
+            bodyContent = `<table style="font-size: 1.4vw;">${trs}</table>`;
+            slide.innerHTML = `<div id="h-placeholder-${index+1}"></div> <h2 class="slide-title">${item.t}</h2> <div class="content-body">${bodyContent}</div>`;
+        } else if(item.type === "code") {
+            let safeHtml = item.code.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+            let safeString = item.code.replace(/\\/g, '\\\\').replace(/`/g, '\\`').replace(/\n/g, '\\n');
+            bodyContent = `<div class="code-container" style="max-height: 44vh;"><div class="code-label">CODE SNIPPET</div><button class="copy-btn" onclick="navigator.clipboard.writeText(\`${safeString}\`); this.innerText='Copied!'; setTimeout(()=>this.innerText='Copy', 2000);"><i class="fa-regular fa-copy"></i> Copy</button><pre><code>${safeHtml}</code></pre></div><p style="margin-top:6px; font-weight:bold; font-size: 1.5vw; text-align: left !important;"><i class="fa-solid fa-circle-info" style="color:var(--accent-blue);"></i> ${item.desc}</p>`;
+            slide.innerHTML = `<div id="h-placeholder-${index+1}"></div> <h2 class="slide-title">${item.t}</h2> <div class="content-body">${bodyContent}</div>`;
+        } else if(item.type === "exercise") {
+            bodyContent = `<div class="exercise-badge"><i class="fa-solid fa-laptop-code"></i> លំហាត់អនុវត្តន៍ (Practical Lab)</div><div class="card" style="border-left-color: var(--accent-yellow); padding: 2.2vh 3vw;"><h4>${item.h}</h4><p style="font-size: 1.5vw;">${item.p}</p></div><div class="workbook-note" style="padding: 1.2vh 2vw; margin-top: 1.2vh;"><i class="fa-solid fa-book-journal-whills"></i> កំណត់សម្គាល់៖ សូមអនុវត្តកិច្ចការនេះតាមការណែនាំលម្អិតដែលមាននៅក្នុងសៀវភៅលំហាត់ (Lab Workbook) របស់លោកគ្រូ។</div>`;
+            slide.innerHTML = `<div id="h-placeholder-${index+1}"></div> <h2 class="slide-title"><i class="fa-solid fa-laptop-code" style="color:var(--accent-yellow);"></i> ${item.t}</h2> <div class="content-body">${bodyContent}</div>`;
+            slideWrapper.appendChild(slide);
+            return; 
+        }
+
+        slideWrapper.appendChild(slide);
+    });
+
+    // FINAL QA SLIDE
+    const finalSlide = document.createElement('div');
+    finalSlide.className = 'slide';
+    finalSlide.innerHTML = `
+        <div id="h-placeholder-final"></div>
+        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; text-align: center; margin: auto;">
+            <h1 style="font-size: 5.5vw; color: var(--accent-purple); margin-bottom: 2.5vh; font-family: 'Koulen', sans-serif;"><i class="fa-solid fa-comments"></i> សំណួរ និងចម្លើយ ?</h1>
+            <p style="font-size: 2.3vw; color: var(--text-muted); margin-bottom: 4.5vh; text-align: center !important;">សូមអរគុណនិស្សិតទាំងអស់សម្រាប់ការយកចិត្តទុកដាក់!</p>
+            <div style="display: flex; gap: 2vw; justify-content: center;">
+                <div style="background: #FFFFFF; padding: 1.8vh 3.5vw; border-radius: 5vw; border: 2px solid var(--accent-purple); box-shadow: 0 10px 20px rgba(0,0,0,0.05);">
+                    <p style="margin: 0; font-weight: bold; font-size: 1.7vw; color: var(--accent-purple); text-align: center !important;"><i class="fa-solid fa-envelope"></i> soeurnglim@gmail.com</p>
+                </div>
+                <div style="background: #FFFFFF; padding: 1.8vh 3.5vw; border-radius: 5vw; border: 2px solid #0088cc; box-shadow: 0 10px 20px rgba(0,0,0,0.05);">
+                    <p style="margin: 0; font-weight: bold; font-size: 1.7vw; color: #0088cc; text-align: center !important;"><i class="fa-brands fa-telegram"></i> ០៦១ ២២៧ ៩៣៣</p>
+                </div>
+            </div>
+        </div>
+    `;
+    slideWrapper.appendChild(finalSlide);
+
+    // Apply Headers
+    document.querySelectorAll('[id^="h-placeholder"]').forEach((p, i) => {
+        if(i > 0 && i < chapterData.length + 1) {
+            p.outerHTML = headerHTML;
+        } else {
+            p.outerHTML = ""; 
+        }
+    });
+
+    // Interaction Logic
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+    const counter = document.getElementById('slideCounter');
+    let currentIdx = 0;
+
+    // Clone footer to each slide for print mode
+    const originalFooter = document.querySelector('.global-footer');
+    slides.forEach((slide, idx) => {
+        const slideFooter = originalFooter.cloneNode(true);
+        slideFooter.classList.remove('global-footer'); 
+        slideFooter.classList.add('print-only-footer'); 
+        const counterEl = slideFooter.querySelector('.slide-counter');
+        if (counterEl) {
+            counterEl.innerHTML = `ស្លាយទី ${toKh(idx + 1)} នៃ ${toKh(totalSlides)}`;
+        }
+        slide.appendChild(slideFooter);
+    });
+
+    function updateSlide(idx) {
+        slides.forEach(s => s.classList.remove('active'));
+        slides[idx].classList.add('active');
+        currentIdx = idx;
+        counter.innerHTML = `ស្លាយទី ${toKh(idx + 1)} នៃ ${toKh(totalSlides)}`;
+    }
+
+    window.nextSlide = function(e) { if(e) e.stopPropagation(); if (currentIdx < totalSlides - 1) updateSlide(currentIdx + 1); }
+    window.prevSlide = function(e) { if(e) e.stopPropagation(); if (currentIdx > 0) updateSlide(currentIdx - 1); }
+
+    window.navigate = function(e) {
+        if (e.target.closest('code') || e.target.closest('pre') || e.target.closest('.copy-btn') || e.target.closest('.nav-btn')) return;
+    }
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === "ArrowRight" || e.key === " " || e.key === "PageDown") { window.nextSlide(); } 
+        else if (e.key === "ArrowLeft" || e.key === "PageUp") { window.prevSlide(); }
+    });
+
+    // Start
+    updateSlide(0);
+</script>
+</body>
+</html>
