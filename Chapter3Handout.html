@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Handout: ជំពូកទី ៣ - Controllers, Action Methods & MVC Basics</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Khmer+OS+Siemreap&family=Battambang:wght@400;700&family=Suwannaphum:wght@400;700;900&family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        :root {
+            /* Premium Color Palette */
+            --primary: #0F172A;        
+            --secondary: #0078D4;      
+            --accent: #512BD4;         
+            --success: #10B981;        
+            --warning: #D97706;        
+            --danger: #EF4444;         
+            
+            --text-main: #1E293B;
+            --text-heading: #0F172A;
+            --text-muted: #64748B;
+            
+            --bg-page: #FFFFFF;
+            --bg-workspace: #E2E8F0;
+            --bg-light: #F8FAFC;
+            
+            --border-light: #E2E8F0;
+            --border-dark: #CBD5E1;
+            
+            /* Fonts */
+            --font-kh-heading: 'Suwannaphum', serif;
+            --font-kh-body: 'Battambang', sans-serif;
+            --font-en-main: 'Inter', sans-serif;
+            --font-code: 'Fira Code', monospace;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-workspace);
+            font-family: var(--font-kh-body);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        /* Print Button Zone */
+        .no-print {
+            background: #FFFFFF; border: 1px solid var(--border-dark); padding: 15px 25px; border-radius: 12px;
+            margin-bottom: 25px; width: 210mm; text-align: center; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .no-print p { margin: 0; font-size: 14px; color: var(--text-muted); font-family: var(--font-kh-body);}
+        .print-btn {
+            background: var(--accent); color: white; border: none; padding: 10px 24px; border-radius: 8px; 
+            font-family: var(--font-kh-body); font-size: 15px; font-weight: 700; cursor: pointer;
+            box-shadow: 0 4px 12px rgba(81, 43, 212, 0.3); transition: all 0.2s ease;
+        }
+        .print-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(81, 43, 212, 0.4); }
+
+        /* STRICT A4 PAGE LAYOUT (FLEXBOX FLOW) */
+        .a4-page {
+            width: 210mm; 
+            height: 297mm;
+            background: var(--bg-page); 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1); 
+            margin-bottom: 30px; 
+            position: relative; 
+            border-radius: 4px; 
+            page-break-after: always;
+            box-sizing: border-box;
+            padding: 15mm;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* HEADER & FOOTER */
+        .global-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 10px 15px; border-bottom: 3px solid var(--accent); background-color: var(--bg-light);
+            border-radius: 4px; margin-bottom: 10px;
+        }
+        .header-item { display: flex; align-items: center; gap: 8px; }
+        .header-item img { height: 35px; object-fit: contain; }
+        .header-item span { font-family: var(--font-kh-heading); font-size: 10pt; font-weight: bold; color: var(--accent); }
+        .header-text { flex-grow: 1; text-align: center; padding: 0 10px; }
+        .header-text h1 { font-family: var(--font-kh-heading); font-size: 12pt; color: var(--accent); margin-bottom: 2px; font-weight: 900;}
+        .header-text p { font-family: var(--font-en-main); font-size: 7.5pt; color: var(--text-muted); font-weight: 600; text-transform: uppercase;}
+
+        .global-footer {
+            display: flex; justify-content: space-between; align-items: center;
+            padding-top: 10px; border-top: 1px solid var(--border-light); margin-top: 10px;
+        }
+        .footer-left { display: flex; align-items: center; gap: 8px; }
+        .footer-left img { border-radius: 50%; width: 28px; height: 28px; object-fit: cover; border: 2px solid var(--accent); }
+        .footer-left span { font-size: 9.5pt; color: var(--text-main); font-weight: bold;}
+        .footer-right { 
+            font-size: 9.5pt; color: white; font-weight: 700; background: var(--accent); 
+            padding: 3px 12px; border-radius: 20px;
+        }
+
+        /* Content Zone */
+        .page-content { 
+            flex-grow: 1; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: flex-start; 
+            overflow: visible; 
+        }
+
+        /* TYPOGRAPHY */
+        .section-title {
+            border-bottom: 2px solid var(--accent); padding-bottom: 6px; margin: 10px 0 12px 0;
+            font-family: var(--font-kh-heading); font-size: 14pt; font-weight: 900; color: var(--text-heading);
+            display: flex; align-items: center; gap: 8px;
+        }
+        .section-title i { color: var(--accent); }
+        
+        .sub-heading { font-family: var(--font-kh-heading); font-weight: 900; font-size: 12pt; color: var(--accent); margin: 10px 0 8px 0; }
+        .text-block { font-size: 10.5pt; line-height: 1.6; margin-bottom: 10px; text-align: justify; }
+        .highlight { color: var(--accent); font-weight: 700; }
+
+        /* TOC Table Specific */
+        .toc-table { width: 100%; border-collapse: collapse; margin: 10px 0; border: 1px solid var(--border-light); border-radius: 8px; overflow: hidden; }
+        .toc-table th { background: var(--accent); color: white; font-family: var(--font-kh-heading); font-size: 11pt; padding: 10px 12px; text-align: left; }
+        .toc-table td { padding: 10px 12px; border-bottom: 1px solid var(--border-light); font-size: 10.5pt; color: var(--text-main); }
+        .toc-table tr:last-child td { border-bottom: none; }
+        .toc-num { font-weight: bold; width: 15%; text-align: center; }
+
+        /* Objectives List Specific */
+        .obj-list { list-style: none; padding-left: 0; margin-top: 10px; }
+        .obj-list li { position: relative; padding-left: 20px; margin-bottom: 10px; font-size: 10.5pt; line-height: 1.6; }
+        .obj-list li::before { content: '•'; position: absolute; left: 5px; color: var(--accent); font-size: 16px; font-weight: bold; top: -2px; }
+
+        /* Tables (General) */
+        table.standard-table { width: 100%; border-collapse: collapse; margin-bottom: 12px; border: 1px solid var(--border-dark); }
+        table.standard-table th, table.standard-table td { border: 1px solid var(--border-dark); padding: 8px 10px; text-align: left; vertical-align: middle; }
+        table.standard-table th { background: var(--accent); color: white; font-family: var(--font-kh-heading); font-size: 10.5pt; text-align: center; }
+        table.standard-table td { font-size: 10pt; line-height: 1.5; }
+
+        /* Visual Frames and Fallback Elements */
+        .visual-frame { 
+            background: #FFFFFF; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            height: 100%; 
+            max-height: 280px; 
+            width: 100%; 
+            border-radius: 8px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03); 
+            padding: 8px; 
+            border: 1px solid var(--border-light);
+            overflow: hidden;
+            position: relative;
+            margin: 10px 0;
+        }
+        .visual-frame img { max-height: 100%; max-width: 100%; object-fit: contain; border-radius: 4px;}
+        
+        .schematic-fallback {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            background: #F1F5F9;
+            color: #475569;
+            padding: 10px;
+            text-align: center;
+            border-radius: 4px;
+        }
+
+        .two-column { 
+            display: grid; 
+            grid-template-columns: 1.1fr 0.9fr; 
+            gap: 15px; 
+            margin: 10px 0;
+            align-items: center;
+        }
+
+        /* Code & Boxes */
+        .code-window { background: var(--primary); border-radius: 8px; overflow: hidden; margin: 10px 0; border: 1px solid #334155;}
+        .code-header { background: #1E293B; padding: 6px 12px; display: flex; align-items: center; justify-content: space-between; }
+        .mac-dots { display: flex; gap: 6px; }
+        .dot { width: 8px; height: 8px; border-radius: 50%; }
+        .dot-r { background: var(--danger); }
+        .dot-y { background: var(--warning); }
+        .dot-g { background: var(--success); }
+        .code-title { color: #94A3B8; font-family: var(--font-code); font-size: 8.5pt; }
+        pre { padding: 12px; color: #E2E8F0; font-family: var(--font-code); font-size: 9pt; line-height: 1.4; overflow-x: auto; margin: 0; }
+        code.inline-code { font-family: var(--font-code); background: #F1F5F9; color: var(--danger); padding: 2px 5px; border-radius: 4px; font-size: 9.5pt; font-weight: bold; border: 1px solid var(--border-light); }
+        
+        .lab-box { background: #FEFCE8; border-left: 5px solid #EAB308; padding: 12px; margin: 10px 0; border-radius: 4px; border: 1px solid #FEF08A; }
+        .lab-box h4 { color: #854D0E; margin-bottom: 6px; font-family: var(--font-kh-heading); font-size: 11pt;}
+        .lab-box p { font-size: 10pt; line-height: 1.5; margin: 0; }
+
+        .info-box { background: #F0FDF4; border-left: 5px solid var(--success); padding: 12px; margin: 10px 0; border-radius: 4px; border: 1px solid #BBF7D0; }
+
+        /* Questions list */
+        .q-list { list-style: decimal; padding-left: 18px; font-size: 10.5pt; line-height: 1.6; }
+        .q-list li { margin-bottom: 12px; font-weight: bold; }
+        .mcq-opts { list-style-type: upper-alpha; padding-left: 18px; margin-top: 6px; font-weight: normal; display: grid; grid-template-columns: 1fr 1fr; gap: 6px;}
+        .mcq-opts li { margin-bottom: 0; }
+
+        /* Answer Table */
+        .ans-table { width: 100%; border-collapse: collapse; margin-top: 5px;}
+        .ans-table th { background: var(--bg-light); color: var(--text-heading); text-align: center; border: 1px solid var(--border-dark); padding: 5px; font-size: 9.5pt;}
+        .ans-table td { font-weight: bold; color: var(--accent); text-align: center; border: 1px solid var(--border-dark); padding: 5px; font-size: 9.5pt;}
+
+        @media print {
+            body { background: none; padding: 0; margin: 0; display: block; }
+            .no-print { display: none !important; }
+            @page { size: A4 portrait; margin: 0; }
+            .a4-page { width: 210mm !important; height: 297mm !important; margin: 0 !important; box-shadow: none !important; border: none !important; border-radius: 0 !important; }
+            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="no-print">
+    <p><b><i class="fa-solid fa-file-pdf"></i> ណែនាំ៖</b> ដើម្បីបោះពុម្ពជា PDF ឱ្យចំកណ្តាលទំព័រ A4 ល្អ សូមជ្រើសរើស <b>Margins: None</b> និងបើក <b>Background graphics</b> (Handout ១៩ ទំព័រ)។</p>
+    <button class="print-btn" onclick="window.print()"><i class="fa-solid fa-print"></i> បោះពុម្ពឯកសារជា PDF (A4 Handout ១៩ ទំព័រ)</button>
+</div>
+
+<!-- PAGE 1: COVER -->
+<div class="a4-page">
+    <div class="page-content" style="justify-content: center; align-items: center; text-align: center; background: radial-gradient(circle at center, #F8FAFC 0%, #FFFFFF 100%);">
+        <img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" style="width: 140px; margin-bottom: 20px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));">
+        <h1 style="font-family: 'Suwannaphum'; font-size: 28pt; color: var(--text-heading); margin-bottom: 2px; font-weight: 900;">សាកលវិទ្យាល័យអង្គរ</h1>
+        <p style="font-family: 'Inter'; font-size: 13pt; color: var(--text-muted); margin-bottom: 30px; font-weight: 600; letter-spacing: 2px;">ANGKOR UNIVERSITY</p>
+        
+        <div style="font-family: 'Suwannaphum'; font-size: 14pt; color: var(--text-main); margin-bottom: 25px; font-weight: 700; background: #F1F5F9; padding: 8px 25px; border-radius: 50px; border: 1px solid var(--border-light); display: inline-flex; align-items: center; gap: 8px;">
+            <i class="fa-solid fa-graduation-cap" style="color:var(--accent);"></i> បរិញ្ញាបត្រ វិទ្យាសាស្ត្រកុំព្យូទ័រ
+        </div>
+        
+        <div style="background: var(--accent); color: white; padding: 10px 25px; border-radius: 8px; font-size: 14pt; font-family: 'Suwannaphum'; font-weight: 700; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(81, 43, 212, 0.3);">ឯកសារអាន (Handout) - ជំពូកទី ៣</div>
+        
+        <h2 style="font-family: 'Suwannaphum'; font-size: 22pt; color: var(--text-heading); margin-bottom: 10px; line-height: 1.4; font-weight: 900;">Controllers, Action Methods<br>និងមូលដ្ឋានគ្រឹះស្ថាបត្យកម្ម MVC (C# API Basics)</h2>
+        <h3 style="font-family: 'Battambang'; font-size: 13pt; color: var(--secondary); margin-bottom: 40px; font-weight: 600;">បច្ចេកវិទ្យា ASP.NET និងប្រព័ន្ធគ្រប់គ្រងមូលដ្ឋានទិន្នន័យ SQL Server</h3>
+        
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; background: white; padding: 15px 30px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid var(--border-light); width: 85%;">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" style="width: 110px; height: 100px; border-radius: 50%; object-fit: cover; border: 4px solid var(--accent); box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+            <p style="font-family: 'Battambang'; font-size: 11pt; color: var(--text-muted); margin: 0;">រៀបចំដោយសាស្ត្រាចារ្យ៖</p>
+            <strong style="font-family: 'Suwannaphum'; color: var(--text-heading); font-size: 15pt; font-weight: 900;">សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</strong>
+        </div>
+    </div>
+</div>
+
+<!-- PAGE 2: OBJECTIVES & TOC -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៣</h1><p>ASP.NET CORE MVC & SQL SERVER</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title"><i class="fa-solid fa-list-ol"></i> មាតិកាជំពូកទី ៣ (Chapter Contents)</div>
+        <table class="toc-table">
+            <thead>
+                <tr>
+                    <th style="width: 15%; text-align: center;">ចំណុច</th>
+                    <th>ខ្លឹមសារមេរៀន (Topics)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td class="toc-num">៣.១</td><td>ស្ថាបត្យកម្ម MVC & RESTful API Basics (តួនាទី Controller)</td></tr>
+                <tr><td class="toc-num">៣.២</td><td>Controller Classes & Action Methods (IActionResult, Status Codes)</td></tr>
+                <tr><td class="toc-num">៣.៣</td><td>ដំណើរការ Routing & Endpoint Basics (Attribute Routing ក្នុង API)</td></tr>
+                <tr><td class="toc-num">៣.៤</td><td>ការបង្កើត Student Controller & Mock Data (C# Collections List)</td></tr>
+                <tr><td class="toc-num">៣.៥</td><td>ដំណើរការបំប្លែងទិន្នន័យ (JSON Serialization via System.Text.Json)</td></tr>
+            </tbody>
+        </table>
+
+        <div class="section-title"><i class="fa-solid fa-bullseye"></i> វត្ថុបំណងនៃជំពូកទី ៣ (Chapter Objectives)</div>
+        <ul class="obj-list">
+            <li><b class="highlight">យល់ដឹងពីតួនាទីរបស់ Controller៖</b> យល់ច្បាស់ពីលំហូរការងាររបស់ Controller ក្នុងនាមជាខួរក្បាលសម្របសម្រួលទិន្នន័យ។</li>
+            <li><b class="highlight">បង្កើត Action Methods៖</b> អាចសរសេរ Action Methods ផ្ញើទិន្នន័យត្រឡប់មកវិញជាលក្ខណៈ HTML, JSON ឬ Status Code។</li>
+            <li><b class="highlight">ចេះកំណត់ប្រព័ន្ធ Routing៖</b> យល់ពីរបៀបរៀបចំ URL Route ដើម្បីភ្ជាប់សំណើពី Browser ទៅកាន់កូដ C# ចំគោលដៅ។</li>
+            <li><b class="highlight">បង្កើត RESTful API ដំបូង៖</b> ចេះបង្កើត Student Controller និងប្រើប្រាស់ Mock Data បញ្ចេញជា JSON Array យ៉ាងស្ទាត់ជំនាញ។</li>
+        </ul>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ២ / ១៩</div>
+    </div>
+</div>
+
+<!-- PAGE 3: MVC ARCHITECTURE & RESTFUL API -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៣</h1><p>ASP.NET CORE MVC & SQL SERVER</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title"><i class="fa-solid fa-server"></i> ៣.១ ស្ថាបត្យកម្ម MVC & RESTful API Basics (តួនាទី Controller)</div>
+        <div class="text-block">
+            នៅក្នុងប្រព័ន្ធ <b>ASP.NET Core MVC</b> ផ្នែក <b>Controller (C)</b> ដើរតួជាអ្នកសម្របសម្រួល និងទទួលសំណើ (Requests) ពី Client។ សម្រាប់កម្មវិធី Web API, Controller មិនចាំបាច់ឆ្លងកាត់ការច្របាច់ជាមួយ HTML View ឡើយ គឺវាអាចបំប្លែងទិន្នន័យ C# Model ទៅជាទម្រង់ <b>JSON (JavaScript Object Notation)</b> រួចផ្ញើត្រឡប់ទៅឱ្យ Client ដោយផ្ទាល់។
+        </div>
+
+        <div class="two-column">
+            <div>
+                <table class="standard-table">
+                    <thead>
+                        <tr>
+                            <th>លក្ខណៈពិសេស</th>
+                            <th>Web API Controller (Data Only)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><b>Base Class</b></td><td>ស្នងពី class <code>ControllerBase</code></td></tr>
+                        <tr><td><b>ការបញ្ជូនត្រឡប់</b></td><td>ទិន្នន័យ JSON សុទ្ធតាមរយៈ <code>Ok()</code></td></tr>
+                        <tr><td><b>Attributes</b></td><td>ទាមទារ attribute <code>[ApiController]</code></td></tr>
+                        <tr><td><b>ល្បឿនបញ្ជូន</b></td><td>លឿន និងស្រាល (បញ្ជូនតែទិន្នន័យ JSON)</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="visual-frame">
+                <img src="images/datatype.png" onerror="handleImgError(this, 'datatype')" alt="Data Flow">
+                <div class="schematic-fallback"></div>
+            </div>
+        </div>
+
+        <div class="sub-heading">ការប្រកាស API Controller គ្រឹះក្នុង C#</div>
+        <div class="code-window">
+<pre><span style="color:#C678DD;">using</span> Microsoft.AspNetCore.Mvc;
+
+[ApiController]
+[Route(<span style="color:#98C379;">"api/[controller]"</span>)]
+<span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">SystemController</span> : ControllerBase {
+    // ទទួល HTTP requests និងបញ្ជូនលទ្ធផលត្រឡប់ជា JSON ស្វ័យប្រវត្ត
+}</pre>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ៣ / ១៩</div>
+    </div>
+</div>
+
+<!-- PAGE 4: LAB 3.1 IN MVC (COMPLETE CODE) -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៣</h1><p>ASP.NET CORE MVC & SQL SERVER</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="lab-box" style="margin-top:0;">
+            <h4><i class="fa-solid fa-laptop-code"></i> ដំណោះស្រាយលំហាត់ Lab 3.1: ControllerBase & Custom Actions</h4>
+            <p><b>គម្រោង (Project):</b> <code>OopMvcApplication</code> | <b>ទីតាំង (File):</b> <code>Controllers/AppController.cs</code></p>
+            <div class="code-window" style="margin-top:4px; margin-bottom: 4px;">
+<pre><span style="color:#C678DD;">using</span> Microsoft.AspNetCore.Mvc;
+<span style="color:#C678DD;">using</span> System;
+
+<span style="color:#C678DD;">namespace</span> OopMvcApplication.Controllers
+{
+    [ApiController]
+    [Route(<span style="color:#98C379;">"api/[controller]"</span>)]
+    <span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">AppController</span> : ControllerBase
+    {
+        // ១. Action ទី១៖ បញ្ជូនឈ្មោះកម្មវិធីត្រឡប់ទៅវិញជា String
+        [HttpGet(<span style="color:#98C379;">"name"</span>)]
+        <span style="color:#C678DD;">public</span> IActionResult <span style="color:#61AFEF;">GetAppName</span>()
+        {
+            <span style="color:#C678DD;">return</span> <span style="color:#61AFEF;">Ok</span>(<span style="color:#98C379;">"OopMvcApplication (Web API Version 1.0)"</span>);
+        }
+
+        // ២. Action ទី២៖ បញ្ជូនពេលវេលារបស់ Server ត្រឡប់ទៅវិញជា JSON
+        [HttpGet(<span style="color:#98C379;">"servertime"</span>)]
+        <span style="color:#C678DD;">public</span> IActionResult <span style="color:#61AFEF;">GetServerTime</span>()
+        {
+            <span style="color:#C678DD;">var</span> timeInfo = <span style="color:#C678DD;">new</span> 
+            { 
+                currentTime = DateTime.Now.ToString(<span style="color:#98C379;">"yyyy-MM-dd HH:mm:ss"</span>),
+                timeZone = TimeZoneInfo.Local.DisplayName
+            };
+            <span style="color:#C678DD;">return</span> <span style="color:#61AFEF;">Ok</span>(timeInfo);
+        }
+    }
+}</pre>
+            </div>
+            <p style="font-size: 9.5pt; margin-bottom: 2px; line-height: 1.5;"><b>របៀបហៅតេស្តលទ្ធផល (Endpoints Testing URL)៖</b><br>
+            • <b>GetAppName:</b> <code>http://localhost:5000/api/app/name</code><br>
+            • <b>GetServerTime:</b> <code>http://localhost:5000/api/app/servertime</code></p>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ៤ / ១៩</div>
+    </div>
+</div>
+
+<!-- PAGE 5: CONTROLLER CLASSES & ACTION METHODS -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៣</h1><p>ASP.NET CORE MVC & SQL SERVER</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-gears"></i> ៣.២ Controller Classes & Action Methods (IActionResult)</div>
+        <div class="text-block">
+            <b>Action Method</b> គឺជា public method នៅក្នុង Controller ដែលរត់រាល់ពេលមានសំណើ HTTP Request ត្រូវគ្នាមកដល់។ Action Method នីមួយៗត្រូវបញ្ជូនលទ្ធផលត្រឡប់ទៅវិញជាប្រភេទ <code>IActionResult</code> ដែលអនុញ្ញាតឱ្យយើងបញ្ជូនទិន្នន័យរួមជាមួយ Status Code របស់ HTTP (ដូចជា 200 OK, 404 Not Found)។
+        </div>
+
+        <div class="sub-heading">ប្រភេទ IActionResult និង HTTP Status Codes សំខាន់ៗ</div>
+        <table class="standard-table">
+            <thead>
+                <tr>
+                    <th style="width: 25%;">ប្រភេទ Result</th>
+                    <th style="width: 20%;">HTTP Status</th>
+                    <th>អត្ថន័យបច្ចេកទេស និងការប្រើប្រាស់ក្នុង API</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><b>Ok(data)</b></td>
+                    <td style="text-align: center;">200 OK</td>
+                    <td>សំណើជោគជ័យ និងបញ្ជូនទិន្នន័យត្រឡប់ទៅ Client។ ប្រើប្រាស់ជាទូទៅបំផុត។</td>
+                </tr>
+                <tr>
+                    <td><b>Created(uri, data)</b></td>
+                    <td style="text-align: center;">201 Created</td>
+                    <td>បង្កើតទិន្នន័យថ្មីក្នុង DB ជោគជ័យ។ ប្រើប្រាស់បន្ទាប់ពីការសរសេរកូដបញ្ចូលទិន្នន័យថ្មី (POST)។</td>
+                </tr>
+                <tr>
+                    <td><b>BadRequest()</b></td>
+                    <td style="text-align: center;">400 Bad Request</td>
+                    <td>ទម្រង់សំណើផ្ញើមកខុស ឬមិនពេញលេញ។ ប្រើប្រាស់នៅពេល Client បញ្ជូនទិន្នន័យមកខុសលក្ខខណ្ឌ។</td>
+                </tr>
+                <tr>
+                    <td><b>NotFound()</b></td>
+                    <td style="text-align: center;">404 Not Found</td>
+                    <td>រកមិនឃើញទិន្នន័យដែលស្នើសុំ។ ប្រើប្រាស់ពេលស្វែងរកទិន្នន័យតាម ID រួចរកមិនឃើញក្នុង DB។</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ៥ / ១៩</div>
+    </div>
+</div>
+
+<!-- PAGE 6: LAB 3.2 PART 1 - MODEL SETUP -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៣</h1><p>ASP.NET CORE MVC & SQL SERVER</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-cube"></i> ៣.៤ ការបង្កើត Student Controller & Mock Data (Model Setup)</div>
+        <div class="text-block">
+            មុននឹងសិក្សាកូដរបស់ Controller សម្រាប់គ្រប់គ្រងទិន្នន័យសិស្ស យើងត្រូវប្រាកដថាបានបង្កើត Class Model ឈ្មោះ <code>Student</code> នៅក្នុង Folder <code>Models</code> ឱ្យបានត្រឹមត្រូវស្របតាមមេរៀនជំពូកទី ២ ដូចខាងក្រោម៖
+        </div>
+
+        <div class="lab-box">
+            <h4><i class="fa-solid fa-file-code"></i> ជំហានទី ១៖ បង្កើតឯកសារ Model Class ឈ្មោះ Product</h4>
+            <p><b>គម្រោង (Project):</b> <code>OopMvcApplication</code> | <b>ទីតាំង (File):</b> <code>Models/Student.cs</code></p>
+            <div class="code-window" style="margin-top:6px;">
+<pre><span style="color:#C678DD;">namespace</span> OopMvcApplication.Models
+{
+    <span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">Student</span>
+    {
+        // auto-properties (get, set)
+        <span style="color:#C678DD;">public int</span> Id { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; }
+        <span style="color:#C678DD;">public string</span> Name { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; } = <span style="color:#C678DD;">string</span>.Empty;
+        <span style="color:#C678DD;">public string</span> Major { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; } = <span style="color:#C678DD;">string</span>.Empty;
+        
+        // Constructor សម្រាប់ផ្ដល់តម្លៃដំបូងដល់ properties
+        <span style="color:#C678DD;">public</span> <span style="color:#61AFEF;">Student</span>(<span style="color:#C678DD;">int</span> id, <span style="color:#C678DD;">string</span> name, <span style="color:#C678DD;">string</span> major)
+        {
+            Id = id;
+            Name = name;
+            Major = major;
+        }
+    }
+}</pre>
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ៦ / ១៩</div>
+    </div>
+</div>
+
+<!-- PAGE 7: LAB 3.2 PART 2 - STUDENTCONTROLLER CODE -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៣</h1><p>ASP.NET CORE MVC & SQL SERVER</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="lab-box" style="margin-top:0;">
+            <h4><i class="fa-solid fa-laptop-code"></i> ដំណោះស្រាយលំហាត់ Lab 3.2: Student Controller with Mock JSON Array</h4>
+            <p><b>គម្រោង (Project):</b> <code>OopMvcApplication</code> | <b>ទីតាំង (File):</b> <code>Controllers/StudentController.cs</code></p>
+            <div class="code-window" style="margin-top:6px; margin-bottom:4px;">
+<pre><span style="color:#C678DD;">using</span> Microsoft.AspNetCore.Mvc;
+<span style="color:#C678DD;">using</span> System.Collections.Generic;
+<span style="color:#C678DD;">using</span> OopMvcApplication.Models; // នាំចូល Class Model 'Student'
+
+<span style="color:#C678DD;">namespace</span> OopMvcApplication.Controllers
+{
+    [ApiController]
+    [Route(<span style="color:#98C379;">"api/[controller]"</span>)]
+    <span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">StudentController</span> : ControllerBase
+    {
+        // Action Method បញ្ចេញបញ្ជីសិស្សទាំងអស់ជា JSON Array
+        [HttpGet]
+        <span style="color:#C678DD;">public</span> IActionResult <span style="color:#61AFEF;">GetStudents</span>()
+        {
+            // ១. បង្កើតបញ្ជីសិស្សសិប្បនិម្មិត (Mock Data List)
+            List&lt;Student&gt; students = <span style="color:#C678DD;">new</span>()
+            {
+                <span style="color:#C678DD;">new</span> Student(<span style="color:#D19A66;">1</span>, <span style="color:#98C379;">"Dara SOK"</span>, <span style="color:#98C379;">"Computer Science"</span>),
+                <span style="color:#C678DD;">new</span> Student(<span style="color:#D19A66;">2</span>, <span style="color:#98C379;">"Cheata SENG"</span>, <span style="color:#98C379;">"Information Technology"</span>),
+                <span style="color:#C678DD;">new</span> Student(<span style="color:#D19A66;">3</span>, <span style="color:#98C379;">"Sokha PHEN"</span>, <span style="color:#98C379;">"Cyber Security"</span>)
+            };
+
+            // ២. បញ្ជូនបញ្ជីសិស្សទៅកាន់ Client ក្នុងទម្រង់ JSON Array
+            <span style="color:#C678DD;">return</span> <span style="color:#61AFEF;">Ok</span>(students);
+        }
+    }
+}</pre>
+            </div>
+            <p style="font-size:9.5pt; line-height:1.5; margin:0;"><b>ចំណាំបច្ចេកទេស៖</b> នៅពេល Action Method របស់ Controller បញ្ជូន C# List ទៅកាន់ Client, ប្រព័ន្ធ .NET Web API នឹងធ្វើការងារ <b>Serialization</b> (បំប្លែង List ឱ្យទៅជា JSON String) ដោយស្វ័យប្រវត្តិតាមរយៈបណ្ណាល័យ System.Text.Json។</p>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ៧ / ១៩</div>
+    </div>
+</div>
+
+<!-- PAGE 8: ROUTING & ENDPOINT BASICS -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៣</h1><p>ASP.NET CORE MVC & SQL SERVER</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-route"></i> ៣.៣ ដំណើរការ Routing & Endpoint Basics (Attribute Routing)</div>
+        <div class="text-block">
+            <b>Routing</b> គឺជាយន្តការស្វែងរក និងផ្គូផ្គង URL របស់សំណើដែលផ្ញើមកពី Browser ទៅកាន់ Action Method ជាក់លាក់របស់ Controller នៅក្នុង Server។ នៅក្នុង ASP.NET Core API គេនិយមប្រើប្រាស់ <b>Attribute Routing</b> (ការសរសេរ Route នៅលើក្បាល Class ឬ Method ផ្ទាល់) ព្រោះវាផ្តល់ភាពច្បាស់លាស់ និងងាយស្រួលគ្រប់គ្រង។
+        </div>
+
+        <div class="sub-heading">ការប្រើប្រាស់ Attribute Routing លើ Controller & Action Methods</div>
+        <div class="code-window">
+<pre><span style="color:#5C6370;">// URL Route របស់ Controller ត្រូវបានកំណត់តាម [controller] ដែលយកឈ្មោះខាងមុខ Class មកធ្វើជា Route URL</span>
+[Route(<span style="color:#98C379;">"api/[controller]"</span>)] 
+<span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">ProductController</span> : ControllerBase 
+{
+    <span style="color:#5C6370;">// URL Endpoint: api/product</span>
+    [HttpGet]
+    <span style="color:#C678DD;">public</span> IActionResult <span style="color:#61AFEF;">GetAllProducts</span>() { ... }
+
+    <span style="color:#5C6370;">// URL Endpoint: api/product/promo</span>
+    [HttpGet(<span style="color:#98C379;">"promo"</span>)]
+    <span style="color:#C678DD;">public</span> IActionResult <span style="color:#61AFEF;">GetPromoProducts</span>() { ... }
+}</pre>
+        </div>
+
+        <div class="info-box">
+            <p><b><i class="fa-solid fa-lightbulb"></i> គន្លឹះ៖</b> ការបំបែក endpoints ឱ្យបានច្បាស់លាស់ (ដូចជា <code>api/product</code> និង <code>api/product/promo</code>) ជួយឱ្យ Frontend Developers អាចហៅ API មកប្រើប្រាស់បានដោយងាយស្រួល និងមិនមានការច្រឡំសំណើ។</p>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ៨ / ១៩</div>
+    </div>
+</div>
+
+<!-- PAGE 9: MOCK DATA IN CONTROLLER -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៣</h1><p>ASP.NET CORE MVC & SQL SERVER</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-database"></i> ៣.៤ ការបង្កើត Mock Data នៅក្នុង Controller (C# Collections List)</div>
+        <div class="text-block">
+            មុននឹងយើងសិក្សាការតភ្ជាប់ទៅកាន់មូលដ្ឋានទិន្នន័យពិតប្រាកដ SQL Server នៅក្នុងជំពូកបន្ទាប់ ជំហានដំបូងយើងត្រូវចេះរៀបចំបង្កើត <b>Mock Data</b> (ទិន្នន័យសិប្បនិម្មិត) នៅក្នុង Controller សិន។ យើងអាចប្រើប្រាស់ C# <b>Collections List</b> ដើម្បីបង្កើតបញ្ជីរក្សាទុក Object ចេញពី Class Model ដែលយើងបានសរសេររួចក្នុងជំពូកទី ២។
+        </div>
+
+        <div class="two-column">
+            <div>
+                <p style="font-size:10pt; line-height: 1.6; margin-bottom: 8px;">
+                    ការសរសេរកូដប្រកាស List របស់ C# ជួយសម្រួលដល់ការផ្ទុកទិន្នន័យជាច្រើននៅក្នុង Memory រង់ចាំសំណើ Request ពី Client មកអាន។ 
+                </p>
+                <p style="font-size:10pt; line-height: 1.6;">
+                    ការសាកល្បងជាមួយ List Mock Data នេះជាការរៀបចំដ៏ល្អបំផុត មុនពេលយើងប្តូរប្រភពទិន្នន័យពី List Memory ឱ្យមកទាញទិន្នន័យពិតប្រាកដចេញពី Database Tables វិញ។
+                </p>
+            </div>
+            <div class="visual-frame">
+                <img src="images/oopmodel.png" onerror="handleImgError(this, 'oop')" alt="OOP Mock Data">
+                <div class="schematic-fallback"></div>
+            </div>
+        </div>
+
+        <div class="code-window">
+<pre><span style="color:#C678DD;">using</span> System.Collections.Generic;
+<span style="color:#C678DD;">using</span> OopMvcApplication.Models;
+
+<span style="color:#5C6370;">// ការបង្កើត Mock Data List</span>
+List&lt;Student&gt; students = <span style="color:#C678DD;">new</span>()
+{
+    <span style="color:#C678DD;">new</span> Student(<span style="color:#D19A66;">1</span>, <span style="color:#98C379;">"Dara SOK"</span>, <span style="color:#98C379;">"Computer Science"</span>),
+    <span style="color:#C678DD;">new</span> Student(<span style="color:#D19A66;">2</span>, <span style="color:#98C379;">"Cheata SENG"</span>, <span style="color:#98C379;">"Information Technology"</span>)
+};</pre>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ៩ / ១៩</div>
+    </div>
+</div>
+
+<!-- PAGE 10: JSON SERIALIZATION -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៣</h1><p>ASP.NET CORE MVC & SQL SERVER</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-wand-magic-sparkles"></i> ៣.៥ ដំណើរការបំប្លែងទិន្នន័យ (JSON Serialization)</div>
+        <div class="text-block">
+            នៅពេលដែល Action Method របស់ Controller បញ្ជូន C# Object ឬ List ទៅកាន់ Client, ប្រព័ន្ធ ASP.NET Core MVC ប្រើប្រាស់បណ្ណាល័យ <b>System.Text.Json</b> ដំណើរការបំប្លែង Objects ទាំងនោះឱ្យទៅជាទម្រង់អត្ថបទ <b>JSON (Serialization)</b> ដោយស្វ័យប្រវត្ត។ ដំណើរការនេះជួយសម្រួលដល់ការចម្លងទិន្នន័យឆ្លងកាត់ម៉ាស៊ីនមេ យ៉ាងមានសុវត្ថិភាព និងរហ័សបំផុត។
+        </div>
+
+        <div class="two-column">
+            <div class="visual-frame">
+                <img src="images/mapping.png" onerror="handleImgError(this, 'mapping')" alt="Serialization Flow">
+                <div class="schematic-fallback"></div>
+            </div>
+            <div style="font-size:10pt; line-height: 1.6;">
+                <b class="highlight"><i class="fa-solid fa-circle-info"></i> តួនាទីរបស់ JSON Serialization៖</b><br>
+                • បកប្រែរចនាសម្ព័ន្ធទិន្នន័យស្មុគស្មាញរបស់ C# ឱ្យទៅជាអត្ថបទ (String JSON) ដែលគ្រប់ប្រព័ន្ធ Frontend (ដូចជា React, Mobile Apps) អាចអានបាន។<br>
+                • ជួយឱ្យការបញ្ជូនទិន្នន័យតាមប្រព័ន្ធ Network មានទំហំកាន់តែស្រាល និងរហ័ស។
+            </div>
+        </div>
+
+        <div class="sub-heading">លទ្ធផល JSON Response ដែលបញ្ជូនទៅកាន់ Browser</div>
+        <div class="code-window">
+<pre>[
+  { <span style="color:#E06C75;">"id"</span>: <span style="color:#D19A66;">1</span>, <span style="color:#E06C75;">"name"</span>: <span style="color:#98C379;">"Dara SOK"</span>, <span style="color:#E06C75;">"major"</span>: <span style="color:#98C379;">"Computer Science"</span> },
+  { <span style="color:#E06C75;">"id"</span>: <span style="color:#D19A66;">2</span>, <span style="color:#E06C75;">"name"</span>: <span style="color:#98C379;">"Cheata SENG"</span>, <span style="color:#E06C75;">"major"</span>: <span style="color:#98C379;">"Information Technology"</span> }
+]</pre>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ១០ / ១៩</div>
+    </div>
+</div>
+
+<!-- PAGE 11: LAB 3.3 SOLUTIONS & DIAGRAM -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៣</h1><p>ASP.NET CORE MVC & SQL SERVER</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="lab-box" style="margin-top:0;">
+            <h4><i class="fa-solid fa-laptop-code"></i> ដំណោះស្រាយលំហាត់ Lab 3.3: API Testing & Browser JSON Response</h4>
+            <p><b>សេចក្តីណែនាំអំពីរបៀបដំណើរការ និងធ្វើតេស្ត endpoints ទាំងអស់របស់គម្រោង៖</b></p>
+            
+            <p style="font-size:10pt; line-height: 1.6; margin-top: 6px;">
+                <b>១. ដំណើរការម៉ាស៊ីនមេ (Start Server)៖</b><br>
+                បើកកម្មវិធី Terminal ក្នុង VS Code នៅក្នុងទីតាំង Folder គម្រោង រួចវាយបញ្ជា៖<br>
+                <code>dotnet run</code>
+            </p>
+
+            <p style="font-size:10pt; line-height: 1.6; margin-top: 6px;">
+                <b>២. ពិនិត្យមើល URL Port របស់ម៉ាស៊ីនមេ៖</b><br>
+                ជាទូទៅ ម៉ាស៊ីនមេនឹងបើកដំណើរការនៅលើ port <code>http://localhost:5000</code> ឬ <code>https://localhost:5001</code> (សូមពិនិត្យមើលសារដែលបង្ហាញក្នុង Terminal)។
+            </p>
+
+            <p style="font-size:10pt; line-height: 1.6; margin-top: 6px;">
+                <b>៣. តេស្ត Endpoints តាមរយៈ Browser៖</b><br>
+                បើកកម្មវិធី Web Browser (ដូចជា Chrome, Edge) រួចវាយ URL ខាងក្រោមដើម្បីតេស្តលទ្ធផល៖<br>
+                • តេស្ត Student API: <code>http://localhost:5000/api/student</code><br>
+                • តេស្ត App Server Time API: <code>http://localhost:5000/api/app/servertime</code>
+            </p>
+
+            <p style="font-size:10pt; line-height: 1.6; margin-top: 6px;">
+                <b>៤. ឧបករណ៍ជំនួយសម្រាប់ការសង្កេតទិន្នន័យ (Optional Tools)៖</b><br>
+                ដើម្បីឱ្យទិន្នន័យ JSON បង្ហាញមកមានរបៀបរៀបរយស្អាតនៅលើ Browser លោកគ្រូអាចដំឡើង Extension ឈ្មោះ <b>JSON Viewer</b> នៅក្នុង Chrome Web Store ឬប្រើប្រាស់កម្មវិធី <b>Postman</b> សម្រាប់ហៅតេស្ត។
+            </p>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ១១ / ១៩</div>
+    </div>
+</div>
+
+<!-- PAGE 12: GLOSSARY -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៣</h1><p>ASP.NET CORE MVC & SQL SERVER</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-book-bookmark"></i> ពន្យល់ពាក្យគន្លឹះ (Glossary)</div>
+        <div class="text-block">ពាក្យបច្ចេកទេស និងការពន្យល់ន័យជាភាសាខ្មែរសម្រាប់ជំពូកទី ៣ នេះ៖</div>
+        
+        <table class="standard-table">
+            <thead>
+                <tr>
+                    <th style="width: 25%;">ពាក្យបច្ចេកទេស</th>
+                    <th>ការពន្យល់ជាភាសាខ្មែរ</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><b>ControllerBase</b></td>
+                    <td>Class គ្រឹះស្រាលរបស់ ASP.NET Core សម្រាប់បង្កើត Web API (មិនមានផ្ទុកការងារ View engine)។</td>
+                </tr>
+                <tr>
+                    <td><b>Action Method</b></td>
+                    <td>Public method ក្នុង Controller ដែលបង្កើតឡើងដើម្បីទទួលសំណើ និងបញ្ជូនលទ្ធផលទៅកាន់ Client។</td>
+                </tr>
+                <tr>
+                    <td><b>IActionResult</b></td>
+                    <td>Interface កំណត់លទ្ធផលការងាររបស់ Action Method អាចបញ្ជូនទិន្នន័យរួមគ្នាជាមួយ HTTP Status Code។</td>
+                </tr>
+                <tr>
+                    <td><b>Attribute Routing</b></td>
+                    <td>ការកំណត់ផ្លូវ URL ទៅកាន់ Action Methods ដោយសរសេរ Attributes (ដូចជា [Route], [HttpGet]) ដោយផ្ទាល់។</td>
+                </tr>
+                <tr>
+                    <td><b>JSON Serialization</b></td>
+                    <td>ដំណើរការបំលែងទិន្នន័យពី C# Objects ឱ្យទៅជាទម្រង់អត្ថបទ JSON សម្រាប់ចម្លងឆ្លងកាត់បណ្តាញម៉ាញស៊ីនមេ។</td>
+                </tr>
+                <tr>
+                    <td><b>Mock Data</b></td>
+                    <td>ទិន្នន័យសិប្បនិម្មិតដែលបង្កើតឡើងសម្រាប់ការសាកល្បងប្រព័ន្ធ មុនពេលតភ្ជាប់ទៅមូលដ្ឋានទិន្នន័យពិតប្រាកដ។</td>
+                </tr>
+                <tr>
+                    <td><b>RESTful API</b></td>
+                    <td>និម្មាបនកម្មស្ថាបត្យកម្ម API ដែលប្រើប្រាស់ HTTP Methods ស្ដង់ដារសម្រាប់ទំនាក់ទំនងទិន្នន័យ។</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ១២ / ១៩</div>
+    </div>
+</div>
+
+<!-- PAGE 13: SUMMARY & REFERENCES -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៣</h1><p>ASP.NET CORE MVC & SQL SERVER</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-list-check"></i> សេចក្តីសង្ខេបជំពូកទី ៣ (Summary)</div>
+        <ul class="obj-list" style="margin-top:10px;">
+            <li><b class="highlight">Controllers:</b> គឺជាខួរក្បាល និងជាអ្នកសម្របសម្រួលលំហូរទិន្នន័យដ៏សំខាន់បំផុតរបស់គម្រោង ASP.NET Core MVC។</li>
+            <li><b class="highlight">ControllerBase:</b> Web API Controller ត្រូវតែស្នង (Inherit) ពី ControllerBase និងកំណត់ Attribute [ApiController] ជានិច្ច។</li>
+            <li><b class="highlight">Action Methods & IActionResult:</b> រាល់ Action ទាំងអស់ត្រូវបញ្ជូនលទ្ធផលត្រឡប់ទៅវិញជាប្រភេទ IActionResult (ដូចជា Ok(), Created(), NotFound())។</li>
+            <li><b class="highlight">Attribute Routing:</b> ការកំណត់ URL Route ផ្ទាល់លើ Action ជួយផ្តល់ភាពងាយស្រួល និងរៀបចំ endpoints បានច្បាស់លាស់។</li>
+            <li><b class="highlight">JSON Serialization:</b> ASP.NET Core ប្រើប្រាស់ System.Text.Json ដើម្បីបំប្លែង C# Objects ទៅជា JSON Response ដោយស្វ័យប្រវត្ត។</li>
+        </ul>
+
+        <div class="section-title"><i class="fa-solid fa-book"></i> ឯកសារយោង (References)</div>
+        <ul class="obj-list" style="margin-top:10px;">
+            <li><b>Microsoft Learn (Web API Tutorial):</b> <span style="color:var(--secondary);">https://learn.microsoft.com/en-us/aspnet/core/tutorials/first-web-api</span></li>
+            <li><b>Microsoft Learn (Routing Fundamentals):</b> <span style="color:var(--secondary);">https://learn.microsoft.com/en-us/aspnet/core/fundamentals/routing</span></li>
+            <li><b>Microsoft Learn (Action Return Types):</b> <span style="color:var(--secondary);">https://learn.microsoft.com/en-us/aspnet/core/web-api/action-return-types</span></li>
+            <li><b>សៀវភៅគោល៖</b> Freeman, A. (2024). <i>Pro ASP.NET Core MVC 8</i>. Apress. (10th Edition)</li>
+        </ul>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ១៣ / ១៩</div>
+    </div>
+</div>
+
+<!-- PAGE 14: REVIEW QUESTIONS SECTION 1 & 2 -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៣</h1><p>ASP.NET CORE MVC & SQL SERVER</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="background:var(--accent); color:white; justify-content:center; border-radius:8px; border-left:none; margin-top:0; padding: 6px 0;"><i class="fa-solid fa-pen-to-square"></i> សំណួររំលឹកមេរៀន (Review Questions)</div>
+        
+        <div class="sub-heading" style="width: 100%;">១. សំណួរ ខុស/ត្រូវ (True/False)</div>
+        <p style="font-size:10pt; margin-bottom:8px;"><b>សេចក្តីណែនាំ៖</b> សូមគូសសញ្ញា (ត្រូវ) ប្រសិនបើប្រយោគខាងក្រោមត្រឹមត្រូវ ឬសញ្ញា (ខុស) ប្រសិនបើខុស។</p>
+        
+        <ol class="q-list" style="font-size:9.5pt; line-height:1.45;">
+            <li>Web API Controllers របស់ ASP.NET Core គួរតែស្នង (Inherit) ពី class <code>Controller</code> ជានិច្ច។</li>
+            <li>Attribute <code>[ApiController]</code> ជួយបំពេញការងារត្រួតពិនិត្យ validation ទិន្នន័យដោយស្វ័យប្រវត្ត។</li>
+            <li>Action Method ទាំងអស់នៅក្នុង Web API ត្រូវតែបញ្ជូនត្រឡប់ជាប្រភេទ <code>IActionResult</code> ជានិច្ច។</li>
+            <li>យន្តការ <code>Ok(data)</code> បញ្ជូន Status Code 400 Bad Request ត្រឡប់ទៅកាន់ Client។</li>
+            <li>Attribute Routing គឺជាការសរសេរ Route URLs នៅលើក្បាល class ឬ method របស់ Controller ផ្ទាល់។</li>
+            <li>បណ្ណាល័យ System.Text.Json បំប្លែង C# Objects ទៅជា JSON Response ដោយស្វ័យប្រវត្ត។</li>
+            <li>សញ្ញា {} នៅក្នុងទម្រង់ JSON ត្រូវបានប្រើប្រាស់សម្រាប់សម្គាល់ Array (បញ្ជីសមាជិក)។</li>
+            <li>សន្ទស្សន៍ URL endpoint ត្រូវបានកំណត់នៅក្នុង Attribute <code>[Route]</code> ឬ <code>[HttpGet]</code>។</li>
+            <li>លទ្ធផល Http Status Code 404 សម្គាល់ថា ម៉ាស៊ីនមេត្រូវបានដំឡើងជោគជ័យ (Created)។</li>
+            <li>Mock Data ត្រូវបានបង្កើតឡើងនៅក្នុង Controller ដើម្បីតេស្តប្រព័ន្ធជាបណ្ដោះអាសន្ន។</li>
+        </ol>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ៖ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ១៤ / ១៩</div>
+    </div>
+</div>
+
+<!-- PAGE 15: REVIEW QUESTIONS SECTION 3 & 4 -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៣</h1><p>ASP.NET CORE MVC & SQL SERVER</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-heading" style="width: 100%; margin-top:0;">២. សំណួរ ពហុជ្រើសរើស (MCQs)</div>
+        <p style="font-size:10pt; margin-bottom:8px;"><b>សេចក្តីណែនាំ៖</b> សូមជ្រើសរើសចម្លើយដែលត្រឹមត្រូវបំផុតតែមួយគត់។</p>
+        
+        <ol class="q-list" style="font-size:9.5pt; line-height:1.45;">
+            <li>តើ class គ្រឹះ (Base Class) មួយណាដែល API Controller គួរតែស្នងពី?
+                <ul class="mcq-opts">
+                    <li>A. Controller</li>
+                    <li>B. ControllerBase</li>
+                    <li>C. ActionController</li>
+                    <li>D. WebController</li>
+                </ul>
+            </li>
+            <li>តើ Attribute មួយណាដែលប្រាប់ទៅ Server ថា class នេះគឺជា Web API Controller?
+                <ul class="mcq-opts">
+                    <li>A. [Route]</li>
+                    <li>B. [ApiController]</li>
+                    <li>C. [HttpGet]</li>
+                    <li>D. [ActionName]</li>
+                </ul>
+            </li>
+            <li>តើ Http Status Code មួយណាដែលបញ្ជាក់ថា សំណើជោគជ័យ និងបញ្ជូនទិន្នន័យត្រឡប់ (200)?
+                <ul class="mcq-opts">
+                    <li>A. 200 OK</li>
+                    <li>B. 201 Created</li>
+                    <li>C. 400 Bad Request</li>
+                    <li>D. 404 Not Found</li>
+                </ul>
+            </li>
+            <li>តើបណ្ណាល័យលំនាំដើមមួយណាដែលប្រើសម្រាប់ដំណើរការ JSON Serialization ក្នុង .NET?
+                <ul class="mcq-opts">
+                    <li>A. Newtonsoft.Json</li>
+                    <li>B. System.Text.Json</li>
+                    <li>C. System.Xml</li>
+                    <li>D. DataContractJsonSerializer</li>
+                </ul>
+            </li>
+            <li>តើ Method មួយណាដែល Action Method ប្រើដើម្បីបញ្ជូន Status Code 404 ត្រឡប់ទៅ Client?
+                <ul class="mcq-opts">
+                    <li>A. Ok()</li>
+                    <li>B. NotFound()</li>
+                    <li>C. BadRequest()</li>
+                    <li>D. Created()</li>
+                </ul>
+            </li>
+            <li>តើ URL Endpoint មួយណាដែលម៉ាស៊ីនមេហៅរត់ Action <code>[HttpGet("servertime")]</code> នៅក្នុង <code>AppController</code>?
+                <ul class="mcq-opts">
+                    <li>A. /api/app</li>
+                    <li>B. /api/app/servertime</li>
+                    <li>C. /api/servertime</li>
+                    <li>D. /app/time</li>
+                </ul>
+            </li>
+            <li>តើ JSON សម្គាល់ Object នីមួយៗដោយប្រើប្រាស់និមិត្តសញ្ញាមួយណា?
+                <ul class="mcq-opts">
+                    <li>A. [ ]</li>
+                    <li>B. { }</li>
+                    <li>C. ( )</li>
+                    <li>D. &lt; &gt;</li>
+                </ul>
+            </li>
+        </ol>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ៖ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ១៥ / ១៩</div>
+    </div>
+</div>
+
+<!-- PAGE 16: REVIEW QUESTIONS SECTION 5 (MATCHING & ESSAY) -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៣</h1><p>ASP.NET CORE MVC & SQL SERVER</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-heading" style="width:100%; margin-top:0;">៣. សំណួរផ្គូផ្គង (Matching) & សំណួរបកស្រាយ (Essays)</div>
+        <p style="font-size:10pt; margin-bottom:8px;"><b>សេចក្តីណែនាំ៖</b> សូមផ្គូផ្គងពាក្យនៅជួរឈរខាងឆ្វេង (១-១០) ទៅនឹងការពន្យល់នៅជួរឈរខាងស្តាំ (A-J) ឱ្យបានត្រឹមត្រូវ។</p>
+        
+        <div class="two-column" style="gap:10px; align-items:start; margin-bottom: 10px;">
+            <table class="standard-table" style="box-shadow:none; font-size: 8.5pt;">
+                <tr><td style="font-weight:bold;">១. ControllerBase</td></tr>
+                <tr><td style="font-weight:bold;">២. [ApiController]</td></tr>
+                <tr><td style="font-weight:bold;">៣. Ok()</td></tr>
+                <tr><td style="font-weight:bold;">៤. [HttpGet]</td></tr>
+                <tr><td style="font-weight:bold;">៥. Routing</td></tr>
+                <tr><td style="font-weight:bold;">៦. System.Text.Json</td></tr>
+                <tr><td style="font-weight:bold;">៧. BadRequest()</td></tr>
+                <tr><td style="font-weight:bold;">៨. Mock Data</td></tr>
+                <tr><td style="font-weight:bold;">៩. [Route]</td></tr>
+                <tr><td style="font-weight:bold;">១០. Serialization</td></tr>
+            </table>
+            <table class="standard-table" style="box-shadow:none; font-size: 8.5pt;">
+                <tr><td>A. Attribute កំណត់ URL Route នៅលើក្បាល class ឬ Method</td></tr>
+                <tr><td>B. យន្តការផ្គូផ្គង URL របស់ Client ទៅកាន់ Controller Action</td></tr>
+                <tr><td>C. បណ្ណាល័យបំប្លែងទិន្នន័យ C# Objects ទៅជា JSON របស់ .NET</td></tr>
+                <tr><td>D. class គ្រឹះរបស់ API Controller ដែលគ្មាន view engine</td></tr>
+                <tr><td>E. បញ្ជូនលទ្ធផលជោគជ័យ រួមជាមួយ HTTP Status Code 200</td></tr>
+                <tr><td>F. ទិន្នន័យសិប្បនិម្មិតសម្រាប់តេស្ត endpoints បណ្ដោះអាសន្ន</td></tr>
+                <tr><td>G. ដំណើរការបំប្លែង Objects (C#) ឱ្យទៅជាទម្រង់អត្ថបទ (JSON)</td></tr>
+                <tr><td>H. បញ្ជូន HTTP Status Code 400 Bad Request ត្រឡប់ទៅ Client</td></tr>
+                <tr><td>I. Attribute បញ្ជាក់ថា class នេះគឺជា API Controller</td></tr>
+                <tr><td>J. Attribute កំណត់ឱ្យ Action ទទួលសំណើអានទិន្នន័យ (GET)</td></tr>
+            </table>
+        </div>
+
+        <div class="sub-heading" style="width:100%;">៤. សំណួរបកស្រាយ (Essay Questions)</div>
+        <ol class="q-list" style="font-size:9.5pt; line-height:1.5;">
+            <li>តើ class <code>Controller</code> និង <code>ControllerBase</code> មានភាពខុសគ្នាយ៉ាងដូចម្តេច?</li>
+            <li>តើដំណើរការ JSON Serialization មានសារៈសំខាន់យ៉ាងដូចម្តេចខ្លះក្នុងការបញ្ជូនទិន្នន័យក្នុង API?</li>
+            <li>ចូរពន្យល់ពីដំណើរការនៃការកំណត់ URL endpoints ដោយប្រើប្រាស់ Attribute Routing។</li>
+        </ol>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ៖ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ១៦ / ១៩</div>
+    </div>
+</div>
+
+<!-- PAGE 17: QUESTIONS SECTION 5 (PRACTICAL EXERCISES) -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៣</h1><p>ASP.NET CORE MVC & SQL SERVER</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="width: 100%; margin-top:0;"><i class="fa-solid fa-laptop-code"></i> ៥. លំហាត់អនុវត្តន៍ (Practical Exercises)</div>
+        <p style="font-size:10pt; margin-bottom:10px;"><b>សេចក្តីណែនាំ៖</b> សូមសរសេរកូដដោះស្រាយតាមប្រធានលំហាត់ខាងក្រោម (ដំណោះស្រាយពេញលេញស្ថិតក្នុងទំព័រ Answer Keys)។</p>
+
+        <div class="sub-heading" style="color:var(--accent); font-size:11pt; margin-bottom:5px;">ក. កំរិតស្រាល (Easy Level) - ២ លំហាត់</div>
+        <ul class="obj-list" style="margin-top:0; margin-bottom:15px;">
+            <li><b>លំហាត់ 5.1 (WelcomeApi)៖</b> ចូរសរសេរ API Controller ថ្មីមួយឈ្មោះ <code>WelcomeController</code> ដែលមាន Action Method មួយឈ្មោះ <code>GetMessage()</code> បញ្ជូនសារ "Welcome to ASP.NET Core Web API!" ត្រឡប់ទៅ Client វិញជា String (Status 200 OK)។</li>
+            <li><b>លំហាត់ 5.2 (PingApi)៖</b> ចូរសរសេរ API Controller ថ្មីមួយឈ្មោះ <code>PingController</code> ដែលមាន Action Method មួយឈ្មោះ <code>Ping()</code> បញ្ជូន JSON Object ត្រឡប់ទៅ Client វិញដែលមានផ្ទុកព័ត៌មាន <code>status = "Healthy"</code> និង <code>timestamp = [ពេលវេលាបច្ចុប្បន្ន]</code>។</li>
+        </ul>
+
+        <div class="sub-heading" style="color:var(--warning); font-size:11pt; margin-bottom:5px;">ខ. កំរិតមធ្យម (Medium Level) - ២ លំហាត់</div>
+        <ul class="obj-list" style="margin-top:0; margin-bottom:15px;">
+            <li><b>លំហាត់ 5.3 (ColorApi)៖</b> ចូរសរសេរ Action Method មួយឈ្មោះ <code>GetColors()</code> នៅក្នុង <code>ColorController</code> ដែលប្រកាសបញ្ជីពណ៌ (List of strings) រួមមាន "Red", "Blue", "Green", "Yellow" រួចបញ្ជូនទិន្នន័យបញ្ជីពណ៌ទាំងនោះជាទម្រង់ JSON Array (Status 200 OK)។</li>
+            <li><b>លំហាត់ 5.4 (DoctorApi)៖</b> ចូរបង្កើត Class Model មួយឈ្មោះ <code>Doctor</code> មាន Properties: Id, Name, Specialty និង Constructor ផ្ដល់តម្លៃដំបូង។ បន្ទាប់មកបង្កើត <code>DoctorController</code> ដែលមាន Action Method មួយ បង្កើត Object របស់ Doctor នេះ រួចបញ្ជូនជាទម្រង់ JSON ត្រឡប់ទៅ Client។</li>
+        </ul>
+
+        <div class="sub-heading" style="color:var(--danger); font-size:11pt; margin-bottom:5px;">គ. កំរិតធ្ងន់ (Hard Level) - ២ លំហាត់</div>
+        <ul class="obj-list" style="margin-top:0;">
+            <li><b>លំហាត់ 5.5 (DepartmentApi)៖</b> ចូរបង្កើត Class Model មួយឈ្មោះ <code>Department</code> មាន Properties: Id, Name, និង Employees (List of strings)។ នៅក្នុង <code>DepartmentController</code> ត្រូវបង្កើត Action Method មួយ បង្កើត Object របស់ Department នេះ (ដែលមានបញ្ចូលឈ្មោះបុគ្គលិក ៣ នាក់) រួចបញ្ជូនជាទម្រង់ JSON Object ដែលមានផ្ទុកបញ្ជីឈ្មោះបុគ្គលិកនៅផ្នែកខាងក្នុង។</li>
+            <li><b>លំហាត់ 5.6 (BookStoreApi)៖</b> ចូរបង្កើត Class Model មួយឈ្មោះ <code>Book</code> មាន Properties: Id, Title, Author, Price។ នៅក្នុង <code>Book</code> Class ត្រូវបង្កើត Method មួយឈ្មោះ <code>GetDiscountedPrice()</code> ដែលគណនាបញ្ចុះតម្លៃ ១០% លើតម្លៃសៀវភៅ។ សរសេរ <code>BookController</code> បង្កើតបញ្ជីសៀវភៅ ៣ ក្បាល (Mock Data List) រួចបញ្ជូនទៅ Client ជាទម្រង់ JSON Array ដែលមានផ្ទុកតម្លៃ Price ដើម និង DiscountedPrice គណនាភ្លាមៗ។</li>
+        </ul>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ៖ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ១៧ / ១៩</div>
+    </div>
+</div>
+
+<!-- PAGE 18: ANSWER KEYS SECTION 5 (EASY & MEDIUM SOLUTIONS) -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៣</h1><p>ASP.NET CORE MVC & SQL SERVER</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-heading" style="width: 100%; margin-top:0; color:var(--success);"><i class="fa-solid fa-circle-check"></i> ៥. ដំណោះស្រាយលំហាត់ កំរិតស្រាល និងកំរិតមធ្យម (Easy & Medium Solutions)</div>
+        
+        <!-- EASY 5.1 & 5.2 -->
+        <div style="font-size:9pt; font-weight:bold; color:var(--accent); margin-bottom:2px;"><i class="fa-solid fa-code"></i> លំហាត់ 5.1 (WelcomeApi) & 5.2 (PingApi) - Easy</div>
+        <div class="code-window" style="margin:2px 0; font-size:8pt;">
+            <div class="code-title" style="font-size:7.5pt; padding:1px 10px; color:#aaa;">Controllers/WelcomeController.cs</div>
+<pre><span style="color:#C678DD;">using</span> Microsoft.AspNetCore.Mvc;
+
+[ApiController] [Route(<span style="color:#98C379;">"api/[controller]"</span>)]
+<span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">WelcomeController</span> : ControllerBase {
+    [HttpGet]
+    <span style="color:#C678DD;">public</span> IActionResult <span style="color:#61AFEF;">GetMessage</span>() =&gt; <span style="color:#61AFEF;">Ok</span>(<span style="color:#98C379;">"Welcome to ASP.NET Core Web API!"</span>);
+}</pre>
+        </div>
+        <div class="code-window" style="margin:2px 0; font-size:8pt;">
+            <div class="code-title" style="font-size:7.5pt; padding:1px 10px; color:#aaa;">Controllers/PingController.cs</div>
+<pre><span style="color:#C678DD;">using</span> Microsoft.AspNetCore.Mvc;
+<span style="color:#C678DD;">using</span> System;
+
+[ApiController] [Route(<span style="color:#98C379;">"api/[controller]"</span>)]
+<span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">PingController</span> : ControllerBase {
+    [HttpGet]
+    <span style="color:#C678DD;">public</span> IActionResult <span style="color:#61AFEF;">Ping</span>() =&gt; <span style="color:#61AFEF;">Ok</span>(<span style="color:#C678DD;">new</span> { status = <span style="color:#98C379;">"Healthy"</span>, timestamp = DateTime.Now });
+}</pre>
+        </div>
+
+        <!-- MEDIUM 5.3 & 5.4 -->
+        <div style="font-size:9pt; font-weight:bold; color:var(--warning); margin-bottom:2px;"><i class="fa-solid fa-code"></i> លំហាត់ 5.3 (ColorApi) & 5.4 (DoctorApi) - Medium</div>
+        <div class="code-window" style="margin:2px 0; font-size:8pt;">
+            <div class="code-title" style="font-size:7.5pt; padding:1px 10px; color:#aaa;">Controllers/ColorController.cs</div>
+<pre><span style="color:#C678DD;">using</span> Microsoft.AspNetCore.Mvc;
+<span style="color:#C678DD;">using</span> System.Collections.Generic;
+
+[ApiController] [Route(<span style="color:#98C379;">"api/[controller]"</span>)]
+<span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">ColorController</span> : ControllerBase {
+    [HttpGet]
+    <span style="color:#C678DD;">public</span> IActionResult <span style="color:#61AFEF;">GetColors</span>() =&gt; <span style="color:#61AFEF;">Ok</span>(<span style="color:#C678DD;">new</span> List&lt;<span style="color:#C678DD;">string</span>&gt; { <span style="color:#98C379;">"Red"</span>, <span style="color:#98C379;">"Blue"</span>, <span style="color:#98C379;">"Green"</span>, <span style="color:#98C379;">"Yellow"</span> });
+}</pre>
+        </div>
+        <div class="code-window" style="margin:2px 0; font-size:8pt;">
+            <div class="code-title" style="font-size:7.5pt; padding:1px 10px; color:#aaa;">Models/Doctor.cs & Controllers/DoctorController.cs</div>
+<pre><span style="color:#C678DD;">namespace</span> OopMvcApplication.Models {
+    <span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">Doctor</span> {
+        <span style="color:#C678DD;">public int</span> Id { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; }
+        <span style="color:#C678DD;">public string</span> Name { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; } = <span style="color:#C678DD;">string</span>.Empty;
+        <span style="color:#C678DD;">public string</span> Specialty { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; } = <span style="color:#C678DD;">string</span>.Empty;
+        <span style="color:#C678DD;">public</span> <span style="color:#61AFEF;">Doctor</span>(<span style="color:#C678DD;">int</span> id, <span style="color:#C678DD;">string</span> name, <span style="color:#C678DD;">string</span> spec) { Id = id; Name = name; Specialty = spec; }
+    }
+}
+<span style="color:#5C6370;">// In Controllers/DoctorController.cs</span>
+[ApiController] [Route(<span style="color:#98C379;">"api/[controller]"</span>)]
+<span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">DoctorController</span> : ControllerBase {
+    [HttpGet]
+    <span style="color:#C678DD;">public</span> IActionResult <span style="color:#61AFEF;">GetDoctor</span>() =&gt; <span style="color:#61AFEF;">Ok</span>(<span style="color:#C678DD;">new</span> Doctor(<span style="color:#D19A66;">1</span>, <span style="color:#98C379;">"Dr. Sok Lim"</span>, <span style="color:#98C379;">"Cardiology"</span>));
+}</pre>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ៖ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ១៨ / ១៩</div>
+    </div>
+</div>
+
+<!-- PAGE 19: ANSWER KEYS SECTION 5 (HARD SOLUTIONS) & GLOBAL SETUP -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៣</h1><p>ASP.NET CORE MVC & SQL SERVER</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-heading" style="width: 100%; margin-top:0; color:var(--success);"><i class="fa-solid fa-circle-check"></i> ៥. ដំណោះស្រាយលំហាត់ កំរិតធ្ងន់ (Hard Solutions) & Global Setup</div>
+
+        <!-- HARD 5.5 -->
+        <div style="font-size:9.5pt; font-weight:bold; color:var(--danger); margin-bottom:2px;"><i class="fa-solid fa-code"></i> លំហាត់ 5.5 (DepartmentApi) - Hard</div>
+        <div class="code-window" style="margin:2px 0; font-size:8pt;">
+            <div class="code-title" style="font-size:7.5pt; padding:1px 10px; color:#aaa;">Models/Department.cs & Controllers/DepartmentController.cs</div>
+<pre><span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">Department</span> {
+    <span style="color:#C678DD;">public int</span> Id { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; }
+    <span style="color:#C678DD;">public string</span> Name { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; } = <span style="color:#C678DD;">string</span>.Empty;
+    <span style="color:#C678DD;">public</span> List&lt;<span style="color:#C678DD;">string</span>&gt; Employees { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; } = <span style="color:#C678DD;">new</span>();
+    <span style="color:#C678DD;">public</span> <span style="color:#61AFEF;">Department</span>(<span style="color:#C678DD;">int</span> id, <span style="color:#C678DD;">string</span> name, List&lt;<span style="color:#C678DD;">string</span>&gt; emps) { Id = id; Name = name; Employees = emps; }
+}
+<span style="color:#5C6370;">// In Controllers/DepartmentController.cs</span>
+[ApiController] [Route(<span style="color:#98C379;">"api/[controller]"</span>)]
+<span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">DepartmentController</span> : ControllerBase {
+    [HttpGet]
+    <span style="color:#C678DD;">public</span> IActionResult <span style="color:#61AFEF;">GetDept</span>() =&gt; <span style="color:#61AFEF;">Ok</span>(<span style="color:#C678DD;">new</span> Department(<span style="color:#D19A66;">10</span>, <span style="color:#98C379;">"Research & Dev"</span>, <span style="color:#C678DD;">new</span>() { <span style="color:#98C379;">"Dara"</span>, <span style="color:#98C379;">"Cheata"</span>, <span style="color:#98C379;">"Bona"</span> }));
+}</pre>
+        </div>
+
+        <!-- HARD 5.6 -->
+        <div style="font-size:9.5pt; font-weight:bold; color:var(--danger); margin-bottom:2px;"><i class="fa-solid fa-code"></i> លំហាត់ 5.6 (BookStoreApi) - Hard</div>
+        <div class="code-window" style="margin:2px 0; font-size:8pt;">
+            <div class="code-title" style="font-size:7.5pt; padding:1px 10px; color:#aaa;">Models/Book.cs & Controllers/BookController.cs</div>
+<pre><span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">Book</span> {
+    <span style="color:#C678DD;">public int</span> Id { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; }
+    <span style="color:#C678DD;">public string</span> Title { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; } = <span style="color:#C678DD;">string</span>.Empty;
+    <span style="color:#C678DD;">public decimal</span> Price { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; }
+    <span style="color:#C678DD;">public decimal</span> <span style="color:#61AFEF;">DiscountedPrice</span> =&gt; Price * <span style="color:#D19A66;">0.9m</span>; <span style="color:#5C6370;">// 10% Discount</span>
+    <span style="color:#C678DD;">public</span> <span style="color:#61AFEF;">Book</span>(<span style="color:#C678DD;">int</span> id, <span style="color:#C678DD;">string</span> title, <span style="color:#C678DD;">decimal</span> price) { Id = id; Title = title; Price = price; }
+}
+<span style="color:#5C6370;">// In Controllers/BookController.cs</span>
+[ApiController] [Route(<span style="color:#98C379;">"api/[controller]"</span>)]
+<span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">BookController</span> : ControllerBase {
+    [HttpGet]
+    <span style="color:#C678DD;">public</span> IActionResult <span style="color:#61AFEF;">GetBooks</span>() =&gt; <span style="color:#61AFEF;">Ok</span>(<span style="color:#C678DD;">new</span> List&lt;Book&gt; {
+        <span style="color:#C678DD;">new</span>(<span style="color:#D19A66;">1</span>, <span style="color:#98C379;">"C# Programming"</span>, <span style="color:#D19A66;">25.00m</span>), <span style="color:#C678DD;">new</span>(<span style="color:#D19A66;">2</span>, <span style="color:#98C379;">"ASP.NET Core API"</span>, <span style="color:#D19A66;">35.00m</span>)
+    });
+}</pre>
+        </div>
+
+        <!-- GLOBAL PROJECT CONFIGURATION -->
+        <div style="font-size:9.5pt; font-weight:bold; color:var(--primary); margin-bottom:2px;"><i class="fa-solid fa-gears"></i> ៥.៧ Program.cs Configuration (Global Web API Startup)</div>
+        <div class="code-window" style="margin:2px 0; font-size:8pt;">
+<pre><span style="color:#C678DD;">var</span> builder = WebApplication.<span style="color:#61AFEF;">CreateBuilder</span>(args);
+builder.Services.<span style="color:#61AFEF;">AddControllers</span>(); <span style="color:#5C6370;">// ចុះឈ្មោះសេវាកម្ម API Controllers (មិនត្រូវការ Views ឡើយ)</span>
+<span style="color:#C678DD;">var</span> app = builder.<span style="color:#61AFEF;">Build</span>();
+app.<span style="color:#61AFEF;">MapControllers</span>(); <span style="color:#5C6370;">// ភ្ជាប់ប្រព័ន្ធ Routing ទៅកាន់ Controllers</span>
+app.<span style="color:#61AFEF;">Run</span>();</pre>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ៖ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ១៩ / ១៩</div>
+    </div>
+</div>
+
+<script>
+    // Fallback script to dynamically render beautiful CSS schemas if local images fail to load
+    function handleImgError(imageElement, fallbackType) {
+        imageElement.style.display = 'none';
+        const fallbackBox = imageElement.nextElementSibling;
+        if (fallbackBox && fallbackBox.classList.contains('schematic-fallback')) {
+            fallbackBox.style.display = 'flex';
+            
+            if (fallbackType === 'datatype') {
+                fallbackBox.innerHTML = `
+                    <div style="font-family:'Suwannaphum',sans-serif; color:var(--accent); font-size:10pt; margin-bottom:6px; font-weight:bold;">MVC Data Passing</div>
+                    <div style="text-align:left; font-family:var(--font-code); font-size:8pt; background:#0F172A; color:#38BDF8; padding:8px; border-radius:4px; width:100%;">
+                        <span style="color:#F472B6;">ViewData</span>[<span style="color:#98C379;">"Name"</span>] = <span style="color:#98C379;">"Dara"</span>;<br>
+                        <span style="color:#F472B6;">ViewBag</span>.Age = <span style="color:#F59E0B;">21</span>;
+                    </div>
+                `;
+            } else if (fallbackType === 'oop') {
+                fallbackBox.innerHTML = `
+                    <div style="font-family:'Suwannaphum',sans-serif; color:var(--accent); font-size:10pt; margin-bottom:6px; font-weight:bold;">Controller Architecture</div>
+                    <div style="display:flex; gap:6px; align-items:center; justify-content:center; width:100%; font-size:8pt;">
+                        <div style="background:#E2E8F0; padding:4px 6px; border-radius:4px; font-weight:bold;">HTTP Request</div>
+                        <i class="fa-solid fa-arrow-right" style="color:var(--accent);"></i>
+                        <div style="background:#DCFCE7; padding:4px 6px; border-radius:4px; font-weight:bold;">Controller Action</div>
+                    </div>
+                `;
+            } else if (fallbackType === 'mapping') {
+                fallbackBox.innerHTML = `
+                    <div style="font-family:'Suwannaphum',sans-serif; color:var(--accent); font-size:10pt; margin-bottom:6px; font-weight:bold;">Serialization</div>
+                    <div style="display:flex; gap:6px; align-items:center; justify-content:center; width:100%; font-size:8pt;">
+                        <div style="background:#EFF6FF; padding:4px 6px; border-radius:4px; font-weight:bold;">C# List</div>
+                        <i class="fa-solid fa-right-left" style="color:var(--accent);"></i>
+                        <div style="background:#FFFBEB; padding:4px 6px; border-radius:4px; font-weight:bold;">JSON Array</div>
+                    </div>
+                `;
+            }
+        }
+    }
+</script>
+</body>
+</html>

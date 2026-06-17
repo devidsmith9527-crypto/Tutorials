@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Syllabus Slides - ASP.NET Core API</title>
+    <link href="https://fonts.googleapis.com/css2?family=Koulen&family=Siemreap&family=Kantumruy+Pro:ital,wght@0,300..700;1,300..700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --bg-dark: #0F172A; 
+            --bg-card: #FFFFFF; 
+            --text-main: #1E293B; 
+            --text-muted: #64748B;
+            --accent-blue: #0284C7; 
+            --accent-green: #059669; 
+            --accent-yellow: #D97706; 
+            --accent-red: #DC2626;
+            --accent-purple: #4F46E5; 
+            --header-footer-bg: #F8FAFC;
+            --border-light: #E2E8F0;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { 
+            background-color: var(--bg-dark); 
+            /* Set Siemreap as the primary body font */
+            font-family: 'Siemreap', 'Khmer OS Siemreap', sans-serif; 
+            overflow: hidden; 
+            height: 100vh; 
+            width: 100vw; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+        }
+        
+        .slide-deck { width: 98vw; height: 96vh; position: relative; background: #FFFFFF; border-radius: 12px; overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.4); display: flex; flex-direction: column; }
+        .slide-wrapper { flex-grow: 1; position: relative; overflow: hidden; }
+        .slide { display: none; width: 100%; height: 100%; padding: 2vh 3.5vw 8vh 3.5vw; flex-direction: column; justify-content: flex-start; animation: slideIn 0.4s ease-out; position: absolute; top: 0; left: 0; }
+        .slide.active { display: flex; }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Header Branding */
+        .global-header { display: flex; justify-content: space-between; align-items: center; margin: -2vh -3.5vw 1.5vh -3.5vw; padding: 1vh 3.5vw; border-bottom: 2px solid var(--accent-purple); background-color: var(--header-footer-bg); }
+        .header-item { display: flex; flex-direction: column; align-items: center; gap: 2px; width: 15vw; }
+        .header-item img { height: 2.5vw; object-fit: contain; }
+        .header-item span { font-size: 0.8vw; font-weight: bold; color: var(--accent-purple); text-align: center; font-family: 'Koulen', sans-serif; }
+        .header-center h1 { font-family: 'Koulen', sans-serif; font-size: 1.4vw; color: var(--text-main); margin: 0; text-align: center; line-height: 1.2; font-weight: normal; }
+        .header-center p { font-family: 'Fira Code', monospace; font-size: 0.75vw; color: var(--text-muted); margin: 2px 0 0 0; font-weight: bold; text-align: center; }
+
+        /* Typography */
+        h1 { font-family: 'Koulen', sans-serif; font-size: 4.5vw; text-align: center; color: var(--text-main); font-weight: normal; line-height: 1.3; }
+        h2.slide-title { font-family: 'Koulen', sans-serif; font-size: 3.2vw; font-weight: normal; border-bottom: 4px solid var(--accent-purple); padding-bottom: 0.2vh; margin-bottom: 1.5vh; color: var(--text-main); display: inline-block; text-align: left !important; }
+        
+        .content-body { 
+            flex-grow: 1; display: flex; flex-direction: column; justify-content: flex-start; 
+            gap: 1.5vh; width: 100%; overflow: hidden; padding-bottom: 0.5vh;
+        }
+
+        /* Set all body paragraphs and lists to Left-Align to ensure standard Cambodian text blocks */
+        p, li { font-size: 1.7vw; line-height: 1.65; color: var(--text-main); text-align: left !important; }
+        
+        .keyword-icon { color: var(--accent-purple); margin-right: 0.5vw; width: 1.8vw; text-align: center; display: inline-block; }
+        
+        /* Layouts & Cards */
+        .two-column { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5vw; height: 100%; align-items: center; }
+        .card-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5vh 1.5vw; }
+        .card { background: var(--bg-card); padding: 1.5vh 2vw; border-radius: 8px; border: 1px solid var(--border-light); border-left: 6px solid var(--accent-purple); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); display: flex; flex-direction: column; justify-content: center; }
+        .card h4 { font-size: 2.2vw; color: var(--accent-purple); margin-bottom: 0.4vh; font-family: 'Koulen', sans-serif; font-weight: normal; text-align: left !important; }
+        .card p { text-align: left !important; }
+
+        /* Modern 3-Row Card Layout for Lesson Plans */
+        .lesson-plan-list { display: flex; flex-direction: column; gap: 1vh; width: 100%; height: 100%; justify-content: center; }
+        .lesson-row { 
+            display: grid; 
+            grid-template-columns: 1.2fr 6.8fr; 
+            gap: 1.8vw; 
+            background: var(--bg-card); 
+            border: 1px solid var(--border-light); 
+            border-left: 6px solid var(--accent-purple);
+            border-radius: 8px; 
+            padding: 1vh 1.5vw; 
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); 
+            align-items: center; 
+        }
+        .lesson-badge { 
+            background: #EEF2FF; 
+            border: 1px solid #C7D2FE; 
+            border-radius: 6px; 
+            padding: 0.8vh 0.5vw; 
+            text-align: center; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 0.2vh; 
+            justify-content: center;
+        }
+        .week-num { font-family: 'Koulen', sans-serif; font-size: 2vw; color: var(--accent-purple); line-height: 1.1; }
+        .session-num { font-size: 1.2vw; color: var(--text-muted); font-weight: bold; }
+        .clo-num { font-size: 1.2vw; color: var(--accent-blue); font-weight: bold; }
+        
+        .lesson-info { display: flex; flex-direction: column; gap: 0.4vh; }
+        .llo-text { font-size: 1.6vw; color: var(--text-main); line-height: 1.4; text-align: left !important; }
+        .topic-text { font-size: 1.5vw; color: var(--text-muted); line-height: 1.4; text-align: left !important; }
+        .exercise-text { 
+            font-size: 1.3vw; 
+            background: #F0F9FF; 
+            border-left: 3px solid var(--accent-blue); 
+            padding: 0.3vh 0.8vw; 
+            border-radius: 4px; 
+            color: var(--accent-blue); 
+            width: fit-content; 
+            text-align: left !important;
+        }
+
+        .exam-row { border-left-color: var(--accent-red) !important; }
+        .exam-row .lesson-badge { background: #FEF2F2 !important; border-color: #FCA5A5 !important; }
+        .exam-row .week-num { color: var(--accent-red) !important; }
+
+        /* Slide 15 Assessment Specific Layout */
+        .slide-15-layout { display: grid; grid-template-columns: 1fr 1.2fr; gap: 2.5vw; align-items: center; height: 100%; }
+        .assess-card-list { display: flex; flex-direction: column; gap: 1vh; justify-content: center; }
+        .assess-card { 
+            background: var(--bg-card); 
+            padding: 1.2vh 1.8vw; 
+            border-radius: 8px; 
+            border: 1px solid var(--border-light); 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02); 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+        }
+        .assess-card h4 { font-family: 'Koulen', sans-serif; font-size: 1.9vw; font-weight: normal; margin-bottom: 0.2vh; text-align: left !important; }
+        .assess-card p { font-size: 1.45vw; line-height: 1.4; color: var(--text-muted); text-align: left !important; }
+
+        /* Visual Frame */
+        .visual-frame { background: #E2E8F0; border-radius: 8px; border: 1px solid var(--border-light); padding: 0; display: flex; align-items: center; justify-content: center; height: 100%; min-height: 200px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05); position: relative;}
+        .visual-frame img { height: 100%; width: 100%; object-fit: cover; }
+        
+        .rounded-image-layout .visual-frame { border-radius: 50%; width: 15vw; height: 15vw; margin: 0 auto; box-shadow: 0 8px 20px rgba(0,0,0,0.1); border: 4px solid white; }
+
+        /* Chart */
+        .doughnut-chart { border-radius: 50%; height: 18vw; width: 18vw; margin: auto; background: conic-gradient(var(--accent-green) 0% 40%, var(--accent-blue) 40% 70%, var(--accent-yellow) 70% 90%, var(--text-muted) 90% 100%); position: relative; border: 6px solid #FFF; box-shadow: 0 8px 16px rgba(0,0,0,0.08);}
+        .doughnut-inner { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 11vw; height: 11vw; background: #FFF; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 2.2vw; color: var(--text-main); font-family: 'Siemreap', 'Khmer OS Siemreap', sans-serif;}
+
+        /* Custom Footer */
+        .global-footer { display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 1vh 3.5vw; border-top: 1px solid var(--border-light); background-color: var(--header-footer-bg); z-index: 10; }
+        .footer-left { display: flex; align-items: center; gap: 1vw; }
+        .footer-left img { border-radius: 50%; border: 2px solid var(--accent-purple); width: 2.5vw; height: 2.5vw; object-fit: cover; }
+        .footer-left span { font-size: 1.3vw; font-weight: bold; color: var(--text-main); font-family: 'Koulen', sans-serif; }
+        .slide-counter { font-size: 1.2vw; color: var(--accent-purple); font-family: 'Koulen', sans-serif; background: #FFFFFF; padding: 0.3vh 1vw; border-radius: 4px; border: 1px solid var(--border-light); box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+
+        .print-only-footer { display: none !important; }
+
+        /* ================== PROFESSIONAL A4 LANDSCAPE PRINTING (1 Slide Per Page) ================== */
+        @media print {
+            *, *::before, *::after {
+                animation: none !important;
+                transition: none !important;
+                box-shadow: none !important;
+            }
+            @page {
+                size: A4 landscape;
+                margin: 0;
+            }
+            html, body { 
+                background: none !important; 
+                background-color: #FFFFFF !important;
+                overflow: visible !important; 
+                height: 210mm !important; 
+                width: 297mm !important; 
+                display: block !important;
+                font-family: 'Siemreap', 'Khmer OS Siemreap', sans-serif !important;
+            }
+            .slide-deck { 
+                width: 297mm !important; 
+                height: 210mm !important; 
+                box-shadow: none !important; 
+                background: transparent !important; 
+                overflow: visible !important; 
+                display: block !important;
+                border: none !important; 
+                border-radius: 0 !important;
+            }
+            .slide-wrapper { display: block !important; overflow: visible !important; height: auto !important;}
+            .slide { 
+                display: flex !important; 
+                flex-direction: column !important; 
+                position: relative !important; 
+                opacity: 1 !important;
+                visibility: visible !important;
+                width: 297mm !important; 
+                height: 210mm !important; 
+                page-break-inside: avoid !important;
+                page-break-after: always !important;
+                overflow: hidden !important; 
+                box-sizing: border-box !important;
+                padding: 10mm 15mm 20mm 15mm !important; 
+                background: white !important;
+                border: none !important;
+                border-radius: 0 !important;
+            }
+            .global-header {
+                margin: -10mm -15mm 15px -15mm !important;
+                padding: 5mm 15mm !important;
+                height: auto !important;
+                border-bottom: 2px solid var(--accent-purple) !important;
+            }
+            .global-header img { height: 10mm !important; }
+            .global-header h1 { font-size: 15pt !important; }
+            .global-header p { font-size: 9pt !important; }
+            
+            .slide-title { font-size: 24pt !important; margin-bottom: 12px !important; padding-bottom: 4px !important; border-bottom-width: 3px !important; text-align: left !important; }
+            .content-body { overflow: hidden !important; height: auto !important; gap: 10px !important; }
+            p, li { font-size: 13.5pt !important; line-height: 1.5 !important; text-align: left !important; }
+            .card h4, .assess-card h4 { font-size: 16pt !important; margin-bottom: 4px !important; text-align: left !important; }
+            .card, .assess-card { padding: 12px 18px !important; }
+            .card-grid { gap: 12px !important; }
+            .two-column { gap: 20px !important; }
+
+            /* Card elements sizing for print */
+            .week-num { font-size: 15pt !important; }
+            .session-num { font-size: 10.5pt !important; }
+            .clo-num { font-size: 10pt !important; }
+            .llo-text { font-size: 12.5pt !important; text-align: left !important; }
+            .topic-text { font-size: 11.5pt !important; text-align: left !important; }
+            .exercise-text { font-size: 10.5pt !important; text-align: left !important; }
+            .lesson-row { padding: 8px 12px !important; gap: 15px !important; }
+            
+            .slide-deck > .global-footer { display: none !important; }
+
+            .print-only-footer { 
+                display: flex !important; 
+                position: absolute !important; 
+                bottom: 0 !important; 
+                left: 0 !important; 
+                width: 100% !important;
+                height: 15mm !important;
+                padding: 0 15mm !important; 
+                background-color: var(--header-footer-bg) !important;
+                border-top: 1px solid var(--border-light) !important;
+                align-items: center !important; 
+                justify-content: space-between !important;
+                border-radius: 0 !important;
+                box-sizing: border-box !important;
+                z-index: 1000 !important;
+            }
+            .print-only-footer .footer-left {
+                display: flex !important;
+                align-items: center !important;
+                gap: 4mm !important;
+                width: auto !important;
+            }
+            .print-only-footer .footer-left img { 
+                width: 9mm !important; 
+                height: 9mm !important; 
+                border: 2px solid var(--accent-purple) !important;
+                border-radius: 50% !important;
+                display: block !important;
+            }
+            .print-only-footer .footer-left span { 
+                font-size: 11pt !important; 
+                font-family: 'Koulen', sans-serif !important;
+                white-space: nowrap !important;
+                display: inline-block !important;
+            }
+            .print-only-footer .slide-counter { 
+                font-size: 11pt !important; 
+                font-family: 'Koulen', sans-serif !important;
+                padding: 2px 10px !important; 
+                border: 1px solid var(--border-light) !important;
+                background: #FFF !important;
+                white-space: nowrap !important;
+                display: inline-block !important;
+            }
+
+            .doughnut-chart { height: 120px !important; width: 120px !important; border-width: 4px !important; }
+            .doughnut-inner { width: 80px !important; height: 80px !important; font-size: 16px !important; }
+            .rounded-image-layout .visual-frame { width: 100px !important; height: 100px !important; }
+            .visual-frame { min-height: 140px !important; }
+
+            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+        }
+    </style>
+</head>
+<body onclick="navigate(event)">
+
+<div class="slide-deck" id="deck">
+
+    <template id="headerTemplate">
+        <div class="global-header">
+            <div class="header-item">
+                <img src="https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png" onerror="this.src='Logo.png'">
+                <span>សាកលវិទ្យាល័យអង្គរ</span>
+            </div>
+            <div class="header-center">
+                <h1>បច្ចេកវិទ្យា ASP.NET និងប្រព័ន្ធគ្រប់គ្រងមូលដ្ឋានទិន្នន័យ SQL Server</h1>
+                <p>Bachelor of Computer Science (Year 4 Semester 1)</p>
+            </div>
+            <div class="header-item">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg">
+                <span>.NET Core MVC</span>
+            </div>
+        </div>
+    </template>
+
+    <div class="slide-wrapper" id="slideWrapper">
+        
+        <!-- Slide 1: Cover Page -->
+        <div class="slide active">
+            <div style="text-align: center; margin: auto; width: 100%;">
+                <div style="display: flex; align-items: center; justify-content: center; gap: 2vw; margin-bottom: 2vh;">
+                    <img src="https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png" style="height: 10vw;" alt="AU Logo" onerror="this.src='Logo.png'">
+                    <div style="text-align: left; border-left: 3px solid var(--border-light); padding-left: 1.5vw;">
+                        <h2 style="font-family: 'Koulen', sans-serif; color: var(--accent-purple); font-size: 3.2vw; margin: 0; font-weight: normal;">សាកលវិទ្យាល័យអង្គរ</h2>
+                        <p style="font-family: 'Fira Code', monospace; color: var(--text-muted); font-size: 1.2vw; margin: 0; font-weight: bold; letter-spacing: 1px;">ANGKOR UNIVERSITY</p>
+                    </div>
+                </div>
+                
+                <div style="margin-bottom: 1.5vh;">
+                    <h3 style="font-family: 'Koulen', sans-serif; font-size: 1.8vw; color: var(--accent-green); font-weight: normal;"><i class="fa-solid fa-graduation-cap"></i> បរិញ្ញាបត្រ វិទ្យាសាស្ត្រកុំព្យូទ័រ (Bachelor of Computer Science)</h3>
+                </div>
+
+                <div style="background: #EEF2FF; color: var(--accent-purple); border: 1px solid #C7D2FE; padding: 0.6vh 2.5vw; border-radius: 6px; display: inline-block; font-size: 1.3vw; font-weight: bold; margin-bottom: 2vh; font-family: 'Koulen', sans-serif;">គម្រោងមុខវិជ្ជា | Course Syllabus (2025-2026)</div>
+                
+                <h1 style="font-size: 2.8vw; line-height: 1.35; font-family: 'Koulen', sans-serif;">បច្ចេកវិទ្យា ASP.NET និងប្រព័ន្ធគ្រប់គ្រងមូលដ្ឋានទិន្នន័យ SQL Server<br><span style="color:var(--accent-purple); font-size: 1.8vw; font-family:'Fira Code'; font-weight: bold;">(ASP.NET Core with SQL Server)</span></h1>
+                
+                <div style="margin-top: 2.5vh; display: flex; gap: 4vw; justify-content: center; align-items: center;">
+                    <div style="text-align: center; display: flex; flex-direction: column; align-items: center; gap: 0.5vh;">
+                        <div style="background: #FEE2E2; padding: 1vw; border-radius: 50%; width: 4.2vw; height: 4.2vw; display: flex; align-items: center; justify-content: center;">
+                            <i class="fa-solid fa-database" style="font-size: 1.8vw; color: #cc292b;"></i>
+                        </div>
+                        <p style="font-size: 1.1vw; font-weight: bold; color: var(--accent-purple); margin: 0; font-family: 'Koulen', sans-serif;">Model (DB)</p>
+                    </div>
+                    <div style="text-align: center; display: flex; flex-direction: column; align-items: center; gap: 0.5vh;">
+                        <div style="background: #EEF2FF; padding: 1vw; border-radius: 50%; width: 4.2vw; height: 4.2vw; display: flex; align-items: center; justify-content: center;">
+                            <i class="fa-solid fa-server" style="font-size: 1.8vw; color: var(--accent-purple);"></i>
+                        </div>
+                        <p style="font-size: 1.1vw; font-weight: bold; color: var(--accent-purple); margin: 0; font-family: 'Koulen', sans-serif;">Controller (API)</p>
+                    </div>
+                    <div style="text-align: center; display: flex; flex-direction: column; align-items: center; gap: 0.5vh;">
+                        <div style="background: #FFF7ED; padding: 1vw; border-radius: 50%; width: 4.2vw; height: 4.2vw; display: flex; align-items: center; justify-content: center;">
+                            <i class="fa-brands fa-html5" style="font-size: 1.8vw; color: #e34f26;"></i>
+                        </div>
+                        <p style="font-size: 1.1vw; font-weight: bold; color: var(--accent-purple); margin: 0; font-family: 'Koulen', sans-serif;">View (Web UI)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2: Lecturer & Course Info -->
+        <div class="slide">
+            <div id="h-placeholder-lecturer"></div>
+            <h2 class="slide-title"><i class="fa-solid fa-user-tie keyword-icon"></i>ព័ត៌មានសាស្ត្រាចារ្យ និងមុខវិជ្ជា</h2>
+            <div class="content-body two-column" style="align-items: center;">
+                <div style="position: relative; width: 14vw; height: 19vw; margin: auto;">
+                    <div style="position: absolute; top: 1vw; left: -1vw; width: 100%; height: 100%; background: rgba(81, 43, 212, 0.08); border-radius: 12px; z-index: 0;"></div>
+                    <img src="Lim.jpg" style="position: relative; width: 100%; height: 100%; border-radius: 12px; object-fit: cover; box-shadow: 0 10px 25px rgba(0,0,0,0.1); z-index: 1; border: 4px solid white;" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
+                </div>
+                <div style="padding-left: 1vw;">
+                    <h3 style="font-size: 2.2vw; color: var(--accent-purple); font-family: 'Koulen', sans-serif; margin-bottom: 1.5vh; font-weight: normal; text-align: left;">សាស្ត្រាចារ្យ៖ សឿង លីម <span style="font-size: 1.4vw; color: var(--text-muted); font-family: 'Fira Code', monospace;">(Soeurng LIM)</span></h3>
+                    <div class="card" style="border-left-width: 5px; padding: 2vh; background: #FFFFFF;">
+                        <p style="margin-bottom: 0.5vh;"><b><i class="fa-solid fa-envelope keyword-icon"></i> អ៊ីម៉ែល៖</b> soeurnglim@gmail.com</p>
+                        <p style="margin-bottom: 0.5vh;"><b><i class="fa-solid fa-phone keyword-icon"></i> ទូរស័ព្ទ៖</b> ០៦១ ២២៧ ៩៣៣</p>
+                        <hr style="margin: 1vh 0; border: 0; border-top: 1px dashed var(--border-light);">
+                        <p style="margin-bottom: 0.5vh;"><b><i class="fa-solid fa-graduation-cap keyword-icon"></i> កម្មវិធីសិក្សា៖</b> បរិញ្ញាបត្រ វិទ្យាសាស្ត្រកុំព្យូទ័រ (ឆ្នាំទី៤ ឆមាសទី១)</p>
+                        <p><b><i class="fa-solid fa-star keyword-icon"></i> ក្រេឌីត៖</b> ៣ ក្រេឌីត <span style="color:var(--text-muted); font-size:1.1vw;">(កូដមុខវិជ្ជា៖ IT401-WebAPI)</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Course Description -->
+        <div class="slide">
+            <div id="h-placeholder-desc1"></div>
+            <h2 class="slide-title"><i class="fa-solid fa-info-circle keyword-icon"></i>១. ការពិពណ៌នាមុខវិជ្ជា (Course Description)</h2>
+            <div class="content-body two-column">
+                <div style="display: flex; flex-direction: column; justify-content: center; gap: 1vh;">
+                    <p>មុខវិជ្ជានេះត្រូវបានរចនាឡើងយ៉ាងពិសេសសម្រាប់និស្សិតដែលទើបឈានជើងចូលក្នុងពិភពនៃការអភិវឌ្ឍប្រព័ន្ធ <b>Back-End និង Application Programming Interface (API)</b> កម្រិតដំបូង។</p>
+                    <p>នៅក្នុងយុគសម័យឌីជីថល កម្មវិធីវិប (Web Application) និងទូរស័ព្ទដៃ (Mobile Application) សុទ្ធតែពឹងផ្អែកលើ API ជាស្ពានចម្លងទិន្នន័យ។ យើងផ្តោតសំខាន់លើស្ថាបត្យកម្មស្តង់ដារ <b>Model-View-Controller (MVC)</b>។</p>
+                    <div class="card" style="background: #F0FDF4; border-color: #BBF7D0; border-left-color: var(--accent-green); padding: 1.2vh; margin-top: 0.5vh;">
+                        <p style="margin: 0; color: #166534; font-size: 1.1vw;"><b><i class="fa-solid fa-lightbulb" style="color:var(--accent-yellow);"></i> គំនិតគន្លឹះ៖</b> API ប្រៀបដូចជា "អ្នករត់តុ" ទទួលបញ្ជាពីអតិថិជន យកទៅប្រាប់ចុងភៅ រួចយកម្ហូបមកជូនវិញ។</p>
+                    </div>
+                </div>
+                <div class="visual-frame">
+                    <img src="https://images.unsplash.com/photo-1555099962-4199c345e5dd?auto=format&fit=crop&w=800&q=80" alt="Code Visual">
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Course Description - Full-Stack View -->
+        <div class="slide">
+            <div id="h-placeholder-desc2"></div>
+            <h2 class="slide-title"><i class="fa-solid fa-layer-group keyword-icon"></i>១. ការពិពណ៌នាមុខវិជ្ជា (Full-Stack perspective)</h2>
+            <div class="content-body two-column">
+                <div class="visual-frame">
+                    <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=80" alt="Full Stack">
+                </div>
+                <div style="display: flex; flex-direction: column; justify-content: center; gap: 1.5vh;">
+                    <p><b style='color:var(--accent-purple);'><i class="fa-solid fa-circle-check"></i> ចំណុចពិសេស៖</b> និស្សិតមិនត្រឹមតែចេះកំណត់រចនាសម្ព័ន្ធ <b>Model</b> (មូលដ្ឋានទិន្នន័យ) និង <b>Controller</b> (API Logic) ប៉ុណ្ណោះទេ តែតម្រូវឱ្យសរសេរកូដ Frontend ផ្ទាល់ (HTML & JavaScript) ដើរតួជា <b>View</b> តាមទម្រង់ MVC។</p>
+                    <p>វិធីសាស្ត្រនេះជួយឱ្យនិស្សិតអាច ហៅទិន្នន័យពី API មកបង្ហាញ និងបញ្ជាផ្ទាល់នៅលើផ្ទាំង User Interface (UI) របស់ Web Application យ៉ាងជោគជ័យ។</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Key Terms Part 1 -->
+        <div class="slide">
+            <div id="h-placeholder-terms1"></div>
+            <h2 class="slide-title"><i class="fa-solid fa-spell-check keyword-icon"></i>សទ្ទានុក្រម និងពាក្យគន្លឹះ (Key Terms) - ភាគទី ១</h2>
+            <div class="content-body card-grid" style="align-content: center;">
+                <div class="card" style="padding: 2vh 2vw; background:#FFFFFF;">
+                    <h4><i class="fa-solid fa-layer-group keyword-icon"></i> Model-View-Controller (MVC)</h4>
+                    <p style="margin:0;">ស្ថាបត្យកម្មសរសេរកូដបែងចែកកម្មវិធីជា ៣ ផ្នែកធំៗ៖ <b>Model</b> (ទិន្នន័យ), <b>View</b> (ផ្ទាំងបង្ហាញ), <b>Controller</b> (អ្នកចាត់ចែង)។</p>
+                </div>
+                <div class="card" style="padding: 2vh 2vw; background:#FFFFFF;">
+                    <h4><i class="fa-solid fa-database keyword-icon"></i> Entity Framework Core (EF Core)</h4>
+                    <p style="margin:0;">បច្ចេកវិទ្យា Object-Relational Mapping (ORM) ដែលជួយឱ្យ Model អាចតភ្ជាប់ទៅ <b>Database (DB)</b> បានយ៉ាងងាយតាមវិធីសាស្ត្រ Code-First។</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Key Terms Part 2 -->
+        <div class="slide">
+            <div id="h-placeholder-terms2"></div>
+            <h2 class="slide-title"><i class="fa-solid fa-spell-check keyword-icon"></i>សទ្ទានុក្រម និងពាក្យគន្លឹះ (Key Terms) - ភាគទី ២</h2>
+            <div class="content-body card-grid" style="align-content: center;">
+                <div class="card" style="padding: 2vh 2vw; background:#FFFFFF;">
+                    <h4><i class="fa-solid fa-rotate keyword-icon"></i> CRUD Operations</h4>
+                    <p style="margin:0;">ប្រតិបត្តិការគោលទាំង៤ នៃប្រព័ន្ធទិន្នន័យ៖ <b>C</b>reate (បញ្ជូល), <b>R</b>ead (អាន), <b>U</b>pdate (កែប្រែ), <b>D</b>elete (លុប)។</p>
+                </div>
+                <div class="card" style="padding: 2vh 2vw; background:#FFFFFF;">
+                    <h4><i class="fa-solid fa-shield-halved keyword-icon"></i> CORS Policy</h4>
+                    <p style="margin:0;"><b>Cross-Origin Resource Sharing (CORS):</b> គោលការណ៍សុវត្ថិភាពអនុញ្ញាតឱ្យ Frontend អាចហៅ Application Programming Interface (API) ឆ្លង Domain ផ្សេងគ្នាបាន។</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Course Learning Outcomes CLO 1-3 -->
+        <div class="slide">
+            <div id="h-placeholder-clo1"></div>
+            <h2 class="slide-title"><i class="fa-solid fa-bullseye keyword-icon"></i>២. លទ្ធផលសិក្សារំពឹងទុក (CLO 1 - CLO 3)</h2>
+            <div class="content-body card-grid" style="align-content: center;">
+                <div class="card" style="padding: 2vh 2vw; background:#FFFFFF;">
+                    <h4>CLO 1: ស្ថាបត្យកម្ម API និង C#</h4>
+                    <p style="margin:0;">រៀបចំ Environment ដំឡើងកម្មវិធី VS Code, .NET SDK និងយល់ដឹងពីស្ថាបត្យកម្មគ្រឹះនៃ ASP.NET Core រួមទាំងការសរសេរកូដភាសា C# កម្រិតមូលដ្ឋាន។</p>
+                </div>
+                <div class="card" style="padding: 2vh 2vw; background:#FFFFFF;">
+                    <h4>CLO 2: ការគ្រប់គ្រង Controller និង Route</h4>
+                    <p style="margin:0;">អនុវត្តការបង្កើត Controllers តាមទម្រង់ MVC, ការកំណត់ Routing និងការប្រើប្រាស់ HTTP Methods សម្រាប់ទទួលសំណើពី Client ប្រកបដោយភាពត្រឹមត្រូវ។</p>
+                </div>
+                <div class="card" style="padding: 2vh 2vw; background:#FFFFFF; grid-column: span 2;">
+                    <h4>CLO 3: EF Core & SQL Server</h4>
+                    <p style="margin:0;">រចនា និងគ្រប់គ្រងមូលដ្ឋានទិន្នន័យ (Database) តាមរយៈបច្ចេកវិទ្យា Entity Framework Core (EF Core) ដោយប្រើវិធីសាស្ត្រ Code-First Migrations ភ្ជាប់ជាមួយកម្មវិធី SQL Server Management Studio (SSMS)។</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Course Learning Outcomes CLO 4-5 -->
+        <div class="slide">
+            <div id="h-placeholder-clo2"></div>
+            <h2 class="slide-title"><i class="fa-solid fa-bullseye keyword-icon"></i>២. លទ្ធផលសិក្សារំពឹងទុក (CLO 4 - CLO 5)</h2>
+            <div class="content-body two-column" style="align-items: center;">
+                <div style="display: flex; flex-direction: column; gap: 1.5vh; width: 100%;">
+                    <div class="card" style="padding: 1.5vh; background:#FFFFFF;">
+                        <h4>CLO 4: ប្រតិបត្តិការ CRUD Full-Stack</h4>
+                        <p style="margin:0;">បង្កើតមុខងារ Create, Read, Update, Delete (CRUD) យ៉ាងស្ទាត់ជំនាញ ទាំងកម្រិត Backend Web API និងការបង្កើត User Interface (UI) តភ្ជាប់តាមរយៈ JavaScript (JS) Fetch API។</p>
+                    </div>
+                    <div class="card" style="padding: 1.5vh; background:#FFFFFF;">
+                        <h4>CLO 5: ការអនុវត្តគម្រោង និង GitHub</h4>
+                        <p style="margin:0;">ដោះស្រាយបញ្ហាសុវត្ថិភាព CORS, អភិវឌ្ឍន៍ RESTful API ពេញលេញ និងប្រើប្រាស់ប្រព័ន្ធ <b>GitHub</b> សម្រាប់គ្រប់គ្រងកូដគម្រោងជាក្រុម។</p>
+                    </div>
+                </div>
+                <div class="visual-frame" style="padding: 0;">
+                    <div class="overlay-label label-left">Backend API</div>
+                    <div class="overlay-label label-right">Frontend UI</div>
+                    <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=800&q=80" alt="Full Stack Development">
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: Lesson Plan Weeks 1-3 (Maximised for Projections) -->
+        <div class="slide">
+            <div id="h-placeholder-lp1"></div>
+            <h2 class="slide-title"><i class="fa-solid fa-calendar-week keyword-icon"></i>៣. ប្លង់មេរៀនលម្អិត (សប្តាហ៍ទី ១ ដល់ ៣)</h2>
+            <div class="content-body">
+                <div class="lesson-plan-list">
+                    <div class="lesson-row">
+                        <div class="lesson-badge">
+                            <div class="week-num">សប្តាហ៍ ១</div>
+                            <div class="session-num">Session 1-2</div>
+                            <div class="clo-num">CLO 1</div>
+                        </div>
+                        <div class="lesson-info">
+                            <div class="llo-text"><b>លទ្ធផលសិក្សារំពឹងទុក៖</b> យល់ពីបរិបទ .NET រៀបចំកម្មវិធី និងប្រើប្រាស់ CLI។</div>
+                            <div class="topic-text"><b>ជំពូកទី ១៖ សេចក្តីផ្តើម .NET & Visual Studio Code</b> • ដំឡើង SDK & Visual Studio Code • បង្កើតគណនី និងភ្ជាប់ GitHub</div>
+                            <div class="exercise-text"><i class="fa-solid fa-circle-play"></i> លំហាត់៖ បង្កើត Project 'MyFirstApi', Run JSON និង Push កូដចូល GitHub។</div>
+                        </div>
+                    </div>
+                    <div class="lesson-row">
+                        <div class="lesson-badge">
+                            <div class="week-num">សប្តាហ៍ ២</div>
+                            <div class="session-num">Session 3-4</div>
+                            <div class="clo-num">CLO 1</div>
+                        </div>
+                        <div class="lesson-info">
+                            <div class="llo-text"><b>លទ្ធផលសិក្សារំពឹងទុក៖</b> សរសេរកូដ OOP សម្រាប់បង្កើត Model និងប្រើប្រាស់ List ជាប្រភពទិន្នន័យ។</div>
+                            <div class="topic-text"><b>ជំពូកទី ២៖ មូលដ្ឋាន C# សម្រាប់ API</b> • Variables, Types, Loops, Classes, Objects, Properties ក្នុង OOP</div>
+                            <div class="exercise-text"><i class="fa-solid fa-circle-play"></i> លំហាត់៖ បង្កើត Class 'Product' (ID, Name, Price) និងសរសេរ Logic គណនាតម្លៃ។</div>
+                        </div>
+                    </div>
+                    <div class="lesson-row">
+                        <div class="lesson-badge">
+                            <div class="week-num">សប្តាហ៍ ៣</div>
+                            <div class="session-num">Session 5-6</div>
+                            <div class="clo-num">CLO 2</div>
+                        </div>
+                        <div class="lesson-info">
+                            <div class="llo-text"><b>លទ្ធផលសិក្សារំពឹងទុក៖</b> យល់ច្បាស់ពីលំហូរ MVC និងការបញ្ចេញទិន្នន័យជា JSON តាមរយៈ API។</div>
+                            <div class="topic-text"><b>ជំពូកទី ៣៖ Controller & MVC Basic</b> •  តួនាទី Model, View និង Controller | RESTful API ជាអ្វី?</div>
+                            <div class="exercise-text"><i class="fa-solid fa-circle-play"></i> លំហាត់៖ បង្កើត StudentController បញ្ចេញទិន្នន័យសិស្សសិប្បនិម្មិតជាទម្រង់ JSON Array។</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: Lesson Plan Weeks 4-6 (Maximised for Projections) -->
+        <div class="slide">
+            <div id="h-placeholder-lp2"></div>
+            <h2 class="slide-title"><i class="fa-solid fa-calendar-week keyword-icon"></i>៣. ប្លង់មេរៀនលម្អិត (សប្តាហ៍ទី ៤ ដល់ ៦)</h2>
+            <div class="content-body">
+                <div class="lesson-plan-list">
+                    <div class="lesson-row">
+                        <div class="lesson-badge">
+                            <div class="week-num">សប្តាហ៍ ៤</div>
+                            <div class="session-num">Session 7-8</div>
+                            <div class="clo-num">CLO 2</div>
+                        </div>
+                        <div class="lesson-info">
+                            <div class="llo-text"><b>លទ្ធផលសិក្សារំពឹងទុក៖</b> កំណត់ URL Endpoint និងយល់ពី HTTP Methods។</div>
+                            <div class="topic-text"><b>ជំពូកទី ៤៖ Routing & HTTP Methods</b> • Attribute Routing [Route] | HTTP Methods (GET, POST, PUT, DELETE)</div>
+                            <div class="exercise-text"><i class="fa-solid fa-circle-play"></i> លំហាត់៖ កំណត់ Route ដើម្បីស្វែងរកសិស្សម្នាក់ៗតាមលេខសម្គាល់ ID។</div>
+                        </div>
+                    </div>
+                    <div class="lesson-row">
+                        <div class="lesson-badge">
+                            <div class="week-num">សប្តាហ៍ ៥</div>
+                            <div class="session-num">Session 9-10</div>
+                            <div class="clo-num">CLO 3</div>
+                        </div>
+                        <div class="lesson-info">
+                            <div class="llo-text"><b>លទ្ធផលសិក្សារំពឹងទុក៖</b> យល់ពីដំណើរការ Database (DB) និងតភ្ជាប់ប្រព័ន្ធ SQL Server។</div>
+                            <div class="topic-text"><b>ជំពូកទី ៥៖ SQL Server & Entity Framework Core (EF Core)</b> • ដំឡើង SQL Server Express និងប្រើប្រាស់ NuGet Package Manager</div>
+                            <div class="exercise-text"><i class="fa-solid fa-circle-play"></i> លំហាត់៖ បង្កើត Database ទទេមួយឈ្មោះ 'SchoolDB' តាមរយៈ SSMS។</div>
+                        </div>
+                    </div>
+                    <div class="lesson-row">
+                        <div class="lesson-badge">
+                            <div class="week-num">សប្តាហ៍ ៦</div>
+                            <div class="session-num">Session 11-12</div>
+                            <div class="clo-num">CLO 3</div>
+                        </div>
+                        <div class="lesson-info">
+                            <div class="llo-text"><b>លទ្ធផលសិក្សារំពឹងទុក៖</b> ចេះសរសេរ Model ទៅជា Table ក្នុង DB ដោយប្រើវិធីសាស្ត្រ Code-First។</div>
+                            <div class="topic-text"><b>ជំពូកទី ៦៖ DbContext & Models</b> • DbContext របស់ EF Core និងការភ្ជាប់ Connection String</div>
+                            <div class="exercise-text"><i class="fa-solid fa-circle-play"></i> លំហាត់៖ សរសេរ Model សម្រាប់តារាង 'Students' រួចចុះបញ្ជីក្នុង DbContext។</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 11: Lesson Plan Weeks 7-9 (Maximised for Projections) -->
+        <div class="slide">
+            <div id="h-placeholder-lp3"></div>
+            <h2 class="slide-title"><i class="fa-solid fa-calendar-week keyword-icon"></i>៣. ប្លង់មេរៀនលម្អិត (សប្តាហ៍ទី ៧ ដល់ ៩)</h2>
+            <div class="content-body">
+                <div class="lesson-plan-list">
+                    <div class="lesson-row">
+                        <div class="lesson-badge">
+                            <div class="week-num">សប្តាហ៍ ៧</div>
+                            <div class="session-num">Session 13-14</div>
+                            <div class="clo-num">CLO 3</div>
+                        </div>
+                        <div class="lesson-info">
+                            <div class="llo-text"><b>លទ្ធផលសិក្សារំពឹងទុក៖</b> អនុវត្តការបញ្ជា Code-First Migrations ដើម្បីបង្កើត Tables។</div>
+                            <div class="topic-text"><b>ជំពូកទី ៧៖ EF Core Migrations</b> • ប្រើប្រាស់ CLI តាមរយៈ dotnet ef migrations add និង database update</div>
+                            <div class="exercise-text"><i class="fa-solid fa-circle-play"></i> លំហាត់៖ Run Command Migration ដើម្បីបង្កើតតារាង Students ក្នុង SQL Server DB។</div>
+                        </div>
+                    </div>
+                    <div class="lesson-row">
+                        <div class="lesson-badge">
+                            <div class="week-num">សប្តាហ៍ ៨</div>
+                            <div class="session-num">Session 15-16</div>
+                            <div class="clo-num">CLO 4</div>
+                        </div>
+                        <div class="lesson-info">
+                            <div class="llo-text"><b>លទ្ធផលសិក្សារំពឹងទុក៖</b> សរសេរកូដទាញទិន្នន័យអាន (Read API) មកបង្ហាញលើផ្ទាំង UI។</div>
+                            <div class="topic-text"><b>ជំពូកទី ៨៖ អានទិន្នន័យ (GET API & Web Page)</b> • ប្រើប្រាស់ JavaScript Fetch API ដើម្បីអាន JSON មកបង្ហាញក្នុងទម្រង់ HTML</div>
+                            <div class="exercise-text"><i class="fa-solid fa-circle-play"></i> លំហាត់៖ សរសេរ JS ទាញឈ្មោះសិស្សពី API មកបង្ហាញជាតារាងលើ Web Page។</div>
+                        </div>
+                    </div>
+                    <div class="lesson-row exam-row">
+                        <div class="lesson-badge">
+                            <div class="week-num">សប្តាហ៍ ៩</div>
+                            <div class="session-num">Session 17-18</div>
+                            <div class="clo-num">CLO 1-3</div>
+                        </div>
+                        <div class="lesson-info">
+                            <div class="llo-text" style="color:var(--accent-red); font-weight:bold;"><b>ប្រឡងពាក់កណ្តាលឆមាស (Midterm Exam)</b></div>
+                            <div class="topic-text" style="color:var(--accent-red);">• រំលឹកមេរៀន និងប្រឡងអនុវត្តកូដមូលដ្ឋាន (បង្កើត Database តាម EF Core និងបង្ហាញទិន្នន័យលើផ្ទាំង Web Page View)។</div>
+                            <div class="exercise-text" style="background:#FEF2F2; border-left-color:var(--accent-red); color:var(--accent-red);"><i class="fa-solid fa-file-signature"></i> ប្រឡងអនុវត្តជាក់ស្តែងលើកុំព្យូទ័រ (៩០ នាទី)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 12: Lesson Plan Weeks 10-12 (Maximised for Projections) -->
+        <div class="slide">
+            <div id="h-placeholder-lp4"></div>
+            <h2 class="slide-title"><i class="fa-solid fa-calendar-week keyword-icon"></i>៣. ប្លង់មេរៀនលម្អិត (សប្តាហ៍ទី ១០ ដល់ ១២)</h2>
+            <div class="content-body">
+                <div class="lesson-plan-list">
+                    <div class="lesson-row">
+                        <div class="lesson-badge">
+                            <div class="week-num">សប្តាហ៍ ១០</div>
+                            <div class="session-num">Session 19-20</div>
+                            <div class="clo-num">CLO 4</div>
+                        </div>
+                        <div class="lesson-info">
+                            <div class="llo-text"><b>លទ្ធផលសិក្សារំពឹងទុក៖</b> បញ្ជូនទិន្នន័យថ្មីពី HTML Form លើ Web ចូល DB តាមរយៈ Controller។</div>
+                            <div class="topic-text"><b>ជំពូកទី ៩៖ បញ្ចូលទិន្នន័យ (POST API & Web Page)</b> • ប្រើប្រាស់ HTML Form ទទួលទិន្នន័យពី User រួច POST ទៅកាន់ API ដើម្បី Save ចូល DB</div>
+                            <div class="exercise-text"><i class="fa-solid fa-circle-play"></i> លំហាត់៖ បង្កើត HTML Form ដើម្បីបញ្ចូលព័ត៌មានសិស្សថ្មី រួច POST ទៅកាន់ API។</div>
+                        </div>
+                    </div>
+                    <div class="lesson-row">
+                        <div class="lesson-badge">
+                            <div class="week-num">សប្តាហ៍ ១១</div>
+                            <div class="session-num">Session 21-22</div>
+                            <div class="clo-num">CLO 4</div>
+                        </div>
+                        <div class="lesson-info">
+                            <div class="llo-text"><b>លទ្ធផលសិក្សារំពឹងទុក៖</b> បង្កើតមុខងារកែប្រែទិន្នន័យ (Edit Modal) នៅលើ UI និងធ្វើបច្ចុប្បន្នភាព API។</div>
+                            <div class="topic-text"><b>ជំពូកទី ១០៖ កែប្រែទិន្នន័យ (PUT API & Web Page)</b> • សរសេរកូដ Update ទិន្នន័យទាំងលើ API និងការបង្ហាញ Modal Popup លើ Web Page</div>
+                            <div class="exercise-text"><i class="fa-solid fa-circle-play"></i> លំហាត់៖ បន្ថែមប៊ូតុង Edit និងបង្កើត Modal សម្រាប់កែប្រែព័ត៌មានសិស្សដែលមានស្រាប់។</div>
+                        </div>
+                    </div>
+                    <div class="lesson-row">
+                        <div class="lesson-badge">
+                            <div class="week-num">សប្តាហ៍ ១២</div>
+                            <div class="session-num">Session 23-24</div>
+                            <div class="clo-num">CLO 4</div>
+                        </div>
+                        <div class="lesson-info">
+                            <div class="llo-text"><b>លទ្ធផលសិក្សារំពឹងទុក៖</b> លុបទិន្នន័យ (Delete Operations) ដោយចុចប៊ូតុង និងមានការសួរបញ្ជាក់។</div>
+                            <div class="topic-text"><b>ជំពូកទី ១១៖ លុបទិន្នន័យ (DELETE API & Web)</b> • លុបទិន្នន័យដោយចុចប៊ូតុងផ្ទាល់ និងប្រើប្រាស់ JS confirm() ការពារការលុបអចេតនា</div>
+                            <div class="exercise-text"><i class="fa-solid fa-circle-play"></i> លំហាត់៖ តភ្ជាប់មុខងារ Delete ជាមួយប៊ូតុង ដើម្បីលុបទិន្នន័យសិស្សចេញពី DB ទាំងស្រុង។</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 13: Lesson Plan Weeks 13-15 (Maximised for Projections) -->
+        <div class="slide">
+            <div id="h-placeholder-lp5"></div>
+            <h2 class="slide-title"><i class="fa-solid fa-calendar-week keyword-icon"></i>៣. ប្លង់មេរៀនលម្អិត (សប្តាហ៍ទី ១៣ ដល់ ១៥)</h2>
+            <div class="content-body">
+                <div class="lesson-plan-list">
+                    <div class="lesson-row">
+                        <div class="lesson-badge">
+                            <div class="week-num">សប្តាហ៍ ១៣</div>
+                            <div class="session-num">Session 25-26</div>
+                            <div class="clo-num">CLO 5</div>
+                        </div>
+                        <div class="lesson-info">
+                            <div class="llo-text"><b>លទ្ធផលសិក្សារំពឹងទុក៖</b> ដោះស្រាយបញ្ហាការទាញទិន្នន័យឆ្លង Domain សម្រាប់ Web Integration។</div>
+                            <div class="topic-text"><b>ជំពូកទី ១២៖ គោលការណ៍សុវត្ថិភាព CORS Policy</b> • ស្វែងយល់ពីបញ្ហា Cross-Origin Error និងរបៀបបើកសិទ្ធិឱ្យ Web Page ហៅ API បាន</div>
+                            <div class="exercise-text"><i class="fa-solid fa-circle-play"></i> លំហាត់៖ កំណត់ CORS Policy ក្នុង Program.cs ដើម្បីអនុញ្ញាតឱ្យ Web Frontend ហៅ API បាន។</div>
+                        </div>
+                    </div>
+                    <div class="lesson-row">
+                        <div class="lesson-badge">
+                            <div class="week-num">សប្តាហ៍ ១៤</div>
+                            <div class="session-num">Session 27-28</div>
+                            <div class="clo-num">CLO 1-5</div>
+                        </div>
+                        <div class="lesson-info">
+                            <div class="llo-text"><b>លទ្ធផលសិក្សារំពឹងទុក៖</b> គ្រប់គ្រងកូដតាម GitHub និងធ្វើបទបង្ហាញគម្រោង MVC។</div>
+                            <div class="topic-text"><b>បទបង្ហាញគម្រោង (Mini Project & GitHub Version Control)</b> • អនុវត្តចំណេះដឹងទាំងអស់ទៅជាគម្រោង Full-Stack MVC/CRUD ខ្នាតតូច ព្រមទាំងការប្រើប្រាស់ Git</div>
+                            <div class="exercise-text"><i class="fa-solid fa-circle-play"></i> លំហាត់៖ ការដាក់ស្នើកូដ (Push/Pull Request) ជាក្រុមតាម GitHub និងឡើងធ្វើបទបង្ហាញ។</div>
+                        </div>
+                    </div>
+                    <div class="lesson-row exam-row" style="border-left-color: var(--accent-purple) !important;">
+                        <div class="lesson-badge" style="background:#EEF2FF !important; border-color:#C7D2FE !important;">
+                            <div class="week-num" style="color:var(--accent-purple) !important;">សប្តាហ៍ ១៥</div>
+                            <div class="session-num">Session 29-30</div>
+                            <div class="clo-num">CLO 1-5</div>
+                        </div>
+                        <div class="lesson-info">
+                            <div class="llo-text" style="color:var(--accent-purple); font-weight:bold;"><b>ប្រឡងបញ្ចប់ឆមាស (Final Exam)</b></div>
+                            <div class="topic-text" style="color:var(--accent-purple);">• ការប្រឡងអនុវត្តជាក់ស្តែង MVC & Full-Stack (ការកសាង Backend API រួមជាមួយការរចនា និងតភ្ជាប់ទៅ Frontend Web UI)។</div>
+                            <div class="exercise-text" style="background:#EEF2FF; border-left-color:var(--accent-purple); color:var(--accent-purple);"><i class="fa-solid fa-graduation-cap"></i> ការប្រឡងអនុវត្តជាក់ស្តែងពេញលេញ (១២០ នាទី)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 14: Teaching Methods -->
+        <div class="slide">
+            <div id="h-placeholder-methods"></div>
+            <h2 class="slide-title"><i class="fa-solid fa-chalkboard-user keyword-icon"></i>៤. វិធីសាស្រ្តបង្រៀន (Teaching Methods)</h2>
+            <div class="content-body card-grid" style="align-content: center;">
+                <div class="card" style="padding: 2vh 2vw; background:#FFFFFF;">
+                    <h4><i class="fa-solid fa-code-compare keyword-icon"></i> ការពន្យល់ដោយប្រៀបធៀប (Analogy)</h4>
+                    <p style="margin:0;">ប្រៀបធៀបចំណុចថ្មីទៅនឹងចំណុចដែលនិស្សិតធ្លាប់ដឹងពីមុន (ឧទាហរណ៍៖ ប្រៀបធៀប Controller ក្នុង .NET ទៅនឹង Controller ក្នុង PHP) ដើម្បីងាយយល់ទម្រង់ MVC។</p>
+                </div>
+                <div class="card" style="padding: 2vh 2vw; background:#FFFFFF;">
+                    <h4><i class="fa-solid fa-laptop-code keyword-icon"></i> Live Coding & Steps</h4>
+                    <p style="margin:0;">ចង្អុលបង្ហាញ និងសរសេរកូដបង្ហាញផ្ទាល់ជាជំហានៗ (Step-by-Step) នៅក្នុងកម្មវិធី Visual Studio Code (VS Code)។</p>
+                </div>
+                <div class="card" style="padding: 2vh 2vw; background:#FFFFFF;">
+                    <h4><i class="fa-solid fa-hand-holding-hand keyword-icon"></i> Hands-on Practice យ៉ាងស៊ីជម្រៅ</h4>
+                    <p style="margin:0;">និស្សិតត្រូវកសាងទាំងផ្នែក Backend Web API និងបង្កើត Web Page Frontend សម្រាប់ហៅមកតភ្ជាប់ជាមួយ API នោះផ្ទាល់តែម្តង។</p>
+                </div>
+                <div class="card" style="padding: 2vh 2vw; background:#FFFFFF;">
+                    <h4><i class="fa-solid fa-users-gear keyword-icon"></i> Collaborative learning</h4>
+                    <p style="margin:0;">ពិភាក្សាក្រុមតូចៗក្នុងការជួយគ្នាដោះស្រាយបញ្ហា Error កូដនៅក្នុងថ្នាក់រៀន និងប្រើប្រាស់ GitHub ដើម្បីចែករំលែកកូដ។ ផ្តល់គម្រោងខ្នាតតូចឱ្យនិស្សិតស្រាវជ្រាវ និងសរសេរកូដដោយខ្លួនឯង។</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 15: Assessment (Optimized for perfect fit and fonts) -->
+        <div class="slide">
+            <div id="h-placeholder-assess"></div>
+            <h2 class="slide-title"><i class="fa-solid fa-chart-pie keyword-icon"></i>៥. ​ការវាយតម្លៃ (Assessment)</h2>
+            <div class="content-body slide-15-layout">
+                <div>
+                    <div class="doughnut-chart">
+                        <div class="doughnut-inner">១០០%</div>
+                    </div>
+                </div>
+                <div class="assess-card-list">
+                    <div class="assess-card" style="border-left: 5px solid var(--accent-green);">
+                        <h4 style="color: var(--accent-green);">ប្រឡងបញ្ចប់ឆមាស (Final Exam) | ៤០%</h4>
+                        <p>វាស់ស្ទង់សមត្ថភាពសរសេរកូដ CRUD API & Web Page Integration ពេញលេញ។</p>
+                    </div>
+                    <div class="assess-card" style="border-left: 5px solid var(--accent-blue);">
+                        <h4 style="color: var(--accent-blue);">កិច្ចការផ្ទះ និងស្រាវជ្រាវ (Assignments) | ៣០%</h4>
+                        <p>កិច្ចការសរសេរកូដ C# ការបង្កើត Web API, Web UI និងការ Push កូដទៅ GitHub។</p>
+                    </div>
+                    <div class="assess-card" style="border-left: 5px solid var(--accent-yellow);">
+                        <h4 style="color: var(--accent-yellow);">ប្រឡងពាក់កណ្តាលឆមាស (Mid-Term) | ២០%</h4>
+                        <p>ផ្តោតលើជំពូក ១ ដល់ ៨ (ការរៀបចំ Database និងការបង្ហាញទិន្នន័យលើ Web UI)។</p>
+                    </div>
+                    <div class="assess-card" style="border-left: 5px solid var(--text-muted);">
+                        <h4 style="color: var(--text-muted);">វត្តមាន និងការចូលរួម (Attendance) | ១០%</h4>
+                        <p>វត្តមាន សកម្មភាពសួរសំណើ-ឆ្លើយ និងសីលធម៌ក្នុងការសិក្សា។</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 16: Attendance Policy -->
+        <div class="slide">
+            <div id="h-placeholder-attendance"></div>
+            <h2 class="slide-title"><i class="fa-solid fa-clock keyword-icon"></i>៥.១- រង្វាយតម្លៃលើវត្តមាន និងវិន័យ (Attendance Policy)</h2>
+            <div class="content-body two-column" style="align-items: center;">
+                <div style="display: flex; flex-direction: column; gap: 1.5vh; width: 100%;">
+                    <div class="card" style="padding: 1.8vh; background:#FFFFFF; border-left-color: var(--accent-red);">
+                        <h4 style="color: var(--accent-red);"><i class="fa-solid fa-triangle-exclamation"></i> វិន័យនៃការយឺតយ៉ាវ (AL)</h4>
+                        <p style="margin:0;">- និស្សិតចូលរៀនយឺតចន្លោះពី <b>១០ ទៅ ២០ នាទី</b> ត្រូវចាត់ទុកថាអវត្តមានចូលរៀនយឺត (AL)។<br>- ករណីយឺត (AL) ចំនួន <b>៣ ដង ស្មើនឹង អវត្តមាន (A) ១ ដង</b> (១ session)។</p>
+                    </div>
+                    <div class="card" style="padding: 1.8vh; background:#FFFFFF; border-left-color: var(--accent-red);">
+                        <h4 style="color: var(--accent-red);"><i class="fa-solid fa-ban"></i> ករណីយឺតលើសពី ២០ នាទី</h4>
+                        <p style="margin:0;">- និស្សិតដែលមកយឺតលើសពី ២០នាទី <b>មិនត្រូវបានអនុញ្ញាតឱ្យចូលក្នុងថ្នាក់ឡើយ</b>។<br>- និស្សិតត្រូវទៅធ្វើការសិក្សាស្រាវជ្រាវដោយខ្លួនឯងនៅក្នុងបណ្ណាល័យជំនួសវិញ។</p>
+                    </div>
+                </div>
+                <div class="card" style="height:100%; padding: 2vh; background:#FFFFFF; justify-content: center;">
+                    <h4><i class="fa-solid fa-clipboard-user"></i>  ការស្រង់វត្តមាន</h4>
+                    <p style="line-height: 1.8;">- និស្សិតត្រូវបានសាស្ត្រាចារ្យស្រង់វត្តមាននៅរៀងរាល់ដើម session នីមួយៗ។<br><br>- វត្តមាន និងការចូលរួមក្នុងថ្នាក់រៀនមានឥទ្ធិពលយ៉ាងខ្លាំងទៅលើចំណាត់ថ្នាក់ និងការយល់ដឹងរបស់និស្សិតលើមេរៀនអនុវត្តន៍ជាក់ស្តែង។</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 17: Group Assignment Overview -->
+        <div class="slide">
+            <div id="h-placeholder-assignment"></div>
+            <h2 class="slide-title"><i class="fa-solid fa-people-group keyword-icon"></i>៥.២- កិច្ចការស្រាវជ្រាវ (Group Assignment) & GitHub</h2>
+            <div class="content-body two-column" style="align-items: center;">
+                <div class="card" style="height:100%; padding: 2.5vh 2vw; background:#FFFFFF;">
+                    <h4><i class="fa-solid fa-circle-info"></i> លក្ខខណ្ឌ និងការវាយតម្លៃ</h4>
+                    <p style="line-height: 1.8;">- <b>កាលបរិច្ឆេទដាក់ពិន្ទុ៖</b> ចុងសប្តាហ៍ទី ១១ | ទម្ងន់ពិន្ទុ៖ <b>១៥ %</b><br><br>- <b>ការងារជាក្រុម៖</b> សមាជិក ២ ទៅ ៣ នាក់ ក្នុងមួយក្រុម។<br><br>- <b>យន្តការវាយតម្លៃ៖</b>  តម្រូវឱ្យមានការ Push កូដចូល <b>GitHub Repository</b> ជាប្រចាំ ដើម្បីវាយតម្លៃការចូលរួមជាក់ស្តែងរបស់សមាជិកក្រុមម្នាក់ៗ។</p>
+                </div>
+                <div class="card" style="height:100%; padding: 2.5vh 2vw; background:#FFFFFF;">
+                    <h4><i class="fa-solid fa-tasks"></i> ភារកិច្ចរបស់ក្រុមនិស្សិត</h4>
+                    <p style="line-height: 1.8;">- <b>ការសរសេរកូដ៖</b>  សរសេរ ASP.NET Core API (Backend) រួមជាមួយការសរសេរ HTML, CSS និង JavaScript Fetch (Frontend) តាមទម្រង់ <b>Model-View-Controller (MVC)</b>។<br><br>- <b>បទបង្ហាញ៖</b> គ្រប់ក្រុមទាំងអស់ត្រូវឡើងធ្វើបទបង្ហាញបង្ហាញប្រព័ន្ធដំណើរការ និងកូដគម្រោងទាំងមូលក្នុងថ្នាក់រៀន។</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 18: Theme 1 - School & Student Management -->
+        <div class="slide">
+            <div id="h-placeholder-theme1"></div>
+            <h2 class="slide-title"><i class="fa-solid fa-graduation-cap keyword-icon"></i>គម្រោងទី ១៖ School & Student Management</h2>
+            <div class="content-body two-column" style="align-items: center;">
+                <div style="display: flex; flex-direction: column; justify-content: center;">
+                    <p style="margin-bottom: 1.5vh; font-weight: bold; color: var(--accent-purple);"><i class="fa-solid fa-circle-check"></i> ប្រធានបទ៖ ការគ្រប់គ្រងព័ត៌មានសាលារៀន និងសិស្សានុសិស្ស</p>
+                    <p style="line-height: 1.7;">- <b>រចនាគ្រឹះទិន្នន័យ (Database)：</b> រចនា Database (DB) របស់សិស្សានុសិស្សភ្ជាប់ជាមួយ SQL Server។<br>- <b>Backend Logic (Model & Controller)：</b> សរសេរ Web API សម្រាប់គ្រប់គ្រងទិន្នន័យសិស្ស (ចុះឈ្មោះ, កែប្រែ, លុប និងបង្ហាញ)。<br>- <b>Frontend Integration (View)：</b> បង្កើតផ្ទាំង Web Page ដ៏ស្រស់ស្អាតដើម្បីឱ្យរដ្ឋបាលសាលាអាចបញ្ជូល និងកែប្រែទិន្នន័យបានផ្ទាល់លើ UI។</p>
+                </div>
+                <div class="rounded-image-layout">
+                    <div class="visual-frame">
+                        <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80" alt="Students Working">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 19: Theme 2 - E-Commerce Product Catalog -->
+        <div class="slide">
+            <div id="h-placeholder-theme2"></div>
+            <h2 class="slide-title"><i class="fa-solid fa-store keyword-icon"></i>គម្រោងទី ២៖ E-Commerce Product Catalog</h2>
+            <div class="content-body two-column" style="align-items: center;">
+                <div class="rounded-image-layout">
+                    <div class="visual-frame">
+                        <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=800&q=80" alt="E-Commerce Visual">
+                    </div>
+                </div>
+                <div style="display: flex; flex-direction: column; justify-content: center;">
+                    <p style="margin-bottom: 1.5vh; font-weight: bold; color: var(--accent-purple);"><i class="fa-solid fa-circle-check"></i> ប្រធានបទ៖ កាតាឡុកផលិតផលរបស់ប្រព័ន្ធពាណិជ្ជកម្មអេឡិចត្រូនិច</p>
+                    <p style="line-height: 1.7;">- <b>Backend API Architecture：</b> រចនា និងបង្កើត API សម្រាប់គ្រប់គ្រងផលិតផល (Products) ដែលមានផ្ទុកព័ត៌មានឈ្មោះ តម្លៃ និងស្តុក。<br>- <b>Frontend UI (View)：</b>  បង្កើត Web Page UI សម្រាប់ឱ្យអតិថិជនមើលមុខទំនិញ និងអនុញ្ញាតឱ្យម្ចាស់ហាងអាច បន្ថែម កែប្រែ ឬលុបទំនិញទាំងនោះបានភ្លាមៗតាមរយៈ Controller API។</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 20: Theme 3 - Task Manager Application -->
+        <div class="slide">
+            <div id="h-placeholder-theme3"></div>
+            <h2 class="slide-title"><i class="fa-solid fa-list-check keyword-icon"></i>គម្រោងទី ៣៖ Task Manager Application</h2>
+            <div class="content-body two-column" style="align-items: center;">
+                <div style="display: flex; flex-direction: column; justify-content: center;">
+                    <p style="margin-bottom: 1.5vh; font-weight: bold; color: var(--accent-purple);"><i class="fa-solid fa-circle-check"></i>  ប្រធានបទ៖ កម្មវិធីកត់ត្រា និងគ្រប់គ្រងកិច្ចការការងារប្រចាំថ្ងៃ</p>
+                    <p style="line-height: 1.7;">- <b>Backend API & Database：</b> កសាង API ដើម្បីរក្សាទុកកិច្ចការប្រចាំថ្ងៃ (To Do List) ដែលមានព័ត៌មានដូចជា ចំណងជើងកិច្ចការ និងស្ថានភាពការងារ (រួចរាល់/មិនទាន់រួចរាល់)។<br>- <b>Frontend UI Integration：</b> បង្កើត Web Page UI เพื่อឱ្យអ្នកប្រើប្រាស់អាចបញ្ចូលកិច្ចការថ្មី និងចុចប្តូរស្ថានភាពការងារ (Tick Done) ឆ្លើយតបទៅកាន់ API ផ្ទាល់។</p>
+                </div>
+                <div class="rounded-image-layout">
+                    <div class="visual-frame">
+                        <img src="https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?auto=format&fit=crop&w=800&q=80" alt="Task Manager Visual">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 21: Small Group Discussions & Quizzes (Scale-up optimized) -->
+        <div class="slide">
+            <div id="h-placeholder-activities"></div>
+            <h2 class="slide-title"><i class="fa-solid fa-comments keyword-icon"></i>៥.២.២ ការពិភាក្សាក្រុម & ៥.២.៣ Surprise Quiz</h2>
+            <div class="content-body card-grid" style="align-content: center;">
+                <div class="card" style="padding: 2.5vh; background:#FFFFFF;">
+                    <h4 style="font-size: 2.2vw; margin-bottom: 0.8vh;">៥.២.២ ការពិភាក្សាជាក្រុមតូចៗនៅក្នុងថ្នាក់ (៥%)</h4>
+                    <p style="margin-top:0.5vh; font-size:1.6vw; line-height: 1.65; text-align: left !important;">- <b>កាលបរិច្ឆេទ៖</b> អនុវត្តជាប្រចាំរាល់សប្តាហ៍។<br>- <b>ប្រធានបទ៖</b> ពិភាក្សាពីភាពខុសគ្នារវាងការអភិវឌ្ឍ Backend (Web API) និងការសរសេរកូដ Frontend (Web UI), CORS និងការដោះស្រាយ Git Conflict ពេលបញ្ចូលកូដគ្នាលើ GitHub។</p>
+                </div>
+                <div class="card" style="padding: 2.5vh; background:#FFFFFF;">
+                    <h4 style="font-size: 2.2vw; margin-bottom: 0.8vh;">៥.២.៣ សំណួរសរសេររយៈពេល១៥នាទី (១០%)</h4>
+                    <p style="margin-top:0.5vh; font-size:1.6vw; line-height: 1.65; text-align: left !important;">- <b>កាលបរិច្ឆេទ៖</b>  ធ្វើឡើង ៣ ទៅ ៤ ដងក្នុងឆមាស (Surprise Quiz)។<br>- <b>ប្រធានបទ៖</b> ការប្រកាសអថេរ C# ងាយៗ,  ការប្រើប្រាស់ .NET CLI Commands (<code>dotnet run</code>),  ការកំណត់ Route និង JavaScript Fetch API មូលដ្ឋាន។</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 22: Exams details -->
+        <div class="slide">
+            <div id="h-placeholder-exams"></div>
+            <h2 class="slide-title"><i class="fa-solid fa-file-signature keyword-icon"></i>៥.៣ ប្រឡងពាក់កណ្តាលឆមាស & ៥.៤ ប្រឡងបញ្ចប់ឆមាស</h2>
+            <div class="content-body card-grid" style="align-content: center;">
+                <div class="card" style="padding: 2.5vh; background:#FFFFFF; border-left-color: var(--accent-purple);">
+                    <h4>៥.៣ ប្រឡងពាក់កណ្តាលឆមាស (២០%)</h4>
+                    <p style="margin-top:0.5vh; font-size:1.6vw; line-height: 1.7;">- <b>កាលបរិច្ឆេទ៖</b>  ធ្វើឡើងនៅចុងសប្តាហ៍ទី ៩។<br>- <b>រយៈពេល៖</b> ៩០ នាទី (ប្រឡងអនុវត្តផ្ទាល់នៅលើកុំព្យូទ័រ)។<br>- <b>ប្រធានបទ៖</b> គ្របដណ្តប់ពីជំពូកទី ១ ដល់ ៨ (ផ្តោតលើការរៀបចំ Model, ការបង្កើត Database តាម EF Core, GET API និងការសរសេរ JS Fetch API បង្ហាញលើ Web Page)។</p>
+                </div>
+                <div class="card" style="padding: 2.5vh; background:#FFFFFF; border-left-color: var(--accent-purple);">
+                    <h4>៥.៤ ប្រឡងបញ្ចប់ឆមាស (៤០%)</h4>
+                    <p style="margin-top:0.5vh; font-size:1.6vw; line-height: 1.7;">- <b>កាលបរិច្ឆេទ៖</b> ផ្តល់ព័ត៌មាន និងរៀបចំដោយការិយាល័យសិក្សា។<br>- <b>រយៈពេល៖</b> ១២០ នាទី (ប្រឡងអនុវត្តផ្ទាល់នៅលើកុំព្យូទ័រ)។<br>- <b>ប្រធានបទ៖</b> គ្របដណ្តប់ខ្លឹមសារនៃមេរៀនទាំងមូល (ការសរសេរប្រព័ន្ធ CRUD Web API ពេញលេញ និងការភ្ជាប់ជាមួយ Web Page UI យ៉ាងត្រឹមត្រូវ)។</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 23: Course Books & Bibliography -->
+        <div class="slide">
+            <div id="h-placeholder-books"></div>
+            <h2 class="slide-title"><i class="fa-solid fa-book keyword-icon"></i>៦. សៀវភៅសិក្សា និង ៧. គន្ថនិទ្ទេស</h2>
+            <div class="content-body card-grid" style="align-content: center;">
+                <div class="card" style="padding: 2.5vh 3vw; background:#FFFFFF;">
+                    <h4>៦. សៀវភៅសិក្សា (Course Books)</h4>
+                    <ul style="list-style:none; padding-left:0; margin-top: 1vh;">
+                        <li style="margin-bottom:1.5vh; font-size: 1.5vw;"><b>1. ASP.NET Core Web API Tutorials:</b> ឯកសារបង្រៀនផ្លូវការពី Microsoft (សាមញ្ញងាយយល់សម្រាប់អ្នកប្រើប្រាស់ VS Code)។</li>
+                        <li style="margin-bottom:1.5vh; font-size: 1.5vw;"><b>2. Entity Framework Core in Action (2nd Edition)</b> ដោយ Jon P Smith (សម្រាប់ការស្វែងយល់បន្ថែមពី Database Code-First)។</li>
+                    </ul>
+                </div>
+                <div class="card" style="padding: 3vh 3vw; background:#FFFFFF;">
+                    <h4>៧. គន្ថនិទ្ទេស (Bibliography)</h4>
+                    <ul style="list-style:none; padding-left:0; margin-top: 1vh;">
+                        <li style="margin-bottom:1vh; font-size: 1.5vw;"><b>Microsoft Core Documentation:</b> <br><span style="color:var(--accent-purple); font-size:1.3vw;">https://learn.microsoft.com/en-us/aspnet/core/</span></li>
+                        <li style="margin-bottom:1vh; font-size: 1.5vw;"><b>Mozilla Developer Network (MDN) Web Docs:</b> <br><span style="color:var(--accent-purple); font-size:1.3vw;">https://developer.mozilla.org/</span> (សម្រាប់ Fetch API)</li>
+                        <li style="margin-bottom:1vh; font-size: 1.5vw;"><b>GitHub:</b> <br><span style="color:var(--accent-purple); font-size:1.3vw;">https://github.com/</span> (សម្រាប់គ្រប់គ្រងកូដគម្រោង)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 24: Q&A / Ending -->
+        <div class="slide">
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; text-align: center;">
+                <div style="background: #F8FAFC; border: 1px solid var(--border-light); padding: 4vh 5vw; border-radius: 12px; width: 80%; box-shadow: 0 10px 20px rgba(0,0,0,0.02);">
+                    <h1 style="font-size: 4.5vw; color: var(--accent-purple); margin-bottom: 2vh;"><i class="fa-solid fa-comments"></i> សំណួរ និងចម្លើយ ?</h1>
+                    <p style="font-size: 2.2vw; color: var(--text-muted); margin-bottom: 4vh; text-align: center !important;">សូមអរគុណនិស្សិតទាំងអស់សម្រាប់ការយកចិត្តទុកដាក់ស្ដាប់!</p>
+                    <div style="display: flex; gap: 2vw; justify-content: center;">
+                        <div style="background: #FFFFFF; padding: 1.5vh 2.5vw; border-radius: 50px; border: 2px solid var(--accent-purple); box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
+                            <p style="margin: 0; font-weight: bold; font-size: 1.8vw; color: var(--accent-purple); text-align: center !important;"><i class="fa-solid fa-envelope"></i> soeurnglim@gmail.com</p>
+                        </div>
+                        <div style="background: #FFFFFF; padding: 1.5vh 2.5vw; border-radius: 50px; border: 2px solid #0088cc; box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
+                            <p style="margin: 0; font-weight: bold; font-size: 1.8vw; color: #0088cc; text-align: center !important;"><i class="fa-brands fa-telegram"></i>  តេឡេក្រាម៖ ០៦១ ២២៧ ៩៣៣</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Global Presentation Footer (For Screen Display Only) -->
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" alt="Professor">
+            <span>សាស្ត្រាចារ្យ៖ សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="slide-counter" id="slideCounter">ស្លាយទី ១ នៃ ២៤</div>
+    </div>
+
+</div>
+
+<script>
+    const slideWrapper = document.getElementById('slideWrapper');
+    const headerHTML = document.getElementById('headerTemplate').innerHTML;
+    const khNums = ["០", "១", "២", "៣", "៤", "៥", "៦", "៧", "៨", "៩"];
+    function toKh(n) { return n.toString().split('').map(d => khNums[parseInt(d)]).join(''); }
+
+    // Apply Header to all slides that need it
+    document.querySelectorAll('[id^="h-placeholder"]').forEach(p => p.outerHTML = headerHTML);
+
+    // Navigation and Footer Logic
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+    const counter = document.getElementById('slideCounter');
+    let currentIdx = 0;
+
+    // Clone footer to each slide for print mode
+    const originalFooter = document.querySelector('.global-footer');
+    slides.forEach((slide, idx) => {
+        const slideFooter = originalFooter.cloneNode(true);
+        slideFooter.classList.add('print-only-footer');
+        const counterEl = slideFooter.querySelector('.slide-counter');
+        if (counterEl) {
+            counterEl.innerHTML = `ស្លាយទី ${toKh(idx + 1)} នៃ ${toKh(totalSlides)}`;
+        }
+        slide.appendChild(slideFooter);
+    });
+
+    function update(idx) { 
+        slides.forEach(s => s.classList.remove('active')); 
+        slides[idx].classList.add('active'); 
+        currentIdx = idx; 
+        counter.innerHTML = `ស្លាយទី ${toKh(idx + 1)} នៃ ${toKh(totalSlides)}`;
+    }
+
+    function navigate(e) {
+        // PREVENT navigation if user is selecting text to copy
+        const textSelection = window.getSelection().toString();
+        if (textSelection !== '') return;
+
+        if (e.target.closest('table') || e.target.closest('.card') || e.target.closest('.lesson-row') || e.target.closest('.assess-card') || e.target.closest('.global-footer')) return;
+        if (e.clientX > window.innerWidth / 2) { if (currentIdx < totalSlides - 1) update(currentIdx + 1); } 
+        else { if (currentIdx > 0) update(currentIdx - 1); }
+    }
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === "ArrowRight" || e.key === " " || e.key === "PageDown") { if (currentIdx < totalSlides - 1) update(currentIdx + 1); } 
+        else if (e.key === "ArrowLeft" || e.key === "PageUp") { if (currentIdx > 0) update(currentIdx - 1); }
+    });
+
+    update(0); // Initialize first slide
+</script>
+</body>
+</html>

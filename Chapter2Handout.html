@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Handout: ជំពូកទី ២ - C# Basics & OOP for Web API</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Khmer+OS+Siemreap&family=Battambang:wght@400;700&family=Suwannaphum:wght@400;700;900&family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        :root {
+            /* Premium Color Palette */
+            --primary: #0F172A;        
+            --secondary: #0078D4;      
+            --accent: #512BD4;         
+            --success: #10B981;        
+            --warning: #D97706;        
+            --danger: #EF4444;         
+            
+            --text-main: #1E293B;
+            --text-heading: #0F172A;
+            --text-muted: #64748B;
+            
+            --bg-page: #FFFFFF;
+            --bg-workspace: #E2E8F0;
+            --bg-light: #F8FAFC;
+            
+            --border-light: #E2E8F0;
+            --border-dark: #CBD5E1;
+            
+            /* Fonts */
+            --font-kh-heading: 'Suwannaphum', serif;
+            --font-kh-body: 'Battambang', sans-serif;
+            --font-en-main: 'Inter', sans-serif;
+            --font-code: 'Fira Code', monospace;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-workspace);
+            font-family: var(--font-kh-body);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        /* Print Button Zone */
+        .no-print {
+            background: #FFFFFF; border: 1px solid var(--border-dark); padding: 15px 25px; border-radius: 12px;
+            margin-bottom: 25px; width: 210mm; text-align: center; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .no-print p { margin: 0; font-size: 14px; color: var(--text-muted); font-family: var(--font-kh-body);}
+        .print-btn {
+            background: var(--accent); color: white; border: none; padding: 10px 24px; border-radius: 8px; 
+            font-family: var(--font-kh-body); font-size: 15px; font-weight: 700; cursor: pointer;
+            box-shadow: 0 4px 12px rgba(81, 43, 212, 0.3); transition: all 0.2s ease;
+        }
+        .print-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(81, 43, 212, 0.4); }
+
+        /* STRICT A4 PAGE LAYOUT (FLEXBOX FLOW) */
+        .a4-page {
+            width: 210mm; 
+            height: 297mm;
+            background: var(--bg-page); 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1); 
+            margin-bottom: 30px; 
+            position: relative; 
+            border-radius: 4px; 
+            page-break-after: always;
+            box-sizing: border-box;
+            padding: 15mm;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* HEADER & FOOTER */
+        .global-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 10px 15px; border-bottom: 3px solid var(--accent); background-color: var(--bg-light);
+            border-radius: 4px; margin-bottom: 10px;
+        }
+        .header-item { display: flex; align-items: center; gap: 8px; }
+        .header-item img { height: 35px; object-fit: contain; }
+        .header-item span { font-family: var(--font-kh-heading); font-size: 10pt; font-weight: bold; color: var(--accent); }
+        .header-text { flex-grow: 1; text-align: center; padding: 0 10px; }
+        .header-text h1 { font-family: var(--font-kh-heading); font-size: 12pt; color: var(--accent); margin-bottom: 2px; font-weight: 900;}
+        .header-text p { font-family: var(--font-en-main); font-size: 7.5pt; color: var(--text-muted); font-weight: 600; text-transform: uppercase;}
+
+        .global-footer {
+            display: flex; justify-content: space-between; align-items: center;
+            padding-top: 10px; border-top: 1px solid var(--border-light); margin-top: 10px;
+        }
+        .footer-left { display: flex; align-items: center; gap: 8px; }
+        .footer-left img { border-radius: 50%; width: 28px; height: 28px; object-fit: cover; border: 2px solid var(--accent); }
+        .footer-left span { font-size: 9.5pt; color: var(--text-main); font-weight: bold;}
+        .footer-right { 
+            font-size: 9.5pt; color: white; font-weight: 700; background: var(--accent); 
+            padding: 3px 12px; border-radius: 20px;
+        }
+
+        /* Content Zone */
+        .page-content { 
+            flex-grow: 1; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: flex-start; 
+            overflow: visible; 
+        }
+
+        /* TYPOGRAPHY */
+        .section-title {
+            border-bottom: 2px solid var(--accent); padding-bottom: 6px; margin: 10px 0 12px 0;
+            font-family: var(--font-kh-heading); font-size: 14pt; font-weight: 900; color: var(--text-heading);
+            display: flex; align-items: center; gap: 8px;
+        }
+        .section-title i { color: var(--accent); }
+        
+        .sub-heading { font-family: var(--font-kh-heading); font-weight: 900; font-size: 12pt; color: var(--accent); margin: 10px 0 8px 0; }
+        .text-block { font-size: 10.5pt; line-height: 1.6; margin-bottom: 10px; text-align: justify; }
+        .highlight { color: var(--accent); font-weight: 700; }
+
+        /* TOC Table Specific */
+        .toc-table { width: 100%; border-collapse: collapse; margin: 10px 0; border: 1px solid var(--border-light); border-radius: 8px; overflow: hidden; }
+        .toc-table th { background: var(--accent); color: white; font-family: var(--font-kh-heading); font-size: 11pt; padding: 10px 12px; text-align: left; }
+        .toc-table td { padding: 10px 12px; border-bottom: 1px solid var(--border-light); font-size: 10.5pt; color: var(--text-main); }
+        .toc-table tr:last-child td { border-bottom: none; }
+        .toc-num { font-weight: bold; width: 15%; text-align: center; }
+
+        /* Objectives List Specific */
+        .obj-list { list-style: none; padding-left: 0; margin-top: 10px; }
+        .obj-list li { position: relative; padding-left: 20px; margin-bottom: 10px; font-size: 10.5pt; line-height: 1.6; }
+        .obj-list li::before { content: '•'; position: absolute; left: 5px; color: var(--accent); font-size: 16px; font-weight: bold; top: -2px; }
+
+        /* Tables (General) */
+        table.standard-table { width: 100%; border-collapse: collapse; margin-bottom: 12px; border: 1px solid var(--border-dark); }
+        table.standard-table th, table.standard-table td { border: 1px solid var(--border-dark); padding: 8px 10px; text-align: left; vertical-align: middle; }
+        table.standard-table th { background: var(--accent); color: white; font-family: var(--font-kh-heading); font-size: 10.5pt; text-align: center; }
+        table.standard-table td { font-size: 10pt; line-height: 1.5; }
+
+        /* Visual Frames and Fallback Elements */
+        .visual-frame { 
+            background: #FFFFFF; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            height: 100%; 
+            max-height: 280px; 
+            width: 100%; 
+            border-radius: 8px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03); 
+            padding: 8px; 
+            border: 1px solid var(--border-light);
+            overflow: hidden;
+            position: relative;
+            margin: 10px 0;
+        }
+        .visual-frame img { max-height: 100%; max-width: 100%; object-fit: contain; border-radius: 4px;}
+        
+        .schematic-fallback {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            background: #F1F5F9;
+            color: #475569;
+            padding: 10px;
+            text-align: center;
+            border-radius: 4px;
+        }
+
+        .two-column { 
+            display: grid; 
+            grid-template-columns: 1.1fr 0.9fr; 
+            gap: 15px; 
+            margin: 10px 0;
+            align-items: center;
+        }
+
+        /* Code & Boxes */
+        .code-window { background: var(--primary); border-radius: 8px; overflow: hidden; margin: 10px 0; border: 1px solid #334155;}
+        .code-header { background: #1E293B; padding: 6px 12px; display: flex; align-items: center; justify-content: space-between; }
+        .mac-dots { display: flex; gap: 6px; }
+        .dot { width: 8px; height: 8px; border-radius: 50%; }
+        .dot-r { background: var(--danger); }
+        .dot-y { background: var(--warning); }
+        .dot-g { background: var(--success); }
+        .code-title { color: #94A3B8; font-family: var(--font-code); font-size: 8.5pt; }
+        pre { padding: 12px; color: #E2E8F0; font-family: var(--font-code); font-size: 9pt; line-height: 1.4; overflow-x: auto; margin: 0; }
+        code.inline-code { font-family: var(--font-code); background: #F1F5F9; color: var(--danger); padding: 2px 5px; border-radius: 4px; font-size: 9.5pt; font-weight: bold; border: 1px solid var(--border-light); }
+        
+        .lab-box { background: #FEFCE8; border-left: 5px solid #EAB308; padding: 12px; margin: 10px 0; border-radius: 4px; border: 1px solid #FEF08A; }
+        .lab-box h4 { color: #854D0E; margin-bottom: 6px; font-family: var(--font-kh-heading); font-size: 11pt;}
+        .lab-box p { font-size: 10pt; line-height: 1.5; margin: 0; }
+
+        .info-box { background: #F0FDF4; border-left: 5px solid var(--success); padding: 12px; margin: 10px 0; border-radius: 4px; border: 1px solid #BBF7D0; }
+
+        /* Questions list */
+        .q-list { list-style: decimal; padding-left: 18px; font-size: 10.5pt; line-height: 1.6; }
+        .q-list li { margin-bottom: 12px; font-weight: bold; }
+        .mcq-opts { list-style-type: upper-alpha; padding-left: 18px; margin-top: 6px; font-weight: normal; display: grid; grid-template-columns: 1fr 1fr; gap: 6px;}
+        .mcq-opts li { margin-bottom: 0; }
+
+        /* Answer Table */
+        .ans-table { width: 100%; border-collapse: collapse; margin-top: 5px;}
+        .ans-table th { background: var(--bg-light); color: var(--text-heading); text-align: center; border: 1px solid var(--border-dark); padding: 5px; font-size: 9.5pt;}
+        .ans-table td { font-weight: bold; color: var(--accent); text-align: center; border: 1px solid var(--border-dark); padding: 5px; font-size: 9.5pt;}
+
+        @media print {
+            body { background: none; padding: 0; margin: 0; display: block; }
+            .no-print { display: none !important; }
+            @page { size: A4 portrait; margin: 0; }
+            .a4-page { width: 210mm !important; height: 297mm !important; margin: 0 !important; box-shadow: none !important; border: none !important; border-radius: 0 !important; }
+            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="no-print">
+    <p><b><i class="fa-solid fa-file-pdf"></i> ណែនាំ៖</b> ដើម្បីបោះពុម្ពជា PDF ឱ្យចំកណ្តាលទំព័រ A4 ល្អ សូមជ្រើសរើស <b>Margins: None</b> និងបើក <b>Background graphics</b> (Handout ១៩ ទំព័រ)。</p>
+    <button class="print-btn" onclick="window.print()"><i class="fa-solid fa-print"></i> បោះពុម្ពឯកសារជា PDF (A4 Handout ១៩ ទំព័រ)</button>
+</div>
+
+<!-- PAGE 1: COVER -->
+<div class="a4-page">
+    <div class="page-content" style="justify-content: center; align-items: center; text-align: center; background: radial-gradient(circle at center, #F8FAFC 0%, #FFFFFF 100%);">
+        <img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" style="width: 140px; margin-bottom: 20px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));">
+        <h1 style="font-family: 'Suwannaphum'; font-size: 28pt; color: var(--text-heading); margin-bottom: 2px; font-weight: 900;">សាកលវិទ្យាល័យអង្គរ</h1>
+        <p style="font-family: 'Inter'; font-size: 13pt; color: var(--text-muted); margin-bottom: 30px; font-weight: 600; letter-spacing: 2px;">ANGKOR UNIVERSITY</p>
+        
+        <div style="font-family: 'Suwannaphum'; font-size: 14pt; color: var(--text-main); margin-bottom: 25px; font-weight: 700; background: #F1F5F9; padding: 8px 25px; border-radius: 50px; border: 1px solid var(--border-light); display: inline-flex; align-items: center; gap: 8px;">
+            <i class="fa-solid fa-graduation-cap" style="color:var(--accent);"></i> បរិញ្ញាបត្រ វិទ្យាសាស្ត្រកុំព្យូទ័រ
+        </div>
+        
+        <div style="background: var(--accent); color: white; padding: 10px 25px; border-radius: 8px; font-size: 14pt; font-family: 'Suwannaphum'; font-weight: 700; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(81, 43, 212, 0.3);">ឯកសារអាន (Handout) - ជំពូកទី ២</div>
+        
+        <h2 style="font-family: 'Suwannaphum'; font-size: 22pt; color: var(--text-heading); margin-bottom: 10px; line-height: 1.4; font-weight: 900;">មូលដ្ឋានគ្រឹះភាសា C# សម្រាប់ MVC<br>និងគោលការណ៍ Object-Oriented Programming (OOP)</h2>
+        <h3 style="font-family: 'Battambang'; font-size: 13pt; color: var(--secondary); margin-bottom: 40px; font-weight: 600;">បច្ចេកវិទ្យា ASP.NET និងប្រព័ន្ធគ្រប់គ្រងមូលដ្ឋានទិន្នន័យ SQL Server</h3>
+        
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; background: white; padding: 15px 30px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid var(--border-light); width: 85%;">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" style="width: 110px; height: 100px; border-radius: 50%; object-fit: cover; border: 4px solid var(--accent); box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+            <p style="font-family: 'Battambang'; font-size: 11pt; color: var(--text-muted); margin: 0;">រៀបចំដោយសាស្ត្រាចារ្យ៖</p>
+            <strong style="font-family: 'Suwannaphum'; color: var(--text-heading); font-size: 15pt; font-weight: 900;">សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</strong>
+        </div>
+    </div>
+</div>
+
+<!-- PAGE 2: OBJECTIVES & TOC -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ២</h1><p>ASP.NET CORE MVC & SQL SERVER</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title"><i class="fa-solid fa-list-ol"></i> មាតិកាជំពូកទី ២ (Chapter Contents)</div>
+        <table class="toc-table">
+            <thead>
+                <tr>
+                    <th style="width: 15%; text-align: center;">ចំណុច</th>
+                    <th>ខ្លឹមសារមេរៀន (Topics)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td class="toc-num">២.១</td><td>អថេរ និងប្រភេទទិន្នន័យគ្រឹះ (Variables & passing data to Views via ViewData/ViewBag)</td></tr>
+                <tr><td class="toc-num">២.២</td><td>ប្រព័ន្ធលក្ខខណ្ឌ និងរង្វិលជុំ Razor ក្នុង View (Razor Controls, @if, @foreach in CSHTML)</td></tr>
+                <tr><td class="toc-num">២.៣</td><td>ស្ថាបត្យកម្មគ្រឹះ OOP សម្រាប់ MVC Models (Class and Object as Data Models)</td></tr>
+                <tr><td class="toc-num">២.៤</td><td>ការសរសេរ Class Properties & Constructors សម្រាប់ទម្រង់ ViewModel</td></tr>
+                <tr><td class="toc-num">២.៥</td><td>ការយល់ដឹងពីការបញ្ជូន និងបង្ហាញទិន្នន័យ Model ទៅកាន់ Razor Views (Strongly-typed Views)</td></tr>
+            </tbody>
+        </table>
+
+        <div class="section-title"><i class="fa-solid fa-bullseye"></i> វត្ថុបំណងនៃជំពូកទី ២ (Chapter Objectives)</div>
+        <ul class="obj-list">
+            <li><b class="highlight">យល់ដឹងពីប្រភេទទិន្នន័យ៖</b> ចេះកំណត់អថេរ និងប្រើប្រាស់ Data Types របស់ C# ព្រមទាំងយន្តការផ្ទេរទិន្នន័យ ViewData/ViewBag។</li>
+            <li><b class="highlight">គ្រប់គ្រងលំហូរកូដ Razor៖</b> យល់ពីរបៀបបញ្ជាលក្ខខណ្ឌ (@if-else) និងប្រើប្រាស់រង្វិលជុំ (@foreach) ក្នុងឯកសារ View .cshtml។</li>
+            <li><b class="highlight">យល់ច្បាស់ពីស្ថាបត្យកម្ម OOP៖</b> អាចពន្យល់ពីគោលការណ៍ Classes និង Objects ព្រមទាំងការបង្កើត Model សម្រាប់គម្រោង MVC។</li>
+            <li><b class="highlight">រចនា Model សម្រាប់ MVC៖</b> ចេះសរសេរ Class គំរូ និងយល់ពីទំនាក់ទំនង Strongly-typed ពី Controller ទៅកាន់ Razor Views។</li>
+        </ul>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ២ / ១៩</div>
+    </div>
+</div>
+
+<!-- PAGE 3: VARIABLES & PRIMITIVES -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ២</h1><p>ASP.NET CORE MVC & SQL SERVER</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title"><i class="fa-solid fa-code"></i> ២.១ អថេរ និងប្រភេទទិន្នន័យគ្រឹះ (Variables & passing data to Views)</div>
+        <div class="text-block">
+            ភាសា C# គឺជាភាសាប្រភេទ <b class="highlight">Strongly-typed Language</b> ដែលមានន័យថារាល់អថេរ (Variables) ទាំងអស់ ត្រូវតែប្រកាសបញ្ជាក់ប្រភេទទិន្នន័យ (Data Type) ឱ្យបានច្បាស់លាស់មុនពេលប្រើប្រាស់។ នៅក្នុង ASP.NET Core MVC យើងអាចប្រកាសអថេរក្នុង Controller រួចបញ្ជូនទៅកាន់ View តាមរយៈ ViewData ឬ ViewBag។
+        </div>
+
+        <div class="two-column">
+            <div>
+                <table class="standard-table">
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Sample Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><b>int</b></td><td>10, -500, 250</td></tr>
+                        <tr><td><b>double</b></td><td>19.99, -3.14</td></tr>
+                        <tr><td><b>decimal</b></td><td>29.99m (Finance)</td></tr>
+                        <tr><td><b>string</b></td><td>"Angkor", "Web API"</td></tr>
+                        <tr><td><b>bool</b></td><td>true, false</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="visual-frame">
+                <img src="images/datatype.png" onerror="handleImgError(this, 'datatype')" alt="Data Types">
+                <div class="schematic-fallback"></div>
+            </div>
+        </div>
+
+        <div class="sub-heading">ការប្រើប្រាស់ ViewData និង ViewBag ក្នុង C#</div>
+        <div class="code-window">
+<pre><span style="color:#5C6370;">// នៅក្នុង Controller Action</span>
+ViewData[<span style="color:#98C379;">"Title"</span>] = <span style="color:#98C379;">"Student Profile"</span>;
+ViewBag.StudentId = <span style="color:#D19A66;">101</span>;
+ViewBag.StudentName = <span style="color:#98C379;">"Dara SOK"</span>;
+ViewBag.TotalScore = <span style="color:#D19A66;">95.50m</span>;
+
+<span style="color:#5C6370;">// នៅក្នុង View (.cshtml)</span>
+&lt;h2&gt;<span style="color:#E06C75;">@ViewData</span>[<span style="color:#98C379;">"Title"</span>]&lt;/h2&gt;
+&lt;p&gt;Student Name: <span style="color:#E06C75;">@ViewBag.StudentName</span>&lt;/p&gt;</pre>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ៣ / ១៩</div>
+    </div>
+</div>
+
+<!-- PAGE 4: LAB 2.1 IN MVC (COMPLETE CODE) -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ២</h1><p>ASP.NET CORE MVC & SQL SERVER</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="lab-box" style="margin-top:0;">
+            <h4><i class="fa-solid fa-laptop-code"></i> ដំណោះស្រាយលំហាត់ Lab 2.1: Controller to View Data Passing</h4>
+            <p><b>គម្រោង (Project):</b> <code>OopMvcApplication</code> | <b>ទីតាំង (File):</b> <code>Controllers/HomeController.cs</code></p>
+            <div class="code-window" style="margin-top:4px; margin-bottom: 4px;">
+<pre><span style="color:#C678DD;">using</span> Microsoft.AspNetCore.Mvc;
+
+<span style="color:#C678DD;">namespace</span> OopMvcApplication.Controllers
+{
+    <span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">HomeController</span> : Controller
+    {
+        <span style="color:#C678DD;">public</span> IActionResult <span style="color:#61AFEF;">ShopInfo</span>()
+        {
+            <span style="color:#C678DD;">string</span> shopName = <span style="color:#98C379;">"Angkor Tech Store"</span>;
+            <span style="color:#C678DD;">string</span> address = <span style="color:#98C379;">"National Road 6, Siem Reap"</span>;
+            <span style="color:#C678DD;">string</span> openHours = <span style="color:#98C379;">"8:00 AM - 8:00 PM"</span>;
+
+            ViewBag.ShopName = shopName;
+            ViewBag.Address = address;
+            ViewBag.OpenHours = openHours;
+
+            <span style="color:#C678DD;">return</span> <span style="color:#61AFEF;">View</span>();
+        }
+    }
+}</pre>
+            </div>
+            <p style="margin-bottom: 2px;"><b>ឯកសារទិដ្ឋភាពបង្ហាញ (View File):</b> <code>Views/Home/ShopInfo.cshtml</code></p>
+            <div class="code-window" style="margin-top:2px;">
+<pre><span style="color:#C678DD;">@{</span>
+    ViewData[<span style="color:#98C379;">"Title"</span>] = <span style="color:#98C379;">"Shop Information"</span>;
+<span style="color:#C678DD;">}</span>
+
+&lt;div class=<span style="color:#98C379;">"container mt-4"</span>&gt;
+    &lt;div class=<span style="color:#98C379;">"card border-primary"</span> style=<span style="color:#98C379;">"max-width: 500px;"</span>&gt;
+        &lt;div class=<span style="color:#98C379;">"card-header bg-primary text-white"</span>&gt;
+            &lt;h3 class=<span style="color:#98C379;">"card-title mb-0"</span>&gt;<span style="color:#E06C75;">@ViewBag.ShopName</span>&lt;/h3&gt;
+        &lt;/div&gt;
+        &lt;div class=<span style="color:#98C379;">"card-body"</span>&gt;
+            &lt;p&gt;&lt;strong&gt;អាសយដ្ឋាន៖&lt;/strong&gt; <span style="color:#E06C75;">@ViewBag.Address</span>&lt;/p&gt;
+            &lt;p&gt;&lt;strong&gt;ម៉ោងបើកទ្វារ៖&lt;/strong&gt; <span style="color:#E06C75;">@ViewBag.OpenHours</span>&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</pre>
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ៤ / ១៩</div>
+    </div>
+</div>
+
+<!-- PAGE 5: LOOPS IN C# -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ២</h1><p>ASP.NET CORE MVC & SQL SERVER</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-code-branch"></i> ២.២ ប្រព័ន្ធលក្ខខណ្ឌ និងរង្វិលជុំ Razor ក្នុង View</div>
+        <div class="text-block">
+            លក្ខខណ្ឌ <b class="highlight">@if-else</b> និងរង្វិលជុំ <b class="highlight">@foreach</b> នៅក្នុង Razor Syntax ត្រូវបានប្រើប្រាស់ដោយផ្ទាល់ក្នុងឯកសារ View (.cshtml) ដើម្បីកំណត់ដំណើរការបង្ហាញទិន្នន័យពី Server ទៅកាន់ទំព័រ HTML ឌីណាមិក។
+        </div>
+
+        <div class="sub-heading">ការប្រើប្រាស់រង្វិលជុំ foreach និងប្រព័ន្ធលក្ខខណ្ឌ Razor</div>
+        <div class="code-window">
+<pre><span style="color:#5C6370;">// នៅក្នុង Controller Action</span>
+List&lt;<span style="color:#C678DD;">string</span>&gt; products = <span style="color:#C678DD;">new</span>() { <span style="color:#98C379;">"iPhone"</span>, <span style="color:#98C379;">"MacBook"</span>, <span style="color:#98C379;">"iPad"</span> };
+ViewBag.Products = products;
+
+<span style="color:#5C6370;">// នៅក្នុង Razor View (.cshtml)</span>
+&lt;ul&gt;
+    <span style="color:#E06C75;">@foreach</span> (var item in ViewBag.Products)
+    {
+        &lt;li&gt;<span style="color:#E06C75;">@item</span>&lt;/li>
+    }
+&lt;/ul&gt;</pre>
+        </div>
+
+        <div class="info-box">
+            <p><b><i class="fa-solid fa-lightbulb"></i> គន្លឹះសំខាន់៖</b> និមិត្តសញ្ញា <code>@</code> ប្រាប់ទៅកាន់ Razor Engine ថាផ្នែកបន្ទាប់គឺជាកូដ C#។ ប្រព័ន្ធលក្ខខណ្ឌ និងរង្វិលជុំ Razor រត់នៅផ្នែក Server-side មុននឹងបញ្ជូនកូដ HTML សុទ្ធទៅកាន់ Browser。</p>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ៥ / ១៩</div>
+    </div>
+</div>
+
+<!-- PAGE 6: LAB 2.2 IN MVC (COMPLETE CODE) -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ២</h1><p>ASP.NET CORE MVC & SQL SERVER</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="lab-box" style="margin-top:0;">
+            <h4><i class="fa-solid fa-laptop-code"></i> ដំណោះស្រាយលំហាត់ Lab 2.2: Loops & Collections in Razor</h4>
+            <p><b>គម្រោង (Project):</b> <code>OopMvcApplication</code> | <b>ទីតាំង (File):</b> <code>Controllers/HomeController.cs</code></p>
+            <div class="code-window" style="margin-top:4px; margin-bottom: 4px;">
+<pre><span style="color:#C678DD;">using</span> Microsoft.AspNetCore.Mvc;
+<span style="color:#C678DD;">using</span> System.Collections.Generic;
+
+<span style="color:#C678DD;">namespace</span> OopMvcApplication.Controllers
+{
+    <span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">HomeController</span> : Controller
+    {
+        <span style="color:#C678DD;">public</span> IActionResult <span style="color:#61AFEF;">ProductList</span>()
+        {
+            List&lt;<span style="color:#C678DD;">string</span>&gt; products = <span style="color:#C678DD;">new</span>() 
+            { 
+                <span style="color:#98C379;">"iPhone 15 Pro Max"</span>, 
+                <span style="color:#98C379;">"MacBook Air M3"</span>, 
+                <span style="color:#98C379;">"Apple Watch Series 9"</span>, 
+                <span style="color:#98C379;">"AirPods Pro 2"</span> 
+            };
+
+            ViewBag.Products = products;
+            <span style="color:#C678DD;">return</span> <span style="color:#61AFEF;">View</span>();
+        }
+    }
+}</pre>
+            </div>
+            <p style="margin-bottom: 2px;"><b>ឯកសារទិដ្ឋភាពបង្ហាញ (View File):</b> <code>Views/Home/ProductList.cshtml</code></p>
+            <div class="code-window" style="margin-top:2px;">
+<pre><span style="color:#C678DD;">@{</span>
+    ViewData[<span style="color:#98C379;">"Title"</span>] = <span style="color:#98C379;">"Our Products"</span>;
+<span style="color:#C678DD;">}</span>
+
+&lt;div class=<span style="color:#98C379;">"container mt-4"</span>&gt;
+    &lt;h2 class=<span style="color:#98C379;">"mb-3 text-primary"</span>&gt;បញ្ជីមុខទំនិញក្នុងហាង&lt;/h2&gt;
+    &lt;ul class=<span style="color:#98C379;">"list-group"</span> style=<span style="color:#98C379;">"max-width: 500px;"</span>&gt;
+        <span style="color:#E06C75;">@foreach</span> (var item in ViewBag.Products)
+        {
+            &lt;li class=<span style="color:#98C379;">"list-group-item d-flex align-items-center"</span>&gt;
+                &lt;i class=<span style="color:#98C379;">"fa-solid fa-circle-check text-success me-2"</span>&gt;&lt;/i&gt;
+                <span style="color:#E06C75;">@item</span>
+            &lt;/li>
+        }
+    &lt;/ul&gt;
+&lt;/div&gt;</pre>
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ៦ / ១៩</div>
+    </div>
+</div>
+
+<!-- PAGE 7: C# PROPERTIES (GET; SET;) -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ២</h1><p>ASP.NET CORE MVC & SQL SERVER</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-cube"></i> ២.៣ & ២.៤ ស្ថាបត្យកម្មគ្រឹះ OOP សម្រាប់ MVC Models</div>
+        <div class="text-block">
+            នៅក្នុង MVC, <b>Model</b> គឺជាបេះដូងចាត់ចែងរចនាសម្ព័ន្ធទិន្នន័យ។ Model ត្រូវបានតំណាងដោយ C# Class ដែលផ្ទុក <b>Properties</b> (អថេរដែលមាន get; set;) និង <b>Constructor</b> សម្រាប់ចាប់ផ្ដើមតំលៃដំបូង។
+        </div>
+
+        <div class="two-column">
+            <div class="visual-frame">
+                <img src="images/oopmodel.png" onerror="handleImgError(this, 'oop')" alt="OOP Model Concepts">
+                <div class="schematic-fallback"></div>
+            </div>
+            <div class="text-block">
+                • <b class="highlight">Class:</b> ជាពុម្ពគំរូ (Blueprint) កំណត់ទិន្នន័យរួម និង behavior។<br>
+                • <b class="highlight">Properties:</b> ប្រើសម្រាប់ encapsulate ទិន្នន័យ និងកំណត់សិទ្ធិអាន/សរសេរ។<br>
+                • <b class="highlight">Constructor:</b> ជា Method ពិសេសសម្រាប់ new Object។
+            </div>
+        </div>
+
+        <div class="sub-heading">ការបង្កើត Class Model ក្នុង C#</div>
+        <div class="code-window">
+<pre><span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">Product</span>
+{
+    <span style="color:#C678DD;">public int</span> Id { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; }
+    <span style="color:#C678DD;">public string</span> Name { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; } = <span style="color:#C678DD;">string</span>.Empty;
+    <span style="color:#C678DD;">public decimal</span> Price { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; }
+}</pre>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ៧ / ១៩</div>
+    </div>
+</div>
+
+<!-- PAGE 8: LAB 2.3 COMPLETE SOLUTION -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ២</h1><p>ASP.NET CORE MVC & SQL SERVER</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="lab-box" style="margin-top:0;">
+            <h4><i class="fa-solid fa-laptop-code"></i> ដំណោះស្រាយលំហាត់ Lab 2.3: Creating Custom C# Class & Strongly-typed Views</h4>
+            <p><b>គម្រោង (Project):</b> <code>OopMvcApplication</code></p>
+            
+            <div class="code-window" style="margin-top:4px; margin-bottom: 4px;">
+                <div class="code-title" style="padding: 2px 10px; color:#aaa; font-size:8.5pt;">Models/Product.cs</div>
+<pre><span style="color:#C678DD;">namespace</span> OopMvcApplication.Models
+{
+    <span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">Product</span>
+    {
+        <span style="color:#C678DD;">public int</span> Id { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; }
+        <span style="color:#C678DD;">public string</span> Name { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; } = <span style="color:#C678DD;">string</span>.Empty;
+        <span style="color:#C678DD;">public decimal</span> Price { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; }
+        <span style="color:#C678DD;">public int</span> Qty { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; }
+
+        <span style="color:#C678DD;">public</span> <span style="color:#61AFEF;">Product</span>(<span style="color:#C678DD;">int</span> id, <span style="color:#C678DD;">string</span> name, <span style="color:#C678DD;">decimal</span> price, <span style="color:#C678DD;">int</span> qty)
+        {
+            Id = id; Name = name; Price = price; Qty = qty;
+        }
+
+        <span style="color:#C678DD;">public decimal</span> <span style="color:#61AFEF;">CalculateTotal</span>() =&gt; Price * Qty;
+    }
+}</pre>
+            </div>
+
+            <div class="code-window" style="margin-top:2px; margin-bottom: 2px;">
+                <div class="code-title" style="padding: 2px 10px; color:#aaa; font-size:8.5pt;">Controllers/ProductController.cs</div>
+<pre><span style="color:#C678DD;">using</span> Microsoft.AspNetCore.Mvc;
+<span style="color:#C678DD;">using</span> OopMvcApplication.Models;
+<span style="color:#C678DD;">using</span> System.Collections.Generic;
+
+<span style="color:#C678DD;">namespace</span> OopMvcApplication.Controllers
+{
+    <span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">ProductController</span> : Controller
+    {
+        <span style="color:#C678DD;">public</span> IActionResult <span style="color:#61AFEF;">Index</span>()
+        {
+            List&lt;Product&gt; products = <span style="color:#C678DD;">new</span>()
+            {
+                <span style="color:#C678DD;">new</span> Product(<span style="color:#D19A66;">1</span>, <span style="color:#98C379;">"iPhone 15 Pro"</span>, <span style="color:#D19A66;">999.00m</span>, <span style="color:#D19A66;">2</span>),
+                <span style="color:#C678DD;">new</span> Product(<span style="color:#D19A66;">2</span>, <span style="color:#98C379;">"MacBook Pro M3"</span>, <span style="color:#D19A66;">1999.00m</span>, <span style="color:#D19A66;">1</span>)
+            };
+            <span style="color:#C678DD;">return</span> <span style="color:#61AFEF;">View</span>(products);
+        }
+    }
+}</pre>
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ៨ / ១៩</div>
+    </div>
+</div>
+
+<!-- PAGE 9: STRONGLY TYPED VIEW -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ២</h1><p>ASP.NET CORE MVC & SQL SERVER</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-code"></i> ២.៥ កូដបង្ហាញទិដ្ឋភាព Strongly-typed View ពេញលេញ</div>
+        <div class="text-block">
+            <b>Strongly-typed View</b> អនុញ្ញាតឱ្យ View ស្គាល់ប្រភេទ Object Class ដែលបញ្ជូនមកពី Controller ច្បាស់លាស់។ វាជួយឱ្យយើងអាចប្រើប្រាស់មុខងារ IntelliSense (កូដជំនួយ) និងជួយពិនិត្យកំហុស Syntax ក្នុងពេល Compile ភ្លាមៗ។
+        </div>
+        
+        <div class="lab-box" style="margin-top:0;">
+            <p style="margin-bottom: 2px;"><b>ឯកសារទិដ្ឋភាពបង្ហាញ (View File):</b> <code>Views/Product/Index.cshtml</code></p>
+            <div class="code-window" style="margin-top:2px;">
+<pre><span style="color:#E06C75;">@model</span> List&lt;OopMvcApplication.Models.Product&gt;
+
+&lt;div class=<span style="color:#98C379;">"container mt-4"</span>&gt;
+    &lt;h2 class=<span style="color:#98C379;">"text-primary mb-3"</span>&gt;បញ្ជីទំនិញ (Strongly-typed Model View)&lt;/h2&gt;
+    &lt;table class=<span style="color:#98C379;">"table table-bordered table-striped"</span>&gt;
+        &lt;thead class=<span style="color:#98C379;">"table-dark"</span>&gt;
+            &lt;tr&gt;
+                &lt;th&gt;លេខកូដ&lt;/th&gt;
+                &lt;th&gt;ឈ្មោះទំនិញ&lt;/th&gt;
+                &lt;th&gt;តម្លៃឯកតា&lt;/th&gt;
+                &lt;th&gt;ចំនួន&lt;/th&gt;
+                &lt;th&gt;តម្លៃសរុប&lt;/th&gt;
+            &lt;/tr&gt;
+        &lt;/thead&gt;
+        &lt;tbody&gt;
+            <span style="color:#E06C75;">@foreach</span> (var item in Model)
+            {
+                &lt;tr&gt;
+                    &lt;td&gt;<span style="color:#E06C75;">@item.Id</span>&lt;/td&gt;
+                    &lt;td&gt;<span style="color:#E06C75;">@item.Name</span>&lt;/td&gt;
+                    &lt;td&gt;$<span style="color:#E06C75;">@item.Price</span>&lt;/td&gt;
+                    &lt;td&gt;<span style="color:#E06C75;">@item.Qty</span>&lt;/td&gt;
+                    &lt;td&gt;$<span style="color:#E06C75;">@item.CalculateTotal()</span>&lt;/td&gt;
+                &lt;/tr&gt;
+            }
+        &lt;/tbody&gt;
+    &lt;/table&gt;
+&lt;/div&gt;</pre>
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ៩ / ១៩</div>
+    </div>
+</div>
+
+<!-- PAGE 10: GLOSSARY -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ២</h1><p>ASP.NET CORE MVC & SQL SERVER</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-book-bookmark"></i> ពន្យល់ពាក្យគន្លឹះ (Glossary)</div>
+        <div class="text-block">ពាក្យបច្ចេកទេស និងការពន្យល់ន័យជាភាសាខ្មែរសម្រាប់ជំពូកទី ២ នេះ៖</div>
+        
+        <table class="standard-table">
+            <thead>
+                <tr>
+                    <th style="width: 25%;">ពាក្យបច្ចេកទេស</th>
+                    <th>ការពន្យល់ជាភាសាខ្មែរ</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><b>Strongly-typed</b></td>
+                    <td>ប្រព័ន្ធភាសាដែលតម្រូវឱ្យកំណត់ Data Type ឱ្យបានច្បាស់លាស់សម្រាប់អថេរ។</td>
+                </tr>
+                <tr>
+                    <td><b>ViewData & ViewBag</b></td>
+                    <td>យន្តការផ្ទេរទិន្នន័យរយៈពេលខ្លីបែប Weakly-typed ពី Controller ទៅកាន់ Razor Views។</td>
+                </tr>
+                <tr>
+                    <td><b>Class & Object</b></td>
+                    <td>Class គឺជាប្លង់គំរូ ចំណែកឯ Object គឺជាផលិតផលសង់ចេញពីប្លង់ដែលរត់ក្នុង Memory។</td>
+                </tr>
+                <tr>
+                    <td><b>Property (get; set;)</b></td>
+                    <td>អថេរពិសេសនៅក្នុង C# Class សម្រាប់ចាត់ចែង និងការពារការអាន/សរសេរទិន្នន័យ។</td>
+                </tr>
+                <tr>
+                    <td><b>Constructor</b></td>
+                    <td>Method ពិសេសរបស់ Class ដែលរត់ដំបូងគេបង្អស់ដោយស្វ័យប្រវត្តនៅពេល new Object។</td>
+                </tr>
+                <tr>
+                    <td><b>Strongly-typed View</b></td>
+                    <td>ទំព័រ View (.cshtml) ដែលត្រូវបានភ្ជាប់ទៅកាន់ប្រភេទ Class Model ជាក់លាក់។</td>
+                </tr>
+                <tr>
+                    <td><b>Server-Side Rendering</b></td>
+                    <td>ដំណើរការច្របាច់ទិន្នន័យពី Server ទៅជាទំព័រ HTML សុទ្ធ មុននឹងផ្ញើទៅកាន់ Client Web Browser។</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ១០ / ១៩</div>
+    </div>
+</div>
+
+<!-- PAGE 11: SUMMARY & REFERENCES -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ២</h1><p>ASP.NET CORE MVC & SQL SERVER</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-list-check"></i> សេចក្តីសង្ខេបជំពូកទី ២ (Summary) & References</div>
+        <ul class="obj-list" style="margin-top:10px;">
+            <li><b class="highlight">C# Strongly-typed:</b> រាល់អថេរ (Variables) ទាំងអស់ត្រូវតែកំណត់ប្រភេទទិន្នន័យជានិច្ច ដើម្បីទប់ស្កាត់កំហុសកូដក្នុងគម្រោង MVC។</li>
+            <li><b class="highlight">ViewData & ViewBag:</b> ជាឧបករណ៍ផ្ទេរទិន្នន័យយ៉ាងរហ័ស ពី Controller ទៅ View សម្រាប់ទិន្នន័យស្រាលៗ។</li>
+            <li><b class="highlight">Razor Syntax Logic:</b> ការចេះប្រើប្រាស់ @if-else និង @foreach របស់ Razor ជួយបង្កើតទំព័រ HTML ឌីណាមិកតាមស្ថានភាពជាក់ស្តែង។</li>
+            <li><b class="highlight">MVC Models & OOP:</b> Class Model គឺជាគ្រោងឆ្អឹងទិន្នន័យដ៏រឹងមាំសម្រាប់ទំនាក់ទំនងរវាង Controller និង View។</li>
+            <li><b class="highlight">Server-Side Rendering:</b> ASP.NET Core MVC ប្រើប្រាស់ SSR ដើម្បីច្របាច់ទិន្នន័យ Model បង្ហាញលើទំព័រ HTML។</li>
+        </ul>
+
+        <div class="section-title" style="margin-top:15px;"><i class="fa-solid fa-book"></i> ឯកសារយោង (References)</div>
+        <ul class="obj-list" style="margin-top:10px;">
+            <li><b>Microsoft Learn (ASP.NET Core MVC Overview):</b> <span style="color:var(--secondary);">https://learn.microsoft.com/en-us/aspnet/core/mvc/overview</span></li>
+            <li><b>Microsoft Learn (Razor Syntax Docs):</b> <span style="color:var(--secondary);">https://learn.microsoft.com/en-us/aspnet/core/mvc/views/razor</span></li>
+            <li><b>Microsoft Learn (Passing Data to Views):</b> <span style="color:var(--secondary);">https://learn.microsoft.com/en-us/aspnet/core/mvc/views/overview</span></li>
+            <li><b>សៀវភៅគោល៖</b> Freeman, A. (2024). <i>Pro ASP.NET Core MVC 8</i>. Apress. (10th Edition)</li>
+        </ul>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ១១ / ១៩</div>
+    </div>
+</div>
+
+<!-- PAGE 12: QUESTIONS SECTION 1 (TRUE/FALSE) -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ២</h1><p>ASP.NET CORE MVC & SQL SERVER</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="background:var(--accent); color:white; justify-content:center; border-radius:8px; border-left:none; margin-top:0; padding: 6px 0;"><i class="fa-solid fa-pen-to-square"></i> សំណួររំលឹកមេរៀន (Review Questions)</div>
+        
+        <div class="sub-heading" style="width: 100%;">១. សំណួរ ខុស/ត្រូវ (True/False)</div>
+        <p style="font-size:10pt; margin-bottom:8px;"><b>សេចក្តីណែនាំ៖</b> សូមគូសសញ្ញា (ត្រូវ) ប្រសិនបើប្រយោគខាងក្រោមត្រឹមត្រូវ ឬសញ្ញា (ខុស) ប្រសិនបើខុស។</p>
+        
+        <ol class="q-list" style="font-size:10pt; line-height:1.5;">
+            <li>C# គឺជាភាសាប្រភេទ Strongly-typed Language ដែលអថេរទាំងអស់ត្រូវតែប្រកាសប្រភេទទិន្នន័យជានិច្ច។</li>
+            <li>អថេរប្រភេទ <code class="inline-code">int</code> អាចផ្ទុកទិន្នន័យជាតម្លៃទសភាគ (Decimal) បានយ៉ាងរលូន។</li>
+            <li>ប្រភេទទិន្នន័យ <code class="inline-code">decimal</code> ត្រូវបានណែនាំឱ្យប្រើប្រាស់សម្រាប់ការគណនាហិរញ្ញវត្ថុ ឬលុយកាក់ដើម្បីជៀសវាងបញ្ហាបង្គត់លេខ។</li>
+            <li>ViewBag ប្រើប្រាស់យន្តការ Dictionary ប្រភេទ Key-Value ដែលតម្រូវឱ្យធ្វើការ Cast ប្រភេទជានិច្ច។</li>
+            <li>លក្ខខណ្ឌ <code class="inline-code">@if</code> នៅក្នុង Razor Syntax ត្រូវបានដំណើរការនៅលើ Server មុននឹងបញ្ជូនកូដ HTML ទៅកាន់ Client Browser។</li>
+            <li>រង្វិលជុំ <code class="inline-code">@foreach</code> មិនតម្រូវឱ្យយើងប្រើប្រាស់សន្ទស្សន៍ (Index) ដើម្បីអានសមាជិក List ឡើយ។</li>
+            <li>Class គឺជាវត្ថុពិតជាក់ស្តែងដែលកំពុងដំណើរការ និងប្រើប្រាស់ Memory នៅក្នុងកុំព្យូទ័រ។</li>
+            <li>Property <code class="inline-code">set</code> ត្រូវបានប្រើប្រាស់ដើម្បីអនុញ្ញាតឱ្យ Client កែប្រែ ឬបញ្ចូលតម្លៃទៅក្នុងអថេររបស់ Class។</li>
+            <li>Constructor គឺជា Method ពិសេសរបស់ Class ដំណើរការដំបូងគេបង្អស់ពេលបង្កើត new Object។</li>
+            <li>Strongly-typed View ជួយការពារការសរសេរកូដខុសប្រភេទ Data Type ក្នុងពេល Compile-time។</li>
+        </ol>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ១២ / ១៩</div>
+    </div>
+</div>
+
+<!-- PAGE 13: QUESTIONS SECTION 2 (MCQ) -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ២</h1><p>ASP.NET CORE MVC & SQL SERVER</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-heading" style="width: 100%; margin-top:0;">២. សំណួរ ពហុជ្រើសរើស (MCQs)</div>
+        <p style="font-size:10pt; margin-bottom:8px;"><b>សេចក្តីណែនាំ៖</b> សូមជ្រើសរើសចម្លើយដែលត្រឹមត្រូវបំផុតតែមួយគត់។</p>
+        
+        <ol class="q-list" style="font-size:9.5pt; line-height:1.45;">
+            <li>តើពាក្យគន្លឹះ (Keyword) មួយណាប្រើប្រាស់សម្រាប់បង្កើត Object ថ្មីចេញពី Class?
+                <ul class="mcq-opts">
+                    <li>A. create</li>
+                    <li>B. new</li>
+                    <li>C. build</li>
+                    <li>D. instance</li>
+                </ul>
+            </li>
+            <li>តើប្រភេទទិន្នន័យមួយណាដែលផ្ទុកបានតម្លៃជាប្រភាគទសភាគច្បាស់លាស់ សម្រាប់លុយកាក់?
+                <ul class="mcq-opts">
+                    <li>A. int</li>
+                    <li>B. string</li>
+                    <li>C. decimal</li>
+                    <li>D. bool</li>
+                </ul>
+            </li>
+            <li>តើការបញ្ជូនទិន្នន័យទៅកាន់ View តាមរយៈយន្តការណាដែលប្រើប្រាស់ Dynamic Property មិនបាច់ Cast តម្លៃ?
+                <ul class="mcq-opts">
+                    <li>A. ViewData</li>
+                    <li>B. ViewBag</li>
+                    <li>C. Model Binding</li>
+                    <li>D. TempData</li>
+                </ul>
+            </li>
+            <li>តើរង្វិលជុំមួយណាដែលពេញនិយមបំផុតសម្រាប់ទាញទិន្នន័យ List មកបង្ហាញក្នុង Razor View .cshtml?
+                <ul class="mcq-opts">
+                    <li>A. for</li>
+                    <li>B. foreach</li>
+                    <li>C. while</li>
+                    <li>D. do-while</li>
+                </ul>
+            </li>
+            <li>តើ Property accessors មួយណាប្រើសម្រាប់កំណត់សិទ្ធិកែប្រែ ឬសរសេរទិន្នន័យ?
+                <ul class="mcq-opts">
+                    <li>A. read</li>
+                    <li>B. write</li>
+                    <li>C. set</li>
+                    <li>D. get</li>
+                </ul>
+            </li>
+            <li>តើមួយណាជាការប្រៀបធៀប Class និង Object បានត្រឹមត្រូវ?
+                <ul class="mcq-opts">
+                    <li>A. Object ជាប្លង់គំរូ, Class ជាផលិតផលសម្រេច</li>
+                    <li>B. Class ជាប្លង់គំរូ, Object ជាផលិតផលសម្រេចក្នុង Memory</li>
+                    <li>C. ទាំងពីរជាប្លង់ដូចគ្នា</li>
+                    <li>D. ទាំងពីរជាផលិតផលដូចគ្នា</li>
+                </ul>
+            </li>
+            <li>តើ Constructor ដំណើរការនៅពេលណា?
+                <ul class="mcq-opts">
+                    <li>A. ដំណើរការនៅពេលហៅប្រើប្រាស់ Method</li>
+                    <li>B. ដំណើរការដំបូងបង្អស់នៅពេល Object ត្រូវបានបង្កើត (new)</li>
+                    <li>C. ដំណើរការនៅពេលលុប Object ចេញពី Memory</li>
+                    <li>D. មិនដំណើរការដោយស្វ័យប្រវត្តឡើយ</li>
+                </ul>
+            </li>
+            <li>តើ syntax មួយណាប្រើសម្រាប់ទាញយក Strongly-typed model មកបង្ហាញក្នុង CSHTML view?
+                <ul class="mcq-opts">
+                    <li>A. @ViewBag</li>
+                    <li>B. @ViewData</li>
+                    <li>C. @Model</li>
+                    <li>D. @model</li>
+                </ul>
+            </li>
+            <li>តើលទ្ធផលនៃកូដ <code>List&lt;string&gt; names = new() { "A", "B" }; Console.Write(names.Count);</code> គឺអ្វី?
+                <ul class="mcq-opts">
+                    <li>A. A</li>
+                    <li>B. B</li>
+                    <li>C. 2</li>
+                    <li>D. 1</li>
+                </ul>
+            </li>
+            <li>តើ C# Statement <code>total += price;</code> មានន័យស្មើនឹងអ្វី?
+                <ul class="mcq-opts">
+                    <li>A. total = price;</li>
+                    <li>B. total = total + price;</li>
+                    <li>C. price = price + total;</li>
+                    <li>D. total = total * price;</li>
+                </ul>
+            </li>
+        </ol>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ៖ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ១៣ / ១៩</div>
+    </div>
+</div>
+
+<!-- PAGE 14: QUESTIONS SECTION 3 & 4 (MATCHING & ESSAY) -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ២</h1><p>ASP.NET CORE MVC & SQL SERVER</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-heading" style="width:100%; margin-top:0;">៣. សំណួរផ្គូផ្គង (Matching) & សំណួរបកស្រាយ (Essays)</div>
+        <p style="font-size:10pt; margin-bottom:8px;"><b>សេចក្តីណែនាំ៖</b> សូមផ្គូផ្គងពាក្យនៅជួរឈរខាងឆ្វេង (១-១០) ទៅនឹងការពន្យល់នៅជួរឈរខាងស្តាំ (A-J) ឱ្យបានត្រឹមត្រូវ។</p>
+        
+        <div class="two-column" style="gap:10px; align-items:start; margin-bottom: 10px;">
+            <table class="standard-table" style="box-shadow:none; font-size: 8.5pt;">
+                <tr><td style="font-weight:bold;">១. decimal</td></tr>
+                <tr><td style="font-weight:bold;">២. ViewBag</td></tr>
+                <tr><td style="font-weight:bold;">៣. ViewData</td></tr>
+                <tr><td style="font-weight:bold;">៤. @foreach</td></tr>
+                <tr><td style="font-weight:bold;">៥. Class</td></tr>
+                <tr><td style="font-weight:bold;">៦. Object</td></tr>
+                <tr><td style="font-weight:bold;">៧. Constructor</td></tr>
+                <tr><td style="font-weight:bold;">៨. get accessor</td></tr>
+                <tr><td style="font-weight:bold;">៩. set accessor</td></tr>
+                <tr><td style="font-weight:bold;">១០. @model</td></tr>
+            </table>
+            <table class="standard-table" style="box-shadow:none; font-size: 8.5pt;">
+                <tr><td>A. Dynamic Property ផ្ទេរទិន្នន័យពី Controller ទៅ View</td></tr>
+                <tr><td>B. Dictionary (Key-Value) សម្រាប់ផ្ទេរទិន្នន័យទៅ View</td></tr>
+                <tr><td>C. រង្វិលជុំ Razor សម្រាប់បង្ហាញទិន្នន័យបញ្ជីក្នុង CSHTML</td></tr>
+                <tr><td>D. គំនូរប្លង់ ឬពុម្ពគំរូទិន្នន័យ (Model Blueprint)</td></tr>
+                <tr><td>E. វត្ថុពិតដែលសង់ចេញពី Class និងរត់ក្នុង Memory (Instance)</td></tr>
+                <tr><td>F. Method ពិសេសរបស់ Class ដំណើរការមុនគេបង្អស់ពេល new</td></tr>
+                <tr><td>G. កំណត់សិទ្ធិសម្រាប់អានទិន្នន័យ (Read Property)</td></tr>
+                <tr><td>H. កំណត់សិទ្ធិសម្រាប់សរសេរ ឬកែតម្លៃ (Write Property)</td></tr>
+                <tr><td>I. ប្រភេទទិន្នន័យទសភាគច្បាស់លាស់ សម្រាប់លុយកាក់ (Financial)</td></tr>
+                <tr><td>J. Syntax កំណត់ប្រភេទ Strongly-typed Model ក្នុង View</td></tr>
+            </table>
+        </div>
+
+        <div class="sub-heading" style="width:100%;">៤. សំណួរបកស្រាយ (Essay Questions)</div>
+        <ol class="q-list" style="font-size:9.5pt; line-height:1.5;">
+            <li>តើ ViewData និង ViewBag មានភាពខុសគ្នាយ៉ាងដូចម្តេចខ្លះក្នុងការបញ្ជូនទិន្នន័យ?</li>
+            <li>ហេតុអ្វីបានជាយើងគួរប្រើប្រាស់ Strongly-typed View ជំនួសឱ្យ Weakly-typed View?</li>
+            <li>តើ Class Properties (get, set) ជួយសម្រួលដល់គោលការណ៍ Encapsulation ដូចម្តេច?</li>
+        </ol>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ៖ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ១៤ / ១៩</div>
+    </div>
+</div>
+
+<!-- PAGE 15: QUESTIONS SECTION 5 (PRACTICAL EXERCISES) -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ២</h1><p>ASP.NET CORE MVC & SQL SERVER</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-heading" style="width: 100%; margin-top:0;"><i class="fa-solid fa-laptop-code"></i> ៥. លំហាត់អនុវត្តន៍ (Practical Exercises)</div>
+        <p style="font-size:10pt; margin-bottom:10px;"><b>សេចក្តីណែនាំ៖</b> សូមសរសេរកូដដោះស្រាយតាមប្រធានលំហាត់ខាងក្រោម (ដំណោះស្រាយពេញលេញស្ថិតក្នុងទំព័រ Answer Keys)។</p>
+
+        <div class="sub-heading" style="color:var(--accent); font-size:11pt; margin-bottom:5px;">ក. កំរិតស្រាល (Easy Level) - ២ លំហាត់</div>
+        <ul class="obj-list" style="margin-top:0; margin-bottom:15px;">
+            <li><b>លំហាត់ 5.1 (ContactInfo):</b> ចូរសរសេរ Controller Action មួយឈ្មោះ <code>ContactInfo()</code> ដើម្បីបញ្ជូនព័ត៌មានទំនាក់ទំនងរបស់សាកលវិទ្យាល័យរួមមាន Email, Phone, Telegram ទៅកាន់ View តាមរយៈ <code>ViewBag</code> រួចបង្ហាញព័ត៌មានទាំងនោះក្នុងទម្រង់ HTML card ស្អាត។</li>
+            <li><b>លំហាត់ 5.2 (CheckGrade):</b> ចូរសរសេរ Controller Action មួយដែលទទួលបានពិន្ទុ (double score) រួចបញ្ជូនពិន្ទុទៅកាន់ View។ នៅក្នុង View ត្រូវប្រើប្រាស់ Razor <code>@if-else</code> ដើម្បីពិនិត្យលក្ខខណ្ឌ៖ ប្រសិនបើពិន្ទុចាប់ពី ៥០ ឡើងទៅ ត្រូវបង្ហាញសារពណ៌បៃតង "អ្នកបានប្រឡងជាប់" បើផ្ទុយទៅវិញ បង្ហាញសារពណ៌ក្រហម "អ្នកបានប្រឡងធ្លាក់"។</li>
+        </ul>
+
+        <div class="sub-heading" style="color:var(--warning); font-size:11pt; margin-bottom:5px;">ខ. កំរិតមធ្យម (Medium Level) - ២ លំហាត់</div>
+        <ul class="obj-list" style="margin-top:0; margin-bottom:15px;">
+            <li><b>លំហាត់ 5.3 (ServiceList):</b> ចូរបង្កើតបញ្ជីរាយនាមសេវាកម្ម (List of strings) នៅក្នុង Action រួចផ្ញើតាមរយៈ <code>ViewBag</code> ទៅកាន់ View។ សរសេររង្វិលជុំ <code>@foreach</code> នៅក្នុងឯកសារ CSHTML ដើម្បីបង្ហាញបញ្ជីសេវាកម្មនោះក្នុងតារាង HTML (Table) ដែលមានបង្ហាញលេខរៀងលំដាប់លំដោយច្បាស់លាស់។</li>
+            <li><b>លំហាត់ 5.4 (EmployeeDetails):</b> ចូរបង្កើត Class Model មួយឈ្មោះ <code>Employee</code> មាន Properties: Id, Name, Salary រួមជាមួយ Constructor សម្រាប់ចាប់ផ្ដើមតម្លៃ។ នៅក្នុង Controller ត្រូវបង្កើត Object មួយចេញពី Class នេះ រួចបញ្ជូនជាលក្ខណៈ <b>Strongly-typed Model</b> ទៅកាន់ View ដើម្បីបង្ហាញព័ត៌មានបុគ្គលិកនោះ។</li>
+        </ul>
+
+        <div class="sub-heading" style="color:var(--danger); font-size:11pt; margin-bottom:5px;">គ. កំរិតធ្ងន់ (Hard Level) - ២ លំហាត់</div>
+        <ul class="obj-list" style="margin-top:0;">
+            <li><b>លំហាត់ 5.5 (OrderInvoice):</b> ចូរបង្កើត Class Model មួយឈ្មោះ <code>Order</code> ដែលមាន Properties: OrderId, OrderDate (DateTime), និង Items (List of strings)។ នៅក្នុង Action ត្រូវបង្កើត Object នៃ Order ដែលមានមុខទំនិញជាច្រើន រួចបញ្ជូនទៅកាន់ View ដើម្បីបង្ហាញព័ត៌មានក្បាលវិក្កយបត្រ និងប្រើរង្វិលជុំ Razor ដើម្បីទាញបញ្ជីទំនិញមកបង្ហាញ។</li>
+            <li><b>លំហាត់ 5.6 (StudentScoreList):</b> ចូរបង្កើត Class Model មួយឈ្មោះ <code>StudentScore</code> មាន Properties: Id, Name, Attendance, Midterm, Final, រួមទាំង Method គណនាពិន្ទុសរុប (Attendance + Midterm + Final) និង Method វិនិច្ឆ័យនិទ្ទេស (Grade A, B, C, D, F)។ នៅក្នុង Action ត្រូវបង្កើតបញ្ជីសិស្ស ៣ នាក់ រួចបញ្ជូនទៅកាន់ View ដើម្បីបង្ហាញក្នុងតារាង HTML និងលម្អិត Style (Bootstrap badges) ទៅតាមនិទ្ទេសនិមួយៗ។</li>
+        </ul>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ៖ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ១៥ / ១៩</div>
+    </div>
+</div>
+
+<!-- PAGE 16: ANSWER KEYS (1, 2, 3, 4) -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ២</h1><p>ASP.NET CORE MVC & SQL SERVER</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="background:var(--success); color:white; justify-content:center; border-radius:8px; border:none; margin: 0; padding: 5px 0;"><i class="fa-solid fa-key" style="color:white; background:transparent;"></i> អត្រាកំណែ (Answer Keys)</div>
+            
+        <div class="two-column" style="gap:10px; align-items:start; margin-top: 10px;">
+            <div>
+                <div class="sub-heading" style="margin-top: 0; font-size:10pt; color:var(--success); border-bottom: none;">១. ចម្លើយ ខុស/ត្រូវ</div>
+                <table class="ans-table">
+                    <tr><th>១</th><th>២</th><th>៣</th><th>៤</th><th>៥</th></tr>
+                    <tr><td>ត្រូវ</td><td>ខុស</td><td>ត្រូវ</td><td>ខុស</td><td>ត្រូវ</td></tr>
+                    <tr><th>៦</th><th>៧</th><th>៨</th><th>៩</th><th>១០</th></tr>
+                    <tr><td>ត្រូវ</td><td>ខុស</td><td>ត្រូវ</td><td>ត្រូវ</td><td>ត្រូវ</td></tr>
+                </table>
+            </div>
+            <div>
+                <div class="sub-heading" style="margin-top: 0; font-size:10pt; color:var(--success); border-bottom: none;">២. ចម្លើយ ពហុជ្រើសរើស</div>
+                <table class="ans-table">
+                    <tr><th>១</th><th>២</th><th>៣</th><th>៤</th><th>៥</th></tr>
+                    <tr><td>B</td><td>C</td><td>B</td><td>B</td><td>C</td></tr>
+                    <tr><th>៦</th><th>៧</th><th>៨</th><th>៩</th><th>១០</th></tr>
+                    <tr><td>B</td><td>B</td><td>D</td><td>C</td><td>B</td></tr>
+                </table>
+            </div>
+        </div>
+        
+        <div class="sub-heading" style="margin-top:10px; font-size:10pt; color:var(--success); border-bottom: none;">៣. ចម្លើយ ផ្គូផ្គង (Matching Keys)</div>
+        <table class="ans-table" style="margin-bottom: 10px;">
+            <tr><th>១</th><th>២</th><th>៣</th><th>៤</th><th>៥</th><th>៦</th><th>៧</th><th>៨</th><th>៩</th><th>១០</th></tr>
+            <tr><td>I</td><td>A</td><td>B</td><td>C</td><td>D</td><td>E</td><td>F</td><td>G</td><td>H</td><td>J</td></tr>
+        </table>
+
+        <div class="sub-heading" style="margin-top:5px; font-size:10pt; color:var(--success); border-bottom: none;">៤. ចម្លើយ សំណួរបកស្រាយ (សង្ខេប)</div>
+        <ul style="font-size:9pt; line-height:1.4; padding-left:15px; text-align:justify;">
+            <li style="margin-bottom:4px;"><b>១. ភាពខុសគ្នារវាង ViewData និង ViewBag៖</b> ViewData ប្រើប្រាស់ Dictionary structure (Key-Value) និងតម្រូវឱ្យធ្វើការ Cast ប្រភេទបើប្រើជាមួយ Object complex។ ចំណែកឯ ViewBag ប្រើប្រាស់ dynamic feature របស់ C# មិនតម្រូវឱ្យ Cast ប្រភេទឡើយ ប៉ុន្តែទាំងពីរមានល្បឿន និងសុវត្ថិភាពដូចគ្នា។</li>
+            <li style="margin-bottom:4px;"><b>២. សារៈសំខាន់ Strongly-typed View៖</b> ជួយផ្តល់នូវ compile-time type checking (មិនងាយសរសេរខុស properties), គាំទ្រ IntelliSense ពេញលេញ និងធ្វើឱ្យមានលក្ខណៈងាយស្រួលក្នុងការធ្វើ Refactoring កូដ។</li>
+            <li style="margin-bottom:0;"><b>៣. Properties ជាមួយ Encapsulation៖</b> Properties អនុញ្ញាតឱ្យយើងលាក់បាំង field variable ខាងក្នុង Class និងបើកសិទ្ធិឱ្យអាន (get) ឬសរសេរ (set) តាមរយៈ logic ត្រួតពិនិត្យ ជួយការពារទិន្នន័យកុំឱ្យប្រែប្រួលដោយគ្មានការអនុញ្ញាត។</li>
+        </ul>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ៖ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ១៦ / ១៩</div>
+    </div>
+</div>
+
+<!-- PAGE 17: ANSWER KEYS SECTION 5 (EASY & MEDIUM SOLUTIONS) -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ២</h1><p>ASP.NET CORE MVC & SQL SERVER</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-heading" style="width: 100%; margin-top:0; color:var(--success);"><i class="fa-solid fa-circle-check"></i> ៥. ដំណោះស្រាយលំហាត់ កំរិតស្រាល និងកំរិតមធ្យម (Easy & Medium Solutions)</div>
+        
+        <!-- EASY 5.1 & 5.2 -->
+        <div style="font-size:9pt; font-weight:bold; color:var(--accent); margin-bottom:2px;"><i class="fa-solid fa-code"></i> លំហាត់ 5.1 (ContactInfo) - Easy</div>
+        <div class="code-window" style="margin:2px 0; font-size:8pt;">
+<pre><span style="color:#C678DD;">public</span> IActionResult <span style="color:#61AFEF;">ContactInfo</span>() {
+    ViewBag.Email = <span style="color:#98C379;">"info@angkoruniversity.edu.kh"</span>;
+    ViewBag.Phone = <span style="color:#98C379;">"063 760 123"</span>;
+    ViewBag.Telegram = <span style="color:#98C379;">"@angkor_tech"</span>;
+    <span style="color:#C678DD;">return</span> <span style="color:#61AFEF;">View</span>();
+}</pre>
+        </div>
+        <div class="code-window" style="margin:2px 0; font-size:8pt;">
+            <div class="code-title" style="font-size:7.5pt; padding:1px 10px; color:#aaa;">Views/Home/ContactInfo.cshtml</div>
+<pre>&lt;div class=<span style="color:#98C379;">"card border-info"</span> style=<span style="color:#98C379;">"max-width: 350px;"</span>&gt;
+    &lt;div class=<span style="color:#98C379;">"card-body"</span>&gt;
+        &lt;h5 class=<span style="color:#98C379;">"text-info"</span>&gt;ទំនាក់ទំនង&lt;/h5&gt;
+        &lt;p&gt;Email: <span style="color:#E06C75;">@ViewBag.Email</span>&lt;/p&gt;&lt;p&gt;Phone: <span style="color:#E06C75;">@ViewBag.Phone</span>&lt;/p&gt;&lt;p&gt;Telegram: <span style="color:#E06C75;">@ViewBag.Telegram</span>&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</pre>
+        </div>
+
+        <!-- EASY 5.2 -->
+        <div style="font-size:9pt; font-weight:bold; color:var(--accent); margin-bottom:2px;"><i class="fa-solid fa-code"></i> លំហាត់ 5.2 (CheckGrade) - Easy</div>
+        <div class="code-window" style="margin:2px 0; font-size:8pt;">
+<pre><span style="color:#C678DD;">public</span> IActionResult <span style="color:#61AFEF;">CheckGrade</span>(<span style="color:#C678DD;">double</span> score = <span style="color:#D19A66;">75.5</span>) {
+    ViewBag.Score = score;
+    <span style="color:#C678DD;">return</span> <span style="color:#61AFEF;">View</span>();
+}</pre>
+        </div>
+        <div class="code-window" style="margin:2px 0; font-size:8pt;">
+            <div class="code-title" style="font-size:7.5pt; padding:1px 10px; color:#aaa;">Views/Home/CheckGrade.cshtml</div>
+<pre>&lt;h4&gt;ពិន្ទុរបស់អ្នក៖ <span style="color:#E06C75;">@ViewBag.Score</span>&lt;/h4&gt;
+<span style="color:#E06C75;">@if</span> (ViewBag.Score &gt;= <span style="color:#D19A66;">50</span>) {
+    &lt;div class=<span style="color:#98C379;">"alert alert-success"</span>&gt;សូមអបអរសាទរ! អ្នកបានប្រឡងជាប់។&lt;/div&gt;
+} <span style="color:#E06C75;">else</span> {
+    &lt;div class=<span style="color:#98C379;">"alert alert-danger"</span>&gt;សោកស្តាយ! អ្នកបានប្រឡងធ្លាក់។&lt;/div&gt;
+}</pre>
+        </div>
+
+        <!-- MEDIUM 5.3 -->
+        <div style="font-size:9pt; font-weight:bold; color:var(--warning); margin-bottom:2px;"><i class="fa-solid fa-code"></i> លំហាត់ 5.3 (ServiceList) - Medium</div>
+        <div class="code-window" style="margin:2px 0; font-size:8pt;">
+<pre><span style="color:#C678DD;">public</span> IActionResult <span style="color:#61AFEF;">ServiceList</span>() {
+    List&lt;<span style="color:#C678DD;">string</span>&gt; services = <span style="color:#C678DD;">new</span>() { <span style="color:#98C379;">"Web Design"</span>, <span style="color:#98C379;">"Mobile App"</span>, <span style="color:#98C379;">"Cloud Hosting"</span> };
+    ViewBag.Services = services;
+    <span style="color:#C678DD;">return</span> <span style="color:#61AFEF;">View</span>();
+}</pre>
+        </div>
+        <div class="code-window" style="margin:2px 0; font-size:8pt;">
+            <div class="code-title" style="font-size:7.5pt; padding:1px 10px; color:#aaa;">Views/Home/ServiceList.cshtml</div>
+<pre>&lt;table class=<span style="color:#98C379;">"table"</span>&gt;
+    &lt;tr&gt;&lt;th&gt;ល.រ&lt;/th&gt;&lt;th&gt;សេវាកម្ម&lt;/th&gt;&lt;/tr&gt;
+    <span style="color:#C678DD;">@{</span> <span style="color:#C678DD;">int</span> i = <span style="color:#D19A66;">1</span>; <span style="color:#C678DD;">}</span>
+    <span style="color:#E06C75;">@foreach</span> (var s in ViewBag.Services) {
+        &lt;tr&gt;&lt;td&gt;<span style="color:#E06C75;">@(i++)</span>&lt;/td&gt;&lt;td&gt;<span style="color:#E06C75;">@s</span>&lt;/td&gt;&lt;/tr&gt;
+    }
+&lt;/table&gt;</pre>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ៖ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ១៧ / ១៩</div>
+    </div>
+</div>
+
+<!-- PAGE 18: ANSWER KEYS SECTION 5 (MEDIUM & HARD SOLUTIONS) -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ២</h1><p>ASP.NET CORE MVC & SQL SERVER</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-heading" style="width: 100%; margin-top:0; color:var(--success);"><i class="fa-solid fa-circle-check"></i> ៥. ដំណោះស្រាយលំហាត់ កំរិតមធ្យម និងកំរិតធ្ងន់ (Medium & Hard Solutions)</div>
+
+        <!-- MEDIUM 5.4 -->
+        <div style="font-size:9.5pt; font-weight:bold; color:var(--warning); margin-bottom:2px;"><i class="fa-solid fa-code"></i> លំហាត់ 5.4 (EmployeeDetails) - Medium</div>
+        <div class="code-window" style="margin:2px 0; font-size:8pt;">
+            <div class="code-title" style="font-size:7.5pt; padding:1px 10px; color:#aaa;">Models/Employee.cs</div>
+<pre><span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">Employee</span> {
+    <span style="color:#C678DD;">public int</span> Id { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; }
+    <span style="color:#C678DD;">public string</span> Name { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; } = <span style="color:#C678DD;">string</span>.Empty;
+    <span style="color:#C678DD;">public decimal</span> Salary { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; }
+    <span style="color:#C678DD;">public</span> <span style="color:#61AFEF;">Employee</span>(<span style="color:#C678DD;">int</span> id, <span style="color:#C678DD;">string</span> name, <span style="color:#C678DD;">decimal</span> salary) { Id = id; Name = name; Salary = salary; }
+}</pre>
+        </div>
+        <div class="code-window" style="margin:2px 0; font-size:8pt;">
+            <div class="code-title" style="font-size:7.5pt; padding:1px 10px; color:#aaa;">Controllers/ProductController.cs (Action)</div>
+<pre><span style="color:#C678DD;">public</span> IActionResult <span style="color:#61AFEF;">EmployeeDetails</span>() {
+    Employee emp = <span style="color:#C678DD;">new</span>(<span style="color:#D19A66;">501</span>, <span style="color:#98C379;">"Sok Lim"</span>, <span style="color:#D19A66;">1250.00m</span>);
+    <span style="color:#C678DD;">return</span> <span style="color:#61AFEF;">View</span>(emp);
+}</pre>
+        </div>
+        <div class="code-window" style="margin:2px 0; font-size:8pt;">
+            <div class="code-title" style="font-size:7.5pt; padding:1px 10px; color:#aaa;">Views/Product/EmployeeDetails.cshtml (Strongly-typed)</div>
+<pre><span style="color:#E06C75;">@model</span> OopMvcApplication.Models.Employee
+&lt;div class=<span style="color:#98C379;">"card text-bg-success"</span> style=<span style="color:#98C379;">"max-width: 300px;"</span>&gt;
+    &lt;div class=<span style="color:#98C379;">"card-body"</span>&gt;
+        &lt;h5&gt;បុគ្គលិកលេខ៖ <span style="color:#E06C75;">@Model.Id</span>&lt;/h5&gt;
+        &lt;p&gt;ឈ្មោះ៖ <span style="color:#E06C75;">@Model.Name</span>&lt;/p&gt;
+        &lt;p&gt;ប្រាក់ខែ៖ $<span style="color:#E06C75;">@Model.Salary</span>&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</pre>
+        </div>
+
+        <!-- HARD 5.5 -->
+        <div style="font-size:9.5pt; font-weight:bold; color:var(--danger); margin-bottom:2px;"><i class="fa-solid fa-code"></i> លំហាត់ 5.5 (OrderInvoice) - Hard</div>
+        <div class="code-window" style="margin:2px 0; font-size:8pt;">
+            <div class="code-title" style="font-size:7.5pt; padding:1px 10px; color:#aaa;">Models/Order.cs</div>
+<pre><span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">Order</span> {
+    <span style="color:#C678DD;">public int</span> OrderId { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; }
+    <span style="color:#C678DD;">public</span> DateTime OrderDate { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; }
+    <span style="color:#C678DD;">public</span> List&lt;<span style="color:#C678DD;">string</span>&gt; Items { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; }
+    <span style="color:#C678DD;">public</span> <span style="color:#61AFEF;">Order</span>(<span style="color:#C678DD;">int</span> id, DateTime date, List&lt;<span style="color:#C678DD;">string</span>&gt; items) { OrderId = id; OrderDate = date; Items = items; }
+}</pre>
+        </div>
+        <div class="code-window" style="margin:2px 0; font-size:8pt;">
+            <div class="code-title" style="font-size:7.5pt; padding:1px 10px; color:#aaa;">Controllers/ProductController.cs (Action)</div>
+<pre><span style="color:#C678DD;">public</span> IActionResult <span style="color:#61AFEF;">OrderInvoice</span>() {
+    Order myOrder = <span style="color:#C678DD;">new</span>(<span style="color:#D19A66;">1005</span>, DateTime.Now, <span style="color:#C678DD;">new</span>() { <span style="color:#98C379;">"ThinkPad X1"</span>, <span style="color:#98C379;">"Logitech Mouse"</span>, <span style="color:#98C379;">"USB-C Hub"</span> });
+    <span style="color:#C678DD;">return</span> <span style="color:#61AFEF;">View</span>(myOrder);
+}</pre>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ៖ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ១៨ / ១៩</div>
+    </div>
+</div>
+
+<!-- PAGE 19: ANSWER KEYS SECTION 5 (HARD SOLUTIONS CONTINUED) -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ២</h1><p>ASP.NET CORE MVC & SQL SERVER</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-heading" style="width: 100%; margin-top:0; color:var(--success);"><i class="fa-solid fa-circle-check"></i> ៥. ដំណោះស្រាយលំហាត់ កំរិតធ្ងន់ (Hard Solutions Continued)</div>
+
+        <!-- HARD 5.5 VIEW -->
+        <div class="code-window" style="margin:2px 0; font-size:8pt;">
+            <div class="code-title" style="font-size:7.5pt; padding:1px 10px; color:#aaa;">Views/Product/OrderInvoice.cshtml</div>
+<pre><span style="color:#E06C75;">@model</span> OopMvcApplication.Models.Order
+&lt;div class=<span style="color:#98C379;">"card border-primary"</span>&gt;
+    &lt;div class=<span style="color:#98C379;">"card-body"</span>&gt;
+        &lt;h3 class=<span style="color:#98C379;">"text-primary"</span>&gt;វិក្កយបត្រ៖ #<span style="color:#E06C75;">@Model.OrderId</span>&lt;/h3&gt;
+        &lt;p&gt;កាលបរិច្ឆេទ៖ <span style="color:#E06C75;">@Model.OrderDate.ToString("dd-MM-yyyy HH:mm")</span>&lt;/p&gt;
+        &lt;h5&gt;បញ្ជីមុខទំនិញ៖&lt;/h5&gt;
+        &lt;ul class=<span style="color:#98C379;">"list-group"</span>&gt;
+            <span style="color:#E06C75;">@foreach</span> (var item in Model.Items) {
+                &lt;li class=<span style="color:#98C379;">"list-group-item"</span>&gt;<span style="color:#E06C75;">@item</span>&lt;/li&gt;
+            }
+        &lt;/ul&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</pre>
+        </div>
+
+        <!-- HARD 5.6 -->
+        <div style="font-size:9.5pt; font-weight:bold; color:var(--danger); margin-bottom:2px;"><i class="fa-solid fa-code"></i> លំហាត់ 5.6 (StudentScoreList) - Hard</div>
+        <div class="code-window" style="margin:2px 0; font-size:8pt;">
+            <div class="code-title" style="font-size:7.5pt; padding:1px 10px; color:#aaa;">Models/StudentScore.cs</div>
+<pre><span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">StudentScore</span> {
+    <span style="color:#C678DD;">public int</span> Id { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; }
+    <span style="color:#C678DD;">public string</span> Name { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; } = <span style="color:#C678DD;">string</span>.Empty;
+    <span style="color:#C678DD;">public double</span> Attendance { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; }
+    <span style="color:#C678DD;">public double</span> Midterm { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; }
+    <span style="color:#C678DD;">public double</span> Final { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; }
+    <span style="color:#C678DD;">public</span> <span style="color:#61AFEF;">StudentScore</span>(<span style="color:#C678DD;">int</span> id, <span style="color:#C678DD;">string</span> name, <span style="color:#C678DD;">double</span> att, <span style="color:#C678DD;">double</span> mid, <span style="color:#C678DD;">double</span> fin) {
+        Id = id; Name = name; Attendance = att; Midterm = mid; Final = fin;
+    }
+    <span style="color:#C678DD;">public double</span> <span style="color:#61AFEF;">GetTotal</span>() =&gt; Attendance + Midterm + Final;
+    <span style="color:#C678DD;">public string</span> <span style="color:#61AFEF;">GetGrade</span>() {
+        <span style="color:#C678DD;">double</span> t = GetTotal();
+        <span style="color:#C678DD;">if</span> (t &gt;= <span style="color:#D19A66;">85</span>) <span style="color:#C678DD;">return</span> <span style="color:#98C379;">"A"</span>; <span style="color:#C678DD;">else if</span> (t &gt;= <span style="color:#D19A66;">75</span>) <span style="color:#C678DD;">return</span> <span style="color:#98C379;">"B"</span>;
+        <span style="color:#C678DD;">else if</span> (t &gt;= <span style="color:#D19A66;">65</span>) <span style="color:#C678DD;">return</span> <span style="color:#98C379;">"C"</span>; <span style="color:#C678DD;">else if</span> (t &gt;= <span style="color:#D19A66;">50</span>) <span style="color:#C678DD;">return</span> <span style="color:#98C379;">"D"</span>;
+        <span style="color:#C678DD;">else return</span> <span style="color:#98C379;">"F"</span>;
+    }
+}</pre>
+        </div>
+        <div class="code-window" style="margin:2px 0; font-size:8pt;">
+            <div class="code-title" style="font-size:7.5pt; padding:1px 10px; color:#aaa;">Controllers/ProductController.cs (Action)</div>
+<pre><span style="color:#C678DD;">public</span> IActionResult <span style="color:#61AFEF;">StudentScoreList</span>() {
+    List&lt;StudentScore&gt; list = <span style="color:#C678DD;">new</span>() {
+        <span style="color:#C678DD;">new</span>(1, <span style="color:#98C379;">"Dara SOK"</span>, 10, 30, 48), <span style="color:#C678DD;">new</span>(2, <span style="color:#98C379;">"Bona HENG"</span>, 9, 25, 34), <span style="color:#C678DD;">new</span>(3, <span style="color:#98C379;">"Srey OUN"</span>, 5, 12, 18)
+    };
+    <span style="color:#C678DD;">return</span> <span style="color:#61AFEF;">View</span>(list);
+}</pre>
+        </div>
+        <div class="code-window" style="margin:2px 0; font-size:8pt;">
+            <div class="code-title" style="font-size:7.5pt; padding:1px 10px; color:#aaa;">Views/Product/StudentScoreList.cshtml</div>
+<pre><span style="color:#E06C75;">@model</span> List&lt;OopMvcApplication.Models.StudentScore&gt;
+&lt;table class=<span style="color:#98C379;">"table"</span>&gt;
+    &lt;tr&gt;&lt;th&gt;ឈ្មោះ&lt;/th&gt;&lt;th&gt;សរុប&lt;/th&gt;&lt;th&gt;និទ្ទេស&lt;/th&gt;&lt;/tr&gt;
+    <span style="color:#E06C75;">@foreach</span> (var s in Model) {
+        var cls = s.GetGrade() == <span style="color:#98C379;">"F"</span> ? <span style="color:#98C379;">"table-danger"</span> : <span style="color:#98C379;">""</span>;
+        &lt;tr class=<span style="color:#E06C75;">"@cls"</span>&gt;
+            &lt;td&gt;<span style="color:#E06C75;">@s.Name</span>&lt;/td&gt;&lt;td&gt;<span style="color:#E06C75;">@s.GetTotal()</span>&lt;/td&gt;
+            &lt;td&gt;&lt;span class=<span style="color:#98C379;">"badge bg-primary"</span>&gt;<span style="color:#E06C75;">@s.GetGrade()</span>&lt;/span&gt;&lt;/td&gt;
+        &lt;/tr&gt;
+    }
+&lt;/table&gt;</pre>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ៖ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ១៩ / ១៩</div>
+    </div>
+</div>
+
+<script>
+    // Fallback script to dynamically render beautiful CSS schemas if local images fail to load
+    function handleImgError(imageElement, fallbackType) {
+        imageElement.style.display = 'none';
+        const fallbackBox = imageElement.nextElementSibling;
+        if (fallbackBox && fallbackBox.classList.contains('schematic-fallback')) {
+            fallbackBox.style.display = 'flex';
+            
+            if (fallbackType === 'datatype') {
+                fallbackBox.innerHTML = `
+                    <div style="font-family:'Suwannaphum',sans-serif; color:var(--accent); font-size:10pt; margin-bottom:6px; font-weight:bold;">C# Primitives</div>
+                    <div style="text-align:left; font-family:var(--font-code); font-size:8pt; background:#0F172A; color:#38BDF8; padding:8px; border-radius:4px; width:100%;">
+                        <span style="color:#F472B6;">int</span> id = <span style="color:#F59E0B;">101</span>;<br>
+                        <span style="color:#F472B6;">decimal</span> price = <span style="color:#F59E0B;">29.99m</span>;
+                    </div>
+                `;
+            } else if (fallbackType === 'oop') {
+                fallbackBox.innerHTML = `
+                    <div style="font-family:'Suwannaphum',sans-serif; color:var(--accent); font-size:10pt; margin-bottom:6px; font-weight:bold;">OOP Concept</div>
+                    <div style="display:flex; gap:6px; align-items:center; justify-content:center; width:100%; font-size:8pt;">
+                        <div style="background:#E2E8F0; padding:4px 6px; border-radius:4px; font-weight:bold;">Class (Blueprint)</div>
+                        <i class="fa-solid fa-arrow-right" style="color:var(--accent);"></i>
+                        <div style="background:#DCFCE7; padding:4px 6px; border-radius:4px; font-weight:bold;">Object (Instance)</div>
+                    </div>
+                `;
+            }
+        }
+    }
+</script>
+</body>
+</html>

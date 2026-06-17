@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Syllabus - ASP.NET Core API</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Khmer+OS+Siemreab&family=Battambang:wght@400;700&family=Suwannaphum:wght@400;700;900&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        :root {
+            --paper-white: #FFFFFF;
+            --table-header-bg: #E2E8F0; 
+            --ms-blue: #0078D4;
+            --text-main: #0F172A;
+            --text-muted: #475569;
+            --accent-purple: #512BD4; 
+            --header-footer-bg: #F8FAFC;
+            --border-color: #CBD5E1;
+            --clo-table-head: #D9E2F3;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: #E2E8F0;
+            font-family: 'Battambang', 'Khmer OS Siemreab', sans-serif;
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        .no-print {
+            background: #FFFBEB; border: 2px dashed #F59E0B; padding: 15px 20px; border-radius: 8px;
+            margin-bottom: 20px; width: 210mm; color: #92400E; font-size: 14px; text-align: center;
+        }
+
+        .print-btn {
+            background: var(--accent-purple); color: white; border: none; padding: 12px 25px; border-radius: 6px; 
+            font-family: 'Battambang'; font-size: 15px; font-weight: bold; cursor: pointer; margin-top: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .print-btn:hover { background: #3c1a9b; }
+
+        /* ---------------- STRICT ABSOLUTE PAGE LAYOUT ---------------- */
+        .a4-page {
+            width: 210mm; height: 297mm;
+            background: var(--paper-white); box-shadow: 0 5px 15px rgba(0,0,0,0.2); 
+            margin-bottom: 30px; position: relative; border-radius: 4px; page-break-after: always;
+            overflow: hidden;
+        }
+
+        .a4-page-landscape {
+            width: 297mm; height: 210mm;
+            background: var(--paper-white); box-shadow: 0 5px 15px rgba(0,0,0,0.2); 
+            margin-bottom: 30px; position: relative; border-radius: 4px; page-break-after: always;
+            overflow: hidden;
+        }
+
+        /* ---------------- FIXED HEADER & FOOTER (Margin Top/Bottom = 0) ---------------- */
+        .header-wrapper {
+            position: absolute; top: 0; left: 15mm; right: 15mm; height: 25mm; padding-top: 5mm;
+        }
+        .global-header {
+            height: 100%; display: flex; justify-content: space-between; align-items: center;
+            padding: 0 20px; border-bottom: 3px solid var(--accent-purple); background-color: var(--header-footer-bg);
+            border-radius: 4px 4px 0 0;
+        }
+        .header-item { display: flex; flex-direction: column; align-items: center; gap: 3px; width: 120px; }
+        .header-item img { height: 35px; object-fit: contain; }
+        .header-item span { font-size: 9.5pt; font-weight: bold; color: var(--accent-purple); text-align: center; font-family: 'Suwannaphum'; line-height:1;}
+        .header-center { text-align: center; }
+        .header-center h1 { font-family: 'Suwannaphum'; font-size: 14pt; color: var(--accent-purple); margin: 0 0 2px 0; }
+        .header-center p { font-family: 'Battambang'; font-size: 8.5pt; color: var(--text-muted); margin: 0; font-weight: bold; text-transform: uppercase;}
+
+        .footer-wrapper {
+            position: absolute; bottom: 0; left: 15mm; right: 15mm; height: 16mm; padding-bottom: 5mm;
+        }
+        .global-footer {
+            height: 100%; display: flex; justify-content: space-between; align-items: center;
+            padding: 0 20px; border-top: 2px solid var(--accent-purple); background-color: var(--header-footer-bg);
+            border-radius: 0 0 4px 4px;
+        }
+        .footer-left { display: flex; align-items: center; gap: 10px; }
+        .footer-left img { border-radius: 50%; border: 2px solid var(--accent-purple); width: 28px; height: 28px; object-fit: cover; }
+        .footer-left span { font-size: 10.5pt; font-weight: bold; color: var(--text-main); font-family: 'Suwannaphum'; }
+        .footer-right { font-size: 10.5pt; color: var(--accent-purple); font-weight: bold; font-family: 'Battambang'; }
+
+        /* ---------------- FIXED CONTENT ZONE ---------------- */
+        .page-content {
+            position: absolute;
+            top: 28mm; 
+            bottom: 18mm; 
+            left: 15mm; right: 15mm;
+            overflow: hidden; 
+        }
+
+        /* ---------------- COVER PAGE ---------------- */
+        .cover-page { display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20mm; text-align: center; background-image: linear-gradient(to bottom, #F5F3FF, #FFFFFF);}
+        .cover-header img { width: 140px; margin-bottom: 15px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1)); }
+        .cover-header h1 { font-family: 'Suwannaphum'; font-size: 28pt; color: var(--accent-purple); margin: 0 0 5px 0; font-weight: 900; }
+        .cover-header p { font-family: 'Lato'; font-size: 14pt; color: var(--text-muted); margin: 0 0 30px 0; font-weight: bold; letter-spacing: 1px; }
+        .cover-program { font-family: 'Suwannaphum'; font-size: 15pt; color: var(--text-main); margin-bottom: 20px; font-weight: bold; }
+        .badge { background: var(--accent-purple); color: white; padding: 10px 30px; border-radius: 50px; font-size: 15pt; font-family: 'Suwannaphum'; font-weight: bold; display: inline-block; margin-bottom: 30px; box-shadow: 0 4px 10px rgba(81, 43, 212, 0.3); }
+        .cover-title-box h2 { font-family: 'Suwannaphum'; font-size: 24pt; color: var(--text-main); margin: 0 0 10px 0; font-weight: 900; line-height: 1.4; padding: 0 20px;}
+        .cover-title-box h3 { font-family: 'Lato'; font-size: 14pt; color: var(--accent-purple); margin-bottom: 40px; font-weight: bold; }
+        .cover-author { display: flex; flex-direction: column; align-items: center; gap: 12px;}
+        .cover-author img { width: 120px; height: 120px; border-radius: 50%; border: 4px solid var(--accent-purple); object-fit: cover; box-shadow: 0 6px 15px rgba(0,0,0,0.15); }
+        .cover-author p { font-family: 'Suwannaphum'; font-size: 14pt; color: var(--text-muted); margin: 0;}
+        .cover-author strong { color: var(--text-main); font-size: 16pt; }
+        .cover-icons { display: flex; gap: 60px; justify-content: center; border-top: 1px solid var(--border-color); padding-top: 25px; width: 85%; margin-top: 30px;}
+        .cover-icon-box { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 8px;}
+        .cover-icon-box .circle-icon { background: var(--accent-purple); color: white; width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 5px auto; font-weight: bold; font-family: 'Lato'; font-size: 12pt; line-height: 1.1;}
+        .cover-icon-box img, .cover-icon-box i { height: 65px; font-size: 65px; margin-bottom: 5px; display: block;}
+        .cover-icon-box p { color: var(--accent-purple); font-weight: bold; font-size: 11pt; font-family: 'Lato'; margin: 0;}
+
+        /* ---------------- TYPOGRAPHY & COMPONENTS ---------------- */
+        .section-title {
+            background: var(--header-footer-bg); border-left: 5px solid var(--accent-purple);
+            padding: 8px 15px; margin: 10px 0 10px 0; font-family: 'Suwannaphum';
+            font-size: 13.5pt; display: flex; align-items: center; gap: 10px; font-weight: bold;
+            color: var(--accent-purple); border-radius: 0 4px 4px 0;
+        }
+        
+        .sub-heading {
+            font-family: 'Suwannaphum', 'Battambang', sans-serif;
+            font-weight: 900;
+            font-size: 12pt;
+            color: var(--text-main);
+            margin-top: 15px;
+            margin-bottom: 5px;
+        }
+
+        .text-block { font-size: 11pt; line-height: 1.8; margin-bottom: 12px; color: var(--text-main); text-align: justify; }
+        
+        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
+        .info-card { border: 1px solid var(--border-color); border-top: 3px solid var(--accent-purple); padding: 12px; border-radius: 4px; background: var(--paper-white); }
+        .info-card h4 { font-family: 'Suwannaphum'; font-size: 12pt; color: var(--accent-purple); margin-bottom: 8px; display: flex; align-items: center; gap: 8px;}
+        .info-card p, .info-card ul { font-size: 10.5pt; line-height: 1.7; margin: 0; }
+        .info-card ul { padding-left: 20px; }
+
+        .clo-list { list-style: none; padding-left: 5px; margin: 10px 0; }
+        .clo-list li { display: flex; align-items: flex-start; margin-bottom: 12px; font-size: 10.5pt; line-height: 1.7; }
+        .clo-list i { margin-top: 4px; font-size: 12pt; color: var(--text-main); width: 30px; text-align: center; margin-right: 5px;}
+        .clo-title { font-weight: bold; color: var(--text-main); }
+
+        /* ---------------- TABLES ---------------- */
+        table { width: 100%; border-collapse: collapse; margin-bottom: 10px; background: white; border-radius: 4px; border: 1px solid var(--border-color); table-layout: fixed;}
+        th, td { border: 1px solid var(--border-color); padding: 8px 10px; text-align: left; vertical-align: top; word-wrap: break-word;}
+        th { background: var(--table-head); color: var(--text-main); font-family: 'Battambang'; font-size: 10.5pt; text-align: center; font-weight: bold;}
+        td { font-size: 10.5pt; line-height: 1.6; color: var(--text-main); }
+        
+        .clo-table th { background-color: var(--clo-table-head); padding: 12px; }
+        .clo-table td { vertical-align: middle; padding: 12px;}
+
+        /* EXACT Column Widths for Lesson Plan */
+        .col-week { width: 7%; text-align: center; font-weight: bold; }
+        .col-session { width: 7%; text-align: center; }
+        .col-clo { width: 7%; text-align: center; font-weight: bold; }
+        .col-llo { width: 19%; }
+        .col-topics { width: 32%; }
+        .col-teach { width: 12%; }
+        .col-assess { width: 8%; }
+        .col-mat { width: 8%; }
+
+        .exercise-text { color: var(--accent-blue); font-size: 9.5pt; display: block; margin-top: 6px; font-style: italic;}
+        .exam-row td { background-color: #FEF2F2; color: #BE123C; font-weight: bold; }
+        .tech-icon { color: var(--accent-purple); margin-right: 6px; font-size: 1.1em; vertical-align: baseline; }
+
+        /* ---------------- PRINT SETTINGS ---------------- */
+        @media print {
+            body { background: none; padding: 0; margin: 0; display: block; }
+            .no-print { display: none !important; }
+            
+            /* Setting Top and Bottom Margin to 0 */
+            @page { size: A4 portrait; margin-top: 0; margin-bottom: 0; margin-left: 0; margin-right: 0; }
+            @page landscape_page { size: A4 landscape; margin-top: 0; margin-bottom: 0; margin-left: 0; margin-right: 0; }
+            
+            .a4-page { 
+                page: auto;
+                width: 210mm !important; height: 297mm !important;
+                margin: 0 !important; box-shadow: none !important; border: none !important;
+            }
+            .a4-page-landscape { 
+                page: landscape_page;
+                width: 297mm !important; height: 210mm !important;
+                margin: 0 !important; box-shadow: none !important; border: none !important;
+            }
+            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="no-print">
+    <b><i class="fa-solid fa-circle-info"></i> ណែនាំមុនពេលបោះពុម្ព៖</b><br>
+    សូមចុច <code>Ctrl + P</code>, ជ្រើសរើស <b>Paper Size: A4</b>, កំណត់ <b>Margins: None</b> និងបើក <b>Background graphics</b>។
+    <br>
+    <button class="print-btn" onclick="window.print()"><i class="fa-solid fa-print"></i> បោះពុម្ពឯកសារជា PDF (Print to PDF)</button>
+</div>
+
+<div class="a4-page cover-page">
+    <div class="cover-header">
+        <img src="https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png" onerror="this.src='Logo.png'" alt="AU Logo">
+        <h1>សាកលវិទ្យាល័យអង្គរ</h1>
+        <p>ANGKOR UNIVERSITY</p>
+    </div>
+
+    <div class="cover-program">
+        <i class="fa-solid fa-graduation-cap"></i> បរិញ្ញាបត្រ វិទ្យាសាស្ត្រកុំព្យូទ័រ (Bachelor of Computer Science)
+    </div>
+
+    <div class="cover-title-box">
+        <div class="badge">គម្រោងមុខវិជ្ជា | Course Syllabus (2025-2026)</div>
+        <h2>បច្ចេកវិទ្យា ASP.NET និងប្រព័ន្ធគ្រប់គ្រងមូលដ្ឋានទិន្នន័យ SQL Server</h2>
+        <h3>(ASP. Net with SQL Server)</h3>
+    </div>
+
+    <div class="cover-author">
+        <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" alt="Prof. Image">
+        <p>រៀបចំដោយសាស្ត្រាចារ្យ៖</p>
+        <strong>សាស្ត្រាចារ្យបង្រៀន សឿង លីម(Soeurng LIM)</strong>
+    </div>
+
+    <div class="cover-icons">
+        <div class="cover-icon-box">
+            <div class="circle-icon">.NET<br>Core</div>
+            <p>.NET Core API</p>
+        </div>
+        <div class="cover-icon-box">
+            <img src="https://cdn-icons-png.flaticon.com/512/1051/1051277.png" alt="HTML Icon">
+            <p>Web UI Integration</p>
+        </div>
+        <div class="cover-icon-box">
+            <i class="fa-brands fa-github" style="color:var(--text-main);"></i>
+            <p>GitHub Repository</p>
+        </div>
+    </div>
+</div>
+
+<div class="a4-page">
+    <div class="header-wrapper">
+        <div class="global-header">
+            <div class="header-item"><img src="https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png" onerror="this.src='Logo.png'"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+            <div class="header-center">
+                <h1>គម្រោងមុខវិជ្ជា | Course Syllabus</h1>
+                <p>បច្ចេកវិទ្យា ASP.NET និងប្រព័ន្ធគ្រប់គ្រងមូលដ្ឋានទិន្នន័យ SQL Server</p>
+            </div>
+            <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"><span>.NET Core MVC</span></div>
+        </div>
+    </div>
+
+    <div class="page-content">
+        <div class="info-grid">
+            <div class="info-card">
+                <h4><i class="fa-solid fa-book-open-reader tech-icon"></i> ព័ត៌មានមុខវិជ្ជា</h4>
+                <p><b>កម្មវិធីសិក្សា៖</b> បរិញ្ញាបត្រ វិទ្យាសាស្ត្រកុំព្យូទ័រ</p>
+                <p><b>ឆ្នាំទី៖</b> ៤ ឆមាសទី ១</p>
+                <p><b>ក្រេឌីត៖</b> ៣ ក្រេឌីត (IT401-WebAPI)</p>
+            </div>
+            <div class="info-card">
+                <h4><i class="fa-solid fa-user-tie tech-icon"></i> ព័ត៌មានសាស្ត្រាចារ្យ</h4>
+                <p><b>សាស្ត្រាចារ្យ៖</b> សាស្ត្រាចារ្យបង្រៀន សឿង លីម(Soeurng LIM)</p>
+                <p><b>អ៊ីម៉ែល៖</b> soeurnglim@gmail.com</p>
+                <p><b>ទូរស័ព្ទ៖</b> ០៦១ ២២៧ ៩៣៣</p>
+            </div>
+        </div>
+
+        <div class="section-title"><i class="fa-solid fa-info-circle"></i> ១. ការពិពណ៌នាមុខវិជ្ជា (Course Description)</div>
+        <div class="text-block">
+            មុខវិជ្ជានេះត្រូវបានរចនាឡើងយ៉ាងពិសេសសម្រាប់និស្សិតដែលទើបឈានជើងចូលក្នុងពិភពនៃការអភិវឌ្ឍប្រព័ន្ធ <b>Back-End និង Application Programming Interface (API)</b> កម្រិតដំបូង។ នៅក្នុងយុគសម័យឌីជីថល កម្មវិធីវិប (Web Application) និងទូរស័ព្ទដៃ (Mobile Application) សុទ្ធតែពឹងផ្អែកលើ Application Programming Interface (API) ជាស្ពានចម្លងទិន្នន័យ។ យើងផ្តោតសំខាន់លើស្ថាបត្យកម្មស្តង់ដារ <b>Model-View-Controller (MVC)</b>។ និស្សិតមិនត្រឹមតែចេះកំណត់រចនាសម្ព័ន្ធ <b>Model</b> (មូលដ្ឋានទិន្នន័យ - Database) និង <b>Controller</b> (API Logic) ប៉ុណ្ណោះទេ តែតម្រូវឱ្យអនុវត្តសរសេរកូដ Frontend ពោលគឺ HyperText Markup Language (HTML) និង JavaScript (JS) ដែលដើរតួជា <b>View</b> តាមទម្រង់ <b>Model-View-Controller (MVC)</b> ដើម្បីហៅទិន្នន័យពី API មកបង្ហាញ និងបញ្ជាផ្ទាល់នៅលើផ្ទាំង User Interface (UI)។
+        </div>
+
+        <div class="text-block" style="margin-top: 15px; font-weight: bold; color: var(--accent-purple); text-decoration: underline;">
+            សទ្ទានុក្រម និងពាក្យគន្លឹះ (Key Terms)
+        </div>
+        <div class="info-grid">
+            <div class="info-card" style="padding: 12px;">
+                <h4 style="font-size: 11pt;"><i class="fa-solid fa-layer-group tech-icon"></i> Model-View-Controller (MVC)</h4>
+                <p style="font-size: 10.5pt;">ស្ថាបត្យកម្មសរសេរកូដបែងចែកកម្មវិធីជា ៣ ផ្នែកធំៗ៖ <b>Model</b> (ទិន្នន័យ), <b>View</b> (ផ្ទាំងបង្ហាញ), <b>Controller</b> (អ្នកចាត់ចែង)។</p>
+            </div>
+            <div class="info-card" style="padding: 12px;">
+                <h4 style="font-size: 11pt;"><i class="fa-solid fa-database tech-icon"></i> Entity Framework Core</h4>
+                <p style="font-size: 10.5pt;">បច្ចេកវិទ្យា Object-Relational Mapping (ORM) ដែលជួយឱ្យ Model អាចតភ្ជាប់ទៅ <b>Database (DB)</b> បានយ៉ាងងាយតាមវិធីសាស្ត្រ Code-First។</p>
+            </div>
+            <div class="info-card" style="padding: 12px;">
+                <h4 style="font-size: 11pt;"><i class="fa-solid fa-rotate tech-icon"></i> CRUD Operations</h4>
+                <p style="font-size: 10.5pt;">ប្រតិបត្តិការគោលទាំង៤ នៃប្រព័ន្ធទិន្នន័យ៖ <b>C</b>reate (បញ្ជូល), <b>R</b>ead (អាន), <b>U</b>pdate (កែប្រែ), <b>D</b>elete (លុប)។</p>
+            </div>
+            <div class="info-card" style="padding: 12px;">
+                <h4 style="font-size: 11pt;"><i class="fa-solid fa-shield-halved tech-icon"></i> CORS Policy</h4>
+                <p style="font-size: 10.5pt;"><b>Cross-Origin Resource Sharing (CORS):</b> គោលការណ៍សុវត្ថិភាពអនុញ្ញាតឱ្យ Frontend អាចហៅ Application Programming Interface (API) ឆ្លង Domain ផ្សេងគ្នាបាន។</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-wrapper">
+        <div class="global-footer">
+            <div class="footer-left"><img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'"><span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម(Soeurng LIM)</span></div>
+            <div class="footer-right">ទំព័រទី ២ នៃ ១២</div>
+        </div>
+    </div>
+</div>
+
+<div class="a4-page">
+    <div class="header-wrapper">
+        <div class="global-header">
+            <div class="header-item"><img src="https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png" onerror="this.src='Logo.png'"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+            <div class="header-center">
+                <h1>គម្រោងមុខវិជ្ជា | Course Syllabus</h1>
+                <p>បច្ចេកវិទ្យា ASP.NET និងប្រព័ន្ធគ្រប់គ្រងមូលដ្ឋានទិន្នន័យ SQL Server</p>
+            </div>
+            <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"><span>.NET Core MVC</span></div>
+        </div>
+    </div>
+
+    <div class="page-content">
+        <div class="section-title"><i class="fa-solid fa-bullseye"></i> ២. លទ្ធផលសិក្សារំពឹងទុក (Course Learning Outcomes - CLO)</div>
+        <p style="font-size: 11pt; margin-bottom: 15px;">ក្រោយបញ្ចប់ការសិក្សាលើមុខវិជ្ជានេះ និស្សិតនឹងទទួលបានសមត្ថភាព និងលទ្ធផលរំពឹងទុកដូចខាងក្រោម៖</p>
+        
+        <table class="clo-table">
+            <thead>
+                <tr>
+                    <th style="width: 35%;">លទ្ធផលសិក្សានៃមុខវិជ្ជា (CLO)</th>
+                    <th style="width: 65%;">លទ្ធផលនៃកម្មវិធីអប់រំ​ (PLO)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="bold"><b>CLO 1</b> (ស្ថាបត្យកម្ម API និង C#)</td>
+                    <td>រៀបចំ Environment ដំឡើងកម្មវិធី Visual Studio Code (VS Code), .NET Software Development Kit (SDK) និងយល់ដឹងពីស្ថាបត្យកម្មគ្រឹះនៃ ASP.NET Core រួមទាំងការសរសេរកូដភាសា C# កម្រិតមូលដ្ឋាន។</td>
+                </tr>
+                <tr>
+                    <td class="bold"><b>CLO 2</b> (ការគ្រប់គ្រង Controller និង Route)</td>
+                    <td>អនុវត្តការបង្កើត Controllers តាមទម្រង់ <b>Model-View-Controller (MVC)</b>, ការកំណត់ Routing និងការប្រើប្រាស់ Hypertext Transfer Protocol (HTTP) Methods សម្រាប់ទទួលសំណើពី Client ប្រកបដោយភាពត្រឹមត្រូវ។</td>
+                </tr>
+                <tr>
+                    <td class="bold"><b>CLO 3</b> (EF Core & SQL Server)</td>
+                    <td>រចនា និងគ្រប់គ្រងមូលដ្ឋានទិន្នន័យ (Database) តាមរយៈបច្ចេកវិទ្យា Entity Framework Core (EF Core) ដោយប្រើវិធីសាស្ត្រ Code-First Migrations ភ្ជាប់ជាមួយកម្មវិធី SQL Server Management Studio (SSMS)។</td>
+                </tr>
+                <tr>
+                    <td class="bold"><b>CLO 4</b> (ប្រតិបត្តិការ CRUD Full-Stack)</td>
+                    <td>បង្កើតមុខងារ Create, Read, Update, Delete (CRUD) យ៉ាងស្ទាត់ជំនាញ ទាំងកម្រិត Backend Application Programming Interface (API) និងការបង្កើត User Interface (UI) តភ្ជាប់តាមរយៈ JavaScript (JS) Fetch API។</td>
+                </tr>
+                <tr>
+                    <td class="bold"><b>CLO 5</b> (ការអនុវត្តគម្រោង និង GitHub)</td>
+                    <td>ដោះស្រាយបញ្ហាសុវត្ថិភាព Cross-Origin Resource Sharing (CORS), អភិវឌ្ឍន៍ Representational State Transfer (RESTful) API ពេញលេញ និងប្រើប្រាស់ប្រព័ន្ធ <b>GitHub</b> សម្រាប់គ្រប់គ្រងកូដគម្រោងជាក្រុម។</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="footer-wrapper">
+        <div class="global-footer">
+            <div class="footer-left"><img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'"><span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម(Soeurng LIM)</span></div>
+            <div class="footer-right">ទំព័រទី ៣ នៃ ១២</div>
+        </div>
+    </div>
+</div>
+
+<div class="a4-page-landscape">
+    <div class="header-wrapper">
+        <div class="global-header">
+            <div class="header-item"><img src="https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png" onerror="this.src='Logo.png'"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+            <div class="header-center">
+                <h1>គម្រោងមុខវិជ្ជា | Course Syllabus</h1>
+                <p>បច្ចេកវិទ្យា ASP.NET និងប្រព័ន្ធគ្រប់គ្រងមូលដ្ឋានទិន្នន័យ SQL Server</p>
+            </div>
+            <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"><span>.NET Core MVC</span></div>
+        </div>
+    </div>
+
+    <div class="page-content">
+        <div class="section-title"><i class="fa-solid fa-calendar-week"></i> ៣. ប្លង់មេរៀនលម្អិត (Lesson Plan: Weeks 1 - 2)</div>
+        <table class="outline-table">
+            <thead>
+                <tr>
+                    <th class="col-week">សប្តាហ៍</th>
+                    <th class="col-session">Session</th>
+                    <th class="col-clo">CLO</th>
+                    <th class="col-llo">លទ្ធផលសិក្សារំពឹងទុក (LLO)</th>
+                    <th class="col-topics">ខ្លឹមសារមេរៀន និងលំហាត់ (Topics & Exercises)</th>
+                    <th class="col-teach">សកម្មភាពបង្រៀន</th>
+                    <th class="col-assess">វាយតម្លៃ</th>
+                    <th class="col-mat">សម្ភារៈ</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="col-week">១</td><td class="col-session">1-2</td><td class="col-clo"><b>CLO 1</b></td>
+                    <td>យល់ពីបរិបទ .NET រៀបចំកម្មវិធី និងប្រើប្រាស់ Command Line Interface (CLI)។</td>
+                    <td><div style="padding: 2px 0;"><b>ជំពូកទី ១៖ សេចក្តីផ្តើម .NET & Visual Studio Code</b><br>- ដំឡើង Software Development Kit (SDK) & Visual Studio Code (VS Code)<br>- បង្កើតគណនី និងភ្ជាប់ <b>GitHub</b><br><span class="exercise-text">▶ លំហាត់៖ បង្កើត Project ថ្មី 'MyFirstApi', Run មើលលទ្ធផល JavaScript Object Notation (JSON) ដំបូង និង Push កូដចូល <b>GitHub</b> លើកដំបូង។</span></div></td>
+                    <td>ការបង្ហាញ / ពន្យល់ និងដំឡើងរួមគ្នា</td><td>សំណួរខ្លីៗ</td><td>កុំព្យូទ័រ / VS Code</td>
+                </tr>
+                <tr>
+                    <td class="col-week">២</td><td class="col-session">3-4</td><td class="col-clo"><b>CLO 1</b></td>
+                    <td>សរសេរកូដ Object-Oriented Programming (OOP) សម្រាប់បង្កើត Model និងប្រើប្រាស់ List ជាប្រភពទិន្នន័យ។</td>
+                    <td><div style="padding: 2px 0;"><b>ជំពូកទី ២៖ មូលដ្ឋាន C# សម្រាប់ Application Programming Interface (API)</b><br>- Variables, Types, Loops<br>- Classes, Objects, Properties នៅក្នុង Object-Oriented Programming (OOP)<br><span class="exercise-text">▶ លំហាត់៖ បង្កើត Class 'Product' (ID, Name, Price) និងសរសេរ Logic គណនាតម្លៃសាមញ្ញ។</span></div></td>
+                    <td>ការបង្ហាញ / ការអនុវត្តជាក់ស្តែង</td><td>កិច្ចការផ្ទះ</td><td>VS Code / Laptop</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="footer-wrapper">
+        <div class="global-footer">
+            <div class="footer-left"><img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'"><span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម(Soeurng LIM)</span></div>
+            <div class="footer-right">ទំព័រទី ៤ នៃ ១២</div>
+        </div>
+    </div>
+</div>
+
+<div class="a4-page-landscape">
+    <div class="header-wrapper">
+        <div class="global-header">
+            <div class="header-item"><img src="https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png" onerror="this.src='Logo.png'"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+            <div class="header-center">
+                <h1>គម្រោងមុខវិជ្ជា | Course Syllabus</h1>
+                <p>បច្ចេកវិទ្យា ASP.NET និងប្រព័ន្ធគ្រប់គ្រងមូលដ្ឋានទិន្នន័យ SQL Server</p>
+            </div>
+            <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"><span>.NET Core MVC</span></div>
+        </div>
+    </div>
+
+    <div class="page-content">
+        <div class="section-title"><i class="fa-solid fa-calendar-week"></i> ៣. ប្លង់មេរៀនលម្អិត (Lesson Plan: Weeks 3 - 4)</div>
+        <table class="outline-table">
+            <thead>
+                <tr>
+                    <th class="col-week">សប្តាហ៍</th>
+                    <th class="col-session">Session</th>
+                    <th class="col-clo">CLO</th>
+                    <th class="col-llo">លទ្ធផលសិក្សារំពឹងទុក (LLO)</th>
+                    <th class="col-topics">ខ្លឹមសារមេរៀន និងលំហាត់អនុវត្តន៍ (Topics & Exercises)</th>
+                    <th class="col-teach">សកម្មភាពបង្រៀន</th>
+                    <th class="col-assess">វាយតម្លៃ</th>
+                    <th class="col-mat">សម្ភារៈ</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="col-week">៣</td><td class="col-session">5-6</td><td class="col-clo"><b>CLO 2</b></td>
+                    <td>យល់ច្បាស់ពីលំហូរ <b>Model-View-Controller (MVC)</b> និងការបញ្ចេញទិន្នន័យជា JSON តាមរយៈ API។</td>
+                    <td><div style="padding: 2px 0;"><b>ជំពូកទី ៣៖ Controller & Model-View-Controller (MVC) Basic</b><br>- ស្វែងយល់ពីតួនាទី Model, View និង Controller<br>- អ្វីទៅជា Representational State Transfer (RESTful) API?<br><span class="exercise-text">▶ លំហាត់៖ បង្កើត `StudentController` បញ្ចេញទិន្នន័យសិស្សសិប្បនិម្មិតជាទម្រង់ JavaScript Object Notation (JSON) Array។</span></div></td>
+                    <td>ការបង្ហាញ / ធ្វើលំហាត់រួមគ្នា</td><td>កិច្ចការផ្ទះ</td><td>VS Code / Laptop</td>
+                </tr>
+                <tr>
+                    <td class="col-week">៤</td><td class="col-session">7-8</td><td class="col-clo"><b>CLO 2</b></td>
+                    <td>កំណត់ Uniform Resource Locator (URL) Endpoint និងយល់ពី Hypertext Transfer Protocol (HTTP) Methods។</td>
+                    <td><div style="padding: 2px 0;"><b>ជំពូកទី ៤៖ Routing & Hypertext Transfer Protocol (HTTP) Methods</b><br>- Attribute Routing <code>[Route]</code><br>- ស្គាល់ GET, POST, PUT, DELETE សម្រាប់ប្រតិបត្តិការ Create, Read, Update, Delete (CRUD)<br><span class="exercise-text">▶ លំហាត់៖ កំណត់ Route ដើម្បីស្វែងរកសិស្សម្នាក់ៗតាមរយៈលេខសម្គាល់ ID របស់ពួកគេ។</span></div></td>
+                    <td>ការអនុវត្តជាក់ស្តែង / ពន្យល់</td><td>សំណួរ / ចម្លើយ</td><td>VS Code / Laptop</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="footer-wrapper">
+        <div class="global-footer">
+            <div class="footer-left"><img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'"><span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម(Soeurng LIM)</span></div>
+            <div class="footer-right">ទំព័រទី ៥ នៃ ១២</div>
+        </div>
+    </div>
+</div>
+
+<div class="a4-page-landscape">
+    <div class="header-wrapper">
+        <div class="global-header">
+            <div class="header-item"><img src="https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png" onerror="this.src='Logo.png'"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+            <div class="header-center">
+                <h1>គម្រោងមុខវិជ្ជា | Course Syllabus</h1>
+                <p>បច្ចេកវិទ្យា ASP.NET និងប្រព័ន្ធគ្រប់គ្រងមូលដ្ឋានទិន្នន័យ SQL Server</p>
+            </div>
+            <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"><span>.NET Core MVC</span></div>
+        </div>
+    </div>
+
+    <div class="page-content">
+        <div class="section-title"><i class="fa-solid fa-calendar-week"></i> ៣. ប្លង់មេរៀនលម្អិត (Lesson Plan: Weeks 5 - 7)</div>
+        <table class="outline-table">
+            <thead>
+                <tr style="background-color: #E2E8F0;">
+                    <th class="col-week">សប្តាហ៍</th>
+                    <th class="col-session">Session</th>
+                    <th class="col-clo">CLO</th>
+                    <th class="col-llo">លទ្ធផលសិក្សារំពឹងទុកនៃមេរៀន (LLO)</th>
+                    <th class="col-topics">ខ្លឹមសារមេរៀន និងលំហាត់អនុវត្តន៍ (Topics & Exercises)</th>
+                    <th class="col-teach">សកម្មភាពបង្រៀន</th>
+                    <th class="col-assess">វាយតម្លៃ</th>
+                    <th class="col-mat">សម្ភារៈ</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="col-week">៥</td><td class="col-session">9-10</td><td class="col-clo"><b>CLO 3</b></td>
+                    <td>យល់ពីដំណើរការ Database (DB) និងតភ្ជាប់ប្រព័ន្ធ SQL Server។</td>
+                    <td><div style="padding: 2px 0;"><b>ជំពូកទី ៥៖ SQL Server & Entity Framework Core (EF Core)</b><br>- ដំឡើង SQL Server Express និងប្រើប្រាស់ NuGet Package Manager<br><span class="exercise-text">▶ លំហាត់៖ បង្កើត Database ទទេមួយឈ្មោះ 'SchoolDB' ដោយប្រើប្រាស់កម្មវិធី SQL Server Management Studio (SSMS)។</span></div></td>
+                    <td>ការបង្ហាញ / អនុវត្តលំហាត់</td><td>កិច្ចការផ្ទះ</td><td>VS Code / SSMS</td>
+                </tr>
+                <tr>
+                    <td class="col-week">៦</td><td class="col-session">11-12</td><td class="col-clo"><b>CLO 3</b></td>
+                    <td>ចេះសរសេរ Model ទៅជា Table ក្នុង Database ដោយប្រើវិធីសាស្ត្រ Code-First។</td>
+                    <td><div style="padding: 2px 0;"><b>ជំពូកទី ៦៖ DbContext & Models</b><br>- ការបង្កើត <code>DbContext</code> របស់ Entity Framework Core និងការភ្ជាប់ Connection String<br><span class="exercise-text">▶ លំហាត់៖ សរសេរ Model សម្រាប់តារាង 'Students' រួចចុះបញ្ជីវានៅក្នុងឯកសារ DbContext តាមទម្រង់ <b>Model-View-Controller (MVC)</b>។</span></div></td>
+                    <td>ការបង្ហាញ / ការអនុវត្តជាក់ស្តែង</td><td>សំណួរខ្លីៗ</td><td>VS Code / Laptop</td>
+                </tr>
+                <tr>
+                    <td class="col-week">៧</td><td class="col-session">13-14</td><td class="col-clo"><b>CLO 3</b></td>
+                    <td>អនុវត្តការបញ្ជា Code-First Migrations ដើម្បីរុញ Model ទៅបង្កើត Tables ដោយស្វ័យប្រវត្តិ។</td>
+                    <td><div style="padding: 2px 0;"><b>ជំពូកទី ៧៖ Entity Framework Core Migrations</b><br>- ប្រើប្រាស់ Command Line Interface (CLI) តាមរយៈ <code>dotnet ef migrations add</code> និង <code>database update</code><br><span class="exercise-text">▶ លំហាត់៖ Run Command Migration ដើម្បីបង្កើតតារាង Students នៅក្នុង SQL Server Database យ៉ាងជោគជ័យ។</span></div></td>
+                    <td>ការបង្ហាញ / អនុវត្តលំហាត់</td><td>កិច្ចការផ្ទះ</td><td>VS Code / CLI</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="footer-wrapper">
+        <div class="global-footer">
+            <div class="footer-left"><img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'"><span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម(Soeurng LIM)</span></div>
+            <div class="footer-right">ទំព័រទី ៦ នៃ ១២</div>
+        </div>
+    </div>
+</div>
+
+<div class="a4-page-landscape">
+    <div class="header-wrapper">
+        <div class="global-header">
+            <div class="header-item"><img src="https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png" onerror="this.src='Logo.png'"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+            <div class="header-center">
+                <h1>គម្រោងមុខវិជ្ជា | Course Syllabus</h1>
+                <p>បច្ចេកវិទ្យា ASP.NET និងប្រព័ន្ធគ្រប់គ្រងមូលដ្ឋានទិន្នន័យ SQL Server</p>
+            </div>
+            <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"><span>.NET Core MVC</span></div>
+        </div>
+    </div>
+
+    <div class="page-content">
+        <div class="section-title"><i class="fa-solid fa-calendar-week"></i> ៣. ប្លង់មេរៀនលម្អិត (Lesson Plan: Weeks 8 - 10)</div>
+        <table class="outline-table">
+            <thead>
+                <tr style="background-color: #E2E8F0;">
+                    <th class="col-week">សប្តាហ៍</th>
+                    <th class="col-session">Session</th>
+                    <th class="col-clo">CLO</th>
+                    <th class="col-llo">លទ្ធផលសិក្សារំពឹងទុកនៃមេរៀន (LLO)</th>
+                    <th class="col-topics">ខ្លឹមសារមេរៀន និងលំហាត់អនុវត្តន៍ (Topics & Exercises)</th>
+                    <th class="col-teach">សកម្មភាពបង្រៀន</th>
+                    <th class="col-assess">វាយតម្លៃ</th>
+                    <th class="col-mat">សម្ភារៈ</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="col-week">៨</td><td class="col-session">15-16</td><td class="col-clo"><b>CLO 4</b></td>
+                    <td>សរសេរកូដទាញទិន្នន័យអាន (Read API) មកបង្ហាញលើផ្ទាំង Web Page តាមទម្រង់ <b>Model-View-Controller (MVC)</b>។</td>
+                    <td><div style="padding: 2px 0;"><b>ជំពូកទី ៨៖ អានទិន្នន័យ (GET API & Web Page)</b><br>- ប្រើប្រាស់ JavaScript Fetch API ដើម្បីអាន JavaScript Object Notation (JSON) មកបង្ហាញក្នុងទម្រង់ HyperText Markup Language (HTML)<br><span class="exercise-text">▶ លំហាត់៖ សរសេរ JavaScript (JS) ទាញឈ្មោះសិស្សពី Application Programming Interface (API) មកបង្ហាញជាទម្រង់តារាងលើ Web Page។</span></div></td>
+                    <td>ការបង្ហាញ / ធ្វើលំហាត់រួមគ្នា</td><td>សំណួរ / ចម្លើយ</td><td>VS Code / Web</td>
+                </tr>
+                <tr class="exam-row">
+                    <td class="col-week">៩</td><td class="col-session">17-18</td><td class="col-clo"><b>CLO 1-3</b></td>
+                    <td>វាស់ស្ទង់សមត្ថភាពផ្នែកគ្រប់គ្រង Database (DB) និង ការបង្កើតកូដ GET API របស់និស្សិត។</td>
+                    <td><div style="padding: 2px 0;"><b>ប្រឡងពាក់កណ្តាលឆមាស (Midterm Exam)</b><br>- រំលឹកមេរៀន និងប្រឡងអនុវត្តកូដមូលដ្ឋាន (ការប្រើប្រាស់ Entity Framework Core ដើម្បីបង្កើត Database និងការបង្ហាញទិន្នន័យ)។</div></td>
+                    <td>ប្រឡងពាក់កណ្តាលឆមាស</td><td>ប្រឡង</td><td>ឯកសារប្រឡង</td>
+                </tr>
+                <tr>
+                    <td class="col-week">១០</td><td class="col-session">19-20</td><td class="col-clo"><b>CLO 4</b></td>
+                    <td>បញ្ជូនទិន្នន័យថ្មីពី HyperText Markup Language (HTML) Form លើ Web ចូល Database តាមរយៈ Controller។</td>
+                    <td><div style="padding: 2px 0;"><b>ជំពូកទី ៩៖ បញ្ចូលទិន្នន័យ (POST API & Web Page)</b><br>- ការប្រើប្រាស់ HTML Form ទទួលទិន្នន័យពី User រួចបញ្ជូនទៅ API តាមរយៈ POST Method<br><span class="exercise-text">▶ លំហាត់៖ បង្កើត HTML Form ដើម្បីបញ្ចូលឈ្មោះ និងព័ត៌មានសិស្សថ្មី រួច POST ទៅកាន់ Application Programming Interface (API) ដើម្បី Save ចូល Database។</span></div></td>
+                    <td>ការបង្ហាញ / ការអនុវត្តជាក់ស្តែង</td><td>កិច្ចការផ្ទះ</td><td>VS Code / Web</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="footer-wrapper">
+        <div class="global-footer">
+            <div class="footer-left"><img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'"><span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម(Soeurng LIM)</span></div>
+            <div class="footer-right">ទំព័រទី ៧ នៃ ១២</div>
+        </div>
+    </div>
+</div>
+
+<div class="a4-page-landscape">
+    <div class="header-wrapper">
+        <div class="global-header">
+            <div class="header-item"><img src="https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png" onerror="this.src='Logo.png'"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+            <div class="header-center">
+                <h1>គម្រោងមុខវិជ្ជា | Course Syllabus</h1>
+                <p>បច្ចេកវិទ្យា ASP.NET និងប្រព័ន្ធគ្រប់គ្រងមូលដ្ឋានទិន្នន័យ SQL Server</p>
+            </div>
+            <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"><span>.NET Core MVC</span></div>
+        </div>
+    </div>
+
+    <div class="page-content">
+        <div class="section-title"><i class="fa-solid fa-calendar-week"></i> ៣. ប្លង់មេរៀនលម្អិត (Lesson Plan: Weeks 11 - 13)</div>
+        <table class="outline-table">
+            <thead>
+                <tr style="background-color: #E2E8F0;">
+                    <th class="col-week">សប្តាហ៍</th>
+                    <th class="col-session">Session</th>
+                    <th class="col-clo">CLO</th>
+                    <th class="col-llo">លទ្ធផលសិក្សារំពឹងទុកនៃមេរៀន (LLO)</th>
+                    <th class="col-topics">ខ្លឹមសារមេរៀន និងលំហាត់អនុវត្តន៍ (Topics & Exercises)</th>
+                    <th class="col-teach">សកម្មភាពបង្រៀន</th>
+                    <th class="col-assess">វាយតម្លៃ</th>
+                    <th class="col-mat">សម្ភារៈ</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="col-week">១១</td><td class="col-session">21-22</td><td class="col-clo"><b>CLO 4</b></td>
+                    <td>បង្កើតមុខងារកែប្រែទិន្នន័យ (Edit Modal) នៅលើ User Interface (UI) និងធ្វើបច្ចុប្បន្នភាព API Logic។</td>
+                    <td><div style="padding: 2px 0;"><b>ជំពូកទី ១០៖ កែប្រែទិន្នន័យ (PUT API & Web Page)</b><br>- សរសេរកូដ Update ទិន្នន័យចាស់ទាំងនៅលើ API និងការបង្ហាញ Modal Popup លើ Web Page<br><span class="exercise-text">▶ លំហាត់៖ បន្ថែមប៊ូតុង Edit និងបង្កើត Modal សម្រាប់កែប្រែព័ត៌មានសិស្សដែលមានស្រាប់។</span></div></td>
+                    <td>ពន្យល់ / ពិភាក្សាក្រុម</td><td>សំណួរ / ចម្លើយ</td><td>VS Code / Web</td>
+                </tr>
+                <tr>
+                    <td class="col-week">១២</td><td class="col-session">23-24</td><td class="col-clo"><b>CLO 4</b></td>
+                    <td>លុបទិន្នន័យ (Delete Operations) ដោយចុចប៊ូតុងពីលើ Web Page ផ្ទាល់ និងមានការសួរបញ្ជាក់។</td>
+                    <td><div style="padding: 2px 0;"><b>ជំពូកទី ១១៖ លុបទិន្នន័យ (DELETE API & Web)</b><br>- លុបទិន្នន័យដោយចុចប៊ូតុងផ្ទាល់ និងការប្រើប្រាស់ JavaScript <code>confirm()</code> ការពារការលុបដោយអចេតនា<br><span class="exercise-text">▶ លំហាត់៖ តភ្ជាប់មុខងារ Delete ជាមួយប៊ូតុង ដើម្បីលុបទិន្នន័យសិស្សចេញពី Database ទាំងស្រុង។</span></div></td>
+                    <td>ការបង្ហាញ / អនុវត្តលំហាត់</td><td>កិច្ចការផ្ទះ</td><td>VS Code / Web</td>
+                </tr>
+                <tr>
+                    <td class="col-week">១៣</td><td class="col-session">25-26</td><td class="col-clo"><b>CLO 5</b></td>
+                    <td>ដោះស្រាយបញ្ហាការទាញទិន្នន័យឆ្លង Domain សម្រាប់ Frontend Web Integration។</td>
+                    <td><div style="padding: 2px 0;"><b>ជំពូកទី ១២៖ គោលការណ៍សុវត្ថិភាព Cross-Origin Resource Sharing (CORS)</b><br>- ស្វែងយល់ពីបញ្ហា Cross-Origin Error និងរបៀបអនុញ្ញាតសិទ្ធិឱ្យ Web Page ហៅ Application Programming Interface (API) បាន<br><span class="exercise-text">▶ លំហាត់៖ កំណត់ CORS Policy ក្នុង Program.cs ដើម្បីអោយ Web (Frontend) ហៅ API យកទៅប្រើប្រាស់បាន។</span></div></td>
+                    <td>ការបង្ហាញ / ធ្វើលំហាត់រួមគ្នា</td><td>សំណួរខ្លីៗ</td><td>VS Code / Terminal</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="footer-wrapper">
+        <div class="global-footer">
+            <div class="footer-left"><img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'"><span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម(Soeurng LIM)</span></div>
+            <div class="footer-right">ទំព័រទី ៨ នៃ ១២</div>
+        </div>
+    </div>
+</div>
+
+<div class="a4-page-landscape">
+    <div class="header-wrapper">
+        <div class="global-header">
+            <div class="header-item"><img src="https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png" onerror="this.src='Logo.png'"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+            <div class="header-center">
+                <h1>គម្រោងមុខវិជ្ជា | Course Syllabus</h1>
+                <p>បច្ចេកវិទ្យា ASP.NET និងប្រព័ន្ធគ្រប់គ្រងមូលដ្ឋានទិន្នន័យ SQL Server</p>
+            </div>
+            <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"><span>.NET Core MVC</span></div>
+        </div>
+    </div>
+
+    <div class="page-content">
+        <div class="section-title"><i class="fa-solid fa-calendar-week"></i> ៣. ប្លង់មេរៀនលម្អិត (Lesson Plan: Weeks 14 - 15)</div>
+        <table class="outline-table">
+            <thead>
+                <tr style="background-color: #E2E8F0;">
+                    <th class="col-week">សប្តាហ៍</th>
+                    <th class="col-session">Session</th>
+                    <th class="col-clo">CLO</th>
+                    <th class="col-llo">លទ្ធផលសិក្សារំពឹងទុកនៃមេរៀន (LLO)</th>
+                    <th class="col-topics">ខ្លឹមសារមេរៀន និងលំហាត់អនុវត្តន៍ (Topics & Exercises)</th>
+                    <th class="col-teach">សកម្មភាពបង្រៀន</th>
+                    <th class="col-assess">វាយតម្លៃ</th>
+                    <th class="col-mat">សម្ភារៈ</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="col-week">១៤</td><td class="col-session">27-28</td><td class="col-clo"><b>CLO 1-5</b></td>
+                    <td>គ្រប់គ្រងកូដតាម <b>GitHub</b> និងធ្វើបទបង្ហាញគម្រោង <b>Model-View-Controller (MVC)</b>។</td>
+                    <td><div style="padding: 2px 0;"><b>បទបង្ហាញគម្រោង (Mini Project & GitHub Version Control)</b><br>- អនុវត្តចំណេះដឹងទាំងអស់ទៅជាគម្រោង MVC/CRUD ខ្នាតតូច ព្រមទាំងការប្រើប្រាស់ Git<br><span class="exercise-text">▶ លំហាត់៖ ការដាក់ស្នើកូដ (Push/Pull Request) ជាក្រុមតាមរយៈ <b>GitHub Repository</b> រួចឡើងធ្វើបទបង្ហាញមុខថ្នាក់រៀន។</span></div></td>
+                    <td>បទបង្ហាញនិស្សិត / កែតម្រូវ</td><td>បទបង្ហាញ</td><td>គម្រោងនិស្សិត</td>
+                </tr>
+                <tr class="final-row">
+                    <td class="col-week">១៥</td><td class="col-session">29-30</td><td class="col-clo"><b>CLO 1-5</b></td>
+                    <td>វាស់ស្ទង់ការអភិវឌ្ឍប្រព័ន្ធទាំងមូល (Full-Stack <b>Model-View-Controller (MVC)</b>) ប្រកបដោយគុណភាព។</td>
+                    <td><div style="padding: 2px 0;"><b>ប្រឡងបញ្ចប់ឆមាស (Final Exam)</b><br>- ការប្រឡងអនុវត្តជាក់ស្តែង <b>Model-View-Controller (MVC)</b> & Full-Stack (ការកសាង Backend API បូកជាមួយការរចនា និងតភ្ជាប់ទៅ Frontend Web User Interface (UI))។</div></td>
+                    <td>ប្រឡងបញ្ចប់ឆមាស</td><td>ប្រឡង</td><td>វិញ្ញាសា</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="footer-wrapper">
+        <div class="global-footer">
+            <div class="footer-left"><img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'"><span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម(Soeurng LIM)</span></div>
+            <div class="footer-right">ទំព័រទី ៩ នៃ ១២</div>
+        </div>
+    </div>
+</div>
+
+<div class="a4-page">
+    <div class="header-wrapper">
+        <div class="global-header">
+            <div class="header-item"><img src="https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png" onerror="this.src='Logo.png'"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+            <div class="header-center">
+                <h1>គម្រោងមុខវិជ្ជា | Course Syllabus</h1>
+                <p>បច្ចេកវិទ្យា ASP.NET និងប្រព័ន្ធគ្រប់គ្រងមូលដ្ឋានទិន្នន័យ SQL Server</p>
+            </div>
+            <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"><span>.NET Core MVC</span></div>
+        </div>
+    </div>
+
+    <div class="page-content">
+        <div class="section-title"><i class="fa-solid fa-chalkboard-user"></i> ៤. វិធីសាស្រ្តបង្រៀន (Teaching Methods)</div>
+        <p style="font-size: 11pt; margin-bottom: 10px;">មុខវិជ្ជានេះត្រូវបានអនុវត្តនូវវិធីសាស្រ្តបង្រៀន និងរៀនសំខាន់ៗដូចខាងក្រោម៖</p>
+        <ul style="padding-left: 20px; font-size: 11pt; line-height: 1.8; margin-bottom: 15px;">
+            <li>ពន្យល់ដោយប្រៀបធៀបចំណុចថ្មីទៅនឹងចំណុចដែលនិស្សិតធ្លាប់ដឹងពីមុន (ឧទាហរណ៍៖ ប្រៀបធៀប Controller ក្នុង .NET ទៅនឹង Controller ក្នុង PHP) ដើម្បីងាយយល់ទម្រង់ <b>Model-View-Controller (MVC)</b>។</li>
+            <li>ចង្អុលបង្ហាញ និងសរសេរកូដផ្ទាល់ជាជំហានៗ (Live Coding & Step-by-Step) ក្នុងកម្មវិធី Visual Studio Code (VS Code)។</li>
+            <li><b>ផ្តោតលើការអនុវត្តជាក់ស្តែង (Hands-on Practice) យ៉ាងស៊ីជម្រៅ ដោយនិស្សិតត្រូវកសាងទាំងផ្នែក API Backend និងការបង្កើត Web Page Frontend សម្រាប់តភ្ជាប់ជាមួយ API នោះផ្ទាល់តែម្តង។</b></li>
+            <li>ពិភាក្សាក្រុមតូចៗក្នុងការជួយគ្នាដោះស្រាយបញ្ហា Error កូដនៅក្នុងថ្នាក់រៀន ការប្រើប្រាស់ <b>GitHub</b> ដើម្បីចែករំលែក និងបញ្ចូលកូដគ្នា។</li>
+            <li>អនុវត្តគោលវិធីសិស្សមជ្ឈមណ្ឌល ដោយផ្តល់គម្រោងខ្នាតតូចឱ្យនិស្សិតស្រាវជ្រាវ និងសរសេរកូដដោយខ្លួនឯង។</li>
+        </ul>
+
+        <div class="section-title"><i class="fa-solid fa-chart-pie"></i> ៥. ​ការវាយតម្លៃ (Assessment)</div>
+        <p style="font-size: 11pt; margin-bottom: 10px;">ការវាយតម្លៃលើលទ្ធផលសិក្សារបស់និស្សិតសម្រាប់មុខវិជ្ជានេះគឺមានដូចខាងក្រោម ៖</p>
+
+        <table>
+            <tr>
+                <th style="width: 5%;">ល.រ</th>
+                <th style="width: 35%;">លក្ខណៈវិនិច្ឆ័យ</th>
+                <th style="width: 10%;">ពិន្ទុភាគរយ</th>
+                <th style="width: 50%;">លទ្ធផលសិក្សារំពឹងទុកនៃមុខវិជ្ជាដែលត្រូវបានវាស់វែង</th>
+            </tr>
+            <tr>
+                <td class="center-text">១</td>
+                <td>វត្តមាន​ (Attendance)</td>
+                <td class="center-text">១០%</td>
+                <td>ការចូលរួម និងសកម្មភាពក្នុងថ្នាក់រៀន។</td>
+            </tr>
+            <tr>
+                <td class="center-text">២</td>
+                <td>កិច្ចការផ្ទះ និងស្រាវជ្រាវ (Homework and Assignment)</td>
+                <td class="center-text">៣០%</td>
+                <td>កិច្ចការសរសេរកូដ C# ការបង្កើត Application Programming Interface (API) & Web Page User Interface (UI) និងការរុញកូដ (Push) ទៅកាន់ <b>GitHub Repository</b>។</td>
+            </tr>
+            <tr>
+                <td class="center-text">៣</td>
+                <td>ប្រឡងពាក់កណ្តាលឆមាស (Mid-Term Exam)</td>
+                <td class="center-text">២០%</td>
+                <td>ប្រឡងពាក់កណ្ដាលឆមាស (ផ្តោតលើរៀបចំ Database និងទាញទិន្នន័យបង្ហាញលើ Web Page)។</td>
+            </tr>
+            <tr>
+                <td class="center-text">៤</td>
+                <td>ប្រឡងបញ្ចប់ឆមាស (Final Exam)</td>
+                <td class="center-text">៤០%</td>
+                <td>ប្រឡងបញ្ចប់ឆមាស (ធ្វើប្រតិបត្តិការ Create, Read, Update, Delete (CRUD) API និង Web Page ពេញលេញ)។</td>
+            </tr>
+        </table>
+
+        <h4 class="bold-heading">៥.១- រង្វាយតម្លៃលើវត្តមាន និងការចូលរួម</h4>
+        <p style="font-size: 10.5pt; text-align: justify; line-height: 1.8;">និស្សិតត្រូវបានណែនាំឲ្យចូលរៀនទាន់ពេលវេលា។ និស្សិតចូលរៀនយឺតចន្លោះពី ១០នាទី ទៅ ២០នាទី នៃ session នីមួយៗ ត្រូវចាត់ទុកថាអវត្តមានចូលរៀនយឺតដែលសម្គាល់ដោយ (AL)។ ករណីនិស្សិតវត្តមានចូលរៀនយឺត (AL) ចំនួន៣ដង ស្មើនឹងនិស្សិតអវត្តមាន (A) មួយ session។ និស្សិតរៀនយឺត​លើស​ពី ២០នាទី មិនត្រូវអនុញ្ញាតឲ្យចូលរៀនក្នុងថ្នាក់ឡើយ ប៉ុន្តែអាចសិក្សាស្រាវជ្រាវក្នុងបណ្ណាល័យ​។ និស្សិតត្រូវបានសាស្ត្រាចារ្យស្រង់វត្តមាននៅរៀងរាល់ដើម session នីមួយៗ។</p>
+    </div>
+
+    <div class="footer-wrapper">
+        <div class="global-footer">
+            <div class="footer-left"><img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'"><span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម(Soeurng LIM)</span></div>
+            <div class="footer-right">ទំព័រទី ១០ នៃ ១២</div>
+        </div>
+    </div>
+</div>
+
+<div class="a4-page">
+    <div class="header-wrapper">
+        <div class="global-header">
+            <div class="header-item"><img src="https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png" onerror="this.src='Logo.png'"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+            <div class="header-center">
+                <h1>គម្រោងមុខវិជ្ជា | Course Syllabus</h1>
+                <p>បច្ចេកវិទ្យា ASP.NET និងប្រព័ន្ធគ្រប់គ្រងមូលដ្ឋានទិន្នន័យ SQL Server</p>
+            </div>
+            <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"><span>.NET Core MVC</span></div>
+        </div>
+    </div>
+
+    <div class="page-content">
+        <h4 class="bold-heading" style="margin-top: 5px;">៥.២- កិច្ចការស្រាវជ្រាវ (Group Assignment) និងការប្រើប្រាស់ GitHub</h4>
+        <ul style="list-style-type: none; padding-left: 15px; font-size: 10.5pt; line-height: 1.8;">
+            <li>– កាលបរិច្ឆេទចុងសប្តាហ៍ទី ១១ ដាក់ពិន្ទុគឺ ១៥ % (តម្រូវឱ្យមានការ Push កូដចូល <b>GitHub</b> ជាប្រចាំដើម្បីវាយតម្លៃការចូលរួមរបស់សមាជិកម្នាក់ៗ)</li>
+            <li>– ប្រធានបទដែលដាក់ឲ្យពួកគាត់ស្រាវជ្រាវ (គម្រោង Full-Stack <b>Model-View-Controller (MVC)</b> សាមញ្ញ)៖
+                <ol style="margin-top: 5px;">
+                    <li><b>School & Student Management:</b> រចនា Database (DB), សរសេរ Application Programming Interface (API) សម្រាប់ចាត់ចែងទិន្នន័យ (Model & Controller) និងបង្កើតផ្ទាំង Web Page (View) ដើម្បីអនុញ្ញាតឱ្យរដ្ឋបាលសាលាបញ្ចូល និងកែប្រែទិន្នន័យបាន។</li>
+                    <li><b>E-Commerce Product Catalog:</b> រចនា API សម្រាប់គ្រប់គ្រងផលិតផល (Products) ដែលមានទិន្នន័យឈ្មោះ និងតម្លៃ។ បង្កើត Web Page User Interface (UI) សម្រាប់ឱ្យអតិថិជនមើលមុខទំនិញ និងម្ចាស់ហាងអាចកែប្រែទំនិញបានផ្ទាល់។</li>
+                    <li><b>Task Manager Application:</b> កសាង API ដើម្បីកត់ត្រាកិច្ចការប្រចាំថ្ងៃ (To-Do List)។ បង្កើត Web Page UI ដើម្បីឱ្យអ្នកប្រើប្រាស់អាចបញ្ចូលការងារថ្មី និងចុច (Tick) ប្តូរស្ថានភាពការងារថាធ្វើរួចរាល់។</li>
+                </ol>
+            </li>
+            <li>– ភារកិច្ចនិស្សិត៖ ធ្វើការជាក្រុម (២-៣ នាក់), សរសេរកូដ ASP.NET Core API រួមជាមួយការសរសេរ HyperText Markup Language (HTML) និង JavaScript (JS) សម្រាប់ Web Page តាមទម្រង់ <b>Model-View-Controller (MVC)</b> និងឡើងធ្វើបទបង្ហាញគម្រោងទាំងមូលក្នុងថ្នាក់។</li>
+        </ul>
+
+        <h4 class="bold-heading">៥.២.២- កិច្ចការពិភាក្សាជាក្រុមតូចៗនៅក្នុងថ្នាក់ (Group discussion)</h4>
+        <ul style="list-style-type: none; padding-left: 15px; font-size: 10.5pt; line-height: 1.8;">
+            <li>· កាលបរិច្ឆេទ ៖ អនុវត្តជាប្រចាំ។ ដាក់ពិន្ទុគឺ ៥ % (យកពីចំណុចចូលរួមក្នុងថ្នាក់)</li>
+            <li>· ប្រធានបទ ៖ ពិភាក្សាពីភាពខុសគ្នារវាងការធ្វើការលើ Backend Application Programming Interface (API) និងការសរសេរកូដ Frontend (Web Page), បញ្ហា Cross-Origin Resource Sharing (CORS) ពេលហៅ API ឆ្លង Port, និងការដោះស្រាយបញ្ហា Conflict កូដពេលតភ្ជាប់ចូលគ្នាលើ <b>GitHub</b>។</li>
+        </ul>
+
+        <h4 class="bold-heading">៥.២.៣- សំណួរសរសេររយៈពេល១៥នាទី</h4>
+        <ul style="list-style-type: none; padding-left: 15px; font-size: 10.5pt; line-height: 1.8;">
+            <li>· កាលបរិច្ឆេទ ៖ ធ្វើឡើង ៣ ទៅ ៤ ដង ក្នុងឆមាស (Surprise Quiz) ដាក់ពិន្ទុ ១០ %</li>
+            <li>· ប្រធានបទ ៖ ការប្រកាសអញ្ញាត C# ងាយៗ, ការប្រើប្រាស់ .NET Command Line Interface (CLI) Commands (<code>dotnet run</code>), ការសរសេរ Route លើ Controller, និងកូដ JavaScript (JS) Fetch API មូលដ្ឋាន។</li>
+        </ul>
+
+        <h4 class="bold-heading">៥.៣- ប្រឡងពាក់កណ្តាលឆមាស</h4>
+        <ul style="list-style-type: none; padding-left: 15px; font-size: 10.5pt; line-height: 1.8;">
+            <li>· កាលបរិច្ឆេទ ៖ ចុងសប្តាហ៍ទី ៩ ដាក់ពិន្ទុ ២០ %</li>
+            <li>· ប្រធានបទ ៖ គ្របដណ្តប់ជំពូកទី ១ ដល់ទី ៨ (ផ្តោតលើការរៀបចំ Model, ការទាញទិន្នន័យ GET ពី API, និងការសរសេរ Fetch API បង្ហាញលើ Web Page)។ រយៈពេល ៩០នាទី ។</li>
+        </ul>
+
+        <h4 class="bold-heading">៥.៤- ប្រឡងបញ្ចប់ឆមាស</h4>
+        <ul style="list-style-type: none; padding-left: 15px; font-size: 10.5pt; line-height: 1.8;">
+            <li>· ផ្តល់ព័ត៌មានដោយការិយាល័យសិក្សា ដាក់ពិន្ទុ ៤០ %</li>
+            <li>· ប្រធានបទ ៖ គ្របដណ្តប់មេរៀនទាំងមូល (ការធ្វើ Create, Read, Update, Delete (CRUD) API និងភ្ជាប់ជាមួយ Web Page ពេញលេញ)។ រយៈពេល ១២០ នាទី។</li>
+        </ul>
+    </div>
+
+    <div class="footer-wrapper">
+        <div class="global-footer">
+            <div class="footer-left"><img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'"><span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម(Soeurng LIM)</span></div>
+            <div class="footer-right">ទំព័រទី ១១ នៃ ១២</div>
+        </div>
+    </div>
+</div>
+
+<div class="a4-page">
+    <div class="header-wrapper">
+        <div class="global-header">
+            <div class="header-item"><img src="https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png" onerror="this.src='Logo.png'"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+            <div class="header-center">
+                <h1>គម្រោងមុខវិជ្ជា | Course Syllabus</h1>
+                <p>បច្ចេកវិទ្យា ASP.NET និងប្រព័ន្ធគ្រប់គ្រងមូលដ្ឋានទិន្នន័យ SQL Server</p>
+            </div>
+            <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"><span>.NET Core MVC</span></div>
+        </div>
+    </div>
+
+    <div class="page-content">
+        <div class="section-title"><i class="fa-solid fa-book"></i> ៦. សៀវភៅសិក្សា (Course Books)</div>
+        <div style="margin-bottom: 15px;">
+            <ul style="list-style: none; padding-left: 0; line-height: 1.8; margin-bottom: 0; font-size: 11pt;">
+                <li><i class='fa-solid fa-circle' style="color:var(--accent-purple); font-size:6pt; vertical-align:middle; margin-right:8px;"></i> <b>ASP.NET Core Web API Tutorials:</b> ឯកសារបង្រៀនផ្លូវការពី Microsoft (សាមញ្ញងាយយល់សម្រាប់អ្នកប្រើប្រាស់ Visual Studio Code)។</li>
+                <li><i class='fa-solid fa-circle' style="color:var(--accent-purple); font-size:6pt; vertical-align:middle; margin-right:8px;"></i> <b>Entity Framework Core in Action (2nd Edition)</b> ដោយ Jon P Smith (សម្រាប់ការស្វែងយល់បន្ថែមពី Database Code-First)។</li>
+            </ul>
+        </div>
+
+        <div class="section-title"><i class="fa-solid fa-link"></i> ៧. គន្ថនិទ្ទេស (Bibliography)</div>
+        <div>
+            <ul style="list-style: none; padding-left: 0; line-height: 1.8; margin-bottom: 0; font-size: 11pt;">
+                <li><i class='fa-solid fa-circle' style="color:var(--accent-purple); font-size:6pt; vertical-align:middle; margin-right:8px;"></i> <b>Microsoft Official Documentation:</b> <i>https://learn.microsoft.com/en-us/aspnet/core/</i></li>
+                <li><i class='fa-solid fa-circle' style="color:var(--accent-purple); font-size:6pt; vertical-align:middle; margin-right:8px;"></i> <b>Mozilla Developer Network (MDN) Web Docs (Fetch API):</b> <i>https://developer.mozilla.org/</i> (សម្រាប់ការសរសេរកូដហៅ Application Programming Interface (API) ទៅកាន់ Web Page)។</li>
+                <li><i class='fa-solid fa-circle' style="color:var(--accent-purple); font-size:6pt; vertical-align:middle; margin-right:8px;"></i> <b>GitHub:</b> <i>https://github.com/</i> (សម្រាប់ការគ្រប់គ្រងកូដ និងការងារជាក្រុម)។</li>
+                <li><i class='fa-solid fa-circle' style="color:var(--accent-purple); font-size:6pt; vertical-align:middle; margin-right:8px;"></i> <b>W3Schools (C# Tutorial):</b> ប្រភពបន្ថែមសម្រាប់រំលឹកការសរសេរកូដ C# មូលដ្ឋាន។</li>
+            </ul>
+        </div>
+        
+        <div style="margin-top: 50px; display: flex; justify-content: space-between; align-items: flex-end; page-break-inside: avoid;">
+            <div style="text-align: center; width: 200px;">
+                <p style="font-size: 11pt;">បានឃើញ និងឯកភាព</p>
+                <p style="font-size: 11pt; margin-top: 50px;">..........................................</p>
+                <p style="font-size: 11pt; font-weight: bold;">ព្រឹទ្ធបុរសមហាវិទ្យាល័យ</p>
+            </div>
+            <div style="text-align: center; width: 280px;">
+                <p style="font-size: 11pt;">ធ្វើនៅសៀមរាប ថ្ងៃទី.......ខែ.......ឆ្នាំ ២០២៦</p>
+                <p style="font-size: 11pt; margin-top: 50px; font-weight: bold;">សាស្ត្រាចារ្យបង្រៀន សឿង លីម(Soeurng LIM)</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-wrapper">
+        <div class="global-footer">
+            <div class="footer-left"><img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'"><span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម(Soeurng LIM)</span></div>
+            <div class="footer-right">ទំព័រទី ១២ នៃ ១២</div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
