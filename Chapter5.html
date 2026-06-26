@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ជំពូកទី ៥ - SQL Server, Entity Framework Core & DbContext Configuration</title>
+    <link href="https://fonts.googleapis.com/css2?family=Koulen&family=Siemreap&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --bg-dark: #0F172A; --bg-card: #FFFFFF; --text-main: #1E293B; --text-muted: #475569;
+            --accent-blue: #0284C7; --accent-green: #059669; --accent-yellow: #D97706; --accent-red: #DC2626;
+            --accent-purple: #4F46E5; --header-footer-bg: #F8FAFC; --code-bg: #0F172A;
+            --border-light: #E2E8F0;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { 
+            background-color: var(--bg-dark); 
+            font-family: 'Siemreap', 'Khmer OS Siemreap', sans-serif; 
+            overflow: hidden; 
+            height: 100vh; 
+            width: 100vw; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+        }
+        
+        /* Layouts */
+        .slide-deck { 
+            width: 100vw; 
+            height: 100vh; 
+            position: relative; 
+            background: #FAFAFA; 
+            border-radius: 0; 
+            overflow: hidden; 
+            display: flex; 
+            flex-direction: column; 
+        }
+        .slide-wrapper { 
+            height: 86vh; 
+            position: relative; 
+            overflow: hidden; 
+            background-color: #F8FAFC; 
+        }
+        .slide { 
+            display: none; 
+            width: 100%; 
+            height: 100%; 
+            padding: 3vh 5vw; 
+            flex-direction: column; 
+            justify-content: flex-start; 
+            animation: slideIn 0.25s ease-out; 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            overflow: hidden; 
+        }
+        .slide.active { display: flex; }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Global Header */
+        .global-header { 
+            height: 8vh;
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 0 5vw; 
+            border-bottom: 4px solid var(--accent-purple); 
+            background-color: var(--header-footer-bg); 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05); 
+            z-index: 10; 
+            position: relative;
+        }
+        .header-item { display: flex; flex-direction: column; align-items: center; gap: 4px; width: 15vw; }
+        .header-item img { height: 3.8vh; object-fit: contain; }
+        .header-item span { font-size: 0.85vw; font-weight: bold; color: var(--accent-purple); text-align: center; font-family: 'Koulen', sans-serif; }
+        .header-center h1 { font-family: 'Koulen', sans-serif; font-size: 1.4vw; color: var(--accent-purple); margin: 0; font-weight: normal; text-align: center;}
+        .header-center p { font-family: 'Fira Code', monospace; font-size: 0.85vw; color: #64748B; margin: 0; font-weight: bold; text-align: center; }
+
+        /* Typography */
+        h1 { font-family: 'Koulen', sans-serif; font-size: 4.8vw; text-align: center; color: var(--text-main); font-weight: normal; line-height: 1.3; }
+        h2.slide-title { font-family: 'Koulen', sans-serif; font-size: 2.5vw; font-weight: normal; border-bottom: 0.3vw solid var(--accent-purple); padding-bottom: 0.6vh; margin-bottom: 2vh; color: var(--text-main); display: inline-block; text-align: left !important; }
+        .content-body { 
+            height: calc(100% - 6vh); 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: flex-start; 
+            gap: 1.5vh; 
+            width: 100%; 
+            overflow-y: auto;
+        }
+        
+        p, li, td { font-size: 1.6vw; line-height: 1.7; color: var(--text-main); text-align: left !important; }
+        .highlight { color: var(--accent-purple); font-weight: bold; }
+        .keyword-icon { color: var(--accent-purple); margin-right: 0.5vw; width: 2vw; text-align: center; display: inline-block; }
+
+        /* Content Blocks */
+        .two-column { 
+            display: grid; 
+            grid-template-columns: 1.1fr 0.9fr; 
+            gap: 2.5vw; 
+            height: 100%; 
+            align-items: center; 
+            padding-bottom: 1.5vh;
+        }
+        .card-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5vw; height: 100%; align-content: center; }
+        .card { background: var(--bg-card); padding: 2.5vh 2.5vw; border-radius: 1vw; border-left: 0.7vw solid var(--accent-purple); box-shadow: 0 4px 15px rgba(0,0,0,0.03); display: flex; flex-direction: column; justify-content: center; }
+        .card h4 { font-size: 1.9vw; color: var(--accent-purple); margin-bottom: 0.6vh; font-family: 'Koulen', sans-serif; font-weight: normal; text-align: left !important;}
+        .card p { font-size: 1.55vw; line-height: 1.7; text-align: left !important; }
+
+        /* Visual Frame for Schematics */
+        .visual-frame { 
+            background: #FFFFFF; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            height: 100%; 
+            max-height: 52vh; 
+            width: 100%; 
+            border-radius: 1vw; 
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06); 
+            padding: 0.8vw; 
+            border: 1px solid #E2E8F0;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .schematic-box {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            background: #F8FAFC;
+            border-radius: 0.5vw;
+            padding: 1.5vw;
+        }
+        
+        /* Code Block */
+        .code-container { 
+            background: var(--code-bg); 
+            border-radius: 1vw; 
+            padding: 2.8vh 2.2vw 1.8vh 2.2vw; 
+            position: relative; 
+            border: 1px solid #334155; 
+            width: 100%; 
+            max-height: 42vh; 
+            overflow-y: auto; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        .code-container pre { color: #D4D4D4; font-family: 'Fira Code', monospace; font-size: 1.25vw; line-height: 1.5; overflow-x: auto;}
+        .code-label { position: absolute; top: 0; left: 2.2vw; background: var(--accent-purple); color: white; padding: 4px 15px; border-radius: 0 0 8px 8px; font-size: 0.8vw; font-weight: bold; z-index: 2; font-family: 'Koulen', sans-serif;}
+        .copy-btn { position: absolute; top: 12px; right: 12px; padding: 6px 15px; cursor: pointer; background: var(--accent-blue); color: white; border: none; border-radius: 6px; font-family: 'Koulen', sans-serif; font-size: 0.8vw; transition: 0.3s; z-index: 5; font-weight: normal;}
+        .copy-btn:hover { background: #0369A1; }
+
+        /* Notification Badge */
+        .workbook-note { background: #FEF9C3; border: 1px dashed var(--accent-yellow); padding: 1.6vh 2vw; border-radius: 10px; color: #854D0E; font-size: 1.4vw; display: flex; align-items: center; gap: 14px; font-weight: bold; margin-top: 1vh; box-shadow: 0 4px 6px rgba(0,0,0,0.02); text-align: left !important; }
+        .exercise-badge { background: var(--accent-yellow); color: var(--text-main); padding: 6px 20px; border-radius: 6px; font-weight: bold; font-size: 1.5vw; margin-bottom: 1vh; display: inline-block; border: 1px solid #B45309; font-family: 'Koulen', sans-serif;}
+
+        /* Table */
+        table { width: 100%; border-collapse: collapse; background: white; border-radius: 1vw; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
+        th, td { border: 1px solid #E2E8F0; padding: 1.2vh 1.6vw; text-align: left; vertical-align: middle; line-height: 1.6;}
+        th { background: var(--accent-purple); color: white; font-family: 'Koulen', sans-serif; font-size: 1.5vw; font-weight: normal;}
+        td { font-size: 1.45vw; }
+
+        /* Global Footer */
+        .global-footer { 
+            height: 6vh;
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            width: 100%; 
+            padding: 0 5vw; 
+            border-top: 3px solid var(--accent-purple); 
+            background-color: var(--header-footer-bg); 
+            z-index: 10; 
+        }
+        .footer-left { display: flex; align-items: center; gap: 1.5vw; }
+        .footer-left img { border-radius: 50%; border: 2px solid var(--accent-purple); width: 3.8vh; height: 3.8vh; object-fit: cover; box-shadow: 0 4px 8px rgba(0,0,0,0.1);}
+        .footer-left span { font-size: 1.1vw; font-weight: bold; color: var(--text-main); font-family: 'Koulen', sans-serif; }
+        .slide-counter { font-size: 1vw; color: white; font-family: 'Koulen', sans-serif; font-weight: normal; background: var(--accent-purple); padding: 0.6vh 2vw; border-radius: 5vw; box-shadow: 0 2px 8px rgba(81,43,212,0.3); }
+        
+        /* Navigation Buttons */
+        .nav-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(81, 43, 212, 0.1); border: none; width: 4.5vw; height: 4.5vw; border-radius: 50%; color: var(--accent-purple); font-size: 1.8vw; cursor: pointer; z-index: 9999; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; }
+        .nav-btn:hover { background: var(--accent-purple); color: white; box-shadow: 0 4px 15px rgba(81,43,212,0.4); transform: translateY(-50%) scale(1.1); }
+        #prevBtn { left: 1.5vw; }
+        #nextBtn { right: 1.5vw; }
+
+        .print-only-footer { display: none !important; }
+
+        /* Professional A4 Landscape Printing */
+        @media print {
+            *, *::before, *::after {
+                animation: none !important;
+                transition: none !important;
+                box-shadow: none !important;
+            }
+            @page { size: A4 landscape; margin: 0; }
+            html, body { background: none !important; background-color: #FFFFFF !important; overflow: visible !important; height: 210mm !important; width: 297mm !important; display: block !important; font-family: 'Siemreap', sans-serif !important; }
+            .slide-deck { width: 297mm !important; height: 210mm !important; box-shadow: none !important; background: transparent !important; overflow: visible !important; display: block !important; border: none !important; border-radius: 0 !important; }
+            .slide-wrapper { display: block !important; overflow: visible !important; height: auto !important;}
+            .slide { display: flex !important; flex-direction: column !important; position: relative !important; opacity: 1 !important; visibility: visible !important; width: 297mm !important; height: 210mm !important; page-break-inside: avoid !important; page-break-after: always !important; overflow: hidden !important; box-sizing: border-box !important; padding: 10mm 15mm 20mm 15mm !important; background: white !important; }
+            .global-header { margin: -10mm -15mm 15px -15mm !important; padding: 5mm 15mm !important; height: auto !important; border-bottom: 2px solid var(--accent-purple) !important; }
+            .global-header img { height: 11mm !important; }
+            .global-header h1 { font-size: 14pt !important; }
+            .global-header p { font-size: 9pt !important; }
+            .slide-title { font-size: 20pt !important; margin-bottom: 12px !important; padding-bottom: 4px !important; border-bottom-width: 3px !important; }
+            .content-body { overflow: hidden !important; height: auto !important; gap: 10px !important; }
+            p, li, td { font-size: 12pt !important; line-height: 1.6 !important; }
+            .card h4 { font-size: 15pt !important; margin-bottom: 4px !important; }
+            .card { padding: 16px 22px !important; }
+            .card-grid { gap: 14px !important; }
+            .two-column { gap: 22px !important; }
+            pre, code { font-size: 10pt !important; padding: 10px 14px !important; }
+            .slide-deck > .global-footer { display: none !important; }
+            .print-only-footer { display: flex !important; position: absolute !important; bottom: 0 !important; left: 0 !important; width: 100% !important; height: 15mm !important; padding: 0 15mm !important; background-color: var(--header-footer-bg) !important; border-top: 1px solid var(--border-light) !important; align-items: center !important; justify-content: space-between !important; z-index: 1000 !important; }
+            .print-only-footer .footer-left img { width: 10mm !important; height: 10mm !important; border-radius: 50% !important; display: block !important; }
+            .print-only-footer .footer-left span, .print-only-footer .slide-counter { font-size: 10pt !important; font-family: 'Koulen', sans-serif !important; }
+            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+        }
+    </style>
+</head>
+<body onclick="navigate(event)">
+
+<div class="slide-deck" id="deck">
+
+    <button class="nav-btn" id="prevBtn" onclick="prevSlide(event)" aria-label="Previous"><i class="fa-solid fa-chevron-left"></i></button>
+    <button class="nav-btn" id="nextBtn" onclick="nextSlide(event)" aria-label="Next"><i class="fa-solid fa-chevron-right"></i></button>
+
+    <template id="headerTemplate">
+        <div class="global-header">
+            <div class="header-item">
+                <img src="https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png" onerror="this.src='Logo.png'" alt="AU Logo">
+                <span>សាកលវិទ្យាល័យអង្គរ</span>
+            </div>
+            <div class="header-center">
+                <h1>ជំពូកទី ៥៖ SQL Server, Entity Framework Core & DbContext Configuration</h1>
+                <p>Bachelor of Computer Science (Year 4 Semester 1)</p>
+            </div>
+            <div class="header-item">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg" alt=".NET Logo">
+                <span>ASP.NET Core Web API</span>
+            </div>
+        </div>
+    </template>
+
+    <div class="slide-wrapper" id="slideWrapper">
+    </div>
+
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" alt="Professor">
+            <span>សាស្ត្រាចារ្យ៖ សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="slide-counter" id="slideCounter">ស្លាយទី ១ នៃ ២១</div>
+    </div>
+</div>
+
+<script>
+    const slideWrapper = document.getElementById('slideWrapper');
+    const headerHTML = document.getElementById('headerTemplate').innerHTML;
+    
+    const khNums = ["០", "១", "២", "៣", "៤", "៥", "៦", "៧", "៨", "៩"];
+    function toKh(n) { return n.toString().split('').map(d => khNums[parseInt(d)]).join(''); }
+
+    // Pure CSS Infographics for Chapter 5
+    const schematics = {
+        orm_architecture: `
+            <div class="schematic-box">
+                <div style="font-family:'Koulen',sans-serif; color:var(--accent-purple); font-size:1.5vw; margin-bottom:1vh; text-align:center;">ស្ថាបត្យកម្ម ORM (Entity Framework Core)</div>
+                <div style="display:flex; justify-content:space-around; align-items:center; width:100%; gap:0.5vw;">
+                    <div style="background:#E0F2FE; border:1px solid #0284C7; padding:1vh; border-radius:4px; text-align:center; flex:1;">
+                        <b style="color:#0369A1; font-size:1vw;">C# Classes (Models)</b><br>
+                        <span style="font-size:0.8vw; color:#334155;">Student, Course, etc.</span>
+                    </div>
+                    <div style="color:var(--accent-purple); font-size:1.5vw;"><i class="fa-solid fa-right-left"></i></div>
+                    <div style="background:#EEF2FF; border:2px solid #6366F1; padding:1vh; border-radius:4px; text-align:center; flex:1.2;">
+                        <b style="color:#4F46E5; font-size:1vw;">EF Core (DbContext)</b><br>
+                        <span style="font-size:0.8vw; color:#334155;">អ្នកបកប្រែ (ORM Engine)</span>
+                    </div>
+                    <div style="color:var(--accent-purple); font-size:1.5vw;"><i class="fa-solid fa-right-left"></i></div>
+                    <div style="background:#DCFCE7; border:1px solid #22C55E; padding:1vh; border-radius:4px; text-align:center; flex:1;">
+                        <b style="color:#15803D; font-size:1vw;">SQL Database (Tables)</b><br>
+                        <span style="font-size:0.8vw; color:#334155;">SQL Server Tables</span>
+                    </div>
+                </div>
+            </div>
+        `,
+        packages_flow: `
+            <div class="schematic-box">
+                <div style="font-family:'Koulen',sans-serif; color:var(--accent-purple); font-size:1.5vw; margin-bottom:1vh; text-align:center;">NuGet Packages required for EF Core</div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.8vw; width:100%;">
+                    <div style="background:#E0F2FE; border-left:5px solid #0284C7; padding:1vh; border-radius:4px;">
+                        <b style="color:#0369A1; font-size:1.1vw;">Core Package</b><br>
+                        <span style="font-size:0.8vw; color:#334155;">Microsoft.EntityFrameworkCore</span>
+                    </div>
+                    <div style="background:#DCFCE7; border-left:5px solid #22C55E; padding:1vh; border-radius:4px;">
+                        <b style="color:#15803D; font-size:1.1vw;">Database Provider</b><br>
+                        <span style="font-size:0.8vw; color:#334155;">EntityFrameworkCore.SqlServer</span>
+                    </div>
+                    <div style="background:#FEF3C7; border-left:5px solid #F59E0B; padding:1vh; border-radius:4px;">
+                        <b style="color:#B45309; font-size:1.1vw;">Design-Time Tools</b><br>
+                        <span style="font-size:0.8vw; color:#334155;">EntityFrameworkCore.Design</span>
+                    </div>
+                    <div style="background:#FEE2E2; border-left:5px solid #EF4444; padding:1vh; border-radius:4px;">
+                        <b style="color:#B91C1C; font-size:1.1vw;">EF Core CLI Tools</b><br>
+                        <span style="font-size:0.8vw; color:#334155;">EntityFrameworkCore.Tools</span>
+                    </div>
+                </div>
+            </div>
+        `,
+        connection_flow: `
+            <div class="schematic-box">
+                <div style="font-family:'Koulen',sans-serif; color:var(--accent-purple); font-size:1.5vw; margin-bottom:1vh; text-align:center;">លំហូរតភ្ជាប់ Connection String ទៅកាន់ DB</div>
+                <div style="background:#EEF2FF; border:2px solid #6366F1; padding:1.5vh; border-radius:8px; width:100%; font-size:1.1vw;">
+                    <b style="color:#4F46E5;">appsettings.json</b><br>
+                    <span style="color:#64748B; font-size:0.9vw;">រក្សាទុក Server, DB Name & Credentials</span>
+                    <div style="margin:0.5vh 0; text-align:center; color:#6366F1;"><i class="fa-solid fa-arrow-down"></i></div>
+                    <b style="color:#059669;">Program.cs (Configuration)</b><br>
+                    <span style="color:#64748B; font-size:0.9vw;">ទាញយក Connection String មកចុះឈ្មោះក្នុង DI Container</span>
+                </div>
+            </div>
+        `
+    };
+
+    const chapterData = [
+        // 1. COVER SLIDE
+        { t: "COVER", type: "cover" },
+
+        // 2. PROFESSOR & COURSE INFO
+        { t: "ព័ត៌មានសាស្ត្រាចារ្យ និងមុខវិជ្ជា", type: "prof" },
+
+        // 3. OUTLINE PART 1
+        { t: "មាតិកាជំពូកទី ៥ - ភាគទី ១", type: "table", rows: [
+            ["ចំណុច", "ខ្លឹមសារមេរៀនលម្អិត (Course Topics Part 1)"],
+            ["<b>៥.១</b>", "សេចក្តីផ្តើមអំពីប្រព័ន្ធគ្រប់គ្រងមូលដ្ឋានទិន្នន័យ SQL Server និង ORM Entity Framework Core (EF Core)"],
+            ["<b>៥.២</b>", "ការស្វែងយល់ ការដំឡើង និងការគ្រប់គ្រងកញ្ចប់កម្មវិធីបន្ថែម NuGet Packages សម្រាប់ EF Core"],
+            ["<b>៥.៣</b>", "ការរៀបចំ និងកំណត់រចនាសម្ព័ន្ធខ្សែស្រឡាយតភ្ជាប់ Connection String នៅក្នុង appsettings.json"]
+        ]},
+
+        // 4. OUTLINE PART 2
+        { t: "មាតិកាជំពូកទី ៥ - ភាគទី ២", type: "table", rows: [
+            ["ចំណុច", "ខ្លឹមសារមេរៀនលម្អិត (Course Topics Part 2)"],
+            ["<b>៥.៤</b>", "ការបង្កើត និងស្វែងយល់អំពីតួនាទីរបស់ Class DbContext គ្រឹះនៃការតភ្ជាប់ Model ទៅកាន់ Database"],
+            ["<b>៥.៥</b>", "ការចុះឈ្មោះប្រើប្រាស់ DbContext នៅក្នុងឯកសារ Program.cs (Dependency Injection Service)"],
+            ["<b>៥.៦</b>", "ការដំឡើង SQL Server Express & SSMS និងការតេស្តសាកល្បងតភ្ជាប់មូលដ្ឋានទិន្នន័យសិប្បនិម្មិត"]
+        ]},
+
+        // 5. OBJECTIVES
+        { t: "វត្ថុបំណងនៃជំពូកទី ៥", type: "list", c: [
+            "បន្ទាប់ពីបញ្ចប់ការសិក្សាជំពូកទី ៥ នេះ និស្សិតនឹងមានសមត្ថភាព៖",
+            "• <b class='highlight'>យល់ដឹងពីបច្ចេកវិទ្យា ORM:</b> យល់ដឹងច្បាស់ពីលំហូរការងារ និងអត្ថប្រយោជន៍របស់ Entity Framework Core ក្នុងការគ្រប់គ្រង Database។",
+            "• <b class='highlight'>គ្រប់គ្រង NuGet Packages:</b> ចេះប្រើប្រាស់ .NET CLI ឬ NuGet Package Manager ដើម្បីដំឡើងកញ្ចប់បណ្ណាល័យ EF Core។",
+            "• <b class='highlight'>រៀបចំការតភ្ជាប់ (Connection):</b> កំណត់រចនាសម្ព័ន្ធ Connection String និងចុះឈ្មោះ DbContext ក្នុង Program.cs ដើម្បីទាញទិន្នន័យពី SQL Server។"
+        ]},
+
+        // 6. SECTION 5.1 - EF CORE & ORM INTRODUCTION
+        { 
+            t: "៥.១ សេចក្តីផ្តើមអំពី SQL Server និង ORM Entity Framework Core", 
+            type: "split", 
+            graphicType: "orm_architecture",
+            c: "<b>Entity Framework (EF) Core</b> គឺជាបច្ចេកវិទ្យា <b class='highlight'>Object-Relational Mapper (ORM)</b> ផ្លូវការរបស់ Microsoft សម្រាប់កម្មវិធី .NET៖<br><br>• វាជួយឱ្យអ្នកអភិវឌ្ឍន៍សរសេរកូដ C# ដើម្បីទាក់ទងជាមួយ SQL Database ដោយមិនចាំបាច់សរសេរកូដ SQL ផ្ទាល់ឡើយ។<br><br>• វាបំប្លែងទិន្នន័យរវាង Tables ក្នុង Database និង Objects (Classes) នៅក្នុង C# ដោយស្វ័យប្រវត្ត។<br><br>• ជួយសន្សំពេលវេលា កាត់បន្ថយការសរសេរកូដដដែលៗ និងបង្កើនសុវត្ថិភាពទិន្នន័យពី SQL Injection។"
+        },
+
+        // 7. SECTION 5.2 - NUGET PACKAGES FOR EF CORE
+        { 
+            t: "៥.២ ការដំឡើងកញ្ចប់កម្មវិធីបន្ថែម NuGet Packages", 
+            type: "split", 
+            graphicType: "packages_flow",
+            c: "ដើម្បីប្រើប្រាស់ EF Core នៅក្នុងគម្រោង ASP.NET Core Web API របស់លោកអ្នក យើងត្រូវដំឡើងកញ្ចប់បណ្ណាល័យចម្បងៗតាមរយៈ <b>NuGet Package Manager</b>៖<br><br>• <b class='highlight'>EF Core Base:</b> បណ្ណាល័យគ្រឹះសម្រាប់ដំណើរការ ORM។<br><br>• <b class='highlight'>SQL Server Provider:</b> ដើរតួជាអ្នកបកប្រែភាសាកូដ C# ទៅជាភាសាមូលដ្ឋានទិន្នន័យ SQL Server។<br><br>• <b class='highlight'>Design & Tools:</b> កញ្ចប់ជំនួយសម្រាប់ដំណើរការ Commands ផ្សេងៗដូចជាការបង្កើត Migration នៅក្នុង Visual Studio Terminal។"
+        },
+
+        // 8. NUGET INSTALLATION COMMANDS
+        { 
+            t: "៥.២ បញ្ជាសរសេរសម្រាប់ដំឡើង NuGet Packages តាម CLI", 
+            type: "code", 
+            code: `# ១. ដំឡើងបណ្ណាល័យគ្រឹះ EF Core
+dotnet add package Microsoft.EntityFrameworkCore
+
+# ២. ដំឡើង Database Provider សម្រាប់ SQL Server
+dotnet add package Microsoft.EntityFrameworkCore.SqlServer
+
+# ៣. ដំឡើង Tools សម្រាប់គ្រប់គ្រង Migration & CLI Commands
+dotnet add package Microsoft.EntityFrameworkCore.Tools
+dotnet add package Microsoft.EntityFrameworkCore.Design`, 
+            desc: "លោកអ្នកអាចវាយបញ្ជា (CLI Commands) ទាំងនេះនៅក្នុង Terminal របស់ VS Code នៅក្នុងថត Folder នៃគម្រោង SchoolApp។" 
+        },
+
+        // 9. SECTION 5.3 - CONNECTION STRING IN APPSETTINGS.JSON
+        { 
+            t: "៥.៣ កំណត់រចនាសម្ព័ន្ធ Connection String ក្នុង appsettings.json", 
+            type: "code", 
+            code: `{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=localhost\\\\SQLEXPRESS;Database=SchoolDB;Trusted_Connection=True;TrustServerCertificate=True;"
+  },
+  "AllowedHosts": "*"
+}`, desc: "Connection String កំណត់ពីអាសយដ្ឋាន Server (localhost\\SQLEXPRESS) ឈ្មោះមូលដ្ឋានទិន្នន័យ (SchoolDB) និងប្រព័ន្ធសុវត្ថិភាពការងារ។" },
+
+        // 10. SECTION 5.4 - CREATING THE DBCONTEXT CLASS
+        { 
+            t: "៥.៤ ការបង្កើត និងស្វែងយល់អំពី Class DbContext", 
+            type: "structured", 
+            graphicType: "connection_flow",
+            definition: "<b>DbContext៖</b> គឺជាបេះដូង និងជាស្ពានចម្លងទិន្នន័យដ៏ចម្បងបំផុតនៅក្នុង Entity Framework Core។ វាទទួលខុសត្រូវលើការតភ្ជាប់ទៅកាន់ Database ការគ្រប់គ្រង transactions និងការផ្គូផ្គង (Mapping) ពី C# Object Classes ទៅកាន់ Table នីមួយៗរបស់ Database។",
+            syntax: "public class AppDbContext : DbContext\n{\n    public AppDbContext(DbContextOptions<AppDbContext> options) \n        : base(options) { }\n\n    public DbSet<Student> Students { get; set; }\n}",
+            caseTitle: "ករណីសិក្សា៖ ការចុះឈ្មោះ Model Students ជា Table",
+            caseCode: "// តាមរយៈ DbSet<Student> ប្រព័ន្ធ EF Core នឹងដឹងថាវាត្រូវបង្កើតតារាង\n// ឈ្មោះ Students នៅក្នុង SQL Server របស់យើងដោយស្វ័យប្រវត្ត។",
+            labNote: "ការអនុវត្តសរសេរកូដ DbContext Class ត្រូវបានបង្ហាញលម្អិតនៅក្នុងគម្រោង <b>ស្លាយទី ១៣</b>។"
+        },
+
+        // 11. SECTION 5.5 - REGISTERING DBCONTEXT IN PROGRAM.CS
+        { 
+            t: "៥.៥ ការចុះឈ្មោះ DbContext នៅក្នុង Program.cs", 
+            type: "code", 
+            code: `using Microsoft.EntityFrameworkCore;
+using SchoolApp.Data; // ទីតាំង Folder ដែលផ្ទុក DbContext
+
+var builder = WebApplication.CreateBuilder(args);
+
+// ទាញយក Connection String ពី appsettings.json
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+// ចុះឈ្មោះ DbContext ចូលទៅកាន់ Dependency Injection (DI) Container
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(connectionString));
+
+builder.Services.AddControllers();`, 
+            desc: "ការចុះឈ្មោះនេះ ជួយឱ្យ ASP.NET Core អាចគ្រប់គ្រងការបង្កើត និងការបំផ្លាញ Object DbContext ឡើងវិញ (Lifetime Management) ដោយស្វ័យប្រវត្ត។" 
+        },
+
+        // 12. LAB 5.1
+        { t: "លំហាត់អនុវត្តន៍ (Practical Labs)", type: "exercise", h: "Lab 5.1: NuGet Installation & SQL Server Database Creation", p: "<b>ប្រធានលំហាត់៖</b> នៅក្នុងគម្រោង <code>SchoolApp</code> របស់អ្នក ចូរ៖<br>១. បើក Terminal រួចដំណើរការដំឡើងកញ្ចប់ NuGet Packages ទាំង ៤ សម្រាប់ EF Core ដូចបានបង្ហាញក្នុងស្លាយទី ៨។<br>២. បើកកម្មវិធី SQL Server Management Studio (SSMS) រួចបង្កើត Database ថ្មីមួយឈ្មោះថា <code>SchoolDB</code>។<br>៣. បន្ថែមការកំណត់រចនាសម្ព័ន្ធ Connection String ទៅកាន់ <code>appsettings.json</code> ទៅកាន់ Database របស់លោកអ្នក។" },
+
+        // 13. FULL DB CODE - PART 1 (MODELS & DBCONTEXT)
+        { t: "៥.៦ កូដពេញលេញ - ភាគទី ១ (Models & DbContext)", type: "code", code: `// ១. បង្កើត Class Student នៅក្នុង Folder Models
+namespace SchoolApp.Models
+{
+    public class Student
+    {
+        public int Id { get; set; } // ស្គាល់ជា Primary Key ដោយស្វ័យប្រវត្ត
+        public string Name { get; set; } = string.Empty;
+        public string Major { get; set; } = string.Empty;
+    }
+}
+
+// ២. បង្កើត Class AppDbContext.cs នៅក្នុង Folder Data
+using Microsoft.EntityFrameworkCore;
+using SchoolApp.Models;
+
+namespace SchoolApp.Data
+{
+    public class AppDbContext : DbContext
+    {
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+        {
+        }
+
+        // កំណត់តារាង Students នៅក្នុង Database
+        public DbSet<Student> Students { get; set; } = null!;
+    }
+}`, desc: "DbSet គឺជាតំណាងតារាងក្នុង DB។ Name, Major ជា Columns នៃតារាង Students។" },
+
+        // 14. FULL DB CODE - PART 2 (PROGRAM.CS SETUP)
+        { t: "៥.៦ កូដពេញលេញ - ភាគទី ២ (Program.cs Setup)", type: "code", code: `// ៣. បន្ថែមការកំណត់ និងចុះឈ្មោះ DbContext ក្នុង Program.cs
+using Microsoft.EntityFrameworkCore;
+using SchoolApp.Data;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// ទាញយក Connection String ពី appsettings.json
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+// ចុះឈ្មោះ Service ទៅកាន់ System
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(connectionString));
+
+builder.Services.AddControllers();
+
+var app = builder.Build();
+
+app.UseAuthorization();
+app.MapControllers();
+app.Run();`, desc: "ការកំណត់ dependency injection អនុញ្ញាតឱ្យ Controllers ផ្សេងៗទាញយក AppDbContext ទៅប្រើប្រាស់បានយ៉ាងងាយស្រួល។" },
+
+        // 15. FULL DB CODE - PART 3 (TESTING CONNECTION)
+        { t: "៥.៦ កូដពេញលេញ - ភាគទី ៣ (Test Connection Controller)", type: "code", code: `// ៤. បង្កើត DbTestController.cs ក្នុង Controllers ដើម្បីតេស្តសាកល្បងការតភ្ជាប់
+using Microsoft.AspNetCore.Mvc;
+using SchoolApp.Data;
+
+namespace SchoolApp.Controllers
+{
+    [ApiController]
+    [Route("api/[controller]")]
+    public class DbTestController : ControllerBase
+    {
+        private readonly AppDbContext _context;
+
+        // ទាញយក DbContext តាមរយៈ Constructor Injection
+        public DbTestController(AppDbContext context)
+        {
+            _context = context;
+        }
+
+        [HttpGet("check")]
+        public IActionResult CheckConnection()
+        {
+            // ពិនិត្យមើលថាតើ API អាចភ្ជាប់ទៅកាន់ Database SQL Server បានជោគជ័យឬទេ
+            bool canConnect = _context.Database.CanConnect();
+            if (canConnect)
+                return Ok("ការតភ្ជាប់ទៅកាន់ SQL Server Database សម្រេចបានជោគជ័យ!");
+            
+            return BadRequest("ការតភ្ជាប់មូលដ្ឋានទិន្នន័យបានបរាជ័យ។ សូមពិនិត្យ Connection String របស់អ្នកឡើងវិញ។");
+        }
+    }
+}`, desc: "Method CanConnect() របស់ EF Core ជួយពិនិត្យការតភ្ជាប់របស់ Connection String ភ្លាមៗដោយមិនបាច់ទាញទិន្នន័យ។" },
+
+        // 16. LAB 5.2 - TESTING CONNECTION
+        { t: "លំហាត់អនុវត្តន៍ (Practical Labs)", type: "exercise", h: "Lab 5.2: Registering DbContext & Testing Live Connection", p: "<b>ប្រធានលំហាត់៖</b> ចូរសរសេរកូដសម្រាប់ Class <code>DbTestController.cs</code> នៅក្នុងគម្រោងរបស់អ្នក។ បន្ទាប់មក៖<br>១. ដំណើរការគម្រោងរបស់អ្នក (<code>dotnet run</code>)។<br>២. ប្រើប្រាស់ Web Browser ឬ Postman ដើម្បីផ្ញើសំណើ GET ទៅកាន់ <code>http://localhost:5000/api/dbtest/check</code>។<br>៣. កត់ត្រាសារដែលទទួលបានត្រឡប់មកវិញ។ ប្រសិនបើទទួលបានកំហុស (Error) សូមពិនិត្យមើលឈ្មោះ Server, Database name និង Settings ក្នុង Connection String របស់អ្នកឡើងវិញ។" },
+
+        // 17. GLOSSARY 1
+        { t: "ពន្យល់ពាក្យគន្លឹះ (Glossary 1)", type: "table", rows: [
+            ["ពាក្យបច្ចេកទេស", "ការពន្យល់ជាភាសាខ្មែរ"],
+            ["<b>ORM (Object-Relational Mapper)</b>", "បច្ចេកវិទ្យាដែលជួយផ្គូផ្គងទិន្នន័យរវាង Object-Oriented Programming (OOP) និង Relational Database។"],
+            ["<b>EF Core (Entity Framework Core)</b>", "ក្របខ័ណ្ឌការងារ (Framework) សម្រួលការងារទាក់ទងជាមួយ Database របស់ Microsoft .NET។"],
+            ["<b>NuGet Package</b>", "ប្រព័ន្ធគ្រប់គ្រង និងចែកចាយបណ្ណាល័យកូដបន្ថែម (Libraries/Dependencies) សម្រាប់គម្រោង .NET។"],
+            ["<b>Connection String</b>", "ឃ្លាអត្ថបទប្រាប់ប្រព័ន្ធពីរបៀបស្វែងរក Server និងកំណត់សុវត្ថិភាពតភ្ជាប់ Database។"]
+        ]},
+
+        // 18. GLOSSARY 2
+        { t: "ពន្យល់ពាក្យគន្លឹះ (Glossary 2)", type: "table", rows: [
+            ["ពាក្យបច្ចេកទេស", "ការពន្យល់ជាភាសាខ្មែរ"],
+            ["<b>DbContext</b>", "ថ្នាក់ចម្បង (Main Class) នៃ EF Core ដែលតំណាងឱ្យការធ្វើការងារផ្ទាល់ជាមួយ SQL Database។"],
+            ["<b>DbSet&lt;T&gt;</b>", "តំណាងឱ្យតារាង (Table) ជាក់លាក់មួយនៅក្នុង Database ដែលផ្ទុកទៅដោយ Object types 'T'។"],
+            ["<b>Dependency Injection (DI)</b>", "បច្ចេកទេសរចនាកូដដែលបញ្ជូន Objects ដែលត្រូវការ (Dependencies) ទៅឱ្យ Class ផ្សេងទៀតដោយស្វ័យប្រវត្ត។"],
+            ["<b>CanConnect()</b>", "មុខងាររបស់ EF Core សម្រាប់តេស្តសាកល្បងមើលថាតើ Connection អាចទាក់ទងទៅ SQL Server បានឬទេ។"]
+        ]},
+
+        // 19. SUMMARY PART 1
+        { t: "សេចក្តីសង្ខេបជំពូកទី ៥ - ភាគទី ១", type: "list", c: [
+            "• <b class='highlight'>ស្ពានតភ្ជាប់ ORM:</b> Entity Framework Core គឺជាបច្ចេកវិទ្យា ORM ដែលជួយឱ្យយើងអាចគ្រប់គ្រង Database SQL Server តាមរយៈកូដ C# Class ដោយផ្ទាល់។",
+            "• <b class='highlight'>តួនាទី NuGet Packages:</b> ដើម្បីដំណើរការការងារនេះបាន យើងត្រូវដំឡើងកញ្ចប់បណ្ណាល័យ EF Core, SQL Server Provider និង CLI Tools តាមរយៈ NuGet Package Manager។",
+            "• <b class='highlight'>ភាពត្រឹមត្រូវនៃ Connection String:</b> ការកំណត់ Connection String ក្នុង appsettings.json ត្រូវតែប្រកាសឈ្មោះ Server និង Database (SchoolDB) ឱ្យបានច្បាស់លាស់ និងឥតខ្ចោះ។"
+        ]},
+
+        // 20. SUMMARY PART 2
+        { t: "សេចក្តីសង្ខេបជំពូកទី ៥ - ភាគទី ២", type: "list", c: [
+            "• <b class='highlight'>បេះដូងនៃ EF Core:</b> ថ្នាក់ DbContext គឺជាអ្នកចាត់ចែងចម្បងលើទំនាក់ទំនងរវាង Class Model ទៅជា Table ជាក់ស្តែងរបស់ SQL Database។",
+            "• <b class='highlight'>អំណាចនៃ DI Container:</b> ការចុះឈ្មោះ DbContext ក្នុង Program.cs ជួយឱ្យ Controller នីមួយៗអាចទាញយក DbContext មកប្រើប្រាស់ (Constructor Injection) ដោយមិនបាច់ប្រកាសពាក្យគន្លឹះ 'new' ឡើយ។",
+            "• <b class='highlight'>ការតេស្តមុនធ្វើការងារ:</b> មុននឹងឈានទៅដល់ការបង្កើត Tables យើងត្រូវប្រើមុខងារ CanConnect() ដើម្បីធ្វើតេស្តសាកល្បងការតភ្ជាប់ឱ្យបានរលូនជាមុនសិន។"
+        ]},
+
+        // 21. REFERENCES
+        { t: "ឯកសារយោង និងគន្ថនិទ្ទេស (References)", type: "list", c: [
+            "• <b>Microsoft Learn (DbContext Class in Entity Framework Core):</b> <i style='color:var(--accent-blue);'>https://learn.microsoft.com/en-us/ef/core/dbcontext/</i>",
+            "• <b>Microsoft Learn (Database Providers - SQL Server):</b> <i style='color:var(--accent-blue);'>https://learn.microsoft.com/en-us/ef/core/providers/sql-server/</i>",
+            "• <b>NuGet Gallery (Microsoft.EntityFrameworkCore.SqlServer):</b> <i style='color:var(--accent-blue);'>https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.SqlServer</i>",
+            "• <b>សៀវភៅគោល:</b> Freeman, A. (2024). <i>Pro ASP.NET Core MVC 8</i>. Apress. (10th Edition)"
+        ]}
+    ];
+
+    // Simple C# and JSON Syntax Highlighter for custom render
+    function highlightCSharp(code) {
+        let escaped = code
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;");
+
+        const placeholders = [];
+        
+        // 1. Strings (including JSON string keys/values)
+        escaped = escaped.replace(/(\$?\".*?\")/g, (match) => {
+            placeholders.push(`<span style="color: #CE9178;">${match}</span>`);
+            return `___PLACEHOLDER_${placeholders.length - 1}___`;
+        });
+
+        // 2. Comments
+        escaped = escaped.replace(/(\/\/.*|#.*)/g, (match) => {
+            placeholders.push(`<span style="color: #6A9955;">${match}</span>`);
+            return `___PLACEHOLDER_${placeholders.length - 1}___`;
+        });
+
+        // 3. Attributes & JSON Brackets / Colons
+        escaped = escaped.replace(/(\[[A-Za-z0-9_]+(?:\(.*?\))?\])/g, (match) => {
+            placeholders.push(`<span style="color: #DCDCAA;">${match}</span>`);
+            return `___PLACEHOLDER_${placeholders.length - 1}___`;
+        });
+
+        // 4. Keywords
+        const keywords = ['using', 'namespace', 'public', 'private', 'static', 'class', 'return', 'new', 'if', 'var', 'string', 'int', 'null', 'void', 'bool', 'override', 'readonly', 'base', 'get', 'set', 'dotnet', 'add', 'package'];
+        keywords.forEach(kw => {
+            const regex = new RegExp(`\\b${kw}\\b`, 'g');
+            escaped = escaped.replace(regex, `<span style="color: #569CD6;">${kw}</span>`);
+        });
+
+        // 5. Types & Main Classes
+        const types = ['DbContext', 'DbContextOptions', 'DbSet', 'Student', 'AppDbContext', 'DbTestController', 'IActionResult', 'ControllerBase', 'WebApplication', 'Configuration'];
+        types.forEach(t => {
+            const regex = new RegExp(`\\b${t}\\b`, 'g');
+            escaped = escaped.replace(regex, `<span style="color: #4EC9B0;">${t}</span>`);
+        });
+
+        // Restore placeholders
+        for (let i = placeholders.length - 1; i >= 0; i--) {
+            escaped = escaped.replace(`___PLACEHOLDER_${i}___`, placeholders[i]);
+        }
+
+        return escaped;
+    }
+
+    // INJECTION ENGINE
+    chapterData.forEach((item, index) => {
+        const slide = document.createElement('div');
+        slide.className = 'slide';
+        
+        let bodyContent = '';
+        if(item.type === "cover") {
+            bodyContent = `
+                <div style="text-align: center; margin: auto; width: 100%;">
+                    <div style="margin-bottom: 2vh; display: flex; flex-direction: column; align-items: center;">
+                        <img src="https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png" onerror="this.src='Logo.png'" style="height: 8.5vw;" alt="Angkor University Logo">
+                        <h2 style="font-family: 'Koulen', sans-serif; color: var(--text-main); font-size: 3vw; margin: 10px 0 0 0; font-weight: normal;">សាកលវិទ្យាល័យអង្គរ</h2>
+                    </div>
+                    <h3 style="font-family: 'Siemreap', sans-serif; font-size: 1.5vw; color: var(--text-muted); margin-bottom: 2.5vh; text-align: center !important;">មុខវិជ្ជា៖ បច្ចេកវិទ្យា ASP.NET និងប្រព័ន្ធគ្រប់គ្រងមូលដ្ឋានទិន្នន័យ SQL Server</h3>
+                    <div style="background: var(--accent-purple); color: white; padding: 1.2vh 3.5vw; border-radius: 5vw; display: inline-block; font-size: 1.3vw; font-weight: bold; margin-bottom: 2.5vh; box-shadow: 0 10px 20px rgba(81, 43, 212, 0.3); font-family: 'Koulen', sans-serif;">ឯកសារមេរៀន (Lecture Presentation) | ជំពូកទី ៥</div>
+                    <h1 style="max-width: 90%; margin: 0 auto; line-height: 1.3; font-family: 'Koulen', sans-serif; font-size: 2.2vw;">SQL Server Connection, Entity Framework Core (EF Core) Introduction & DbContext Registration</h1>
+                    <div style="margin-top: 4vh; display: flex; gap: 4vw; justify-content: center; align-items: center;">
+                        <div style="text-align: center; background: white; padding: 10px; border-radius: 50%; box-shadow: 0 5px 15px rgba(0,0,0,0.05); display: flex;"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg" style="height: 3.8vw; object-fit: contain;"></div>
+                        <div style="text-align: center; background: white; padding: 10px; border-radius: 50%; box-shadow: 0 5px 15px rgba(0,0,0,0.05); display: flex;"><img src="https://upload.wikimedia.org/wikipedia/commons/9/9a/Visual_Studio_Code_1.35_icon.svg" style="height: 3.8vw; object-fit: contain;"></div>
+                        <div style="text-align: center; background: white; padding: 10px; border-radius: 50%; box-shadow: 0 5px 15px rgba(0,0,0,0.05); display: flex;"><img src="https://img.icons8.com/color/480/microsoft-sql-server.png" style="height: 3.8vw; object-fit: contain;"></div>
+                        <div style="text-align: center; background: white; padding: 10px; border-radius: 50%; box-shadow: 0 5px 15px rgba(0,0,0,0.05); display: flex;"><img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" style="height: 3.8vw; object-fit: contain;"></div>
+                    </div>
+                </div>`;
+            slide.innerHTML = `<div id="h-placeholder-1"></div> ${bodyContent}`;
+        } else if(item.type === "prof") {
+            bodyContent = `
+                <div class="two-column">
+                    <div style="text-align: center; display: flex; justify-content: center; align-items: center; height: 100%;">
+                        <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" style="width: 18vw; height: 18vw; border-radius: 50%; border: 6px solid var(--accent-purple); object-fit: cover; box-shadow: 0 10px 25px rgba(0,0,0,0.2);">
+                    </div>
+                    <div class="card" style="border-top: 5px solid var(--accent-purple); border-left: none;">
+                        <h3 style="font-size: 2.2vw; color: var(--accent-purple); font-family: 'Koulen', sans-serif; margin-bottom: 1.2vh; font-weight: normal; text-align: left !important;">សាស្ត្រាចារ្យបង្រៀន សឿង លីម <span style="font-size: 1.4vw; color: var(--text-muted); font-family: 'Fira Code', monospace;">(Soeurng LIM)</span></h3>
+                        <p style="font-size:1.6vw; margin-bottom:0.6vh;"><b><i class="fa-solid fa-graduation-cap keyword-icon"></i> កម្រិតគុណវុឌ្ឍិ៖</b> បរិញ្ញាបត្រជាន់ខ្ពស់ - ព័ត៌មានវិទ្យា (MScIT)</p>
+                        <p style="font-size:1.6vw; margin-bottom:0.6vh;"><b><i class="fa-solid fa-envelope keyword-icon"></i> អ៊ីម៉ែល៖</b> soeurnglim@gmail.com</p>
+                        <p style="font-size:1.6vw; margin-bottom:0.6vh;"><b><i class="fa-solid fa-phone keyword-icon"></i> ទូរស័ព្ទ៖</b> ០៦១ ២២៧ ៩៣៣</p>
+                        <hr style="margin: 1.5vh 0; border: 1px solid #E2E8F0;">
+                        <p style="font-size:1.6vw;"><b><i class="fa-solid fa-star keyword-icon"></i> ក្រេឌីតមុខវិជ្ជា៖</b> ៣ ក្រេឌីត (IT401-WebAPI/EFCore)</p>
+                    </div>
+                </div>`;
+            slide.innerHTML = `<div id="h-placeholder-2"></div> <h2 class="slide-title"><i class="fa-solid fa-user-tie"></i> ${item.t}</h2> <div class="content-body">${bodyContent}</div>`;
+        } else if(item.type === "split") {
+            let visualBox = '';
+            if (item.graphicType && schematics[item.graphicType]) {
+                visualBox = schematics[item.graphicType];
+            }
+
+            bodyContent = `
+                <div class="two-column">
+                    <div class="card" style="border:none; background:transparent; padding:0; box-shadow:none;">
+                        <p style="font-size:1.6vw; line-height: 1.7;">${item.c}</p>
+                    </div>
+                    <div class="visual-frame">
+                        ${visualBox}
+                    </div>
+                </div>`;
+            slide.innerHTML = `<div id="h-placeholder-${index+1}"></div> <h2 class="slide-title">${item.t}</h2> <div class="content-body">${bodyContent}</div>`;
+        } else if(item.type === "structured") {
+            let visualBox = '';
+            if (item.graphicType && schematics[item.graphicType]) {
+                visualBox = schematics[item.graphicType];
+            }
+
+            bodyContent = `
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.8vw; height: 100%; align-items: stretch; padding-bottom: 1.5vh;">
+                    <div style="display: flex; flex-direction: column; gap: 1.5vh; height: 100%;">
+                        <div class="card" style="border-left-color: var(--accent-purple); padding: 1.8vh 2vw; flex: 1; justify-content: flex-start;">
+                            <h4 style="font-size: 2vw; margin-bottom: 0.6vh; display: flex; align-items: center; gap: 0.5vw;">
+                                <i class="fa-solid fa-book-bookmark" style="color: var(--accent-purple);"></i> ១. និយមន័យ (Definition)
+                            </h4>
+                            <p style="font-size: 1.6vw; line-height: 1.6;">${item.definition}</p>
+                        </div>
+                        <div class="card" style="border-left-color: var(--accent-blue); padding: 1.8vh 2vw; flex: 1.1; justify-content: flex-start;">
+                            <h4 style="font-size: 2vw; margin-bottom: 0.6vh; display: flex; align-items: center; gap: 0.5vw;">
+                                <i class="fa-solid fa-code" style="color: var(--accent-blue);"></i> ២. ទម្រង់ទូទៅ (Syntax)
+                            </h4>
+                            <div style="background: var(--code-bg); padding: 1vh 1.2vw; border-radius: 6px; font-family: 'Fira Code', monospace; font-size: 1.25vw; color: #10B981; overflow-x: auto; margin-top: 0.5vh; white-space: pre; line-height: 1.5;">${highlightCSharp(item.syntax)}</div>
+                        </div>
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 1.5vh; height: 100%; justify-content: space-between;">
+                        <div class="visual-frame" style="flex: 1.2;">
+                           ${visualBox}
+                        </div>
+                        <div class="workbook-note" style="margin-top: 0; padding: 1.5vh 2vw; border-radius: 8px; border-color: var(--accent-yellow); font-size: 1.4vw; gap: 0.8vw; background-color: #FFFDF0;">
+                            <i class="fa-solid fa-circle-exclamation" style="font-size: 1.8vw; color: var(--accent-yellow);"></i>
+                            <div>
+                                <span style="font-weight: bold; color: #B45309; font-size: 1.5vw; font-family:'Koulen', sans-serif; display:block; margin-bottom:2px;">៣. ព័ត៌មានបន្ថែមក្នុងស្លាយ (Practice Context)</span>
+                                ${item.labNote}
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+            slide.innerHTML = `<div id="h-placeholder-${index+1}"></div> <h2 class="slide-title">${item.t}</h2> <div class="content-body" style="height: calc(100% - 6vh);">${bodyContent}</div>`;
+        } else if(item.type === "list") {
+            bodyContent = `<div class="card" style="padding:3vh 4vw;"><ul style="list-style:none; line-height:1.8;">${item.c.map(l => `<li style="margin-bottom:1vh; font-size:1.6vw; text-align: left !important; line-height:1.7;">${l}</li>`).join('')}</ul></div>`;
+            slide.innerHTML = `<div id="h-placeholder-${index+1}"></div> <h2 class="slide-title">${item.t}</h2> <div class="content-body">${bodyContent}</div>`;
+        } else if(item.type === "table") {
+            let trs = item.rows.map((row, i) => {
+                if (i === 0) return `<tr>${row.map(th => `<th>${th}</th>`).join('')}</tr>`;
+                return `<tr>${row.map(td => `<td>${td}</td>`).join('')}</tr>`;
+            }).join('');
+            bodyContent = `<table style="font-size: 1.5vw; width:100%;">${trs}</table>`;
+            slide.innerHTML = `<div id="h-placeholder-${index+1}"></div> <h2 class="slide-title">${item.t}</h2> <div class="content-body">${bodyContent}</div>`;
+        } else if(item.type === "code") {
+            let highlighted = highlightCSharp(item.code);
+            bodyContent = `
+                <div class="code-container" style="max-height: 42vh;">
+                    <div class="code-label">C# / CONFIG SNIPPET</div>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Copy</button>
+                    <pre><code>${highlighted}</code></pre>
+                </div>
+                <p style="margin-top:6px; font-weight:bold; font-size: 1.5vw; text-align: left !important; line-height: 1.6;">
+                    <i class="fa-solid fa-circle-info" style="color:var(--accent-blue);"></i> ${item.desc}
+                </p>`;
+            slide.innerHTML = `<div id="h-placeholder-${index+1}"></div> <h2 class="slide-title">${item.t}</h2> <div class="content-body">${bodyContent}</div>`;
+        } else if(item.type === "exercise") {
+            bodyContent = `<div class="exercise-badge"><i class="fa-solid fa-laptop-code"></i> លំហាត់អនុវត្តន៍ (Practical Lab)</div><div class="card" style="border-left-color: var(--accent-yellow); padding: 2.5vh 3vw;"><h4>${item.h}</h4><p style="font-size: 1.6vw; line-height:1.6;">${item.p}</p></div><div class="workbook-note" style="padding: 1.2vh 2vw; margin-top: 1.2vh;"><i class="fa-solid fa-book-journal-whills"></i> កំណត់សម្គាល់៖ សូមអនុវត្តកិច្ចការនេះតាមការណែនាំលម្អិតដែលមាននៅក្នុងសៀវភៅលំហាត់ (Lab Workbook) របស់លោកគ្រូ។</div>`;
+            slide.innerHTML = `<div id="h-placeholder-${index+1}"></div> <h2 class="slide-title"><i class="fa-solid fa-laptop-code" style="color:var(--accent-yellow);"></i> ${item.t}</h2> <div class="content-body">${bodyContent}</div>`;
+        }
+
+        slideWrapper.appendChild(slide);
+    });
+
+    // FINAL QA SLIDE
+    const finalSlide = document.createElement('div');
+    finalSlide.className = 'slide';
+    finalSlide.innerHTML = `
+        <div id="h-placeholder-final"></div>
+        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; text-align: center; margin: auto;">
+            <h1 style="font-size: 5vw; color: var(--accent-purple); margin-bottom: 2.5vh; font-family: 'Koulen', sans-serif;"><i class="fa-solid fa-comments"></i> សំណួរ និងចម្លើយ ?</h1>
+            <p style="font-size: 2vw; color: var(--text-muted); margin-bottom: 4.5vh; text-align: center !important;">សូមអរគុណនិស្សិតទាំងអស់សម្រាប់ការយកចិត្តទុកដាក់!</p>
+            <div style="display: flex; gap: 2vw; justify-content: center;">
+                <div style="background: #FFFFFF; padding: 1.8vh 3.5vw; border-radius: 5vw; border: 2px solid var(--accent-purple); box-shadow: 0 10px 20px rgba(0,0,0,0.05);">
+                    <p style="margin: 0; font-weight: bold; font-size: 1.6vw; color: var(--accent-purple); text-align: center !important;"><i class="fa-solid fa-envelope"></i> soeurnglim@gmail.com</p>
+                </div>
+                <div style="background: #FFFFFF; padding: 1.8vh 3.5vw; border-radius: 5vw; border: 2px solid #0088cc; box-shadow: 0 10px 20px rgba(0,0,0,0.05);">
+                    <p style="margin: 0; font-weight: bold; font-size: 1.6vw; color: #0088cc; text-align: center !important;"><i class="fa-brands fa-telegram"></i> ០៦១ ២២៧ ៩៣៣</p>
+                </div>
+            </div>
+        </div>`;
+    slideWrapper.appendChild(finalSlide);
+
+    // Apply Headers correctly parsing slide numbers
+    document.querySelectorAll('[id^="h-placeholder-"]').forEach((p) => {
+        const num = parseInt(p.id.replace('h-placeholder-', ''));
+        if (num > 1 && num <= chapterData.length) {
+            p.outerHTML = headerHTML;
+        } else {
+            p.outerHTML = ""; 
+        }
+    });
+
+    // Interaction Logic
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+    const counter = document.getElementById('slideCounter');
+    let currentIdx = 0;
+
+    // Clone footer to each slide for print mode
+    const originalFooter = document.querySelector('.global-footer');
+    slides.forEach((slide, idx) => {
+        const slideFooter = originalFooter.cloneNode(true);
+        slideFooter.classList.remove('global-footer'); 
+        slideFooter.classList.add('print-only-footer'); 
+        const counterEl = slideFooter.querySelector('.slide-counter');
+        if (counterEl) {
+            counterEl.innerHTML = `ស្លាយទី ${toKh(idx + 1)} នៃ ${toKh(totalSlides)}`;
+        }
+        slide.appendChild(slideFooter);
+    });
+
+    function updateSlide(idx) {
+        slides.forEach(s => s.classList.remove('active'));
+        slides[idx].classList.add('active');
+        currentIdx = idx;
+        counter.innerHTML = `ស្លាយទី ${toKh(idx + 1)} នៃ ${toKh(totalSlides)}`;
+    }
+
+    window.nextSlide = function(e) { if(e) e.stopPropagation(); if (currentIdx < totalSlides - 1) updateSlide(currentIdx + 1); }
+    window.prevSlide = function(e) { if(e) e.stopPropagation(); if (currentIdx > 0) updateSlide(currentIdx - 1); }
+
+    window.navigate = function(e) {
+        if (e.target.closest('code') || e.target.closest('pre') || e.target.closest('.copy-btn') || e.target.closest('.nav-btn')) return;
+        window.nextSlide();
+    }
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === "ArrowRight" || e.key === " " || e.key === "PageDown") { window.nextSlide(); } 
+        else if (e.key === "ArrowLeft" || e.key === "PageUp") { window.prevSlide(); }
+    });
+
+    window.copyCode = function(btn) {
+        const pre = btn.nextElementSibling;
+        if (pre) {
+            const code = pre.querySelector('code') || pre;
+            const text = code.textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                btn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+                setTimeout(() => {
+                    btn.innerHTML = '<i class="fa-regular fa-copy"></i> Copy';
+                }, 2000);
+            });
+        }
+    };
+
+    updateSlide(0);
+</script>
+</body>
+</html>
