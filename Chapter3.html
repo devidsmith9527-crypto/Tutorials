@@ -73,26 +73,26 @@
         }
         .header-item { display: flex; flex-direction: column; align-items: center; gap: 4px; width: 15vw; }
         .header-item img { height: 3.8vh; object-fit: contain; }
-        .header-item span { font-size: 0.9vw; font-weight: bold; color: var(--accent-purple); text-align: center; font-family: 'Koulen', sans-serif; }
-        .header-center h1 { font-family: 'Koulen', sans-serif; font-size: 1.6vw; color: var(--accent-purple); margin: 0; font-weight: normal; }
-        .header-center p { font-family: 'Siemreap', 'Khmer OS Siemreap', sans-serif; font-size: 0.9vw; color: #64748B; margin: 0; font-weight: bold; text-align: center; }
+        .header-item span { font-size: 0.85vw; font-weight: bold; color: var(--accent-purple); text-align: center; font-family: 'Koulen', sans-serif; }
+        .header-center h1 { font-family: 'Koulen', sans-serif; font-size: 1.5vw; color: var(--accent-purple); margin: 0; font-weight: normal; }
+        .header-center p { font-family: 'Siemreap', 'Khmer OS Siemreap', sans-serif; font-size: 0.85vw; color: #64748B; margin: 0; font-weight: bold; text-align: center; }
 
-        /* Typography & Sizes increased for higher legibility */
-        h1 { font-family: 'Koulen', sans-serif; font-size: 4.5vw; text-align: center; color: var(--text-main); font-weight: normal; line-height: 1.3; }
-        h2.slide-title { font-family: 'Koulen', sans-serif; font-size: 2.2vw; font-weight: normal; border-bottom: 0.35vw solid var(--accent-purple); padding-bottom: 0.6vh; margin-bottom: 2vh; color: var(--text-main); display: inline-block; text-align: left !important; }
+        /* Typography */
+        h1 { font-family: 'Koulen', sans-serif; font-size: 4.8vw; text-align: center; color: var(--text-main); font-weight: normal; line-height: 1.3; }
+        h2.slide-title { font-family: 'Koulen', sans-serif; font-size: 2.5vw; font-weight: normal; border-bottom: 0.3vw solid var(--accent-purple); padding-bottom: 0.6vh; margin-bottom: 2vh; color: var(--text-main); display: inline-block; text-align: left !important; }
         .content-body { 
             height: calc(100% - 6vh); 
             display: flex; 
             flex-direction: column; 
             justify-content: flex-start; 
-            gap: 1.8vh; 
+            gap: 1.5vh; 
             width: 100%; 
-            overflow: hidden; 
+            overflow-y: auto;
         }
         
-        p, li, td { font-size: 1.4vw; line-height: 1.6; color: var(--text-main); text-align: left !important; }
+        p, li, td { font-size: 1.6vw; line-height: 1.7; color: var(--text-main); text-align: left !important; }
         .highlight { color: var(--accent-purple); font-weight: bold; }
-        .keyword-icon { color: var(--accent-purple); margin-right: 0.5vw; width: 1.8vw; text-align: center; display: inline-block; }
+        .keyword-icon { color: var(--accent-purple); margin-right: 0.5vw; width: 2vw; text-align: center; display: inline-block; }
 
         /* Content Blocks */
         .two-column { 
@@ -104,11 +104,11 @@
             padding-bottom: 1.5vh;
         }
         .card-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5vw; height: 100%; align-content: center; }
-        .card { background: var(--bg-card); padding: 2vh 2.2vw; border-radius: 1vw; border-left: 0.8vw solid var(--accent-purple); box-shadow: 0 4px 15px rgba(0,0,0,0.03); display: flex; flex-direction: column; justify-content: center; }
-        .card h4 { font-size: 1.7vw; color: var(--accent-purple); margin-bottom: 0.6vh; font-family: 'Koulen', sans-serif; font-weight: normal; text-align: left !important;}
-        .card p { font-size: 1.3vw; line-height: 1.5; text-align: left !important; }
+        .card { background: var(--bg-card); padding: 2.5vh 2.5vw; border-radius: 1vw; border-left: 0.7vw solid var(--accent-purple); box-shadow: 0 4px 15px rgba(0,0,0,0.03); display: flex; flex-direction: column; justify-content: center; }
+        .card h4 { font-size: 1.9vw; color: var(--accent-purple); margin-bottom: 0.6vh; font-family: 'Koulen', sans-serif; font-weight: normal; text-align: left !important;}
+        .card p { font-size: 1.55vw; line-height: 1.7; text-align: left !important; }
 
-        /* Visual Frame and Schematic Integration */
+        /* Visual Frame for Schematics */
         .visual-frame { 
             background: #FFFFFF; 
             display: flex; 
@@ -120,14 +120,13 @@
             width: 100%; 
             border-radius: 1vw; 
             box-shadow: 0 4px 20px rgba(0,0,0,0.06); 
-            padding: 1.2vw; 
+            padding: 0.8vw; 
             border: 1px solid #E2E8F0;
             overflow: hidden;
             position: relative;
         }
-        .visual-frame img { max-height: 100%; max-width: 100%; object-fit: contain; border-radius: 0.5vw;}
+        .visual-frame img { max-height: 100%; width: 100%; object-fit: cover; border-radius: 0.5vw;}
         
-        /* Schematic Design Block */
         .schematic-box {
             display: flex;
             flex-direction: column;
@@ -137,6 +136,7 @@
             height: 100%;
             background: #F8FAFC;
             border-radius: 0.5vw;
+            padding: 1.5vw;
         }
         
         /* Code Block */
@@ -147,24 +147,24 @@
             position: relative; 
             border: 1px solid #334155; 
             width: 100%; 
-            max-height: 46vh; 
+            max-height: 42vh; 
             overflow-y: auto; 
             box-shadow: 0 10px 25px rgba(0,0,0,0.15);
         }
-        .code-container pre { color: #10B981; font-family: 'Fira Code', monospace; font-size: 1.15vw; line-height: 1.5; overflow-x: auto;}
-        .code-label { position: absolute; top: 0; left: 2.2vw; background: var(--accent-purple); color: white; padding: 4px 15px; border-radius: 0 0 8px 8px; font-size: 0.85vw; font-weight: bold; z-index: 2; font-family: 'Koulen', sans-serif;}
-        .copy-btn { position: absolute; top: 12px; right: 12px; padding: 6px 15px; cursor: pointer; background: var(--accent-blue); color: white; border: none; border-radius: 6px; font-family: 'Koulen', sans-serif; font-size: 0.85vw; transition: 0.3s; z-index: 5; font-weight: normal;}
+        .code-container pre { color: #10B981; font-family: 'Fira Code', monospace; font-size: 1.25vw; line-height: 1.5; overflow-x: auto;}
+        .code-label { position: absolute; top: 0; left: 2.2vw; background: var(--accent-purple); color: white; padding: 4px 15px; border-radius: 0 0 8px 8px; font-size: 0.8vw; font-weight: bold; z-index: 2; font-family: 'Koulen', sans-serif;}
+        .copy-btn { position: absolute; top: 12px; right: 12px; padding: 6px 15px; cursor: pointer; background: var(--accent-blue); color: white; border: none; border-radius: 6px; font-family: 'Koulen', sans-serif; font-size: 0.8vw; transition: 0.3s; z-index: 5; font-weight: normal;}
         .copy-btn:hover { background: #0369A1; }
 
         /* Notification Badge */
-        .workbook-note { background: #FEF9C3; border: 1px dashed var(--accent-yellow); padding: 1.6vh 2vw; border-radius: 10px; color: #854D0E; font-size: 1.2vw; display: flex; align-items: center; gap: 14px; font-weight: bold; margin-top: 1vh; box-shadow: 0 4px 6px rgba(0,0,0,0.02); text-align: left !important; }
-        .exercise-badge { background: var(--accent-yellow); color: var(--text-main); padding: 6px 20px; border-radius: 6px; font-weight: bold; font-size: 1.2vw; margin-bottom: 1vh; display: inline-block; border: 1px solid #B45309; font-family: 'Koulen', sans-serif;}
+        .workbook-note { background: #FEF9C3; border: 1px dashed var(--accent-yellow); padding: 1.6vh 2vw; border-radius: 10px; color: #854D0E; font-size: 1.4vw; display: flex; align-items: center; gap: 14px; font-weight: bold; margin-top: 1vh; box-shadow: 0 4px 6px rgba(0,0,0,0.02); text-align: left !important; }
+        .exercise-badge { background: var(--accent-yellow); color: var(--text-main); padding: 6px 20px; border-radius: 6px; font-weight: bold; font-size: 1.5vw; margin-bottom: 1vh; display: inline-block; border: 1px solid #B45309; font-family: 'Koulen', sans-serif;}
 
-        /* Table (Increased sizes) */
+        /* Table */
         table { width: 100%; border-collapse: collapse; background: white; border-radius: 1vw; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
-        th, td { border: 1px solid #E2E8F0; padding: 1.2vh 1.5vw; text-align: left; vertical-align: middle;}
-        th { background: var(--accent-purple); color: white; font-family: 'Koulen', sans-serif; font-size: 1.3vw; font-weight: normal;}
-        td { font-size: 1.25vw; }
+        th, td { border: 1px solid #E2E8F0; padding: 1.2vh 1.6vw; text-align: left; vertical-align: middle; line-height: 1.6;}
+        th { background: var(--accent-purple); color: white; font-family: 'Koulen', sans-serif; font-size: 1.5vw; font-weight: normal;}
+        td { font-size: 1.45vw; }
 
         /* Global Footer */
         .global-footer { 
@@ -180,131 +180,45 @@
         }
         .footer-left { display: flex; align-items: center; gap: 1.5vw; }
         .footer-left img { border-radius: 50%; border: 2px solid var(--accent-purple); width: 3.8vh; height: 3.8vh; object-fit: cover; box-shadow: 0 4px 8px rgba(0,0,0,0.1);}
-        .footer-left span { font-size: 1.2vw; font-weight: bold; color: var(--text-main); font-family: 'Koulen', sans-serif; }
-        .slide-counter { font-size: 1.1vw; color: white; font-family: 'Koulen', sans-serif; font-weight: normal; background: var(--accent-purple); padding: 0.6vh 2vw; border-radius: 5vw; box-shadow: 0 2px 8px rgba(81,43,212,0.3); }
+        .footer-left span { font-size: 1.1vw; font-weight: bold; color: var(--text-main); font-family: 'Koulen', sans-serif; }
+        .slide-counter { font-size: 1vw; color: white; font-family: 'Koulen', sans-serif; font-weight: normal; background: var(--accent-purple); padding: 0.6vh 2vw; border-radius: 5vw; box-shadow: 0 2px 8px rgba(81,43,212,0.3); }
         
         /* Navigation Buttons */
-        .nav-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(81, 43, 212, 0.1); border: none; width: 4.5vw; height: 4.5vw; border-radius: 50%; color: var(--accent-purple); font-size: 2vw; cursor: pointer; z-index: 9999; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; }
+        .nav-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(81, 43, 212, 0.1); border: none; width: 4.5vw; height: 4.5vw; border-radius: 50%; color: var(--accent-purple); font-size: 1.8vw; cursor: pointer; z-index: 9999; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; }
         .nav-btn:hover { background: var(--accent-purple); color: white; box-shadow: 0 4px 15px rgba(81,43,212,0.4); transform: translateY(-50%) scale(1.1); }
         #prevBtn { left: 1.5vw; }
         #nextBtn { right: 1.5vw; }
 
         .print-only-footer { display: none !important; }
 
-        /* Professional A4 Landscape Printing (Increased font sizes for hand-out reading) */
+        /* Professional A4 Landscape Printing */
         @media print {
             *, *::before, *::after {
                 animation: none !important;
                 transition: none !important;
                 box-shadow: none !important;
             }
-            @page {
-                size: A4 landscape;
-                margin: 0;
-            }
-            html, body { 
-                background: none !important; 
-                background-color: #FFFFFF !important;
-                overflow: visible !important; 
-                height: 210mm !important; 
-                width: 297mm !important; 
-                display: block !important;
-                font-family: 'Siemreap', 'Khmer OS Siemreap', sans-serif !important;
-            }
-            .slide-deck { 
-                width: 297mm !important; 
-                height: 210mm !important; 
-                box-shadow: none !important; 
-                background: transparent !important; 
-                overflow: visible !important; 
-                display: block !important;
-                border: none !important; 
-                border-radius: 0 !important;
-            }
+            @page { size: A4 landscape; margin: 0; }
+            html, body { background: none !important; background-color: #FFFFFF !important; overflow: visible !important; height: 210mm !important; width: 297mm !important; display: block !important; font-family: 'Siemreap', sans-serif !important; }
+            .slide-deck { width: 297mm !important; height: 210mm !important; box-shadow: none !important; background: transparent !important; overflow: visible !important; display: block !important; border: none !important; border-radius: 0 !important; }
             .slide-wrapper { display: block !important; overflow: visible !important; height: auto !important;}
-            .slide { 
-                display: flex !important; 
-                flex-direction: column !important; 
-                position: relative !important; 
-                opacity: 1 !important;
-                visibility: visible !important;
-                width: 297mm !important; 
-                height: 210mm !important; 
-                page-break-inside: avoid !important;
-                page-break-after: always !important;
-                overflow: hidden !important; 
-                box-sizing: border-box !important;
-                padding: 10mm 15mm 20mm 15mm !important; 
-                background: white !important;
-                border: none !important;
-                border-radius: 0 !important;
-            }
-            .global-header {
-                margin: -10mm -15mm 15px -15mm !important;
-                padding: 5mm 15mm !important;
-                height: auto !important;
-                border-bottom: 2px solid var(--accent-purple) !important;
-            }
+            .slide { display: flex !important; flex-direction: column !important; position: relative !important; opacity: 1 !important; visibility: visible !important; width: 297mm !important; height: 210mm !important; page-break-inside: avoid !important; page-break-after: always !important; overflow: hidden !important; box-sizing: border-box !important; padding: 10mm 15mm 20mm 15mm !important; background: white !important; }
+            .global-header { margin: -10mm -15mm 15px -15mm !important; padding: 5mm 15mm !important; height: auto !important; border-bottom: 2px solid var(--accent-purple) !important; }
             .global-header img { height: 11mm !important; }
-            .global-header h1 { font-size: 16pt !important; }
-            .global-header p { font-size: 10pt !important; }
-            
-            .slide-title { font-size: 22pt !important; margin-bottom: 14px !important; padding-bottom: 4px !important; border-bottom-width: 3px !important; text-align: left !important; }
+            .global-header h1 { font-size: 14pt !important; }
+            .global-header p { font-size: 9pt !important; }
+            .slide-title { font-size: 20pt !important; margin-bottom: 12px !important; padding-bottom: 4px !important; border-bottom-width: 3px !important; }
             .content-body { overflow: hidden !important; height: auto !important; gap: 10px !important; }
-            p, li, td { font-size: 13pt !important; line-height: 1.5 !important; text-align: left !important; }
-            .card h4 { font-size: 15.5pt !important; margin-bottom: 4px !important; text-align: left !important; }
-            .card { padding: 14px 20px !important; }
+            p, li, td { font-size: 12pt !important; line-height: 1.6 !important; }
+            .card h4 { font-size: 15pt !important; margin-bottom: 4px !important; }
+            .card { padding: 16px 22px !important; }
             .card-grid { gap: 14px !important; }
             .two-column { gap: 22px !important; }
-            pre, code { font-size: 10.5pt !important; padding: 10px 14px !important; }
-            
+            pre, code { font-size: 10pt !important; padding: 10px 14px !important; }
             .slide-deck > .global-footer { display: none !important; }
-
-            .print-only-footer { 
-                display: flex !important; 
-                position: absolute !important; 
-                bottom: 0 !important; 
-                left: 0 !important; 
-                width: 100% !important;
-                height: 15mm !important;
-                padding: 0 15mm !important; 
-                background-color: var(--header-footer-bg) !important;
-                border-top: 1px solid var(--border-light) !important;
-                align-items: center !important; 
-                justify-content: space-between !important;
-                border-radius: 0 !important;
-                box-sizing: border-box !important;
-                z-index: 1000 !important;
-            }
-            .print-only-footer .footer-left {
-                display: flex !important;
-                align-items: center !important;
-                gap: 4mm !important;
-                width: auto !important;
-            }
-            .print-only-footer .footer-left img { 
-                width: 10mm !important; 
-                height: 10mm !important; 
-                border: 2px solid var(--accent-purple) !important;
-                border-radius: 50% !important;
-                display: block !important;
-            }
-            .print-only-footer .footer-left span { 
-                font-size: 11pt !important; 
-                font-family: 'Koulen', sans-serif !important;
-                white-space: nowrap !important;
-                display: inline-block !important;
-            }
-            .print-only-footer .slide-counter { 
-                font-size: 11pt !important; 
-                font-family: 'Koulen', sans-serif !important;
-                padding: 2px 10px !important; 
-                border: 1px solid var(--border-light) !important;
-                background: #FFF !important;
-                white-space: nowrap !important;
-                display: inline-block !important;
-            }
-            .visual-frame { min-height: 150px !important; }
+            .print-only-footer { display: flex !important; position: absolute !important; bottom: 0 !important; left: 0 !important; width: 100% !important; height: 15mm !important; padding: 0 15mm !important; background-color: var(--header-footer-bg) !important; border-top: 1px solid var(--border-light) !important; align-items: center !important; justify-content: space-between !important; z-index: 1000 !important; }
+            .print-only-footer .footer-left img { width: 10mm !important; height: 10mm !important; border-radius: 50% !important; display: block !important; }
+            .print-only-footer .footer-left span, .print-only-footer .slide-counter { font-size: 10pt !important; font-family: 'Koulen', sans-serif !important; }
             * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
         }
     </style>
@@ -341,7 +255,7 @@
             <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" alt="Professor">
             <span>សាស្ត្រាចារ្យបង្រៀន៖ សឿង លីម (Soeurng LIM)</span>
         </div>
-        <div class="slide-counter" id="slideCounter">ស្លាយទី ១ នៃ ២៣</div>
+        <div class="slide-counter" id="slideCounter">ស្លាយទី ១ នៃ ២៦</div>
     </div>
 </div>
 
@@ -352,85 +266,101 @@
     const khNums = ["០", "១", "២", "៣", "៤", "៥", "៦", "៧", "៨", "៩"];
     function toKh(n) { return n.toString().split('').map(d => khNums[parseInt(d)]).join(''); }
 
-    // Updated visual schematics for Chapter 3 with MVC (View) vs API (JSON) contrasts
+    // Pure CSS Infographics (No images required, 100% reliable rendering)
     const schematics = {
         mvcvsapi: `
-            <div class="schematic-box" style="padding: 1vw;">
-                <div style="font-family:'Koulen',sans-serif; color:var(--accent-purple); font-size:1.3vw; margin-bottom:0.8vh; text-align:center;">ASP.NET Core Architecture Patterns</div>
-                <div style="display:grid; grid-template-rows: 1fr 1fr; gap:0.8vh; width:100%;">
-                    <!-- Row 1: Traditional MVC -->
-                    <div style="background:#F5F3FF; border:1px solid var(--accent-purple); border-radius:6px; padding:0.5vh 1vw;">
-                        <span style="font-size:0.8vw; font-weight:bold; color:var(--accent-purple); display:block; margin-bottom:2px;"><i class="fa-solid fa-layer-group"></i> Traditional MVC (Razor View Rendering)</span>
-                        <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.75vw;">
-                            <span>Client Request</span> <i class="fa-solid fa-arrow-right"></i>
-                            <span style="background:#FFF; padding:2px 6px; border:1px solid #C084FC; border-radius:4px;">Controller</span> <i class="fa-solid fa-arrow-right"></i>
-                            <span style="background:#FFF; padding:2px 6px; border:1px solid #C084FC; border-radius:4px;">Razor View (.cshtml)</span> <i class="fa-solid fa-arrow-right"></i>
-                            <span style="color:var(--accent-green); font-weight:bold;">Rendered HTML</span>
+            <div class="schematic-box">
+                <div style="font-family:'Koulen',sans-serif; color:var(--accent-purple); font-size:1.6vw; margin-bottom:1.5vh; text-align:center;">ASP.NET Core Architectures</div>
+                <div style="display:flex; flex-direction:column; gap:1.5vh; width:100%;">
+                    <div style="background:#F5F3FF; border:2px solid var(--accent-purple); border-radius:6px; padding:1.5vh 1vw;">
+                        <span style="font-size:1.1vw; font-weight:bold; color:var(--accent-purple); display:block; margin-bottom:1vh;"><i class="fa-solid fa-layer-group"></i> MVC (View Rendering)</span>
+                        <div style="display:flex; justify-content:space-between; align-items:center; font-size:1vw;">
+                            <span>Request</span> <i class="fa-solid fa-arrow-right" style="color:#94A3B8;"></i>
+                            <span style="background:#FFF; padding:4px 8px; border:1px solid #C084FC; border-radius:4px;">Controller + View</span> <i class="fa-solid fa-arrow-right" style="color:#94A3B8;"></i>
+                            <span style="color:var(--accent-green); font-weight:bold;">HTML Page</span>
                         </div>
                     </div>
-                    <!-- Row 2: Web API -->
-                    <div style="background:#EFF6FF; border:1px solid var(--accent-blue); border-radius:6px; padding:0.5vh 1vw;">
-                        <span style="font-size:0.8vw; font-weight:bold; color:var(--accent-blue); display:block; margin-bottom:2px;"><i class="fa-solid fa-cloud-arrow-down"></i> Web API (Data Serialization)</span>
-                        <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.75vw;">
-                            <span>API Client</span> <i class="fa-solid fa-arrow-right"></i>
-                            <span style="background:#FFF; padding:2px 6px; border:1px solid #60A5FA; border-radius:4px;">ControllerBase</span> <i class="fa-solid fa-arrow-right"></i>
-                            <span style="background:#FFF; padding:2px 6px; border:1px solid #60A5FA; border-radius:4px;">System.Text.Json</span> <i class="fa-solid fa-arrow-right"></i>
-                            <span style="color:var(--accent-green); font-weight:bold;">Serialized JSON</span>
+                    <div style="background:#EFF6FF; border:2px solid var(--accent-blue); border-radius:6px; padding:1.5vh 1vw;">
+                        <span style="font-size:1.1vw; font-weight:bold; color:var(--accent-blue); display:block; margin-bottom:1vh;"><i class="fa-solid fa-cloud-arrow-down"></i> Web API (Data)</span>
+                        <div style="display:flex; justify-content:space-between; align-items:center; font-size:1vw;">
+                            <span>Request</span> <i class="fa-solid fa-arrow-right" style="color:#94A3B8;"></i>
+                            <span style="background:#FFF; padding:4px 8px; border:1px solid #60A5FA; border-radius:4px;">ControllerBase</span> <i class="fa-solid fa-arrow-right" style="color:#94A3B8;"></i>
+                            <span style="color:var(--accent-green); font-weight:bold;">JSON Data</span>
                         </div>
                     </div>
                 </div>
             </div>
         `,
-        mvcdata: `
-            <div class="schematic-box" style="padding: 1vw;">
-                <div style="font-family:'Koulen',sans-serif; color:var(--accent-purple); font-size:1.3vw; margin-bottom:0.8vh; text-align:center;">MVC Data Passing Mechanisms to Views</div>
-                <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:0.6vw; width:100%; text-align:center;">
-                    <div style="background:#FEF3C7; border:1px solid #F59E0B; padding:0.8vh; border-radius:6px; font-size:0.8vw;">
-                        <b style="color:#D97706;">ViewBag</b><br>
-                        <span style="font-size:0.7vw; color:#475569;">Dynamic Properties<br><code>ViewBag.Title = "..."</code></span>
+        actionmethods: `
+            <div class="schematic-box">
+                <div style="font-family:'Koulen',sans-serif; color:var(--accent-purple); font-size:1.6vw; margin-bottom:1.5vh; text-align:center;">Action Results in Controller</div>
+                <div style="display:flex; flex-direction:column; gap:1.2vh; width:100%;">
+                    <div style="background:#F1F5F9; border-left:5px solid var(--accent-purple); padding:1.2vh 1vw; border-radius:4px; display:flex; align-items:center; gap:1vw;">
+                        <code style="background:#FFF; padding:4px 8px; border:1px solid #CBD5E1; border-radius:4px; color:#4F46E5; font-size:1.2vw; width:35%;">View()</code>
+                        <span style="font-size:1.1vw; color:#475569;"><i class="fa-brands fa-html5"></i> Returns HTML Page</span>
                     </div>
-                    <div style="background:#ECFDF5; border:1px solid #10B981; padding:0.8vh; border-radius:6px; font-size:0.8vw;">
-                        <b style="color:#059669;">ViewData</b><br>
-                        <span style="font-size:0.7vw; color:#475569;">Key-Value Dictionary<br><code>ViewData["Key"] = "..."</code></span>
+                    <div style="background:#F1F5F9; border-left:5px solid var(--accent-blue); padding:1.2vh 1vw; border-radius:4px; display:flex; align-items:center; gap:1vw;">
+                        <code style="background:#FFF; padding:4px 8px; border:1px solid #CBD5E1; border-radius:4px; color:#0284C7; font-size:1.2vw; width:35%;">Ok()</code>
+                        <span style="font-size:1.1vw; color:#475569;"><i class="fa-solid fa-database"></i> Returns JSON Data (200)</span>
                     </div>
-                    <div style="background:#EEF2FF; border:1px solid #6366F1; padding:0.8vh; border-radius:6px; font-size:0.8vw;">
-                        <b style="color:#4F46E5;">Strongly-Typed</b><br>
-                        <span style="font-size:0.7vw; color:#475569;">Direct Model Binding<br><code>@model List&lt;Student&gt;</code></span>
+                    <div style="background:#F1F5F9; border-left:5px solid var(--accent-red); padding:1.2vh 1vw; border-radius:4px; display:flex; align-items:center; gap:1vw;">
+                        <code style="background:#FFF; padding:4px 8px; border:1px solid #CBD5E1; border-radius:4px; color:#DC2626; font-size:1.2vw; width:35%;">NotFound()</code>
+                        <span style="font-size:1.1vw; color:#475569;"><i class="fa-solid fa-triangle-exclamation"></i> Error 404 Status</span>
                     </div>
                 </div>
             </div>
         `,
-        routingtypes: `
-            <div class="schematic-box" style="padding: 1vw;">
-                <div style="font-family:'Koulen',sans-serif; color:var(--accent-purple); font-size:1.3vw; margin-bottom:0.8vh; text-align:center;">Conventional Routing vs Attribute Routing</div>
-                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:1vw; width:100%;">
-                    <div style="background:#FFF; border:1.5px solid #6366F1; border-radius:6px; padding:0.8vh; font-size:0.8vw;">
-                        <b style="color:#4F46E5;"><i class="fa-solid fa-map-signs"></i> Conventional Routing</b>
-                        <p style="font-size:0.7vw; color:#475569; margin-top:4px;">Defined globally in Program.cs. Maps standard URL patterns.</p>
-                        <code style="font-size:0.65vw; display:block; background:#F1F5F9; padding:2px; margin-top:2px;">{controller}/{action}/{id?}</code>
+        viewdata: `
+            <div class="schematic-box">
+                <div style="font-family:'Koulen',sans-serif; color:var(--accent-purple); font-size:1.6vw; margin-bottom:1.5vh; text-align:center;">យន្តការបញ្ជូនទិន្នន័យ (Weakly-Typed)</div>
+                <div style="display:flex; flex-direction:column; gap:2vh; width:100%;">
+                    <div style="background:#FEF3C7; border:2px dashed #F59E0B; padding:1.5vh; border-radius:10px;">
+                        <b style="color:#D97706; font-size: 1.4vw;"><i class="fa-solid fa-box-open"></i> ViewBag</b><br>
+                        <span style="color:#475569; font-size:1.1vw;">Dynamic Properties (Resolved at Runtime)</span><br>
+                        <code style="background:#FFF; padding:4px 8px; border-radius:4px; display:inline-block; margin-top:8px; color:#B45309; font-size:1.2vw;">ViewBag.UserName = "សុខា";</code>
                     </div>
-                    <div style="background:#FFF; border:1.5px solid #10B981; border-radius:6px; padding:0.8vh; font-size:0.8vw;">
-                        <b style="color:#059669;"><i class="fa-solid fa-tag"></i> Attribute Routing</b>
-                        <p style="font-size:0.7vw; color:#475569; margin-top:4px;">Defined directly over Controller & Action Methods using Attributes.</p>
-                        <code style="font-size:0.65vw; display:block; background:#F1F5F9; padding:2px; margin-top:2px;">[Route("api/[controller]")]</code>
+                    <div style="background:#ECFDF5; border:2px dashed #10B981; padding:1.5vh; border-radius:10px;">
+                        <b style="color:#059669; font-size: 1.4vw;"><i class="fa-solid fa-key"></i> ViewData</b><br>
+                        <span style="color:#475569; font-size:1.1vw;">Dictionary Key-Value (Requires Type Casting)</span><br>
+                        <code style="background:#FFF; padding:4px 8px; border-radius:4px; display:inline-block; margin-top:8px; color:#047857; font-size:1.2vw;">ViewData["UserName"] = "សុខា";</code>
+                    </div>
+                </div>
+            </div>
+        `,
+        stronglytyped: `
+            <div class="schematic-box">
+                <div style="font-family:'Koulen',sans-serif; color:var(--accent-purple); font-size:1.6vw; margin-bottom:1.5vh; text-align:center;"><i class="fa-solid fa-link"></i> Strongly-Typed Binding</div>
+                <div style="background:#EEF2FF; border:2px solid #6366F1; padding:2vh; border-radius:10px; width: 100%; text-align: center; position: relative;">
+                    <b style="color:#4F46E5; font-size: 1.4vw;">1. Controller (C#)</b><br>
+                    <code style="background:#FFF; padding:4px 8px; border-radius:4px; display:inline-block; margin-top:6px; font-size: 1.2vw;">return View(<span style="color:#E11D48;">studentObj</span>);</code>
+                    
+                    <div style="margin: 1.5vh 0; color: #6366F1; font-size: 1.6vw;"><i class="fa-solid fa-arrow-down"></i></div>
+                    
+                    <b style="color:#4F46E5; font-size: 1.4vw;">2. Razor View (.cshtml)</b><br>
+                    <code style="background:#FFF; padding:4px 8px; border-radius:4px; display:inline-block; margin-top:6px; font-size: 1.2vw;">@model <span style="color:#E11D48;">Student</span></code><br>
+                    <code style="background:#FFF; padding:4px 8px; border-radius:4px; display:inline-block; margin-top:6px; font-size: 1.2vw;">&lt;h1&gt;@Model.Name&lt;/h1&gt;</code>
+                </div>
+                <div style="margin-top: 2vh; font-size: 1.2vw; color: #059669; font-weight: bold;"><i class="fa-solid fa-shield-check"></i> Compile-Time Type Safety Check</div>
+            </div>
+        `,
+        routing: `
+            <div class="schematic-box">
+                <div style="font-family:'Koulen',sans-serif; color:var(--accent-purple); font-size:1.6vw; margin-bottom:1.5vh; text-align:center;">Routing Mechanisms</div>
+                <div style="display:flex; flex-direction:column; gap:1.5vh; width:100%;">
+                    <div style="background:#F8FAFC; border-left: 5px solid #6366F1; box-shadow: 0 2px 5px rgba(0,0,0,0.05); padding:1.5vh 1vw; border-radius:6px;">
+                        <b style="color:#4F46E5; font-size:1.3vw;"><i class="fa-solid fa-map-signs"></i> Conventional Routing</b>
+                        <p style="font-size:1.1vw; color:#475569; margin:6px 0;">URL mapped by global pattern (Program.cs)</p>
+                        <code style="background:#E2E8F0; padding:4px 8px; border-radius:4px; font-size:1.2vw; color:#334155;">/Student/Index/1</code>
+                    </div>
+                    <div style="background:#F8FAFC; border-left: 5px solid #10B981; box-shadow: 0 2px 5px rgba(0,0,0,0.05); padding:1.5vh 1vw; border-radius:6px;">
+                        <b style="color:#059669; font-size:1.3vw;"><i class="fa-solid fa-tag"></i> Attribute Routing</b>
+                        <p style="font-size:1.1vw; color:#475569; margin:6px 0;">URL mapped directly on Controller/Action</p>
+                        <code style="background:#E2E8F0; padding:4px 8px; border-radius:4px; font-size:1.2vw; color:#334155;">[Route("api/[controller]")]</code>
                     </div>
                 </div>
             </div>
         `
     };
-
-    function handleImgError(imageElement, fallbackType) {
-        imageElement.style.display = 'none';
-        const fallbackBox = imageElement.nextElementSibling;
-        if (fallbackBox && fallbackBox.classList.contains('schematic-fallback')) {
-            fallbackBox.style.display = 'flex';
-            if (schematics[fallbackType]) {
-                fallbackBox.innerHTML = schematics[fallbackType];
-            } else {
-                fallbackBox.innerHTML = `<div style="font-size:1vw; color:#94A3B8;"><i class="fa-solid fa-image" style="font-size:2vw;"></i><br>Image Fallback</div>`;
-            }
-        }
-    }
 
     const chapterData = [
         // 1. COVER SLIDE
@@ -439,88 +369,95 @@
         // 2. PROFESSOR SLIDE
         { t: "ព័ត៌មានសាស្ត្រាចារ្យ និងមុខវិជ្ជា", type: "prof" },
 
-        // 3. OUTLINE
-        { t: "មាតិកាជំពូកទី ៣ (Chapter Contents)", type: "table", rows: [
-            ["ចំណុច", "ខ្លឹមសារមេរៀនលម្អិត (Detailed Course Topics)"],
+        // 3. OUTLINE PART 1
+        { t: "មាតិកាជំពូកទី ៣ - ភាគទី ១", type: "table", rows: [
+            ["ចំណុច", "ខ្លឹមសារមេរៀនលម្អិត (Course Topics Part 1)"],
             ["<b>៣.១</b>", "ស្ថាបត្យកម្ម MVC (View-Based) និង Web API (JSON-Based) Basics"],
             ["<b>៣.២</b>", "ថ្នាក់គ្រឹះ Controller (Views) និង ControllerBase (Web API)"],
-            ["<b>៣.៣</b>", "វិធីសាស្ត្របញ្ជូនទិន្នន័យទៅកាន់ Views (ViewBag, ViewData, Strongly-Typed Model)"],
+            ["<b>៣.៣</b>", "វិធីសាស្ត្របញ្ជូនទិន្នន័យទៅកាន់ Views (ViewBag, ViewData, Strongly-Typed Model)"]
+        ]},
+
+        // 4. OUTLINE PART 2
+        { t: "មាតិកាជំពូកទី ៣ - ភាគទី ២", type: "table", rows: [
+            ["ចំណុច", "ខ្លឹមសារមេរៀនលម្អិត (Course Topics Part 2)"],
             ["<b>៣.៤</b>", "ការបង្កើត Student Controller & រៀបចំឯកសារ Razor View (.cshtml)"],
             ["<b>៣.៥</b>", "ការបង្កើត Student API Controller សម្រាប់បញ្ចេញទិន្នន័យជា JSON Array"],
             ["<b>៣.៦</b>", "យន្តការ Routing, URL Endpoints និង ការតេស្តលទ្ធផលជាក់ស្តែង"]
         ]},
 
-        // 4. OBJECTIVES
-        { t: "វត្ថុបំណងនៃជំពូកទី ៣ (Chapter Objectives)", type: "list", c: [
+        // 5. OBJECTIVES PART 1
+        { t: "វត្ថុបំណងនៃជំពូកទី ៣ - ភាគទី ១", type: "list", c: [
             "បន្ទាប់ពីបញ្ចប់ការសិក្សាជំពូកទី ៣ នេះ និស្សិតនឹងមានសមត្ថភាព៖",
             "• <b class='highlight'>ស្គាល់ច្បាស់ពីប្រព័ន្ធទាំងពីរ៖</b> យល់ពីភាពខុសគ្នារវាង Controller ប្រើសម្រាប់ Views (HTML) និង Controller សម្រាប់ API (JSON)។",
-            "• <b class='highlight'>បញ្ជូនទិន្នន័យទៅកាន់ Views៖</b> ចេះប្រើប្រាស់ ViewBag, ViewData និង Strongly-typed Models ដើម្បីបញ្ជូនទិន្នន័យពី C# ទៅ HTML។",
+            "• <b class='highlight'>បញ្ជូនទិន្នន័យទៅកាន់ Views៖</b> ចេះប្រើប្រាស់ ViewBag, ViewData និង Strongly-typed Models ដើម្បីបញ្ជូនទិន្នន័យពី C# ទៅ HTML។"
+        ]},
+
+        // 6. OBJECTIVES PART 2
+        { t: "វត្ថុបំណងនៃជំពូកទី ៣ - ភាគទី ២", type: "list", c: [
             "• <b class='highlight'>រចនាទំព័រ Razor View៖</b> អាចសរសេរកូដ Razor Engine នៅក្នុងឯកសារ .cshtml ដើម្បីទាញបង្ហាញបញ្ជីទិន្នន័យក្នុង HTML Table។",
             "• <b class='highlight'>បង្កើត Web API endpoints៖</b> ចេះបង្កើត API endpoints និងយល់ពីដំណើរការ JSON Serialization ដោយប្រើ System.Text.Json។",
             "• <b class='highlight'>កំណត់ប្រព័ន្ធ Routing៖</b> អាចកំណត់រចនាសម្ព័ន្ធ URL Route ទាំងបែប Conventional (MVC) និង Attribute Routing (API)។"
         ]},
 
-        // 5. SECTION 3.1 - MVC VS API ARCHITECTURE BASICS
+        // 7. SECTION 3.1 - MVC VS API ARCHITECTURE BASICS
         { 
             t: "៣.១ ស្ថាបត្យកម្ម MVC (Views) និង Web API (JSON) Basics", 
-            type: "structured", 
-            fallback: "mvcvsapi",
-            definition: "នៅក្នុង ASP.NET Core ស្ថាបត្យកម្មត្រូវបានបែងចែកជាពីរទម្រង់៖ <b>Traditional MVC</b> ប្រើប្រាស់ Controller ដើម្បីច្របាច់បញ្ចូលទិន្នន័យ Model ទៅក្នុង <b>Razor View (.cshtml)</b> រួច Render ចេញជា HTML Page ផ្ញើទៅ Browser។ ចំណែកឯ <b>Web API</b> ប្រើប្រាស់ Controller មិនឆ្លងកាត់ View ឡើយ គឺវានាំយកទិន្នន័យបំប្លែងទៅជាទម្រង់ <b>JSON (Serialization)</b> ដោយផ្ទាល់សម្រាប់ Mobile App ឬ Frontend Frameworks។",
-            syntax: "// MVC Controller (ស្នងពី Controller)\npublic class HomeController : Controller { ... }\n\n// Web API Controller (ស្នងពី ControllerBase)\n[ApiController]\n[Route(\"api/[controller]\")]\npublic class HomeApiController : ControllerBase { ... }",
-            caseTitle: "ករណីសិក្សា៖ តម្រូវការបច្ចេកវិទ្យាក្នុងគម្រោងជាក់ស្តែង",
-            caseCode: "// MVC ប្រើសម្រាប់វេបសាយធម្មតាដែល Render នៅលើ Server\n// Web API ប្រើសម្រាប់ផ្តល់សេវាកម្មទិន្នន័យទៅឱ្យ Single Page Applications (React, Vue, Angular)",
-            labNote: "ស្វែងយល់លម្អិតបន្ថែមពីការដំឡើង Controller ទាំងពីរប្រភេទនៅក្នុង <b>Lab 3.1 (ស្លាយទី ១០)</b>។"
+            type: "split", 
+            graphicType: "mvcvsapi",
+            c: "នៅក្នុង ASP.NET Core ស្ថាបត្យកម្មត្រូវបានបែងចែកជាពីរទម្រង់ចម្បង៖<br><br>• <b class='highlight'>Traditional MVC:</b> ប្រើប្រាស់ Controller ដើម្បីច្របាច់បញ្ចូលទិន្នន័យ Model ទៅក្នុង <b>Razor View (.cshtml)</b> រួច Render ចេញជា HTML Page ផ្ញើទៅ Browser។<br><br>• <b class='highlight'>Web API:</b> ប្រើប្រាស់ Controller មិនឆ្លងកាត់ View ឡើយ គឺវានាំយកទិន្នន័យបំប្លែងទៅជាទម្រង់ <b>JSON (Serialization)</b> ដោយផ្ទាល់សម្រាប់ Mobile App ឬ Web Frontend Frameworks ហៅទៅប្រើប្រាស់។"
         },
 
-        // 6. SECTION 3.1 - COMPARISON TABLE
+        // 8. SECTION 3.1 - COMPARISON TABLE
         { t: "៣.១ តារាងប្រៀបធៀប MVC Controller និង Web API Controller", type: "table", rows: [
             ["លក្ខណៈពិសេស", "ASP.NET Core MVC (Views)", "ASP.NET Core Web API (JSON)"],
             ["<b>Base Class</b>", "ស្នងពី class <code>Controller</code>", "ស្នងពី class <code>ControllerBase</code>"],
             ["<b>លទ្ធផលត្រឡប់</b>", "បញ្ជូនជា HTML Web page (View)", "បញ្ជូនជា JSON ទិន្នន័យសុទ្ធ (Data format)"],
             ["<b>Helper Method</b>", "ប្រើប្រាស់ <code>View()</code>, <code>PartialView()</code>", "ប្រើប្រាស់ <code>Ok()</code>, <code>Created()</code>, <code>NotFound()</code>"],
-            ["<b>Routing Method</b>", " Conventional Routing (កំណត់ក្នុង Program.cs)", " Attribute Routing (កំណត់ផ្ទាល់លើ Controller/Action)"],
-            ["<b>Attribute</b>", "មិនទាមទារ attribute ពិសេស", "ទាមទារ attribute <code>[ApiController]</code>"],
-            ["<b>តួនាទីចម្បង</b>", "បង្កើត Full Web Pages (Server-Side Rendering)", "បង្កើត សេវាកម្មទិន្នន័យ (Data endpoints) សម្រាប់គ្រប់ clients"]
+            ["<b>Routing Method</b>", " Conventional Routing (Program.cs)", " Attribute Routing (លើ Controller/Action)"],
+            ["<b>Attribute</b>", "មិនទាមទារ attribute ពិសេស", "ទាមទារ attribute <code>[ApiController]</code>"]
         ]},
 
-        // 7. SECTION 3.2 - BASE CLASS & ACTIONS
+        // 9. SECTION 3.2 - BASE CLASS & ACTIONS
         { 
             t: "៣.២ ថ្នាក់គ្រឹះ Controller និង Action Methods នៃប្រព័ន្ធទាំងពីរ", 
-            type: "structured", 
-            fallback: "mvcvsapi",
-            definition: "<b>Action Method</b> នៅក្នុង Controller គឺជាកន្លែងដំណើរការ Logic និងសម្រេចចិត្តបញ្ជូនទិន្នន័យត្រឡប់ទៅវិញជាប្រភេទ <code>IActionResult</code>។ សម្រាប់ MVC Controller យើងប្រើ helper method <code>View()</code> ដើម្បីហៅទៅ Razor View មកបង្ហាញ។ សម្រាប់ API Controller យើងប្រើ helper method <code>Ok(data)</code> ដើម្បីបញ្ជូនទិន្នន័យចេញជាទម្រង់ JSON Array ឬ Object។",
-            syntax: "// ប្រភេទលទ្ធផល Action Result ក្នុងគម្រោងទាំងពីរ៖\npublic IActionResult Index() => View(); // MVC View Result\npublic IActionResult Get() => Ok(data); // API Object Result",
-            caseTitle: "ករណីសិក្សា៖ ការបង្កើត Action បញ្ជូនសារស្វាគមន៍ (HTML View vs API JSON)",
-            caseCode: "// MVC: return View(); -> ស្វែងរកឯកសារ .cshtml\n// API: return Ok(new { Message = \"សួស្តីនិស្សិត AU!\" }); -> ចេញជា JSON",
-            labNote: "រៀនពីការសរសេរ Action Methods ទាំងពីរទម្រង់ក្នុង <b>Lab 3.1 (ស្លាយទី ១០)</b>។"
+            type: "split", 
+            graphicType: "actionmethods",
+            c: "<b>Action Method</b> នៅក្នុង Controller គឺជាកន្លែងដំណើរការ Logic និងសម្រេចចិត្តបញ្ជូនទិន្នន័យត្រឡប់ទៅវិញជាប្រភេទ <code>IActionResult</code>។<br><br>• សម្រាប់ <b class='highlight'>MVC Controller</b> យើងប្រើ helper method <code>View()</code> ដើម្បីស្វែងរក និងហៅ Razor View (.cshtml) មកបង្ហាញ។<br><br>• សម្រាប់ <b class='highlight'>API Controller</b> យើងប្រើ helper method <code>Ok(data)</code> ដើម្បីបញ្ជូនទិន្នន័យចេញជាទម្រង់ JSON Array ឬ Object ទៅកាន់ Client ភ្លាមៗ។"
         },
 
-        // 8. SECTION 3.2 - ACTION RESULTS TABLE
+        // 10. SECTION 3.2 - ACTION RESULTS TABLE
         { t: "៣.២ ប្រភេទIActionResult និងការប្រើប្រាស់ជាក់ស្តែងក្នុងគម្រោង", type: "table", rows: [
             ["ប្រភេទលទ្ធផល", "លទ្ធផលជាក់ស្តែង", "ស័ក្តិសមសម្រាប់", "ឧទាហរណ៍ការសរសេរកូដ (C# Code)"],
             ["<b>ViewResult</b>", "HTML page ពេញលេញ", "Traditional MVC", "<code>return View(studentList);</code>"],
             ["<b>OkObjectResult</b>", "JSON ទិន្នន័យ + Status 200", "Web API (ជោគជ័យ)", "<code>return Ok(studentList);</code>"],
             ["<b>NotFoundResult</b>", "Status Code 404", "ទាំងពីរប្រភេទ", "<code>return NotFound();</code>"],
-            ["<b>BadRequestResult</b>", "Status Code 400 (សំណើខុស)", "ទាំងពីរប្រភេទ", "<code>return BadRequest(\"កំហុសទិន្នន័យ\");</code>"],
-            ["<b>JsonResult</b>", "បំប្លែង Object ជា JSON", "Traditional MVC (Ajax)", "<code>return Json(new { success = true });</code>"]
+            ["<b>BadRequestResult</b>", "Status Code 400 (សំណើខុស)", "ទាំងពីរប្រភេទ", "<code>return BadRequest(\"កំហុសទិន្នន័យ\");</code>"]
         ]},
 
-        // 9. SECTION 3.3 - DATA PASSING TO VIEWS
+        // 11. SECTION 3.3 - DATA PASSING (PART 1)
         { 
-            t: "៣.៣ យន្តការបញ្ជូនទិន្នន័យទៅកាន់ Razor Views", 
-            type: "structured", 
-            fallback: "mvcdata",
-            definition: "នៅក្នុង ASP.NET Core MVC, Controller បញ្ជូនទិន្នន័យទៅកាន់ Razor View (.cshtml) តាមរយៈយន្តការសំខាន់ៗចំនួន៣៖<br>១. <b>ViewData៖</b> ជា Dictionary (Key-Value) ទាមទារការបំប្លែងប្រភេទឯកសារ (Type Casting)។<br>២. <b>ViewBag៖</b> ជា Dynamic Object ងាយស្រួលសរសេរ តែងាយប្រឈមនឹងកំហុសអក្ខរាវិរុទ្ធ (No Type Safety)។<br>៣. <b>Strongly-Typed Model៖</b> ជាវិធីសាស្ត្រល្អបំផុត ដោយចងភ្ជាប់ជាមួយ Class Model ផ្ទាល់ ដែលផ្តល់នូវល្បឿន និងបង្ហាញកំហុសភ្លាមៗពេលសរសេរកូដ (Type Safety)។",
-            syntax: "// ViewData: ViewData[\"Message\"] = \"Hello\";\n// ViewBag: ViewBag.Message = \"Hello\";\n// Strongly-Typed: return View(studentObject);",
-            caseTitle: "ករណីសិក្សា៖ របៀបកំណត់ @model នៅក្នុងឯកសារ Razor View (.cshtml)",
-            caseCode: "@model SchoolApp.Models.Student\n<h3>ឈ្មោះនិស្សិត៖ @Model.Name</h3>\n<p>ជំនាញ៖ @Model.Major</p>",
-            labNote: "ការអនុវត្តបញ្ជូនទិន្នន័យជាមួយ Strongly-Typed Model ត្រូវបានបង្ហាញនៅក្នុង <b>Lab 3.2 (ស្លាយទី ១៥)</b>។"
+            t: "៣.៣ យន្តការបញ្ជូនទិន្នន័យ៖ ViewData និង ViewBag", 
+            type: "split", 
+            graphicType: "viewdata",
+            c: "នៅក្នុង ASP.NET Core MVC, Controller បញ្ជូនទិន្នន័យទៅកាន់ Razor View (.cshtml) តាមរយៈយន្តការសំខាន់ៗ៖<br><br>• <b class='highlight'>ViewData៖</b> ជា Dictionary (Key-Value) សរសេរជា <code>ViewData[\"Key\"] = value</code>។ ទាមទារការបកប្រែប្រភេទឯកសារ (Type Casting) ពេលយកទៅប្រើប្រាស់ក្នុង HTML។<br><br>• <b class='highlight'>ViewBag៖</b> ជា Dynamic Property សរសេរជា <code>ViewBag.Key = value</code>។ ងាយស្រួលសរសេរ តែងាយប្រឈមនឹងកំហុសអក្ខរាវិរុទ្ធ (No Type Safety) ក្នុងពេលដំណើរការ។"
         },
 
-        // 10. LAB 3.1
+        // 12. SECTION 3.3 - DATA PASSING (PART 2)
+        { 
+            t: "៣.៣ យន្តការបញ្ជូនទិន្នន័យ៖ Strongly-Typed Models", 
+            type: "structured", 
+            graphicType: "stronglytyped",
+            definition: "<b>Strongly-Typed Model៖</b> ជាវិធីសាស្ត្រល្អបំផុតក្នុងការបញ្ជូនទិន្នន័យ ដោយចងភ្ជាប់ទំព័រ View ជាមួយ Class Model ជាក់លាក់មួយ។ វាផ្តល់នូវលក្ខណៈពិសេស៖<br>• <b>Type Safety:</b> បង្ហាញកំហុស (Error) ភ្លាមៗក្នុងពេល Compile ប្រសិនសរសេរខុស។<br>• <b>IntelliSense Support:</b> ជួយបង្ហាញបញ្ជី Property ស្វ័យប្រវត្តពេលសរសេរកូដនៅក្នុង .cshtml។",
+            syntax: "// ក្នុង Controller: return View(studentObject);\n// ក្នុង Razor View: @model SchoolApp.Models.Student",
+            caseTitle: "ករណីសិក្សា៖ របៀបកំណត់ @model នៅក្នុងឯកសារ Razor View (.cshtml)",
+            caseCode: "@model SchoolApp.Models.Student\n<h3>ឈ្មោះនិស្សិត៖ @Model.Name</h3>\n<p>ជំនាញ៖ @Model.Major</p>",
+            labNote: "ការអនុវត្តបញ្ជូនទិន្នន័យជាមួយ Strongly-Typed Model ត្រូវបានបង្ហាញនៅក្នុង <b>Lab 3.2 (ស្លាយទី ១៧)</b>។"
+        },
+
+        // 13. LAB 3.1
         { t: "លំហាត់អនុវត្តន៍ (Practical Labs)", type: "exercise", h: "Lab 3.1: Creating an MVC Controller and API Controller", p: "<b>ប្រធានលំហាត់៖</b> ចូរបង្កើត Controllers ចំនួនពីរផ្សេងគ្នាក្នុង Folder <code>Controllers</code> របស់អ្នក៖<br>១. បង្កើត MVC Controller ឈ្មោះ <code>WelcomeController</code> ស្នងពី Class <code>Controller</code> និងបង្កើត Action ឈ្មោះ <code>Index()</code> ដែលបញ្ជូនសារទៅកាន់ View តាមរយៈ <code>ViewBag.Greeting</code>។<br>២. បង្កើត API Controller ឈ្មោះ <code>WelcomeApiController</code> ស្នងពី Class <code>ControllerBase</code> និងបង្កើត Action ឈ្មោះ <code>GetGreeting()</code> ដែលបញ្ជូន JSON Object ត្រឡប់មកវិញ៖ <code>{ \"greeting\": \"សួស្តីសាកលវិទ្យាល័យអង្គរ!\" }</code>។" },
 
-        // 11. SECTION 3.4 - STUDENT MVC CONTROLLER
+        // 14. SECTION 3.4 - STUDENT MVC CONTROLLER
         { t: "៣.៤ ការសរសេរ StudentController ជាមួយ MVC Views (Strongly-Typed)", type: "code", code: `using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using SchoolApp.Models; // នាំចូល Class Model 'Student' ពីជំពូកទី ២
@@ -547,7 +484,7 @@ namespace SchoolApp.Controllers
     }
 }`, desc: "កូដត្រឡប់ return View(students) នឹងបញ្ជូន List របស់ C# ទៅឱ្យឯកសារ .cshtml ដំណើរការរៀបចំ HTML Layout។" },
 
-        // 12. SECTION 3.4 - RAZOR VIEW HTML CODE
+        // 15. SECTION 3.4 - RAZOR VIEW HTML CODE
         { t: "៣.៤ ការបង្កើតឯកសារ Razor View (Views/Student/Index.cshtml)", type: "code", code: `@* ១. ប្រកាសប្រភេទ Model របស់ទំព័រនេះ (Strongly-Typed) *@
 @model IEnumerable<SchoolApp.Models.Student>
 
@@ -580,7 +517,7 @@ namespace SchoolApp.Controllers
     </table>
 </div>`, desc: "ឯកសារ Razor View ផ្សំឡើងដោយ HTML លាយឡំជាមួយកូដ C# (តាមរយៈនិមិត្តសញ្ញា @) ដើម្បីបង្កើតទំព័រ Web Page ថាមវន្ត។" },
 
-        // 13. SECTION 3.5 - STUDENT API CONTROLLER
+        // 16. SECTION 3.5 - STUDENT API CONTROLLER
         { t: "៣.៥ ការបង្កើត StudentApiController សម្រាប់ Web API (JSON Response)", type: "code", code: `using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using SchoolApp.Models; // នាំចូល Class Model 'Student'
@@ -608,22 +545,18 @@ namespace SchoolApp.Controllers
     }
 }`, desc: "កូដ Ok(students) នឹងបំប្លែង Objects របស់ C# ទៅជាទម្រង់អត្ថបទ JSON តាមរយៈ System.Text.Json Serialization។" },
 
-        // 14. LAB 3.2
-        { t: "លំហាត់អនុវត្តន៍ (Practical Labs)", type: "exercise", h: "Lab 3.2: Render HTML Table vs Return JSON Array", p: "<b>ប្រធានលំហាត់៖</b> ចូរអនុវត្តជំហានខាងក្រោមដើម្បីបញ្ចប់កិច្ចការ៖<br>១. បង្កើត Class Model ឈ្មោះ <code>Student</code> នៅក្នុង Folder <code>Models</code> (បើមិនទាន់មាន)។<br>២. សរសេរកូដរបស់ <code>StudentController</code> និងបង្កើតឯកសារ Razor View <code>Index.cshtml</code> (ដូចបង្ហាញក្នុងស្លាយទី ១១ និង ១២) រួចដំណើរការនៅលើ Browser ដើម្បីបង្ហាញជាតារាង HTML Table ស្អាត។<br>៣. បង្កើត <code>StudentApiController</code> (ដូចក្នុងស្លាយទី ១៣) រួចដំណើរការតេស្តដើម្បីទទួលបានលទ្ធផលជាទិន្នន័យ JSON Array សុទ្ធ។" },
+        // 17. LAB 3.2
+        { t: "លំហាត់អនុវត្តន៍ (Practical Labs)", type: "exercise", h: "Lab 3.2: Render HTML Table vs Return JSON Array", p: "<b>ប្រធានលំហាត់៖</b> ចូរអនុវត្តជំហានខាងក្រោមដើម្បីបញ្ចប់កិច្ចការ៖<br>១. បង្កើត Class Model ឈ្មោះ <code>Student</code> នៅក្នុង Folder <code>Models</code> (បើមិនទាន់មាន)។<br>២. សរសេរកូដរបស់ <code>StudentController</code> និងបង្កើតឯកសារ Razor View <code>Index.cshtml</code> (ដូចបង្ហាញក្នុងស្លាយទី ១៤ និង ១៥) រួចដំណើរការនៅលើ Browser ដើម្បីបង្ហាញជាតារាង HTML Table ស្អាត។<br>៣. បង្កើត <code>StudentApiController</code> (ដូចក្នុងស្លាយទី ១៦) រួចដំណើរការតេស្តដើម្បីទទួលបានលទ្ធផលជាទិន្នន័យ JSON Array សុទ្ធ។" },
 
-        // 15. SECTION 3.6 - ROUTING MECHANISMS
+        // 18. SECTION 3.6 - ROUTING MECHANISMS
         { 
             t: "៣.៦ យន្តការ Routing & URL Endpoints នៃប្រព័ន្ធទាំងពីរ", 
-            type: "structured", 
-            fallback: "routingtypes",
-            definition: "<b>Routing</b> គឺជាប្រព័ន្ធផ្គូផ្គងអាសយដ្ឋាន URL ដែល Client វាយនៅលើ Browser ទៅកាន់ Action Methods របស់ Controller។<br>• <b>Conventional Routing (MVC)៖</b> កំណត់ជាសកលក្នុង <code>Program.cs</code> តាមលំនាំ <code>{controller}/{action}/{id?}</code>។<br>• <b>Attribute Routing (Web API)៖</b> កំណត់ផ្ទាល់នៅលើ Controller Class ឬ Action Method ដោយប្រើប្រាស់ <code>[Route]</code> ឬ <code>[HttpGet]</code> ផ្តល់ភាពបត់បែនខ្ពស់សម្រាប់ Web API endpoints។",
-            syntax: "// Conventional Route configuration in Program.cs\napp.MapControllerRoute(\n    name: \"default\",\n    pattern: \"{controller=Home}/{action=Index}/{id?}\"\n);",
-            caseTitle: "ករណីសិក្សា៖ URL Matching mapping នៃប្រព័ន្ធទាំងពីរ",
-            caseCode: "// Traditional MVC: http://localhost:5000/Student/Index\n// Web API: http://localhost:5000/api/studentapi",
-            labNote: "ការកំណត់ Route ត្រឹមត្រូវ ជួយឱ្យយល់ដឹងពីរបៀបហៅប្រើប្រាស់សេវាកម្មទិន្នន័យកាន់តែងាយស្រួល។"
+            type: "split", 
+            graphicType: "routing",
+            c: "<b>Routing</b> គឺជាប្រព័ន្ធផ្គូផ្គងអាសយដ្ឋាន URL របស់ Client ទៅកាន់ Action Methods របស់ Controller៖<br><br>• <b class='highlight'>Conventional Routing (MVC)៖</b> កំណត់លំនាំជាសកលក្នុង <code>Program.cs</code> តាមទម្រង់ <code>{controller}/{action}/{id?}</code> ស័ក្តិសមសម្រាប់ MVC Web App ធម្មតា។<br><br>• <b class='highlight'>Attribute Routing (Web API)៖</b> កំណត់ផ្ទាល់នៅលើ Controller Class ឬ Action Method ដោយប្រើប្រាស់ <code>[Route]</code> ផ្តល់ភាពងាយស្រួល និងបត់បែនខ្ពស់សម្រាប់ Web API endpoints។"
         },
 
-        // 16. SECTION 3.6 - ROUTING COMPONENT TABLE
+        // 19. SECTION 3.6 - ROUTING COMPONENT TABLE
         { t: "៣.៦ តារាងប្រៀបធៀបការវិភាគ URL Route នៃប្រព័ន្ធទាំងពីរ", type: "table", rows: [
             ["URL សំណើ (Request)", "ប្រភេទ Controller", "យន្តការ Routing", "Action Method ដែលត្រូវរត់", "ទម្រង់លទ្ធផលទទួលបាន"],
             ["<code>/Student</code>", "StudentController (MVC)", "Conventional (Default Action)", "<code>Index()</code>", "ទំព័រ HTML (Razor View)"],
@@ -632,38 +565,42 @@ namespace SchoolApp.Controllers
             ["<code>/api/welcomeapi/hello</code>", "WelcomeApiController (API)", "Attribute <code>[HttpGet(\"hello\")]</code>", "<code>GetGreeting()</code>", "JSON Object សារស្វាគមន៍"]
         ]},
 
-        // 17. LAB 3.3
+        // 20. LAB 3.3
         { t: "លំហាត់អនុវត្តន៍ (Practical Labs)", type: "exercise", h: "Lab 3.3: Visual Comparison & Testing JSON and HTML", p: "<b>ប្រធានលំហាត់៖</b> ចូរអនុវត្តការដំណើរការគម្រោងរបស់អ្នក (<code>dotnet run</code>) រួច៖<br>១. ប្រើប្រាស់ Web Browser ដើម្បីបើកអាសយដ្ឋាន៖ <code>http://localhost:5000/Student</code> រួចថតរូបភាព (Screenshot) ទំព័រតារាង HTML។<br>២. បើកអាសយដ្ឋាន៖ <code>http://localhost:5000/api/studentapi</code> ដើម្បីទទួលបានលទ្ធផលជា JSON Array រួចថតរូបភាព។<br>៣. សរសេររបាយការណ៍ខ្លីមួយប្រៀបធៀបទម្រង់នៃការបង្ហាញទិន្នន័យទាំងពីរនេះ ផ្ញើជូនសាស្ត្រាចារ្យ។" },
 
-        // 18. GLOSSARY 1
+        // 21. GLOSSARY 1
         { t: "ពន្យល់ពាក្យគន្លឹះ (Glossary 1)", type: "table", rows: [
             ["ពាក្យបច្ចេកទេស", "ការពន្យល់ជាភាសាខ្មែរ"],
             ["<b>Razor View (.cshtml)</b>", "ឯកសារទំព័រវេបសាយ ដែលរួមបញ្ចូលគ្នារវាងកូដ HTML ធម្មតា និងកូដ C# ដើម្បីបង្ហាញទិន្នន័យ។"],
             ["<b>Strongly-Typed View</b>", "ការចងភ្ជាប់ទំព័រ View ទៅនឹង Class Model ជាក់លាក់មួយ ដើម្បីធានាសុវត្ថិភាព និងល្បឿនសរសេរកូដ។"],
             ["<b>ViewBag / ViewData</b>", "យន្តការស្តុកទុកទិន្នន័យបណ្តោះអាសន្ន ដើម្បីបញ្ជូនពី Controller ទៅកាន់ View (មិនទាមទារ Class Model ឡើយ)។"],
-            ["<b>ControllerBase</b>", "Class គ្រឹះរបស់ ASP.NET Core សម្រាប់បង្កើត Web API (មិនមានផ្ទុកយន្តការ render HTML View)។"],
-            ["<b>System.Text.Json</b>", "បណ្ណាល័យបច្ចេកវិទ្យាក្នុង .NET សម្រាប់បំប្លែង C# Objects ទៅជា JSON (Serialization) និងច្រាសមកវិញ។"]
+            ["<b>ControllerBase</b>", "Class គ្រឹះរបស់ ASP.NET Core សម្រាប់បង្កើត Web API (មិនមានផ្ទុកយន្តការ render HTML View)។"]
         ]},
 
-        // 19. GLOSSARY 2
+        // 22. GLOSSARY 2
         { t: "ពន្យល់ពាក្យគន្លឹះ (Glossary 2)", type: "table", rows: [
             ["ពាក្យបច្ចេកទេស", "ការពន្យល់ជាភាសាខ្មែរ"],
+            ["<b>System.Text.Json</b>", "បណ្ណាល័យបច្ចេកវិទ្យាក្នុង .NET សម្រាប់បំប្លែង C# Objects ទៅជា JSON (Serialization) និងច្រាសមកវិញ។"],
             ["<b>Conventional Routing</b>", "ការកំណត់លំនាំ URL Route ជារួមសម្រាប់គម្រោងទាំងមូល (ពេញនិយមប្រើសម្រាប់គម្រោង MVC standard)។"],
             ["<b>Attribute Routing</b>", "ការកំណត់ផ្លូវ URL route ផ្ទាល់នៅលើក្បាល Class ឬ Action Methods (ពេញនិយមបំផុតសម្រាប់ Web API)។"],
-            ["<b>IActionResult</b>", "Interface កំណត់លទ្ធផលត្រឡប់ការងាររបស់ Action ដែលអនុញ្ញាតឱ្យបញ្ជូនទាំងទិន្នន័យ និង HTTP Status Code។"],
-            ["<b>[ApiController]</b>", "Attribute សម្គាល់ថា Class នោះជា Web API ដែលជួយសម្រួលការងារចាប់កំហុស និងបកប្រែ JSON ស្វ័យប្រវត្ត។"]
+            ["<b>IActionResult</b>", "Interface កំណត់លទ្ធផលត្រឡប់ការងាររបស់ Action ដែលអនុញ្ញាតឱ្យបញ្ជូនទាំងទិន្នន័យ និង HTTP Status Code។"]
         ]},
 
-        // 20. SUMMARY
-        { t: "សេចក្តីសង្ខេបជំពូកទី ៣ (Summary)", type: "list", c: [
+        // 23. SUMMARY PART 1
+        { t: "សេចក្តីសង្ខេបជំពូកទី ៣ - ភាគទី ១", type: "list", c: [
             "• <b class='highlight'>Controllers:</b> ជាខួរក្បាល និងជាអ្នកសម្របសម្រួលលំហូរការងារដ៏សំខាន់សម្រាប់ទាំងគម្រោង MVC (Views) និង Web API (JSON)។",
             "• <b class='highlight'>MVC (Views) VS API (JSON)៖</b> MVC បញ្ជូនទំព័រ HTML Render ពី Server តាមរយៈ <code>Controller</code> រីឯ API បញ្ជូនទិន្នន័យសុទ្ធជា <code>JSON</code> តាមរយៈ <code>ControllerBase</code>។",
-            "• <b class='highlight'>យន្តការបញ្ជូនទិន្នន័យ៖</b> ការបញ្ជូនទិន្នន័យទៅកាន់ Views ល្អបំផុតត្រូវប្រើ Strongly-Typed Models ចៀសវាងការប្រើប្រាស់ ViewBag ឬ ViewData។",
-            "• <b class='highlight'>ប្រព័ន្ធ Routing៖</b> គម្រោង standard MVC ប្រើប្រាស់ Conventional Routing ចំណែកឯ Web API ប្រើប្រាស់ Attribute Routing ដើម្បីគ្រប់គ្រង endpoints។",
-            "• <b class='highlight'>Serialization ស្វ័យប្រវត្ត៖</b> ASP.NET Core ប្រើប្រាស់ <code>System.Text.Json</code> ដើម្បីបំប្លែងទិន្នន័យ C# objects ទៅជា JSON Response ដោយស្វ័យប្រវត្ត។"
+            "• <b class='highlight'>យន្តការបញ្ជូនទិន្នន័យ៖</b> ការបញ្ជូនទិន្នន័យទៅកាន់ Views ល្អបំផុតត្រូវប្រើ Strongly-Typed Models ចៀសវាងការប្រើប្រាស់ ViewBag ឬ ViewData។"
         ]},
 
-        // 21. REFERENCES
+        // 24. SUMMARY PART 2
+        { t: "សេចក្តីសង្ខេបជំពូកទី ៣ - ភាគទី ២", type: "list", c: [
+            "• <b class='highlight'>ប្រព័ន្ធ Routing៖</b> គម្រោង standard MVC ប្រើប្រាស់ Conventional Routing ចំណែកឯ Web API ប្រើប្រាស់ Attribute Routing ដើម្បីគ្រប់គ្រង endpoints។",
+            "• <b class='highlight'>Serialization ស្វ័យប្រវត្ត៖</b> ASP.NET Core ប្រើប្រាស់ <code>System.Text.Json</code> ដើម្បីបំប្លែងទិន្នន័យ C# objects ទៅជា JSON Response ដោយស្វ័យប្រវត្ត។",
+            "• <b class='highlight'>លទ្ធផលត្រឡប់ (Action Results)៖</b> ការប្រើប្រាស់ helper methods ដូចជា <code>View()</code> និង <code>Ok()</code> ជួយសម្រួលដល់ដំណើរការត្រឡប់លទ្ធផលយ៉ាងមានប្រសិទ្ធភាព។"
+        ]},
+
+        // 25. REFERENCES
         { t: "ឯកសារយោង និងគន្ថនិទ្ទេស (References)", type: "list", c: [
             "• <b>Microsoft Learn (Overview of ASP.NET Core MVC):</b> <i style='color:var(--accent-blue);'>https://learn.microsoft.com/en-us/aspnet/core/mvc/overview</i>",
             "• <b>Microsoft Learn (Views in ASP.NET Core MVC):</b> <i style='color:var(--accent-blue);'>https://learn.microsoft.com/en-us/aspnet/core/mvc/views/overview</i>",
@@ -671,8 +608,8 @@ namespace SchoolApp.Controllers
             "• <b>សៀវភៅគោល:</b> Freeman, A. (2024). <i>Pro ASP.NET Core MVC 8</i>. Apress. (10th Edition)"
         ]},
 
-        // 22. NEXT CHAPTER PREVIEW
-        { t: "ជំពូកបន្ទាប់៖ ជំពូកទី ៤ - Routing, Parameters & HTTP Methods ក្នុង API និង MVC Form", type: "split", img: "https://images.unsplash.com/photo-1542831371-29b0f74f9713?auto=format&fit=crop&w=1200&q=80", fallback: "none", c: "<b>ជំពូកទី ៤៖ Routing, Parameters & HTTP Methods ក្នុង API និង MVC Form Submission</b><br><br>បន្ទាប់ពីបានយល់ដឹងពីការបញ្ជូនទិន្នន័យទាំងពីរទម្រង់ (HTML Page និង JSON Array) ជំពូកបន្ទាប់យើងនឹងសិក្សាពី៖<br><ul style='margin-left:2vw; margin-top:1.5vh;'><li style='margin-bottom:1vh;'><b class='highlight'>HTTP Methods:</b> ការប្រើប្រាស់ GET, POST, PUT, DELETE សម្រាប់ប្រតិបត្តិការ CRUD</li><li style='margin-bottom:1vh;'><b class='highlight'>Parameters Capturing:</b> របៀបចាប់យកទិន្នន័យពី Query String, Route parameters និង Request Body</li><li><b class='highlight'>MVC Form Submission:</b> របៀបបញ្ជូនទិន្នន័យពីទម្រង់ Form របស់ HTML ទៅកាន់ Server</li></ul>" }
+        // 26. NEXT CHAPTER PREVIEW
+        { t: "ជំពូកបន្ទាប់៖ ជំពូកទី ៤ - Routing, Parameters & HTTP Methods", type: "split", img: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=1200&q=80", fallback: "none", c: "<b>ជំពូកទី ៤៖ Routing, Parameters & HTTP Methods ក្នុង API និង MVC Form Submission</b><br><br>បន្ទាប់ពីបានយល់ដឹងពីការបញ្ជូនទិន្នន័យទាំងពីរទម្រង់ (HTML Page និង JSON Array) ជំពូកបន្ទាប់យើងនឹងសិក្សាពី៖<br><ul style='margin-left:2vw; margin-top:1.5vh;'><li style='margin-bottom:1vh;'><b class='highlight'>HTTP Methods:</b> ការប្រើប្រាស់ GET, POST, PUT, DELETE សម្រាប់ប្រតិបត្តិការ CRUD</li><li style='margin-bottom:1vh;'><b class='highlight'>Parameters Capturing:</b> របៀបចាប់យកទិន្នន័យពី Query String, Route parameters និង Request Body</li><li><b class='highlight'>MVC Form Submission:</b> របៀបបញ្ជូនទិន្នន័យពីទម្រង់ Form របស់ HTML ទៅកាន់ Server</li></ul>" }
     ];
 
     // INJECTION ENGINE
@@ -686,11 +623,11 @@ namespace SchoolApp.Controllers
                 <div style="text-align: center; margin: auto; width: 100%;">
                     <div style="margin-bottom: 2vh; display: flex; flex-direction: column; align-items: center;">
                         <img src="images/Logo.png" style="height: 8.5vw;" alt="Angkor University Logo" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'">
-                        <h2 style="font-family: 'Koulen', sans-serif; color: var(--text-main); font-size: 3.2vw; margin: 10px 0 0 0; font-weight: normal;">សាកលវិទ្យាល័យអង្គរ</h2>
+                        <h2 style="font-family: 'Koulen', sans-serif; color: var(--text-main); font-size: 3vw; margin: 10px 0 0 0; font-weight: normal;">សាកលវិទ្យាល័យអង្គរ</h2>
                     </div>
-                    <h3 style="font-family: 'Siemreap', sans-serif; font-size: 1.6vw; color: var(--text-muted); margin-bottom: 2.5vh; text-align: center !important;">មុខវិជ្ជា៖ បច្ចេកវិទ្យា ASP.NET និងប្រព័ន្ធគ្រប់គ្រងមូលដ្ឋានទិន្នន័យ SQL Server</h3>
-                    <div style="background: var(--accent-purple); color: white; padding: 1.2vh 3.5vw; border-radius: 5vw; display: inline-block; font-size: 1.4vw; font-weight: bold; margin-bottom: 2.5vh; box-shadow: 0 10px 20px rgba(81, 43, 212, 0.3); font-family: 'Koulen', sans-serif;">ឯកសារមេរៀន (Lecture Presentation) | ជំពូកទី ៣</div>
-                    <h1 style="max-width: 90%; margin: 0 auto; line-height: 1.3; font-family: 'Koulen', sans-serif; font-size: 2.4vw;">Controllers, Action Methods, Razor Views (HTML) និង Web API (JSON) Basics</h1>
+                    <h3 style="font-family: 'Siemreap', sans-serif; font-size: 1.5vw; color: var(--text-muted); margin-bottom: 2.5vh; text-align: center !important;">មុខវិជ្ជា៖ បច្ចេកវិទ្យា ASP.NET និងប្រព័ន្ធគ្រប់គ្រងមូលដ្ឋានទិន្នន័យ SQL Server</h3>
+                    <div style="background: var(--accent-purple); color: white; padding: 1.2vh 3.5vw; border-radius: 5vw; display: inline-block; font-size: 1.3vw; font-weight: bold; margin-bottom: 2.5vh; box-shadow: 0 10px 20px rgba(81, 43, 212, 0.3); font-family: 'Koulen', sans-serif;">ឯកសារមេរៀន (Lecture Presentation) | ជំពូកទី ៣</div>
+                    <h1 style="max-width: 90%; margin: 0 auto; line-height: 1.3; font-family: 'Koulen', sans-serif; font-size: 2.2vw;">Controllers, Action Methods, Razor Views (HTML) និង Web API (JSON) Basics</h1>
                     <div style="margin-top: 4vh; display: flex; gap: 4vw; justify-content: center; align-items: center;">
                         <div style="text-align: center; background: white; padding: 10px; border-radius: 50%; box-shadow: 0 5px 15px rgba(0,0,0,0.05); display: flex;"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg" style="height: 3.8vw; object-fit: contain;"></div>
                         <div style="text-align: center; background: white; padding: 10px; border-radius: 50%; box-shadow: 0 5px 15px rgba(0,0,0,0.05); display: flex;"><img src="https://upload.wikimedia.org/wikipedia/commons/9/9a/Visual_Studio_Code_1.35_icon.svg" style="height: 3.8vw; object-fit: contain;"></div>
@@ -698,7 +635,7 @@ namespace SchoolApp.Controllers
                         <div style="text-align: center; background: white; padding: 10px; border-radius: 50%; box-shadow: 0 5px 15px rgba(0,0,0,0.05); display: flex;"><img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" style="height: 3.8vw; object-fit: contain;"></div>
                     </div>
                 </div>`;
-            slide.innerHTML = `<div id="h-placeholder-${index+1}"></div> ${bodyContent}`;
+            slide.innerHTML = `<div id="h-placeholder-1"></div> ${bodyContent}`;
         } else if(item.type === "prof") {
             bodyContent = `
                 <div class="two-column">
@@ -706,58 +643,63 @@ namespace SchoolApp.Controllers
                         <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" style="width: 18vw; height: 18vw; border-radius: 50%; border: 6px solid var(--accent-purple); object-fit: cover; box-shadow: 0 10px 25px rgba(0,0,0,0.2);">
                     </div>
                     <div class="card" style="border-top: 5px solid var(--accent-purple); border-left: none;">
-                        <h3 style="font-size: 2.3vw; color: var(--accent-purple); font-family: 'Koulen', sans-serif; margin-bottom: 1.2vh; font-weight: normal; text-align: left !important;">សាស្ត្រាចារ្យបង្រៀន សឿង លីម <span style="font-size: 1.5vw; color: var(--text-muted); font-family: 'Fira Code', monospace;">(Soeurng LIM)</span></h3>
-                        <p style="font-size:1.4vw; margin-bottom:0.6vh;"><b><i class="fa-solid fa-graduation-cap keyword-icon"></i> កម្រិតគុណវុឌ្ឍិ៖</b> បរិញ្ញាបត្រជាន់ខ្ពស់ - ព័ត៌មានវិទ្យា</p>
-                        <p style="font-size:1.4vw; margin-bottom:0.6vh;"><b><i class="fa-solid fa-envelope keyword-icon"></i> អ៊ីម៉ែល៖</b> soeurnglim@gmail.com</p>
-                        <p style="font-size:1.4vw; margin-bottom:0.6vh;"><b><i class="fa-solid fa-phone keyword-icon"></i> ទូរស័ព្ទ៖</b> ០៦១ ២២៧ ៩៣៣</p>
+                        <h3 style="font-size: 2.2vw; color: var(--accent-purple); font-family: 'Koulen', sans-serif; margin-bottom: 1.2vh; font-weight: normal; text-align: left !important;">សាស្ត្រាចារ្យបង្រៀន សឿង លីម <span style="font-size: 1.4vw; color: var(--text-muted); font-family: 'Fira Code', monospace;">(Soeurng LIM)</span></h3>
+                        <p style="font-size:1.6vw; margin-bottom:0.6vh;"><b><i class="fa-solid fa-graduation-cap keyword-icon"></i> កម្រិតគុណវុឌ្ឍិ៖</b> បរិញ្ញាបត្រជាន់ខ្ពស់ - ព័ត៌មានវិទ្យា</p>
+                        <p style="font-size:1.6vw; margin-bottom:0.6vh;"><b><i class="fa-solid fa-envelope keyword-icon"></i> អ៊ីម៉ែល៖</b> soeurnglim@gmail.com</p>
+                        <p style="font-size:1.6vw; margin-bottom:0.6vh;"><b><i class="fa-solid fa-phone keyword-icon"></i> ទូរស័ព្ទ៖</b> ០៦១ ២២៧ ៩៣៣</p>
                         <hr style="margin: 1.5vh 0; border: 1px solid #E2E8F0;">
-                        <p style="font-size:1.4vw;"><b><i class="fa-solid fa-star keyword-icon"></i> ក្រេឌីតមុខវិជ្ជា៖</b> ៣ ក្រេឌីត (IT401-WebAPI/MVC)</p>
+                        <p style="font-size:1.6vw;"><b><i class="fa-solid fa-star keyword-icon"></i> ក្រេឌីតមុខវិជ្ជា៖</b> ៣ ក្រេឌីត (IT401-WebAPI/MVC)</p>
                     </div>
                 </div>`;
-            slide.innerHTML = `<div id="h-placeholder-${index+1}"></div> <h2 class="slide-title"><i class="fa-solid fa-user-tie"></i> ${item.t}</h2> <div class="content-body">${bodyContent}</div>`;
+            slide.innerHTML = `<div id="h-placeholder-2"></div> <h2 class="slide-title"><i class="fa-solid fa-user-tie"></i> ${item.t}</h2> <div class="content-body">${bodyContent}</div>`;
         } else if(item.type === "split") {
-            let imgStyle = 'object-fit: contain; width: 100%; height: 100%; border-radius: 1vw;';
+            let visualBox = '';
+            if (item.graphicType && schematics[item.graphicType]) {
+                visualBox = schematics[item.graphicType];
+            } else if (item.img) {
+                visualBox = `<img src="${item.img}" style="object-fit: cover; width: 100%; height: 100%; border-radius: 1vw;">`;
+            }
+
             bodyContent = `
                 <div class="two-column">
                     <div class="card" style="border:none; background:transparent; padding:0; box-shadow:none;">
-                        <p style="font-size:1.4vw; line-height: 1.6;">${item.c}</p>
+                        <p style="font-size:1.6vw; line-height: 1.7;">${item.c}</p>
                     </div>
                     <div class="visual-frame">
-                        <img src="${item.img}" style="${imgStyle}" onerror="handleImgError(this, '${item.fallback}')">
-                        <div class="schematic-fallback"></div>
+                        ${visualBox}
                     </div>
                 </div>`;
             slide.innerHTML = `<div id="h-placeholder-${index+1}"></div> <h2 class="slide-title">${item.t}</h2> <div class="content-body">${bodyContent}</div>`;
         } else if(item.type === "structured") {
+            let visualBox = '';
+            if (item.graphicType && schematics[item.graphicType]) {
+                visualBox = schematics[item.graphicType];
+            }
+
             bodyContent = `
-                <div style="display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 1.8vw; height: 100%; align-items: stretch; padding-bottom: 1.5vh;">
-                    <!-- Left Column: Def & Syntax -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.8vw; height: 100%; align-items: stretch; padding-bottom: 1.5vh;">
                     <div style="display: flex; flex-direction: column; gap: 1.5vh; height: 100%;">
                         <div class="card" style="border-left-color: var(--accent-purple); padding: 1.8vh 2vw; flex: 1; justify-content: flex-start;">
-                            <h4 style="font-size: 1.5vw; margin-bottom: 0.6vh; display: flex; align-items: center; gap: 0.5vw;">
+                            <h4 style="font-size: 2vw; margin-bottom: 0.6vh; display: flex; align-items: center; gap: 0.5vw;">
                                 <i class="fa-solid fa-book-bookmark" style="color: var(--accent-purple);"></i> ១. និយមន័យ (Definition)
                             </h4>
-                            <p style="font-size: 1.3vw; line-height: 1.5;">${item.definition}</p>
+                            <p style="font-size: 1.6vw; line-height: 1.6;">${item.definition}</p>
                         </div>
                         <div class="card" style="border-left-color: var(--accent-blue); padding: 1.8vh 2vw; flex: 1.1; justify-content: flex-start;">
-                            <h4 style="font-size: 1.5vw; margin-bottom: 0.6vh; display: flex; align-items: center; gap: 0.5vw;">
+                            <h4 style="font-size: 2vw; margin-bottom: 0.6vh; display: flex; align-items: center; gap: 0.5vw;">
                                 <i class="fa-solid fa-code" style="color: var(--accent-blue);"></i> ២. ទម្រង់ទូទៅ (Syntax)
                             </h4>
-                            <div style="background: var(--code-bg); padding: 1vh 1.2vw; border-radius: 6px; font-family: 'Fira Code', monospace; font-size: 1.05vw; color: #10B981; overflow-x: auto; margin-top: 0.5vh; white-space: pre; line-height: 1.4;">${item.syntax}</div>
+                            <div style="background: var(--code-bg); padding: 1vh 1.2vw; border-radius: 6px; font-family: 'Fira Code', monospace; font-size: 1.25vw; color: #10B981; overflow-x: auto; margin-top: 0.5vh; white-space: pre; line-height: 1.5;">${item.syntax}</div>
                         </div>
                     </div>
-                    
-                    <!-- Right Column: Visual Schematic Diagram -->
                     <div style="display: flex; flex-direction: column; gap: 1.5vh; height: 100%; justify-content: space-between;">
                         <div class="visual-frame" style="flex: 1.2;">
-                            <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" style="display:none;" onerror="handleImgError(this, '${item.fallback}')">
-                            <div class="schematic-fallback" style="display:flex; width:100%; height:100%;"></div>
+                           ${visualBox}
                         </div>
-                        
-                        <div class="workbook-note" style="margin-top: 0; padding: 1.5vh 2vw; border-radius: 8px; border-color: var(--accent-yellow); font-size: 1.2vw; gap: 0.8vw; background-color: #FFFDF0;">
-                            <i class="fa-solid fa-circle-exclamation" style="font-size: 2vw; color: var(--accent-yellow);"></i>
+                        <div class="workbook-note" style="margin-top: 0; padding: 1.5vh 2vw; border-radius: 8px; border-color: var(--accent-yellow); font-size: 1.4vw; gap: 0.8vw; background-color: #FFFDF0;">
+                            <i class="fa-solid fa-circle-exclamation" style="font-size: 1.8vw; color: var(--accent-yellow);"></i>
                             <div>
-                                <span style="font-weight: bold; color: #B45309; font-size: 1.25vw; font-family:'Koulen', sans-serif; display:block; margin-bottom:2px;">៣. ព័ត៌មានលំហាត់ក្នុងស្លាយ (Practice Exercises)</span>
+                                <span style="font-weight: bold; color: #B45309; font-size: 1.5vw; font-family:'Koulen', sans-serif; display:block; margin-bottom:2px;">៣. ព័ត៌មានលំហាត់ក្នុងស្លាយ (Practice Exercises)</span>
                                 ${item.labNote}
                             </div>
                         </div>
@@ -766,28 +708,34 @@ namespace SchoolApp.Controllers
             `;
             slide.innerHTML = `<div id="h-placeholder-${index+1}"></div> <h2 class="slide-title">${item.t}</h2> <div class="content-body" style="height: calc(100% - 6vh);">${bodyContent}</div>`;
         } else if(item.type === "grid") {
-            bodyContent = `<div class="card-grid" style="height: auto;">${item.c.map(c => `<div class="card" style="padding: 1.8vh 2vw;"><h4>${c.h}</h4><p style="font-size:1.3vw; line-height: 1.5;">${c.p}</p></div>`).join('')}</div>`;
+            bodyContent = `<div class="card-grid" style="height: auto;">${item.c.map(c => `<div class="card" style="padding: 1.8vh 2vw;"><h4>${c.h}</h4><p style="font-size:1.6vw; line-height: 1.7;">${c.p}</p></div>`).join('')}</div>`;
             slide.innerHTML = `<div id="h-placeholder-${index+1}"></div> <h2 class="slide-title">${item.t}</h2> <div class="content-body">${bodyContent}</div>`;
         } else if(item.type === "list") {
-            bodyContent = `<div class="card" style="padding:3vh 4vw;"><ul style="list-style:none; line-height:1.9;">${item.c.map(l => `<li style="margin-bottom:1vh; font-size:1.45vw; text-align: left !important;">${l}</li>`).join('')}</ul></div>`;
+            bodyContent = `<div class="card" style="padding:3vh 4vw;"><ul style="list-style:none; line-height:1.8;">${item.c.map(l => `<li style="margin-bottom:1vh; font-size:1.6vw; text-align: left !important; line-height:1.7;">${l}</li>`).join('')}</ul></div>`;
             slide.innerHTML = `<div id="h-placeholder-${index+1}"></div> <h2 class="slide-title">${item.t}</h2> <div class="content-body">${bodyContent}</div>`;
         } else if(item.type === "table") {
             let trs = item.rows.map((row, i) => {
                 if (i === 0) return `<tr>${row.map(th => `<th>${th}</th>`).join('')}</tr>`;
                 return `<tr>${row.map(td => `<td>${td}</td>`).join('')}</tr>`;
             }).join('');
-            bodyContent = `<table style="font-size: 1.35vw;">${trs}</table>`;
+            bodyContent = `<table style="font-size: 1.5vw; width:100%;">${trs}</table>`;
             slide.innerHTML = `<div id="h-placeholder-${index+1}"></div> <h2 class="slide-title">${item.t}</h2> <div class="content-body">${bodyContent}</div>`;
         } else if(item.type === "code") {
             let safeHtml = item.code.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-            let safeString = item.code.replace(/\\/g, '\\\\').replace(/`/g, '\\`').replace(/\n/g, '\\n');
-            bodyContent = `<div class="code-container" style="max-height: 44vh;"><div class="code-label">CODE SNIPPET</div><button class="copy-btn" onclick="navigator.clipboard.writeText(\`${safeString}\`); this.innerText='Copied!'; setTimeout(()=>this.innerText='Copy', 2000);"><i class="fa-regular fa-copy"></i> Copy</button><pre><code>${safeHtml}</code></pre></div><p style="margin-top:6px; font-weight:bold; font-size: 1.4vw; text-align: left !important;"><i class="fa-solid fa-circle-info" style="color:var(--accent-blue);"></i> ${item.desc}</p>`;
+            bodyContent = `
+                <div class="code-container" style="max-height: 42vh;">
+                    <div class="code-label">CODE SNIPPET</div>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Copy</button>
+                    <pre><code>${safeHtml}</code></pre>
+                </div>
+                <p style="margin-top:6px; font-weight:bold; font-size: 1.5vw; text-align: left !important; line-height: 1.6;">
+                    <i class="fa-solid fa-circle-info" style="color:var(--accent-blue);"></i> ${item.desc}
+                </p>
+            `;
             slide.innerHTML = `<div id="h-placeholder-${index+1}"></div> <h2 class="slide-title">${item.t}</h2> <div class="content-body">${bodyContent}</div>`;
         } else if(item.type === "exercise") {
-            bodyContent = `<div class="exercise-badge"><i class="fa-solid fa-laptop-code"></i> លំហាត់អនុវត្តន៍ (Practical Lab)</div><div class="card" style="border-left-color: var(--accent-yellow); padding: 2.2vh 3vw;"><h4>${item.h}</h4><p style="font-size: 1.4vw;">${item.p}</p></div><div class="workbook-note" style="padding: 1.2vh 2vw; margin-top: 1.2vh;"><i class="fa-solid fa-book-journal-whills"></i> កំណត់សម្គាល់៖ សូមអនុវត្តកិច្ចការនេះតាមការណែនាំលម្អិតដែលមាននៅក្នុងសៀវភៅលំហាត់ (Lab Workbook) របស់លោកគ្រូ។</div>`;
+            bodyContent = `<div class="exercise-badge"><i class="fa-solid fa-laptop-code"></i> លំហាត់អនុវត្តន៍ (Practical Lab)</div><div class="card" style="border-left-color: var(--accent-yellow); padding: 2.5vh 3vw;"><h4>${item.h}</h4><p style="font-size: 1.6vw; line-height:1.6;">${item.p}</p></div><div class="workbook-note" style="padding: 1.2vh 2vw; margin-top: 1.2vh;"><i class="fa-solid fa-book-journal-whills"></i> កំណត់សម្គាល់៖ សូមអនុវត្តកិច្ចការនេះតាមការណែនាំលម្អិតដែលមាននៅក្នុងសៀវភៅលំហាត់ (Lab Workbook) របស់លោកគ្រូ។</div>`;
             slide.innerHTML = `<div id="h-placeholder-${index+1}"></div> <h2 class="slide-title"><i class="fa-solid fa-laptop-code" style="color:var(--accent-yellow);"></i> ${item.t}</h2> <div class="content-body">${bodyContent}</div>`;
-            slideWrapper.appendChild(slide);
-            return; 
         }
 
         slideWrapper.appendChild(slide);
@@ -799,23 +747,24 @@ namespace SchoolApp.Controllers
     finalSlide.innerHTML = `
         <div id="h-placeholder-final"></div>
         <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; text-align: center; margin: auto;">
-            <h1 style="font-size: 5.5vw; color: var(--accent-purple); margin-bottom: 2.5vh; font-family: 'Koulen', sans-serif;"><i class="fa-solid fa-comments"></i> សំណួរ និងចម្លើយ ?</h1>
-            <p style="font-size: 2.3vw; color: var(--text-muted); margin-bottom: 4.5vh; text-align: center !important;">សូមអរគុណនិស្សិតទាំងអស់សម្រាប់ការយកចិត្តទុកដាក់!</p>
+            <h1 style="font-size: 5vw; color: var(--accent-purple); margin-bottom: 2.5vh; font-family: 'Koulen', sans-serif;"><i class="fa-solid fa-comments"></i> សំណួរ និងចម្លើយ ?</h1>
+            <p style="font-size: 2vw; color: var(--text-muted); margin-bottom: 4.5vh; text-align: center !important;">សូមអរគុណនិស្សិតទាំងអស់សម្រាប់ការយកចិត្តទុកដាក់!</p>
             <div style="display: flex; gap: 2vw; justify-content: center;">
                 <div style="background: #FFFFFF; padding: 1.8vh 3.5vw; border-radius: 5vw; border: 2px solid var(--accent-purple); box-shadow: 0 10px 20px rgba(0,0,0,0.05);">
-                    <p style="margin: 0; font-weight: bold; font-size: 1.7vw; color: var(--accent-purple); text-align: center !important;"><i class="fa-solid fa-envelope"></i> soeurnglim@gmail.com</p>
+                    <p style="margin: 0; font-weight: bold; font-size: 1.6vw; color: var(--accent-purple); text-align: center !important;"><i class="fa-solid fa-envelope"></i> soeurnglim@gmail.com</p>
                 </div>
                 <div style="background: #FFFFFF; padding: 1.8vh 3.5vw; border-radius: 5vw; border: 2px solid #0088cc; box-shadow: 0 10px 20px rgba(0,0,0,0.05);">
-                    <p style="margin: 0; font-weight: bold; font-size: 1.7vw; color: #0088cc; text-align: center !important;"><i class="fa-brands fa-telegram"></i> ០៦១ ២២៧ ៩៣៣</p>
+                    <p style="margin: 0; font-weight: bold; font-size: 1.6vw; color: #0088cc; text-align: center !important;"><i class="fa-brands fa-telegram"></i> ០៦១ ២២៧ ៩៣៣</p>
                 </div>
             </div>
         </div>
     `;
     slideWrapper.appendChild(finalSlide);
 
-    // Apply Headers
-    document.querySelectorAll('[id^="h-placeholder"]').forEach((p, i) => {
-        if(i > 0 && i < chapterData.length + 1) {
+    // Apply Headers correctly parsing slide numbers
+    document.querySelectorAll('[id^="h-placeholder-"]').forEach((p) => {
+        const num = parseInt(p.id.replace('h-placeholder-', ''));
+        if (num > 1 && num <= chapterData.length) {
             p.outerHTML = headerHTML;
         } else {
             p.outerHTML = ""; 
@@ -860,7 +809,20 @@ namespace SchoolApp.Controllers
         else if (e.key === "ArrowLeft" || e.key === "PageUp") { window.prevSlide(); }
     });
 
-    // Start
+    window.copyCode = function(btn) {
+        const pre = btn.nextElementSibling;
+        if (pre) {
+            const code = pre.querySelector('code') || pre;
+            const text = code.textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                btn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+                setTimeout(() => {
+                    btn.innerHTML = '<i class="fa-regular fa-copy"></i> Copy';
+                }, 2000);
+            });
+        }
+    };
+
     updateSlide(0);
 </script>
 </body>
