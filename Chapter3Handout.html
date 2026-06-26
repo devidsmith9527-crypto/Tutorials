@@ -145,40 +145,11 @@
         table.standard-table th { background: var(--accent); color: white; font-family: var(--font-kh-heading); font-size: 10.5pt; text-align: center; }
         table.standard-table td { font-size: 10pt; line-height: 1.5; }
 
-        /* Visual Frames and Fallback Elements */
-        .visual-frame { 
-            background: #FFFFFF; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: center; 
-            height: 100%; 
-            max-height: 280px; 
-            width: 100%; 
-            border-radius: 8px; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.03); 
-            padding: 8px; 
-            border: 1px solid var(--border-light);
-            overflow: hidden;
-            position: relative;
-            margin: 10px 0;
+        /* Visual Frames and Inline Graphics */
+        .graphic-box {
+            background: var(--bg-light); border: 1px solid var(--border-light);
+            border-radius: 8px; padding: 12px; margin: 10px 0; width: 100%;
         }
-        .visual-frame img { max-height: 100%; max-width: 100%; object-fit: contain; border-radius: 4px;}
-        
-        .schematic-fallback {
-            display: none;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            height: 100%;
-            background: #F1F5F9;
-            color: #475569;
-            padding: 10px;
-            text-align: center;
-            border-radius: 4px;
-        }
-
         .two-column { 
             display: grid; 
             grid-template-columns: 1.1fr 0.9fr; 
@@ -188,22 +159,20 @@
         }
 
         /* Code & Boxes */
-        .code-window { background: var(--primary); border-radius: 8px; overflow: hidden; margin: 10px 0; border: 1px solid #334155;}
-        .code-header { background: #1E293B; padding: 6px 12px; display: flex; align-items: center; justify-content: space-between; }
+        .code-window { background: var(--primary); border-radius: 8px; overflow: hidden; margin: 10px 0; border: 1px solid #334155; box-shadow: 0 4px 6px rgba(0,0,0,0.1);}
+        .code-header { background: #1E293B; padding: 8px 12px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #0F172A;}
         .mac-dots { display: flex; gap: 6px; }
-        .dot { width: 8px; height: 8px; border-radius: 50%; }
+        .dot { width: 10px; height: 10px; border-radius: 50%; }
         .dot-r { background: var(--danger); }
         .dot-y { background: var(--warning); }
         .dot-g { background: var(--success); }
-        .code-title { color: #94A3B8; font-family: var(--font-code); font-size: 8.5pt; }
-        pre { padding: 12px; color: #E2E8F0; font-family: var(--font-code); font-size: 9pt; line-height: 1.4; overflow-x: auto; margin: 0; }
+        .code-title { color: #94A3B8; font-family: var(--font-code); font-size: 8.5pt; font-weight: 500;}
+        pre { padding: 12px; color: #E2E8F0; font-family: var(--font-code); font-size: 9pt; line-height: 1.4; overflow-x: auto; margin: 0; tab-size: 4;}
         code.inline-code { font-family: var(--font-code); background: #F1F5F9; color: var(--danger); padding: 2px 5px; border-radius: 4px; font-size: 9.5pt; font-weight: bold; border: 1px solid var(--border-light); }
         
         .lab-box { background: #FEFCE8; border-left: 5px solid #EAB308; padding: 12px; margin: 10px 0; border-radius: 4px; border: 1px solid #FEF08A; }
         .lab-box h4 { color: #854D0E; margin-bottom: 6px; font-family: var(--font-kh-heading); font-size: 11pt;}
         .lab-box p { font-size: 10pt; line-height: 1.5; margin: 0; }
-
-        .info-box { background: #F0FDF4; border-left: 5px solid var(--success); padding: 12px; margin: 10px 0; border-radius: 4px; border: 1px solid #BBF7D0; }
 
         /* Questions list */
         .q-list { list-style: decimal; padding-left: 18px; font-size: 10.5pt; line-height: 1.6; }
@@ -232,7 +201,6 @@
     <button class="print-btn" onclick="window.print()"><i class="fa-solid fa-print"></i> បោះពុម្ពឯកសារជា PDF (A4 Handout ១៩ ទំព័រ)</button>
 </div>
 
-<!-- PAGE 1: COVER -->
 <div class="a4-page">
     <div class="page-content" style="justify-content: center; align-items: center; text-align: center; background: radial-gradient(circle at center, #F8FAFC 0%, #FFFFFF 100%);">
         <img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" style="width: 140px; margin-bottom: 20px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));">
@@ -256,7 +224,6 @@
     </div>
 </div>
 
-<!-- PAGE 2: OBJECTIVES & TOC -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
@@ -297,7 +264,6 @@
     </div>
 </div>
 
-<!-- PAGE 3: MVC VS API ARCHITECTURE BASICS -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
@@ -328,14 +294,36 @@
                     </tbody>
                 </table>
             </div>
-            <div class="visual-frame">
-                <img src="images/datatype.png" onerror="handleImgError(this, 'datatype')" alt="Data Flow">
-                <div class="schematic-fallback"></div>
+            
+            <div class="graphic-box" style="padding: 10px; background: #F8FAFC;">
+                <div style="font-family:'Suwannaphum',sans-serif; color:var(--accent); font-size:10pt; margin-bottom:8px; text-align:center; font-weight:bold;">ASP.NET Core Architecture Patterns</div>
+                <div style="display:flex; flex-direction:column; gap:8px;">
+                    <div style="background:#F5F3FF; border:1px solid #C084FC; border-radius:4px; padding:6px;">
+                        <span style="font-size:8.5pt; font-weight:bold; color:var(--accent); display:block; margin-bottom:4px;"><i class="fa-solid fa-layer-group"></i> MVC (HTML)</span>
+                        <div style="display:flex; justify-content:space-between; align-items:center; font-size:8pt; font-family:var(--font-en-main);">
+                            <span>Request</span> &rarr;
+                            <span style="background:#FFF; padding:2px 4px; border:1px solid #C084FC; border-radius:2px;">Controller + View</span> &rarr;
+                            <span style="color:var(--success); font-weight:bold;">HTML Page</span>
+                        </div>
+                    </div>
+                    <div style="background:#EFF6FF; border:1px solid #60A5FA; border-radius:4px; padding:6px;">
+                        <span style="font-size:8.5pt; font-weight:bold; color:var(--secondary); display:block; margin-bottom:4px;"><i class="fa-solid fa-cloud-arrow-down"></i> Web API (JSON)</span>
+                        <div style="display:flex; justify-content:space-between; align-items:center; font-size:8pt; font-family:var(--font-en-main);">
+                            <span>Request</span> &rarr;
+                            <span style="background:#FFF; padding:2px 4px; border:1px solid #60A5FA; border-radius:2px;">ControllerBase</span> &rarr;
+                            <span style="color:var(--success); font-weight:bold;">JSON Data</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
         <div class="sub-heading">ការប្រកាស Class គ្រឹះរបស់ Controller ទាំងពីរប្រភេទ</div>
         <div class="code-window">
+            <div class="code-header">
+                <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+                <div class="code-title">ControllerDeclaration.cs</div>
+            </div>
 <pre><span style="color:#C678DD;">using</span> Microsoft.AspNetCore.Mvc;
 
 <span style="color:#5C6370;">// ១. សម្រាប់ Traditional MVC (HTML Rendering)</span>
@@ -352,7 +340,6 @@
     </div>
 </div>
 
-<!-- PAGE 4: LAB 3.1 IN MVC & API (COMPLETE CODE) -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
@@ -362,8 +349,12 @@
     <div class="page-content">
         <div class="lab-box" style="margin-top:0;">
             <h4><i class="fa-solid fa-laptop-code"></i> ដំណោះស្រាយលំហាត់ Lab ៣.១: Welcome Controllers & Views</h4>
-            <p><b>MVC Controller File:</b> <code>Controllers/WelcomeController.cs</code></p>
-            <div class="code-window" style="margin-top:2px; margin-bottom: 2px;">
+            <p><b>MVC Controller File:</b></p>
+            <div class="code-window" style="margin-top:2px; margin-bottom: 8px;">
+                <div class="code-header">
+                    <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+                    <div class="code-title">Controllers/WelcomeController.cs</div>
+                </div>
 <pre><span style="color:#C678DD;">using</span> Microsoft.AspNetCore.Mvc;
 
 <span style="color:#C678DD;">namespace</span> SchoolApp.Controllers
@@ -378,14 +369,24 @@
     }
 }</pre>
             </div>
-            <p style="margin-bottom: 2px;"><b>MVC View File:</b> <code>Views/Welcome/Index.cshtml</code></p>
-            <div class="code-window" style="margin-top:2px; margin-bottom: 2px;">
+            
+            <p style="margin-bottom: 2px;"><b>MVC View File:</b></p>
+            <div class="code-window" style="margin-top:2px; margin-bottom: 8px;">
+                <div class="code-header">
+                    <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+                    <div class="code-title">Views/Welcome/Index.cshtml</div>
+                </div>
 <pre>&lt;div class=<span style="color:#98C379;">"container mt-5 text-center"</span>&gt;
     &lt;h1 class=<span style="color:#98C379;">"text-success"</span>&gt;<span style="color:#E06C75;">@ViewBag.Greeting</span>&lt;/h1&gt;
 &lt;/div&gt;</pre>
             </div>
-            <p style="margin-bottom: 2px;"><b>Web API Controller File:</b> <code>Controllers/WelcomeApiController.cs</code></p>
+            
+            <p style="margin-bottom: 2px;"><b>Web API Controller File:</b></p>
             <div class="code-window" style="margin-top:2px;">
+                <div class="code-header">
+                    <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+                    <div class="code-title">Controllers/WelcomeApiController.cs</div>
+                </div>
 <pre><span style="color:#C678DD;">using</span> Microsoft.AspNetCore.Mvc;
 
 <span style="color:#C678DD;">namespace</span> SchoolApp.Controllers
@@ -396,7 +397,7 @@
         [HttpGet]
         <span style="color:#C678DD;">public</span> IActionResult <span style="color:#61AFEF;">GetGreeting</span>()
         {
-            <span style="color:#C678DD;">var</span> response = <span style="color:#C678DD;">new { greeting = "សួស្តីសាកលវិទ្យាល័យអង្គរ (API Version)!" };</span>
+            <span style="color:#C678DD;">var</span> response = <span style="color:#C678DD;">new</span> { greeting = <span style="color:#98C379;">"សួស្តីសាកលវិទ្យាល័យអង្គរ (API Version)!"</span> };
             <span style="color:#C678DD;">return</span> <span style="color:#61AFEF;">Ok</span>(response);
         }
     }
@@ -410,7 +411,6 @@
     </div>
 </div>
 
-<!-- PAGE 5: THEORY SECTION 3.2 & 3.3 - CONTROLLERS & DATA PASSING -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
@@ -435,22 +435,22 @@
             <tbody>
                 <tr>
                     <td><b>View(model)</b></td>
-                    <td style="text-align: center;">200 OK</td>
+                    <td style="text-align: center;"><span style="color:var(--success); font-weight:bold;">200 OK</span></td>
                     <td>(MVC) បញ្ជូនទិន្នន័យទៅឱ្យឯកសារ Razor View (.cshtml) ដើម្បីបង្ហាញជា HTML ស្អាត។</td>
                 </tr>
                 <tr>
                     <td><b>Ok(data)</b></td>
-                    <td style="text-align: center;">200 OK</td>
+                    <td style="text-align: center;"><span style="color:var(--secondary); font-weight:bold;">200 OK</span></td>
                     <td>(API) សំណើជោគជ័យ និងបញ្ជូនទិន្នន័យត្រឡប់ជា JSON format ទៅ Client។</td>
                 </tr>
                 <tr>
                     <td><b>BadRequest()</b></td>
-                    <td style="text-align: center;">400 Bad Request</td>
+                    <td style="text-align: center;"><span style="color:var(--warning); font-weight:bold;">400 Bad Request</span></td>
                     <td>ទម្រង់សំណើផ្ញើមកខុស ឬមិនពេញលេញ។ ប្រើប្រាស់នៅពេល Client បញ្ជូនទិន្នន័យមកខុសលក្ខខណ្ឌ។</td>
                 </tr>
                 <tr>
                     <td><b>NotFound()</b></td>
-                    <td style="text-align: center;">404 Not Found</td>
+                    <td style="text-align: center;"><span style="color:var(--danger); font-weight:bold;">404 Not Found</span></td>
                     <td>រកមិនឃើញទិន្នន័យដែលស្នើសុំ។ ប្រើប្រាស់ពេលស្វែងរកទិន្នន័យតាម ID រួចរកមិនឃើញក្នុង Database។</td>
                 </tr>
             </tbody>
@@ -461,6 +461,20 @@
             • <b>ViewData៖</b> ជា Dictionary (Key-Value) សម្គាល់ដោយ Key ជា String។ ទាមទារការ Cast Type ពេលហៅចេញ។<br>
             • <b>ViewBag៖</b> ជា Dynamic Property សម្គាល់ដោយ dynamic variables។ ងាយស្រួលសរសេរ តែងាយប្រឈមនឹងកំហុសអក្សរ (No Type Safety)។
         </div>
+        
+        <div class="graphic-box" style="display:flex; justify-content:space-around; align-items:center; padding:15px; border-radius:8px;">
+            <div style="background:#FEF3C7; border:2px dashed #F59E0B; padding:10px; border-radius:8px; text-align:center; width: 45%;">
+                <b style="color:#D97706; font-size: 11pt;"><i class="fa-solid fa-box-open"></i> ViewBag</b><br>
+                <span style="color:#475569; font-size:9pt;">Dynamic Properties</span><br>
+                <code style="background:#FFF; padding:2px 6px; border-radius:4px; display:inline-block; margin-top:6px; color:#B45309; font-size:9pt;">ViewBag.UserName = "Lim";</code>
+            </div>
+            <div style="background:#ECFDF5; border:2px dashed #10B981; padding:10px; border-radius:8px; text-align:center; width: 45%;">
+                <b style="color:#059669; font-size: 11pt;"><i class="fa-solid fa-key"></i> ViewData</b><br>
+                <span style="color:#475569; font-size:9pt;">Dictionary Key-Value</span><br>
+                <code style="background:#FFF; padding:2px 6px; border-radius:4px; display:inline-block; margin-top:6px; color:#047857; font-size:9pt;">ViewData["User"] = "Lim";</code>
+            </div>
+        </div>
+
     </div>
     <div class="global-footer">
         <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
@@ -468,7 +482,6 @@
     </div>
 </div>
 
-<!-- PAGE 6: LAB 3.2 SOLUTION - VIEWDATA & VIEWBAG DEMO -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
@@ -480,8 +493,11 @@
             <h4><i class="fa-solid fa-laptop-code"></i> ដំណោះស្រាយលំហាត់ Lab ៣.២: ViewData & ViewBag Demonstration</h4>
             <p><b>គម្រោង (Project):</b> <code>SchoolApp</code> | <b>ទីតាំង (File):</b> <code>Controllers/DemoController.cs</code></p>
             
-            <div class="code-window" style="margin-top:4px; margin-bottom: 4px;">
-                <div class="code-title" style="padding: 2px 10px; color:#aaa; font-size:8.5pt;">Controllers/DemoController.cs</div>
+            <div class="code-window" style="margin-top:4px; margin-bottom: 12px;">
+                <div class="code-header">
+                    <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+                    <div class="code-title">Controllers/DemoController.cs</div>
+                </div>
 <pre><span style="color:#C678DD;">using</span> Microsoft.AspNetCore.Mvc;
 
 <span style="color:#C678DD;">namespace</span> SchoolApp.Controllers
@@ -493,15 +509,19 @@
             ViewData[<span style="color:#98C379;">"Title"</span>] = <span style="color:#98C379;">"University Statistics"</span>;
             ViewBag.CampusName = <span style="color:#98C379;">"Angkor University"</span>;
             ViewBag.StudentCount = <span style="color:#D19A66;">1500</span>;
+            
             <span style="color:#C678DD;">return</span> <span style="color:#61AFEF;">View</span>();
         }
     }
 }</pre>
             </div>
 
-            <p style="margin-bottom: 2px;"><b>ឯកសារទិដ្ឋភាពបង្ហាញ (View File):</b> <code>Views/Demo/PassingDemo.cshtml</code></p>
+            <p style="margin-bottom: 2px;"><b>ឯកសារទិដ្ឋភាពបង្ហាញ (View File):</b></p>
             <div class="code-window" style="margin-top:2px;">
-                <div class="code-title" style="padding: 2px 10px; color:#aaa; font-size:8.5pt;">Views/Demo/PassingDemo.cshtml</div>
+                <div class="code-header">
+                    <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+                    <div class="code-title">Views/Demo/PassingDemo.cshtml</div>
+                </div>
 <pre>&lt;div class=<span style="color:#98C379;">"container mt-4"</span>&gt;
     &lt;div class=<span style="color:#98C379;">"card border-primary"</span> style=<span style="color:#98C379;">"max-width: 500px;"</span>&gt;
         &lt;div class=<span style="color:#98C379;">"card-header bg-primary text-white"</span>&gt;
@@ -522,7 +542,6 @@
     </div>
 </div>
 
-<!-- PAGE 7: THEORY SECTION 3.4 & 3.5 - STRONGLY-TYPED VIEWS & API -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
@@ -530,24 +549,36 @@
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
     <div class="page-content">
-        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-shield-halved"></i> ៣.៤ & ៣.៥ Student Model, Strongly-Typed Views & Web API</div>
+        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-shield-halved"></i> ៣.៤ & ៣.៥ Strongly-Typed Views & Web API Model Binding</div>
         <div class="text-block">
-            <b>Strongly-Typed View</b> គឺជាវិធីសាស្ត្រដ៏ល្អ និងមានសុវត្ថិភាពបំផុតក្នុងការបញ្ជូនទិន្នន័យពី Controller ទៅកាន់ Razor View។ យើងចងភ្ជាប់ទំព័រ View ទៅនឹង Class Model ជាក់លាក់មួយដោយប្រើប្រាស់និមិត្តសញ្ញា <code>@model</code> នៅខាងលើបំផុតនៃឯកសារ `.cshtml`។ វាផ្ដល់នូវ IntelliSense និង compile-time type checking។
+            <b>Strongly-Typed View</b> គឺជាវិធីសាស្ត្រដ៏ល្អ និងមានសុវត្ថិភាពបំផុតក្នុងការបញ្ជូនទិន្នន័យពី Controller ទៅកាន់ Razor View។ យើងចងភ្ជាប់ទំព័រ View ទៅនឹង Class Model ជាក់លាក់មួយដោយប្រើប្រាស់និមិត្តសញ្ញា <code>@model</code> នៅខាងលើបំផុតនៃឯកសារ `.cshtml`។ 
         </div>
         
-        <div class="two-column">
-            <div class="visual-frame">
-                <img src="images/mapping.png" onerror="handleImgError(this, 'mapping')" alt="Serialization Flow">
-                <div class="schematic-fallback"></div>
+        <div class="graphic-box" style="text-align:center; padding:15px; border-radius:8px;">
+            <div style="font-family:'Suwannaphum',sans-serif; color:var(--accent); font-size:10pt; margin-bottom:10px; font-weight:bold;"><i class="fa-solid fa-link"></i> Strongly-Typed Binding Flow</div>
+            <div style="background:#EEF2FF; border:2px solid #6366F1; padding:15px; border-radius:8px; display:inline-block; text-align:left;">
+                <b style="color:#4F46E5; font-size: 10pt;">1. ក្នុង Controller (C#)</b><br>
+                <code style="background:#FFF; padding:4px 8px; border-radius:4px; display:inline-block; margin-top:4px; font-size: 9.5pt; font-family:var(--font-code);">return View(<span style="color:#E11D48;">studentObject</span>);</code>
+                
+                <div style="margin: 8px 0; color: #6366F1; font-size: 12pt; text-align:center;"><i class="fa-solid fa-arrow-down"></i></div>
+                
+                <b style="color:#4F46E5; font-size: 10pt;">2. ក្នុង Razor View (.cshtml)</b><br>
+                <code style="background:#FFF; padding:4px 8px; border-radius:4px; display:inline-block; margin-top:4px; font-size: 9.5pt; font-family:var(--font-code);">@model <span style="color:#E11D48;">SchoolApp.Models.Student</span></code><br>
+                <code style="background:#FFF; padding:4px 8px; border-radius:4px; display:inline-block; margin-top:4px; font-size: 9.5pt; font-family:var(--font-code);">&lt;h1&gt;@Model.Name&lt;/h1&gt;</code>
             </div>
-            <div style="font-size:10pt; line-height:1.6;">
-                <b class="highlight"><i class="fa-solid fa-circle-nodes"></i> ដំណើរការ JSON Serialization៖</b><br>
-                នៅពេល API Controller ហៅប្រើប្រាស់ <code>Ok(data)</code> នោះប្រព័ន្ធ .NET Core Web API នឹងប្រើប្រាស់បណ្ណាល័យ <b>System.Text.Json</b> ដើម្បីដំណើរការ Serialization បំប្លែង C# Collection List ឱ្យទៅជាទម្រង់អត្ថបទ JSON Array ស្វ័យប្រវត្តិ។
-            </div>
+        </div>
+
+        <div style="font-size:10pt; line-height:1.6; margin-bottom: 10px;">
+            <b class="highlight"><i class="fa-solid fa-circle-nodes"></i> ដំណើរការ JSON Serialization ក្នុង Web API៖</b><br>
+            នៅពេល API Controller ហៅប្រើប្រាស់ <code>Ok(data)</code> នោះប្រព័ន្ធ .NET នឹងប្រើប្រាស់បណ្ណាល័យ <b>System.Text.Json</b> ដើម្បីដំណើរការ Serialization បំប្លែង C# Collection List ឱ្យទៅជាទម្រង់ JSON Array ស្វ័យប្រវត្តិ។
         </div>
 
         <div class="sub-heading">របៀបប្រកាស strongly-typed view នៅក្នុងកូដ .cshtml ជាក់ស្តែង៖</div>
         <div class="code-window">
+            <div class="code-header">
+                <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+                <div class="code-title">StronglyTypedExample.cshtml</div>
+            </div>
 <pre><span style="color:#5C6370;">@* ប្រកាស types នៃ Model ជាក់លាក់នៅខាងលើបំផុតនៃ View *@</span>
 <span style="color:#E06C75;">@model</span> IEnumerable&lt;SchoolApp.Models.Student&gt;
 
@@ -568,7 +599,6 @@
     </div>
 </div>
 
-<!-- PAGE 8: LAB 3.3 SOLUTION - COMPLETE STUDENT APP (MVC & API CONTROLLERS, VIEWS) -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
@@ -578,9 +608,13 @@
     <div class="page-content">
         <div class="lab-box" style="margin-top:0; padding: 10px;">
             <h4 style="font-size:10.5pt; margin-bottom:4px;"><i class="fa-solid fa-laptop-code"></i> Lab ៣.៣: Complete MVC Student App & Web API</h4>
-            <p style="font-size:8.5pt; margin-bottom:2px;"><b>Model:</b> <code>Models/Student.cs</code></p>
-            <div class="code-window" style="margin: 1px 0; font-size:7.5pt;">
-<pre style="padding: 6px;"><span style="color:#C678DD;">namespace</span> SchoolApp.Models
+            <p style="font-size:8.5pt; margin-bottom:2px;"><b>Model:</b></p>
+            <div class="code-window" style="margin: 1px 0 8px 0; font-size:7.5pt;">
+                <div class="code-header" style="padding: 4px 10px;">
+                    <div class="mac-dots"><div class="dot dot-r" style="width:8px; height:8px;"></div><div class="dot dot-y" style="width:8px; height:8px;"></div><div class="dot dot-g" style="width:8px; height:8px;"></div></div>
+                    <div class="code-title" style="font-size: 7.5pt;">Models/Student.cs</div>
+                </div>
+<pre style="padding: 8px;"><span style="color:#C678DD;">namespace</span> SchoolApp.Models
 {
     <span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">Student</span> {
         <span style="color:#C678DD;">public int</span> Id { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; }
@@ -590,34 +624,45 @@
     }
 }</pre>
             </div>
-            <p style="font-size:8.5pt; margin-bottom:2px;"><b>MVC Controller:</b> <code>Controllers/StudentController.cs</code></p>
-            <div class="code-window" style="margin: 1px 0; font-size:7.5pt;">
-<pre style="padding: 6px;"><span style="color:#C678DD;">using</span> Microsoft.AspNetCore.Mvc;
+            
+            <p style="font-size:8.5pt; margin-bottom:2px;"><b>MVC Controller:</b></p>
+            <div class="code-window" style="margin: 1px 0 8px 0; font-size:7.5pt;">
+                <div class="code-header" style="padding: 4px 10px;">
+                    <div class="mac-dots"><div class="dot dot-r" style="width:8px; height:8px;"></div><div class="dot dot-y" style="width:8px; height:8px;"></div><div class="dot dot-g" style="width:8px; height:8px;"></div></div>
+                    <div class="code-title" style="font-size: 7.5pt;">Controllers/StudentController.cs</div>
+                </div>
+<pre style="padding: 8px;"><span style="color:#C678DD;">using</span> Microsoft.AspNetCore.Mvc;
 <span style="color:#C678DD;">using</span> System.Collections.Generic;
 <span style="color:#C678DD;">using</span> SchoolApp.Models;
 <span style="color:#C678DD;">namespace</span> SchoolApp.Controllers {
     <span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">StudentController</span> : Controller {
         <span style="color:#C678DD;">public</span> IActionResult <span style="color:#61AFEF;">Index</span>() {
             List&lt;Student&gt; students = <span style="color:#C678DD;">new</span>() {
-                <span style="color:#C678DD;">new</span>(1, <span style="color:#98C379;">"Dara SOK"</span>, <span style="color:#98C379;">"Computer Science"</span>), <span style="color:#C678DD;">new</span>(2, <span style="color:#98C379;">"Cheata SENG"</span>, <span style="color:#98C379;">"Information Technology"</span>)
+                <span style="color:#C678DD;">new</span>(1, <span style="color:#98C379;">"Dara SOK"</span>, <span style="color:#98C379;">"Computer Science"</span>), 
+                <span style="color:#C678DD;">new</span>(2, <span style="color:#98C379;">"Cheata SENG"</span>, <span style="color:#98C379;">"Information Technology"</span>)
             };
             <span style="color:#C678DD;">return</span> <span style="color:#61AFEF;">View</span>(students);
         }
     }
 }</pre>
             </div>
-            <p style="font-size:8.5pt; margin-bottom:2px;"><b>View File:</b> <code>Views/Student/Index.cshtml</code></p>
+            
+            <p style="font-size:8.5pt; margin-bottom:2px;"><b>View File:</b></p>
             <div class="code-window" style="margin: 1px 0; font-size:7.5pt;">
-<pre style="padding: 6px;">@model IEnumerable&lt;SchoolApp.Models.Student&gt;
-&lt;div class="container mt-4"&gt;
-    &lt;h2 class="text-primary"&gt;បញ្ជីឈ្មោះនិស្សិត&lt;/h2&gt;
-    &lt;table class="table table-bordered table-striped mt-3"&gt;
-        &lt;thead class="table-dark"&gt;
+                <div class="code-header" style="padding: 4px 10px;">
+                    <div class="mac-dots"><div class="dot dot-r" style="width:8px; height:8px;"></div><div class="dot dot-y" style="width:8px; height:8px;"></div><div class="dot dot-g" style="width:8px; height:8px;"></div></div>
+                    <div class="code-title" style="font-size: 7.5pt;">Views/Student/Index.cshtml</div>
+                </div>
+<pre style="padding: 8px;"><span style="color:#E06C75;">@model</span> IEnumerable&lt;SchoolApp.Models.Student&gt;
+&lt;div class=<span style="color:#98C379;">"container mt-4"</span>&gt;
+    &lt;h2 class=<span style="color:#98C379;">"text-primary"</span>&gt;បញ្ជីឈ្មោះនិស្សិត&lt;/h2&gt;
+    &lt;table class=<span style="color:#98C379;">"table table-bordered table-striped mt-3"</span>&gt;
+        &lt;thead class=<span style="color:#98C379;">"table-dark"</span>&gt;
             &lt;tr&gt;&lt;th&gt;ID&lt;/th&gt;&lt;th&gt;ឈ្មោះ&lt;/th&gt;&lt;th&gt;ជំនាញ&lt;/th&gt;&lt;/tr&gt;
         &lt;/thead&gt;
         &lt;tbody&gt;
-            @foreach (var s in Model) {
-                &lt;tr&gt;&lt;td&gt;@s.Id&lt;/td&gt;&lt;td&gt;@s.Name&lt;/td&gt;&lt;td&gt;@s.Major&lt;/td&gt;&lt;/tr&gt;
+            <span style="color:#E06C75;">@foreach</span> (var s in Model) {
+                &lt;tr&gt;&lt;td&gt;<span style="color:#E06C75;">@s.Id</span>&lt;/td&gt;&lt;td&gt;<span style="color:#E06C75;">@s.Name</span>&lt;/td&gt;&lt;td&gt;<span style="color:#E06C75;">@s.Major</span>&lt;/td&gt;&lt;/tr&gt;
             }
         &lt;/tbody&gt;
     &lt;/table&gt;
@@ -631,7 +676,6 @@
     </div>
 </div>
 
-<!-- PAGE 9: THEORY SECTION 3.6 - ROUTING & FOLDER STRUCTURE -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
@@ -646,6 +690,10 @@
 
         <div class="sub-heading">១. Conventional Routing (ពេញនិយមសម្រាប់ MVC Views)</div>
         <div class="code-window">
+            <div class="code-header">
+                <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+                <div class="code-title">Program.cs</div>
+            </div>
 <pre><span style="color:#5C6370;">// URL pattern rule setup globally in Program.cs</span>
 app.MapControllerRoute(
     name: <span style="color:#98C379;">"default"</span>,
@@ -655,20 +703,28 @@ app.MapControllerRoute(
 
         <div class="sub-heading">២. Attribute Routing (ពេញនិយមសម្រាប់ Web API)</div>
         <div class="code-window">
+            <div class="code-header">
+                <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+                <div class="code-title">Controllers/StudentApiController.cs</div>
+            </div>
 <pre>[Route(<span style="color:#98C379;">"api/[controller]"</span>)] <span style="color:#5C6370;">// URL Base Route: api/studentapi</span>
 <span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">StudentApiController</span> : ControllerBase {
     [HttpGet(<span style="color:#98C379;">"active"</span>)] <span style="color:#5C6370;">// URL Target: api/studentapi/active</span>
-    <span style="color:#C678DD;">public</span> IActionResult <span style="color:#61AFEF;">GetActiveStudents</span>() { <span style="color:#C678DD;">return</span> <span style="color:#61AFEF;">Ok</span>(); }
+    <span style="color:#C678DD;">public</span> IActionResult <span style="color:#61AFEF;">GetActiveStudents</span>() { 
+        <span style="color:#C678DD;">return</span> <span style="color:#61AFEF;">Ok</span>(); 
+    }
 }</pre>
         </div>
 
-        <div class="lab-box" style="background:#F8FAFC; border-color:#CBD5E1; color:#334155; margin-top:5px; padding: 6px;">
-            <strong style="color:var(--accent); font-size: 9.5pt;"><i class="fa-solid fa-sitemap"></i> រចនាសម្ព័ន្ធ Folder នៃគម្រោង SchoolApp ៖</strong>
-            <pre style="background:transparent; color:#334155; font-size:8.5pt; line-height:1.3; padding: 2px 10px; margin: 0;">
+        <div class="lab-box" style="background:#F8FAFC; border-color:#CBD5E1; color:#334155; margin-top:15px; padding: 15px;">
+            <strong style="color:var(--accent); font-size: 10pt;"><i class="fa-solid fa-sitemap"></i> រចនាសម្ព័ន្ធ Folder នៃគម្រោង SchoolApp ៖</strong>
+            <pre style="background:transparent; color:#334155; font-size:9.5pt; line-height:1.4; padding: 5px 15px; margin: 0; font-family:var(--font-code);">
 SchoolApp/
 ├── Models/             -> Student.cs
-├── Controllers/        -> StudentController.cs, StudentApiController.cs
-└── Views/              -> Student/Index.cshtml
+├── Controllers/        -> StudentController.cs
+│                       -> StudentApiController.cs
+└── Views/              
+    └── Student/        -> Index.cshtml
             </pre>
         </div>
     </div>
@@ -678,7 +734,6 @@ SchoolApp/
     </div>
 </div>
 
-<!-- PAGE 10: LAB 3.4 - API & UI COMPARISON TESTING GUIDE -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
@@ -705,15 +760,13 @@ SchoolApp/
             </ol>
         </div>
 
-        <div class="two-column" style="margin-top:5px;">
-            <div class="visual-frame">
-                <img src="images/mapping.png" onerror="handleImgError(this, 'routing')" alt="Routing Diagram">
-                <div class="schematic-fallback"></div>
-            </div>
-            <div style="font-size:9.5pt; line-height:1.5;">
-                <b class="highlight"><i class="fa-solid fa-circle-info"></i> ចំណាំ៖</b><br>
-                • <b class="highlight">Traditional MVC៖</b> ប្រគល់លទ្ធផលជាទំព័រ HTML Render មកទាំងស្រុង សម្រាប់បង្ហាញផ្ទាល់លើ Browser។<br>
-                • <b class="highlight">Web API៖</b> ប្រគល់លទ្ធផលជាទម្រង់ JSON សុទ្ធ (Array structure) សម្រាប់កម្មវិធី Mobile ឬ SPA Frontend យកទៅប្រើប្រាស់បន្ត។
+        <div class="graphic-box" style="margin-top:15px;">
+            <div style="font-size:9.5pt; line-height:1.6;">
+                <b style="color:var(--accent); font-size: 11pt;"><i class="fa-solid fa-circle-info"></i> ចំណាំ (Key Takeaways)៖</b><br>
+                <ul class="obj-list" style="margin-top: 5px;">
+                    <li><b class="highlight">Traditional MVC៖</b> ប្រគល់លទ្ធផលជាទំព័រ HTML Render មកទាំងស្រុង សម្រាប់បង្ហាញផ្ទាល់លើ Browser។ វាមានទំហំធំ និងដំណើរការយឺតជាងបន្តិច ព្រោះត្រូវភ្ជាប់ជាមួយ UI Elements។</li>
+                    <li><b class="highlight">Web API៖</b> ប្រគល់លទ្ធផលជាទម្រង់ JSON សុទ្ធ (Array structure) សម្រាប់កម្មវិធី Mobile ឬ SPA Frontend (ឧ. React/Angular) យកទៅប្រើប្រាស់បន្ត។ វាមានល្បឿនលឿន និងទំហំតូចបំផុត។</li>
+                </ul>
             </div>
         </div>
     </div>
@@ -723,7 +776,6 @@ SchoolApp/
     </div>
 </div>
 
-<!-- PAGE 11: GLOSSARY -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
@@ -783,7 +835,6 @@ SchoolApp/
     </div>
 </div>
 
-<!-- PAGE 12: SUMMARY & REFERENCES -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
@@ -814,7 +865,6 @@ SchoolApp/
     </div>
 </div>
 
-<!-- PAGE 13: QUESTIONS SECTION 1 (TRUE/FALSE) -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
@@ -822,12 +872,12 @@ SchoolApp/
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
     <div class="page-content">
-        <div class="section-title" style="background:var(--accent); color:white; justify-content:center; border-radius:8px; border-left:none; margin-top:0; padding: 6px 0;"><i class="fa-solid fa-pen-to-square"></i> សំណួររំលឹកមេរៀន (Review Questions)</div>
+        <div class="section-title" style="background:var(--accent); color:white; justify-content:center; border-radius:8px; border-left:none; margin-top:0; padding: 8px 0;"><i class="fa-solid fa-pen-to-square"></i> សំណួររំលឹកមេរៀន (Review Questions)</div>
         
         <div class="sub-heading" style="width: 100%;">១. សំណួរ ខុស/ត្រូវ (True/False)</div>
-        <p style="font-size:10pt; margin-bottom:8px;"><b>សេចក្តីណែនាំ៖</b> សូមគូសសញ្ញា (ត្រូវ) ប្រសិនបើប្រយោគខាងក្រោមត្រឹមត្រូវ ឬសញ្ញា (ខុស) ប្រសិនបើខុស។</p>
+        <p style="font-size:10pt; margin-bottom:12px;"><b>សេចក្តីណែនាំ៖</b> សូមគូសសញ្ញា (ត្រូវ) ប្រសិនបើប្រយោគខាងក្រោមត្រឹមត្រូវ ឬសញ្ញា (ខុស) ប្រសិនបើខុស។</p>
         
-        <ol class="q-list" style="font-size:10pt; line-height:1.5;">
+        <ol class="q-list" style="font-size:10pt; line-height:1.6;">
             <li>Web API Controllers របស់ ASP.NET Core គួរតែស្នង (Inherit) ពី class <code class="inline-code">ControllerBase</code> ជានិច្ច។</li>
             <li>Attribute <code class="inline-code">[ApiController]</code> ជួយបំពេញការងារត្រួតពិនិត្យ validation ទិន្នន័យដោយស្វ័យប្រវត្ត។</li>
             <li>យន្តការ ViewBag និង ViewData ផ្តល់នូវសុវត្ថិភាពទិន្នន័យ (Type Safety) ល្អបំផុតសម្រាប់ Razor Views។</li>
@@ -846,7 +896,6 @@ SchoolApp/
     </div>
 </div>
 
-<!-- PAGE 14: QUESTIONS SECTION 2 (MCQ) -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
@@ -855,7 +904,7 @@ SchoolApp/
     </div>
     <div class="page-content">
         <div class="sub-heading" style="width: 100%; margin-top:0;">២. សំណួរ ពហុជ្រើសរើស (MCQs)</div>
-        <p style="font-size:10pt; margin-bottom:8px;"><b>សេចក្តីណែនាំ៖</b> សូមជ្រើសរើសចម្លើយដែលត្រឹមត្រូវបំផុតតែមួយគត់។</p>
+        <p style="font-size:10pt; margin-bottom:12px;"><b>សេចក្តីណែនាំ៖</b> សូមជ្រើសរើសចម្លើយដែលត្រឹមត្រូវបំផុតតែមួយគត់។</p>
         
         <ol class="q-list" style="font-size:9.5pt; line-height:1.45;">
             <li>តើ class គ្រឹះមួយណាដែល API Controller គួរតែស្នងត្រកូល (Inherit) យកទៅប្រើប្រាស់?
@@ -946,7 +995,6 @@ SchoolApp/
     </div>
 </div>
 
-<!-- PAGE 15: QUESTIONS SECTION 3 & 4 (MATCHING & ESSAY) -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
@@ -955,9 +1003,9 @@ SchoolApp/
     </div>
     <div class="page-content">
         <div class="sub-heading" style="width:100%; margin-top:0;">៣. សំណួរផ្គូផ្គង (Matching) & សំណួរបកស្រាយ (Essays)</div>
-        <p style="font-size:10pt; margin-bottom:8px;"><b>សេចក្តីណែនាំ៖</b> សូមផ្គូផ្គងពាក្យនៅជួរឈរខាងឆ្វេង (១-១០) ទៅនឹងការពន្យល់នៅជួរឈរខាងស្តាំ (A-J) ឱ្យបានត្រឹមត្រូវ។</p>
+        <p style="font-size:10pt; margin-bottom:12px;"><b>សេចក្តីណែនាំ៖</b> សូមផ្គូផ្គងពាក្យនៅជួរឈរខាងឆ្វេង (១-១០) ទៅនឹងការពន្យល់នៅជួរឈរខាងស្តាំ (A-J) ឱ្យបានត្រឹមត្រូវ។</p>
         
-        <div class="two-column" style="gap:10px; align-items:start; margin-bottom: 10px;">
+        <div class="two-column" style="gap:15px; align-items:start; margin-bottom: 15px;">
             <table class="standard-table" style="box-shadow:none; font-size: 8.5pt;">
                 <tr><td style="font-weight:bold;">១. ControllerBase</td></tr>
                 <tr><td style="font-weight:bold;">២. [ApiController]</td></tr>
@@ -997,7 +1045,6 @@ SchoolApp/
     </div>
 </div>
 
-<!-- PAGE 16: QUESTIONS SECTION 5 (PRACTICAL EXERCISES) -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
@@ -1006,7 +1053,7 @@ SchoolApp/
     </div>
     <div class="page-content">
         <div class="sub-heading" style="width: 100%; margin-top:0;"><i class="fa-solid fa-laptop-code"></i> ៥. លំហាត់អនុវត្តន៍ (Practical Exercises)</div>
-        <p style="font-size:10pt; margin-bottom:10px;"><b>សេចក្តីណែនាំ៖</b> សូមសរសេរកូដដោះស្រាយតាមប្រធានលំហាត់ខាងក្រោម (ដំណោះស្រាយពេញលេញស្ថិតក្នុងទំព័រ Answer Keys)។</p>
+        <p style="font-size:10pt; margin-bottom:15px;"><b>សេចក្តីណែនាំ៖</b> សូមសរសេរកូដដោះស្រាយតាមប្រធានលំហាត់ខាងក្រោម (ដំណោះស្រាយពេញលេញស្ថិតក្នុងទំព័រ Answer Keys)។</p>
 
         <div class="sub-heading" style="color:var(--accent); font-size:11pt; margin-bottom:5px;">ក. កំរិតស្រាល (Easy Level) - ២ លំហាត់</div>
         <ul class="obj-list" style="margin-top:0; margin-bottom:15px;">
@@ -1032,7 +1079,6 @@ SchoolApp/
     </div>
 </div>
 
-<!-- PAGE 17: ANSWER KEYS (1, 2, 3, 4) -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
@@ -1040,11 +1086,11 @@ SchoolApp/
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
     <div class="page-content">
-        <div class="section-title" style="background:var(--success); color:white; justify-content:center; border-radius:8px; border:none; margin: 0; padding: 5px 0;"><i class="fa-solid fa-key" style="color:white; background:transparent;"></i> អត្រាកំណែ (Answer Keys)</div>
+        <div class="section-title" style="background:var(--success); color:white; justify-content:center; border-radius:8px; border:none; margin: 0; padding: 8px 0;"><i class="fa-solid fa-key" style="color:white; background:transparent;"></i> អត្រាកំណែ (Answer Keys)</div>
             
-        <div class="two-column" style="gap:10px; align-items:start; margin-top: 10px;">
+        <div class="two-column" style="gap:15px; align-items:start; margin-top: 15px;">
             <div>
-                <div class="sub-heading" style="margin-top: 0; font-size:10pt; color:var(--success); border-bottom: none;">១. ចម្លើយ ខុស/ត្រូវ</div>
+                <div class="sub-heading" style="margin-top: 0; font-size:10.5pt; color:var(--success); border-bottom: none;">១. ចម្លើយ ខុស/ត្រូវ</div>
                 <table class="ans-table">
                     <tr><th>១</th><th>២</th><th>៣</th><th>៤</th><th>៥</th></tr>
                     <tr><td>ត្រូវ</td><td>ត្រូវ</td><td>ខុស</td><td>ត្រូវ</td><td>ត្រូវ</td></tr>
@@ -1053,7 +1099,7 @@ SchoolApp/
                 </table>
             </div>
             <div>
-                <div class="sub-heading" style="margin-top: 0; font-size:10pt; color:var(--success); border-bottom: none;">២. ចម្លើយ ពហុជ្រើសរើស</div>
+                <div class="sub-heading" style="margin-top: 0; font-size:10.5pt; color:var(--success); border-bottom: none;">២. ចម្លើយ ពហុជ្រើសរើស</div>
                 <table class="ans-table">
                     <tr><th>១</th><th>២</th><th>៣</th><th>៤</th><th>៥</th></tr>
                     <tr><td>B</td><td>B</td><td>B</td><td>B</td><td>B</td></tr>
@@ -1063,16 +1109,16 @@ SchoolApp/
             </div>
         </div>
         
-        <div class="sub-heading" style="margin-top:10px; font-size:10pt; color:var(--success); border-bottom: none;">៣. ចម្លើយ ផ្គូផ្គង (Matching Keys)</div>
-        <table class="ans-table" style="margin-bottom: 10px;">
-            <tr><th>១</th><th>២</th><th>៣</th><th>៤</th><th>៥</th><th>៦</th><th>៧</th><th>៨</th><th>៩</th><th>១០</th></tr>
+        <div class="sub-heading" style="margin-top:15px; font-size:10.5pt; color:var(--success); border-bottom: none;">៣. ចម្លើយ ផ្គូផ្គង (Matching Keys)</div>
+        <table class="ans-table" style="margin-bottom: 15px;">
+            <tr><th>១</th><th>២</th><th>៣</th><th>៤</th><th>៥</th><th>៦</th><th>៧</th><th>៨</th><th>៩</th><th>១0</th></tr>
             <tr><td>D</td><td>I</td><td>E</td><td>A</td><td>B</td><td>C</td><td>H</td><td>F</td><td>G</td><td>J</td></tr>
         </table>
 
-        <div class="sub-heading" style="margin-top:5px; font-size:10pt; color:var(--success); border-bottom: none;">៤. ចម្លើយ សំណួរបកស្រាយ (សង្ខេប)</div>
-        <ul style="font-size:9pt; line-height:1.4; padding-left:15px; text-align:justify;">
-            <li style="margin-bottom:4px;"><b>១. ភាពខុសគ្នារវាង class Controller និង ControllerBase៖</b> class <code>Controller</code> ស្នងចេញពី class <code>ControllerBase</code> ប៉ុន្តែវាផ្ដល់បន្ថែមនូវការគាំទ្រដល់ Razor View Engine (ដូចជា Method <code>View()</code>) សម្រាប់ render HTML។ ចំណែកឯ class <code>ControllerBase</code> ផ្ដល់តែសមត្ថភាពស្នូលរបស់ HTTP/API (ដូចជា Method <code>Ok()</code>, <code>BadRequest()</code>) ដែលសាកសមបំផុតសម្រាប់ Web API ដែលមិនត្រូវការ render ទិដ្ឋភាព HTML។</li>
-            <li style="margin-bottom:4px;"><b>២. សារៈសំខាន់នៃ JSON Serialization ក្នុង API៖</b> វាជាដំណើរការបំប្លែងរចនាសម្ព័ន្ធទិន្នន័យ (C# Objects/Lists) ទៅជាទម្រង់អត្ថបទ JSON ស្ដង់ដារ ដើម្បីអាចចម្លងឆ្លងកាត់បណ្ដាញ Internet ទៅកាន់ម៉ាស៊ីន Client (ដូចជា Mobile App ឬ Web Browser) យកទៅបកប្រែប្រើប្រាស់បន្តបានយ៉ាងរហ័ស និងស្រាលបំផុត។</li>
+        <div class="sub-heading" style="margin-top:10px; font-size:10.5pt; color:var(--success); border-bottom: none;">៤. ចម្លើយ សំណួរបកស្រាយ (សង្ខេប)</div>
+        <ul style="font-size:9.5pt; line-height:1.5; padding-left:20px; text-align:justify;">
+            <li style="margin-bottom:6px;"><b>១. ភាពខុសគ្នារវាង class Controller និង ControllerBase៖</b> class <code>Controller</code> ស្នងចេញពី class <code>ControllerBase</code> ប៉ុន្តែវាផ្ដល់បន្ថែមនូវការគាំទ្រដល់ Razor View Engine (ដូចជា Method <code>View()</code>) សម្រាប់ render HTML។ ចំណែកឯ class <code>ControllerBase</code> ផ្ដល់តែសមត្ថភាពស្នូលរបស់ HTTP/API (ដូចជា Method <code>Ok()</code>, <code>BadRequest()</code>) ដែលសាកសមបំផុតសម្រាប់ Web API ដែលមិនត្រូវការ render ទិដ្ឋភាព HTML។</li>
+            <li style="margin-bottom:6px;"><b>២. សារៈសំខាន់នៃ JSON Serialization ក្នុង API៖</b> វាជាដំណើរការបំប្លែងរចនាសម្ព័ន្ធទិន្នន័យ (C# Objects/Lists) ទៅជាទម្រង់អត្ថបទ JSON ស្ដង់ដារ ដើម្បីអាចចម្លងឆ្លងកាត់បណ្ដាញ Internet ទៅកាន់ម៉ាស៊ីន Client (ដូចជា Mobile App ឬ Web Browser) យកទៅបកប្រែប្រើប្រាស់បន្តបានយ៉ាងរហ័ស និងស្រាលបំផុត។</li>
             <li style="margin-bottom:0;"><b>៣. ដំណើរការកំណត់ Attribute Routing៖</b> គឺការសរសេរ Attribute <code>[Route("...")]</code> ឬ <code>[HttpGet("...")]</code> នៅលើក្បាល Class ឬ Method ដើម្បីកំណត់ URL Endpoint ដោយផ្ទាល់ ជំនួសឱ្យការប្រើប្រាស់ Conventional Routing pattern សកល។ វាផ្ដល់ភាពច្បាស់លាស់ និងភាពងាយស្រួលសម្រាប់ការគ្រប់គ្រង RESTful API។</li>
         </ul>
     </div>
@@ -1082,7 +1128,6 @@ SchoolApp/
     </div>
 </div>
 
-<!-- PAGE 18: ANSWER KEYS SECTION 5 (EASY & MEDIUM SOLUTIONS) -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
@@ -1092,19 +1137,25 @@ SchoolApp/
     <div class="page-content">
         <div class="sub-heading" style="width: 100%; margin-top:0; color:var(--success);"><i class="fa-solid fa-circle-check"></i> ៥. ដំណោះស្រាយលំហាត់ កំរិតស្រាល និងកំរិតមធ្យម (Easy & Medium Solutions)</div>
         
-        <!-- EASY 5.1 -->
-        <div style="font-size:9pt; font-weight:bold; color:var(--accent); margin-bottom:2px;"><i class="fa-solid fa-code"></i> លំហាត់ 5.1 (TeacherInfo) - Easy</div>
-        <div class="code-window" style="margin:2px 0; font-size:8pt;">
-<pre><span style="color:#C678DD;">public</span> IActionResult <span style="color:#61AFEF;">TeacherInfo</span>() {
+        <div style="font-size:9.5pt; font-weight:bold; color:var(--accent); margin-bottom:4px; margin-top:10px;"><i class="fa-solid fa-code"></i> លំហាត់ 5.1 (TeacherInfo) - Easy</div>
+        <div class="code-window" style="margin:2px 0 8px 0; font-size:8pt;">
+            <div class="code-header" style="padding: 4px 10px;">
+                <div class="mac-dots"><div class="dot dot-r" style="width:8px; height:8px;"></div><div class="dot dot-y" style="width:8px; height:8px;"></div><div class="dot dot-g" style="width:8px; height:8px;"></div></div>
+                <div class="code-title" style="font-size: 7.5pt;">Controllers/TeacherController.cs</div>
+            </div>
+<pre style="padding: 8px;"><span style="color:#C678DD;">public</span> IActionResult <span style="color:#61AFEF;">TeacherInfo</span>() {
     ViewBag.Name = <span style="color:#98C379;">"Soeurng LIM"</span>;
     ViewBag.Email = <span style="color:#98C379;">"soeurng.lim@au.edu.kh"</span>;
     ViewBag.Department = <span style="color:#98C379;">"Computer Science"</span>;
     <span style="color:#C678DD;">return</span> <span style="color:#61AFEF;">View</span>();
 }</pre>
         </div>
-        <div class="code-window" style="margin:2px 0; font-size:8pt;">
-            <div class="code-title" style="font-size:7.5pt; padding:1px 10px; color:#aaa;">Views/Home/TeacherInfo.cshtml</div>
-<pre>&lt;div class=<span style="color:#98C379;">"card border-primary"</span> style=<span style="color:#98C379;">"max-width: 350px;"</span>&gt;
+        <div class="code-window" style="margin:2px 0 15px 0; font-size:8pt;">
+            <div class="code-header" style="padding: 4px 10px;">
+                <div class="mac-dots"><div class="dot dot-r" style="width:8px; height:8px;"></div><div class="dot dot-y" style="width:8px; height:8px;"></div><div class="dot dot-g" style="width:8px; height:8px;"></div></div>
+                <div class="code-title" style="font-size: 7.5pt;">Views/Teacher/TeacherInfo.cshtml</div>
+            </div>
+<pre style="padding: 8px;">&lt;div class=<span style="color:#98C379;">"card border-primary"</span> style=<span style="color:#98C379;">"max-width: 350px;"</span>&gt;
     &lt;div class=<span style="color:#98C379;">"card-body"</span>&gt;
         &lt;h5 class=<span style="color:#98C379;">"text-primary"</span>&gt;<span style="color:#E06C75;">@ViewBag.Name</span>&lt;/h5&gt;
         &lt;p&gt;Email: <span style="color:#E06C75;">@ViewBag.Email</span>&lt;/p&gt;&lt;p&gt;ដេប៉ាតឺម៉ង់៖ <span style="color:#E06C75;">@ViewBag.Department</span>&lt;/p&gt;
@@ -1112,17 +1163,23 @@ SchoolApp/
 &lt;/div&gt;</pre>
         </div>
 
-        <!-- EASY 5.2 -->
-        <div style="font-size:9pt; font-weight:bold; color:var(--accent); margin-bottom:2px;"><i class="fa-solid fa-code"></i> លំហាត់ 5.2 (CheckAge) - Easy</div>
-        <div class="code-window" style="margin:2px 0; font-size:8pt;">
-<pre><span style="color:#C678DD;">public</span> IActionResult <span style="color:#61AFEF;">CheckAge</span>(<span style="color:#C678DD;">int</span> age = <span style="color:#D19A66;">20</span>) {
+        <div style="font-size:9.5pt; font-weight:bold; color:var(--accent); margin-bottom:4px;"><i class="fa-solid fa-code"></i> លំហាត់ 5.2 (CheckAge) - Easy</div>
+        <div class="code-window" style="margin:2px 0 8px 0; font-size:8pt;">
+            <div class="code-header" style="padding: 4px 10px;">
+                <div class="mac-dots"><div class="dot dot-r" style="width:8px; height:8px;"></div><div class="dot dot-y" style="width:8px; height:8px;"></div><div class="dot dot-g" style="width:8px; height:8px;"></div></div>
+                <div class="code-title" style="font-size: 7.5pt;">Controllers/ValidationController.cs</div>
+            </div>
+<pre style="padding: 8px;"><span style="color:#C678DD;">public</span> IActionResult <span style="color:#61AFEF;">CheckAge</span>(<span style="color:#C678DD;">int</span> age = <span style="color:#D19A66;">20</span>) {
     ViewBag.Age = age;
     <span style="color:#C678DD;">return</span> <span style="color:#61AFEF;">View</span>();
 }</pre>
         </div>
-        <div class="code-window" style="margin:2px 0; font-size:8pt;">
-            <div class="code-title" style="font-size:7.5pt; padding:1px 10px; color:#aaa;">Views/Home/CheckAge.cshtml</div>
-<pre>&lt;h4&gt;អាយុរបស់អ្នក៖ <span style="color:#E06C75;">@ViewBag.Age</span> ឆ្នាំ&lt;/h4&gt;
+        <div class="code-window" style="margin:2px 0 15px 0; font-size:8pt;">
+            <div class="code-header" style="padding: 4px 10px;">
+                <div class="mac-dots"><div class="dot dot-r" style="width:8px; height:8px;"></div><div class="dot dot-y" style="width:8px; height:8px;"></div><div class="dot dot-g" style="width:8px; height:8px;"></div></div>
+                <div class="code-title" style="font-size: 7.5pt;">Views/Validation/CheckAge.cshtml</div>
+            </div>
+<pre style="padding: 8px;">&lt;h4&gt;អាយុរបស់អ្នក៖ <span style="color:#E06C75;">@ViewBag.Age</span> ឆ្នាំ&lt;/h4&gt;
 <span style="color:#E06C75;">@if</span> (ViewBag.Age &gt;= <span style="color:#D19A66;">18</span>) {
     &lt;div class=<span style="color:#98C379;">"alert alert-success"</span>&gt;អ្នកមានសិទ្ធិចូលរួម។&lt;/div&gt;
 } <span style="color:#E06C75;">else</span> {
@@ -1130,18 +1187,24 @@ SchoolApp/
 }</pre>
         </div>
 
-        <!-- MEDIUM 5.3 -->
-        <div style="font-size:9pt; font-weight:bold; color:var(--warning); margin-bottom:2px;"><i class="fa-solid fa-code"></i> លំហាត់ 5.3 (CourseList) - Medium</div>
-        <div class="code-window" style="margin:2px 0; font-size:8pt;">
-<pre><span style="color:#C678DD;">public</span> IActionResult <span style="color:#61AFEF;">CourseList</span>() {
+        <div style="font-size:9.5pt; font-weight:bold; color:var(--warning); margin-bottom:4px;"><i class="fa-solid fa-code"></i> លំហាត់ 5.3 (CourseList) - Medium</div>
+        <div class="code-window" style="margin:2px 0 8px 0; font-size:8pt;">
+            <div class="code-header" style="padding: 4px 10px;">
+                <div class="mac-dots"><div class="dot dot-r" style="width:8px; height:8px;"></div><div class="dot dot-y" style="width:8px; height:8px;"></div><div class="dot dot-g" style="width:8px; height:8px;"></div></div>
+                <div class="code-title" style="font-size: 7.5pt;">Controllers/CourseController.cs</div>
+            </div>
+<pre style="padding: 8px;"><span style="color:#C678DD;">public</span> IActionResult <span style="color:#61AFEF;">CourseList</span>() {
     List&lt;<span style="color:#C678DD;">string</span>&gt; courses = <span style="color:#C678DD;">new</span>() { <span style="color:#98C379;">"ASP.NET Core MVC"</span>, <span style="color:#98C379;">"SQL Server DBMS"</span>, <span style="color:#98C379;">"Flutter Mobile"</span> };
     ViewBag.Courses = courses;
     <span style="color:#C678DD;">return</span> <span style="color:#61AFEF;">View</span>();
 }</pre>
         </div>
         <div class="code-window" style="margin:2px 0; font-size:8pt;">
-            <div class="code-title" style="font-size:7.5pt; padding:1px 10px; color:#aaa;">Views/Home/CourseList.cshtml</div>
-<pre>&lt;ol class=<span style="color:#98C379;">"list-group list-group-numbered"</span> style=<span style="color:#98C379;">"max-width: 400px;"</span>&gt;
+            <div class="code-header" style="padding: 4px 10px;">
+                <div class="mac-dots"><div class="dot dot-r" style="width:8px; height:8px;"></div><div class="dot dot-y" style="width:8px; height:8px;"></div><div class="dot dot-g" style="width:8px; height:8px;"></div></div>
+                <div class="code-title" style="font-size: 7.5pt;">Views/Course/CourseList.cshtml</div>
+            </div>
+<pre style="padding: 8px;">&lt;ol class=<span style="color:#98C379;">"list-group list-group-numbered"</span> style=<span style="color:#98C379;">"max-width: 400px;"</span>&gt;
     <span style="color:#E06C75;">@foreach</span> (var course in ViewBag.Courses) {
         &lt;li class=<span style="color:#98C379;">"list-group-item"</span>&gt;<span style="color:#E06C75;">@course</span>&lt;/li&gt;
     }
@@ -1154,7 +1217,6 @@ SchoolApp/
     </div>
 </div>
 
-<!-- PAGE 19: ANSWER KEYS SECTION 5 (MEDIUM & HARD SOLUTIONS) -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
@@ -1164,27 +1226,31 @@ SchoolApp/
     <div class="page-content">
         <div class="sub-heading" style="width: 100%; margin-top:0; color:var(--success);"><i class="fa-solid fa-circle-check"></i> ៥. ដំណោះស្រាយលំហាត់ កំរិតមធ្យម និងកំរិតធ្ងន់ (Medium & Hard Solutions Continued)</div>
 
-        <!-- MEDIUM 5.4 -->
-        <div style="font-size:9.5pt; font-weight:bold; color:var(--warning); margin-bottom:2px;"><i class="fa-solid fa-code"></i> លំហាត់ 5.4 (ProductDetail) - Medium</div>
-        <div class="code-window" style="margin:2px 0; font-size:8pt;">
-            <div class="code-title" style="font-size:7.5pt; padding:1px 10px; color:#aaa;">Models/Product.cs</div>
-<pre><span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">Product</span> {
+        <div style="font-size:9.5pt; font-weight:bold; color:var(--warning); margin-bottom:4px; margin-top:10px;"><i class="fa-solid fa-code"></i> លំហាត់ 5.4 (ProductDetail) - Medium</div>
+        <div class="code-window" style="margin:2px 0 8px 0; font-size:8pt;">
+            <div class="code-header" style="padding: 4px 10px;">
+                <div class="mac-dots"><div class="dot dot-r" style="width:8px; height:8px;"></div><div class="dot dot-y" style="width:8px; height:8px;"></div><div class="dot dot-g" style="width:8px; height:8px;"></div></div>
+                <div class="code-title" style="font-size: 7.5pt;">Models/Product.cs & Controllers/ProductController.cs</div>
+            </div>
+<pre style="padding: 8px;"><span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">Product</span> {
     <span style="color:#C678DD;">public int</span> Id { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; }
     <span style="color:#C678DD;">public string</span> Name { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; } = <span style="color:#C678DD;">string</span>.Empty;
     <span style="color:#C678DD;">public decimal</span> Price { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; }
     <span style="color:#C678DD;">public</span> <span style="color:#61AFEF;">Product</span>(<span style="color:#C678DD;">int</span> id, <span style="color:#C678DD;">string</span> name, <span style="color:#C678DD;">decimal</span> price) { Id = id; Name = name; Price = price; }
-}</pre>
-        </div>
-        <div class="code-window" style="margin:2px 0; font-size:8pt;">
-            <div class="code-title" style="font-size:7.5pt; padding:1px 10px; color:#aaa;">Controllers/HomeController.cs (Action)</div>
-<pre><span style="color:#C678DD;">public</span> IActionResult <span style="color:#61AFEF;">ProductDetail</span>() {
+}
+
+<span style="color:#5C6370;">// Inside ProductController.cs</span>
+<span style="color:#C678DD;">public</span> IActionResult <span style="color:#61AFEF;">ProductDetail</span>() {
     Product prod = <span style="color:#C678DD;">new</span>(<span style="color:#D19A66;">901</span>, <span style="color:#98C379;">"iPad Pro M4"</span>, <span style="color:#D19A66;">999.00m</span>);
     <span style="color:#C678DD;">return</span> <span style="color:#61AFEF;">View</span>(prod);
 }</pre>
         </div>
-        <div class="code-window" style="margin:2px 0; font-size:8pt;">
-            <div class="code-title" style="font-size:7.5pt; padding:1px 10px; color:#aaa;">Views/Home/ProductDetail.cshtml (Strongly-typed)</div>
-<pre><span style="color:#E06C75;">@model</span> SchoolApp.Models.Product
+        <div class="code-window" style="margin:2px 0 15px 0; font-size:8pt;">
+            <div class="code-header" style="padding: 4px 10px;">
+                <div class="mac-dots"><div class="dot dot-r" style="width:8px; height:8px;"></div><div class="dot dot-y" style="width:8px; height:8px;"></div><div class="dot dot-g" style="width:8px; height:8px;"></div></div>
+                <div class="code-title" style="font-size: 7.5pt;">Views/Product/ProductDetail.cshtml (Strongly-typed)</div>
+            </div>
+<pre style="padding: 8px;"><span style="color:#E06C75;">@model</span> SchoolApp.Models.Product
 &lt;div class=<span style="color:#98C379;">"card text-bg-warning"</span> style=<span style="color:#98C379;">"max-width: 300px;"</span>&gt;
     &lt;div class=<span style="color:#98C379;">"card-body"</span>&gt;
         &lt;h5&gt;កូដទំនិញ៖ <span style="color:#E06C75;">@Model.Id</span>&lt;/h5&gt;
@@ -1194,11 +1260,13 @@ SchoolApp/
 &lt;/div&gt;</pre>
         </div>
 
-        <!-- HARD 5.5 -->
-        <div style="font-size:9.5pt; font-weight:bold; color:var(--danger); margin-bottom:2px;"><i class="fa-solid fa-code"></i> លំហាត់ 5.5 (DepartmentStaff) - Hard</div>
-        <div class="code-window" style="margin:2px 0; font-size:8pt;">
-            <div class="code-title" style="font-size:7.5pt; padding:1px 10px; color:#aaa;">Models/Department.cs</div>
-<pre><span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">Department</span> {
+        <div style="font-size:9.5pt; font-weight:bold; color:var(--danger); margin-bottom:4px;"><i class="fa-solid fa-code"></i> លំហាត់ 5.5 (DepartmentStaff) - Hard</div>
+        <div class="code-window" style="margin:2px 0 8px 0; font-size:8pt;">
+            <div class="code-header" style="padding: 4px 10px;">
+                <div class="mac-dots"><div class="dot dot-r" style="width:8px; height:8px;"></div><div class="dot dot-y" style="width:8px; height:8px;"></div><div class="dot dot-g" style="width:8px; height:8px;"></div></div>
+                <div class="code-title" style="font-size: 7.5pt;">Models/Department.cs</div>
+            </div>
+<pre style="padding: 8px;"><span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">Department</span> {
     <span style="color:#C678DD;">public int</span> Id { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; }
     <span style="color:#C678DD;">public string</span> Name { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; } = <span style="color:#C678DD;">string</span>.Empty;
     <span style="color:#C678DD;">public</span> List&lt;<span style="color:#C678DD;">string</span>&gt; StaffMembers { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; }
@@ -1206,8 +1274,11 @@ SchoolApp/
 }</pre>
         </div>
         <div class="code-window" style="margin:2px 0; font-size:8pt;">
-            <div class="code-title" style="font-size:7.5pt; padding:1px 10px; color:#aaa;">Views/Home/DepartmentStaff.cshtml</div>
-<pre><span style="color:#E06C75;">@model</span> SchoolApp.Models.Department
+            <div class="code-header" style="padding: 4px 10px;">
+                <div class="mac-dots"><div class="dot dot-r" style="width:8px; height:8px;"></div><div class="dot dot-y" style="width:8px; height:8px;"></div><div class="dot dot-g" style="width:8px; height:8px;"></div></div>
+                <div class="code-title" style="font-size: 7.5pt;">Views/Department/DepartmentStaff.cshtml</div>
+            </div>
+<pre style="padding: 8px;"><span style="color:#E06C75;">@model</span> SchoolApp.Models.Department
 &lt;div class=<span style="color:#98C379;">"container"</span>&gt;
     &lt;h3 class=<span style="color:#98C379;">"text-primary"</span>&gt;នាយកដ្ឋាន៖ <span style="color:#E06C75;">@Model.Name</span> (ID: <span style="color:#E06C75;">@Model.Id</span>)&lt;/h3&gt;
     &lt;ul class=<span style="color:#98C379;">"list-group"</span> style=<span style="color:#98C379;">"max-width:300px;"</span>&gt;
@@ -1224,43 +1295,5 @@ SchoolApp/
     </div>
 </div>
 
-<script>
-    // Fallback script to dynamically render beautiful CSS schemas if local images fail to load
-    function handleImgError(imageElement, fallbackType) {
-        imageElement.style.display = 'none';
-        const fallbackBox = imageElement.nextElementSibling;
-        if (fallbackBox && fallbackBox.classList.contains('schematic-fallback')) {
-            fallbackBox.style.display = 'flex';
-            
-            if (fallbackType === 'datatype') {
-                fallbackBox.innerHTML = `
-                    <div style="font-family:'Suwannaphum',sans-serif; color:var(--accent); font-size:10pt; margin-bottom:6px; font-weight:bold;">MVC Data Passing</div>
-                    <div style="text-align:left; font-family:var(--font-code); font-size:8pt; background:#0F172A; color:#38BDF8; padding:8px; border-radius:4px; width:100%;">
-                        <span style="color:#F472B6;">ViewData</span>[<span style="color:#98C379;">"Name"</span>] = <span style="color:#98C379;">"Dara"</span>;<br>
-                        <span style="color:#F472B6;">ViewBag</span>.Age = <span style="color:#F59E0B;">21</span>;<br>
-                        <span style="color:#F472B6;">@model</span> <span style="color:#A7F3D0;">Student</span>
-                    </div>
-                `;
-            } else if (fallbackType === 'routing') {
-                fallbackBox.innerHTML = `
-                    <div style="font-family:'Suwannaphum',sans-serif; color:var(--accent); font-size:10pt; margin-bottom:6px; font-weight:bold;">Routing Mechanisms</div>
-                    <div style="display:flex; flex-direction:column; gap:6px; width:100%; font-size:8pt; text-align:left; background:#FFF; border:1px dashed var(--accent); padding:6px; border-radius:4px;">
-                        <div><b>Conventional:</b> <code>{controller}/{action}/{id?}</code></div>
-                        <div style="border-top:1px solid #ddd; margin-top:4px; padding-top:4px;"><b>Attribute:</b> <code>[Route("api/[controller]")]</code></div>
-                    </div>
-                `;
-            } else if (fallbackType === 'mapping') {
-                fallbackBox.innerHTML = `
-                    <div style="font-family:'Suwannaphum',sans-serif; color:var(--accent); font-size:10pt; margin-bottom:6px; font-weight:bold;">Serialization</div>
-                    <div style="display:flex; gap:6px; align-items:center; justify-content:center; width:100%; font-size:8pt;">
-                        <div style="background:#EFF6FF; padding:4px 6px; border-radius:4px; font-weight:bold; border:1px solid #93C5FD;">C# List</div>
-                        <i class="fa-solid fa-right-left" style="color:var(--accent);"></i>
-                        <div style="background:#FFFBEB; padding:4px 6px; border-radius:4px; font-weight:bold; border:1px solid #FCD34D;">JSON Array</div>
-                    </div>
-                `;
-            }
-        }
-    }
-</script>
 </body>
 </html>
