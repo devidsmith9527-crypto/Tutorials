@@ -204,7 +204,7 @@
 <!-- PAGE 1: COVER -->
 <div class="a4-page">
     <div class="page-content" style="justify-content: center; align-items: center; text-align: center; background: radial-gradient(circle at center, #F8FAFC 0%, #FFFFFF 100%);">
-        <img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" style="width: 140px; margin-bottom: 20px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));">
+        <img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" style="width: 140px; margin-bottom: 20px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));">
         <h1 style="font-family: 'Suwannaphum'; font-size: 28pt; color: var(--text-heading); margin-bottom: 2px; font-weight: 900;">សាកលវិទ្យាល័យអង្គរ</h1>
         <p style="font-family: 'Inter'; font-size: 13pt; color: var(--text-muted); margin-bottom: 30px; font-weight: 600; letter-spacing: 2px;">ANGKOR UNIVERSITY</p>
         
@@ -228,7 +228,7 @@
 <!-- PAGE 2: TOC & OBJECTIVES -->
 <div class="a4-page">
     <div class="global-header">
-        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
         <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៤</h1><p>ASP.NET CORE MVC & SQL SERVER</p></div>
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
@@ -268,7 +268,7 @@
 <!-- PAGE 3: SECTION 4.1 -->
 <div class="a4-page">
     <div class="global-header">
-        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
         <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៤</h1><p>ASP.NET CORE MVC & SQL SERVER</p></div>
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
@@ -286,14 +286,17 @@
                 </p>
             </div>
             
-            <div class="graphic-box">
+            <div class="graphic-box" style="padding: 10px; background: #F8FAFC;">
                 <div style="font-family:'Suwannaphum',sans-serif; color:var(--accent); font-size:10pt; margin-bottom:8px; text-align:center; font-weight:bold;">Attribute Routing Structure</div>
-                <div style="background:#EEF2FF; border:2px solid #6366F1; padding:12px; border-radius:8px; font-size:9.5pt; line-height:1.5;">
-                    <b style="color:#4F46E5;">[Route("api/[controller]")]</b><br>
-                    <span style="color:#64748B; font-size:8.5pt;">Prefix ថ្នាក់គ្រឹះ: api/student</span>
-                    <div style="margin:4px 0; text-align:center; color:#6366F1;"><i class="fa-solid fa-arrow-down"></i></div>
-                    <b style="color:#059669;">[HttpGet("{id}")]</b><br>
-                    <span style="color:#64748B; font-size:8.5pt;">Endpoint កម្រិត Action: api/student/1</span>
+                <div style="display:flex; flex-direction:column; gap:8px;">
+                    <div style="background:#F5F3FF; border:1px solid #C084FC; border-radius:4px; padding:6px;">
+                        <span style="font-size:8.5pt; font-weight:bold; color:var(--accent); display:block; margin-bottom:4px;"><i class="fa-solid fa-folder-tree"></i> Prefix ថ្នាក់គ្រឹះ (Base Route)</span>
+                        <div style="font-size:8pt; font-family:var(--font-code); color:var(--accent);">[Route("api/[controller]")] &rarr; api/student</div>
+                    </div>
+                    <div style="background:#EFF6FF; border:1px solid #60A5FA; border-radius:4px; padding:6px;">
+                        <span style="font-size:8.5pt; font-weight:bold; color:var(--secondary); display:block; margin-bottom:4px;"><i class="fa-solid fa-link"></i> Endpoint កម្រិត Action</span>
+                        <div style="font-size:8pt; font-family:var(--font-code); color:var(--secondary);">[HttpGet("{id}")] &rarr; api/student/1</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -323,7 +326,7 @@
 <!-- PAGE 4: SECTION 4.2 -->
 <div class="a4-page">
     <div class="global-header">
-        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
         <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៤</h1><p>ASP.NET CORE MVC & SQL SERVER</p></div>
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
@@ -338,31 +341,31 @@
                 <table class="standard-table" style="font-size: 9pt; width:100%;">
                     <thead>
                         <tr>
-                            <th>Method</th>
-                            <th>CRUD Operation</th>
-                            <th>តួនាទីបច្ចេកទេស</th>
+                            <th>HTTP Method</th>
+                            <th>CRUD Action</th>
+                            <th>តួនាទី និងការប្រើប្រាស់បច្ចេកទេស</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr><td><b>GET</b></td><td>Read</td><td>ទាញយកទិន្នន័យពី Server</td></tr>
-                        <tr><td><b>POST</b></td><td>Create</td><td>បញ្ជូនទិន្នន័យថ្មីទៅរក្សាទុក</td></tr>
-                        <tr><td><b>PUT</b></td><td>Update</td><td>កែប្រែទិន្នន័យដែលមានស្រាប់ទាំងមូល</td></tr>
-                        <tr><td><b>DELETE</b></td><td>Delete</td><td>លុបទិន្នន័យចេញពីប្រព័ន្ធ</td></tr>
+                        <tr><td><b>GET</b></td><td>Read</td><td>ទាញយកទិន្នន័យពី Server មកបង្ហាញ (Safe & Idempotent)</td></tr>
+                        <tr><td><b>POST</b></td><td>Create</td><td>បញ្ជូនទិន្នន័យថ្មីទៅបង្កើតធនធានថ្មីនៅលើ Server</td></tr>
+                        <tr><td><b>PUT</b></td><td>Update</td><td>ធ្វើបច្ចុប្បន្នភាពទិន្នន័យដែលមានស្រាប់ទាំងស្រុង (Replace)</td></tr>
+                        <tr><td><b>DELETE</b></td><td>Delete</td><td>លុបធនធានទិន្នន័យចេញពី Server តាមអត្តសញ្ញាណ ID</td></tr>
                     </tbody>
                 </table>
             </div>
             
-            <div class="graphic-box">
-                <div style="font-family:'Koulen',sans-serif; color:var(--accent); font-size:10pt; margin-bottom:6px; text-align:center;">HTTP Methods & CRUD Mapping</div>
-                <div style="display:grid; grid-template-columns:1fr; gap:6px; width:100%;">
-                    <div style="background:#E0F2FE; border-left:4px solid #0284C7; padding:4px 8px; border-radius:4px; font-size:8.5pt;">
-                        <b style="color:#0369A1;">GET (Read)</b><br><span style="color:#334155;">ទាញយកទិន្នន័យពី Server មកបង្ហាញ</span>
+            <div class="graphic-box" style="padding: 10px; background: #F8FAFC;">
+                <div style="font-family:'Suwannaphum',sans-serif; color:var(--accent); font-size:10pt; margin-bottom:8px; text-align:center; font-weight:bold;">HTTP Request & Response Flow</div>
+                <div style="display:flex; justify-content:space-around; align-items:center; font-size:8.5pt;">
+                    <div style="text-align:center; padding:6px; background:#EFF6FF; border:1px solid #60A5FA; border-radius:4px; width:45%;">
+                        <strong style="color:var(--secondary);">Client (Browser)</strong><br>
+                        <span style="font-size:7.5pt;">Sends HTTP Verb & URL</span>
                     </div>
-                    <div style="background:#DCFCE7; border-left:4px solid #22C55E; padding:4px 8px; border-radius:4px; font-size:8.5pt;">
-                        <b style="color:#15803D;">POST (Create)</b><br><span style="color:#334155;">បញ្ចូលទិន្នន័យថ្មីទៅក្នុង Database</span>
-                    </div>
-                    <div style="background:#FEF3C7; border-left:4px solid #F59E0B; padding:4px 8px; border-radius:4px; font-size:8.5pt;">
-                        <b style="color:#B45309;">PUT (Update)</b><br><span style="color:#334155;">កែប្រែទិន្នន័យដែលមានស្រាប់ឡើងវិញ</span>
+                    <div style="color:var(--text-muted); font-size:12pt;"><i class="fa-solid fa-right-left"></i></div>
+                    <div style="text-align:center; padding:6px; background:#F5F3FF; border:1px solid #C084FC; border-radius:4px; width:45%;">
+                        <strong style="color:var(--accent);">Server (API Controller)</strong><br>
+                        <span style="font-size:7.5pt;">Executes Action logic</span>
                     </div>
                 </div>
             </div>
@@ -390,7 +393,7 @@
 <!-- PAGE 5: SECTION 4.3 -->
 <div class="a4-page">
     <div class="global-header">
-        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
         <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៤</h1><p>ASP.NET CORE MVC & SQL SERVER</p></div>
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
@@ -408,15 +411,16 @@
                 </p>
             </div>
             
-            <div class="graphic-box">
-                <div style="font-family:'Koulen',sans-serif; color:var(--accent); font-size:10pt; margin-bottom:8px; text-align:center;">Parameters Binding Sources</div>
-                <div style="display:flex; flex-direction:column; gap:6px; width:100%;">
-                    <div style="background:#FFF; border:1px solid #CBD5E1; padding:6px; border-radius:6px; font-size:8.5pt;">
-                        <b style="color:var(--accent-blue);">[FromRoute]:</b> <code>/api/student/<b>1</b></code> (ទាញពី URL Path)
-                    </div>
-                    <div style="background:#FFF; border:1px solid #CBD5E1; padding:6px; border-radius:6px; font-size:8.5pt;">
-                        <b style="color:var(--accent-yellow);">[FromQuery]:</b> <code>/api/student?<b>id=1</b></code> (ទាញពី Query)
-                    </div>
+            <div class="graphic-box" style="display:flex; justify-content:space-around; align-items:center; padding:15px; border-radius:8px;">
+                <div style="background:#ECFDF5; border:2px dashed #10B981; padding:10px; border-radius:8px; text-align:center; width: 45%;">
+                    <b style="color:#059669; font-size: 11pt;"><i class="fa-solid fa-diamond-turn-right"></i> Route Params</b><br>
+                    <span style="color:#475569; font-size:9pt;">Embedded in Path</span><br>
+                    <code style="background:#FFF; padding:2px 6px; border-radius:4px; display:inline-block; margin-top:6px; color:#047857; font-size:8.5pt;">/api/student/<b>12</b></code>
+                </div>
+                <div style="background:#FEF3C7; border:2px dashed #F59E0B; padding:10px; border-radius:8px; text-align:center; width: 45%;">
+                    <b style="color:#D97706; font-size: 11pt;"><i class="fa-solid fa-question"></i> Query String</b><br>
+                    <span style="color:#475569; font-size:9pt;">Appended at End</span><br>
+                    <code style="background:#FFF; padding:2px 6px; border-radius:4px; display:inline-block; margin-top:6px; color:#B45309; font-size:8.5pt;">/api/student?<b>id=12</b></code>
                 </div>
             </div>
         </div>
@@ -428,12 +432,16 @@
                 <div class="code-title">RouteParameterDemo.cs</div>
             </div>
 <pre>[HttpGet(<span style="color:#98C379;">"{id}"</span>)] <span style="color:#5C6370;">// ផ្គូផ្គងជាមួយ URL: api/student/5</span>
-<span style="color:#C678DD;">public</span> IActionResult <span style="color:#61AFEF;">GetById</span>(<span style="color:#C678DD;">int</span> id)
+<span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">StudentController</span> : ControllerBase
 {
-    <span style="color:#C678DD;">var</span> student = _students.Find(s => s.Id == id);
-    <span style="color:#C678DD;">if</span> (student == <span style="color:#D19A66;">null</span>) 
-        <span style="color:#C678DD;">return</span> <span style="color:#61AFEF;">NotFound</span>(<span style="color:#98C379;">$"រកមិនឃើញនិស្សិតដែលមាន ID = {id} ឡើយ។"</span>);
-    <span style="color:#C678DD;">return</span> <span style="color:#61AFEF;">Ok</span>(student);
+    [HttpGet(<span style="color:#98C379;">"{id}"</span>)]
+    <span style="color:#C678DD;">public</span> IActionResult <span style="color:#61AFEF;">GetById</span>(<span style="color:#C678DD;">int</span> id)
+    {
+        <span style="color:#C678DD;">var</span> student = _students.Find(s => s.Id == id);
+        <span style="color:#C678DD;">if</span> (student == <span style="color:#D19A66;">null</span>) 
+            <span style="color:#C678DD;">return</span> <span style="color:#61AFEF;">NotFound</span>(<span style="color:#98C379;">$"រកមិនឃើញនិស្សិតដែលមាន ID = {id} ឡើយ។"</span>);
+        <span style="color:#C678DD;">return</span> <span style="color:#61AFEF;">Ok</span>(student);
+    }
 }</pre>
         </div>
     </div>
@@ -446,7 +454,7 @@
 <!-- PAGE 6: SECTION 4.4 -->
 <div class="a4-page">
     <div class="global-header">
-        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
         <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៤</h1><p>ASP.NET CORE MVC & SQL SERVER</p></div>
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
@@ -482,7 +490,7 @@
         <div class="lab-box">
             <h4><i class="fa-solid fa-circle-exclamation"></i> ចំណាំសំខាន់សម្រាប់ការតេស្ត URL</h4>
             <p>
-                នៅពេលតេស្តនៅក្នុង Chrome ឬ Postman, URL Query String ត្រូវតែមាន Key ត្រូវគ្នានឹង Parameter ក្នុងកូដ C# (ករណីនេះគឺ Key <code>major</code>)។ ឧទាហរណ៍៖ <code>http://localhost:5000/api/student/search?major=IT</code>
+                នៅពេលតេស្តនៅក្នុង Chrome ឬ Postman, URL Query String ត្រូវតែមាន Key ត្រូវគ្នានឹង Parameter ក្នុងកូដ C# (ករណីនេះគឺ Key <code>major</code>)។ ឧទហរណ៍៖ <code>http://localhost:5000/api/student/search?major=IT</code>
             </p>
         </div>
     </div>
@@ -495,7 +503,7 @@
 <!-- PAGE 7: SECTION 4.5 -->
 <div class="a4-page">
     <div class="global-header">
-        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
         <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៤</h1><p>ASP.NET CORE MVC & SQL SERVER</p></div>
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
@@ -528,14 +536,20 @@
 }</pre>
         </div>
 
-        <div class="graphic-box">
-            <strong style="color:var(--accent); font-size:10pt;"><i class="fa-solid fa-arrow-right-to-bracket"></i> ទម្រង់ JSON បញ្ជូនមកក្នុង HTTP Request Body ៖</strong>
-            <pre style="background:var(--primary); color:#10B981; padding:8px; border-radius:4px; font-family:var(--font-code); font-size:9pt; margin-top:5px;">
+        <div class="graphic-box" style="text-align:center; padding:15px; border-radius:8px;">
+            <div style="font-family:'Suwannaphum',sans-serif; color:var(--accent); font-size:10pt; margin-bottom:10px; font-weight:bold;"><i class="fa-solid fa-arrow-right-to-bracket"></i> JSON Request Body Binding</div>
+            <div style="background:#EEF2FF; border:2px solid #6366F1; padding:15px; border-radius:8px; display:inline-block; text-align:left; width: 85%;">
+                <b style="color:#4F46E5; font-size: 10pt;">1. Request Payload (JSON)</b>
+                <pre style="background:var(--primary); color:#10B981; padding:8px; border-radius:4px; font-family:var(--font-code); font-size:8.5pt; margin-top:4px;">
 {
   "id": 3,
   "name": "Nara SOVANN",
   "major": "Computer Science"
 }</pre>
+                <div style="margin: 8px 0; color: #6366F1; font-size: 12pt; text-align:center;"><i class="fa-solid fa-arrow-down"></i></div>
+                <b style="color:#4F46E5; font-size: 10pt;">2. Bind to C# Object via [FromBody]</b><br>
+                <code style="background:#FFF; padding:4px 8px; border-radius:4px; display:inline-block; margin-top:4px; font-size: 9pt; font-family:var(--font-code); color:var(--danger);">CreateStudent([FromBody] Student student)</code>
+            </div>
         </div>
     </div>
     <div class="global-footer">
@@ -547,7 +561,7 @@
 <!-- PAGE 8: LAB 4.1 DETAIL -->
 <div class="a4-page">
     <div class="global-header">
-        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
         <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៤</h1><p>ASP.NET CORE MVC & SQL SERVER</p></div>
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
@@ -589,7 +603,7 @@
 <!-- PAGE 9: CODE PART 1 -->
 <div class="a4-page">
     <div class="global-header">
-        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
         <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៤</h1><p>ASP.NET CORE MVC & SQL SERVER</p></div>
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
@@ -643,7 +657,7 @@
 <!-- PAGE 10: CODE PART 2 -->
 <div class="a4-page">
     <div class="global-header">
-        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
         <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៤</h1><p>ASP.NET CORE MVC & SQL SERVER</p></div>
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
@@ -691,7 +705,7 @@
 <!-- PAGE 11: CODE PART 3 -->
 <div class="a4-page">
     <div class="global-header">
-        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
         <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៤</h1><p>ASP.NET CORE MVC & SQL SERVER</p></div>
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
@@ -737,7 +751,7 @@
 <!-- PAGE 12: GLOSSARY -->
 <div class="a4-page">
     <div class="global-header">
-        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
         <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៤</h1><p>ASP.NET CORE MVC & SQL SERVER</p></div>
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
@@ -797,14 +811,14 @@
 <!-- PAGE 13: SUMMARY & REFERENCES -->
 <div class="a4-page">
     <div class="global-header">
-        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
         <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៤</h1><p>ASP.NET CORE MVC & SQL SERVER</p></div>
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
     <div class="page-content">
         <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-list-check"></i> សេចក្តីសង្ខេបជំពូកទី ៤ (Summary) & References</div>
         <ul class="obj-list" style="margin-top:10px;">
-            <li><b class="highlight">RESTful Routing:</b> Web API ប្រើប្រាស់ Attribute Routing លើក្បាល Class និង Action Method ដើម្បីរៀបចំអាសយដ្ឋាន URL ឱ្យមានសណ្តាប់ធ្នាប់។</li>
+            <li><b class="highlight">RESTful Routing:</b> Web API ប្រើប្រាស់ Attribute Routing លើក្បាល Class និង Action Method ដើម្បីរៀបចំអាសយដ្ឋាន URL ឱ្យមានសណ្តាប់ធ្នាប់ nudge។</li>
             <li><b class="highlight">HTTP Methods និង CRUD:</b> HTTP Methods ដើរតួជាអ្នកបែងចែកប្រភេទការងារច្បាស់លាស់ ដោយ GET ស្មើនឹង Read, POST ស្មើនឹង Create, PUT ស្មើនឹង Update, និង DELETE ស្មើនឹង Delete។</li>
             <li><b class="highlight">ទាញទិន្នន័យពី URL:</b> យើងអាចប្រើ Route Parameters <code>{id}</code> សម្រាប់កំណត់លេខសម្គាល់ជាក់លាក់ ឬប្រើ Query String សម្រាប់ជាឧបករណ៍តម្រងទិន្នន័យ។</li>
             <li><b class="highlight">សុវត្ថិភាពទិន្នន័យ JSON Body:</b> ការប្រើប្រាស់ <code>[FromBody]</code> ជួយទាញយក JSON ទិន្នន័យដែលមានទំហំធំ និងស្មុគស្មាញពី Client មកបំប្លែងជា Object ក្នុង C#។</li>
@@ -828,7 +842,7 @@
 <!-- PAGE 14: REVIEW TF -->
 <div class="a4-page">
     <div class="global-header">
-        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
         <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៤</h1><p>ASP.NET CORE MVC & SQL SERVER</p></div>
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
@@ -860,7 +874,7 @@
 <!-- PAGE 15: REVIEW MCQ -->
 <div class="a4-page">
     <div class="global-header">
-        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
         <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៤</h1><p>ASP.NET CORE MVC & SQL SERVER</p></div>
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
@@ -960,13 +974,13 @@
 <!-- PAGE 16: MATCHING & ESSAYS -->
 <div class="a4-page">
     <div class="global-header">
-        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
         <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៤</h1><p>ASP.NET CORE MVC & SQL SERVER</p></div>
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
     <div class="page-content">
         <div class="sub-heading" style="width:100%; margin-top:0;">៣. សំណួរផ្គូផ្គង (Matching) & សំណួរបកស្រាយ (Essays)</div>
-        <p style="font-size:10pt; margin-bottom:12px;"><b>សេចក្តីណែនាំ៖</b> សូមផ្គូផ្គងពាក្យនៅជួរឈរខាងឆ្វេង (១-១០) ទៅនឹងការពន្យល់នៅជួរឈរខាងស្តាំ (A-J) ឱ្យបានត្រឹមត្រូវ។</p>
+        <p style="font-size:10pt; margin-bottom:12px;"><b>សេចក្តីណែនាំ៖</b> សូមផ្គូផ្គងពាក្យនៅជួរឈរខាងឆ្វេង (១-១០) ទៅនឹងការពន្យល់នៅជួរឈរខាងស្តាំ (A-J) ឱ្យបានត្រឹមត្រូវ。</p>
         
         <div class="two-column" style="gap:15px; align-items:start; margin-bottom: 15px;">
             <table class="standard-table" style="box-shadow:none; font-size: 8.5pt;">
@@ -1011,7 +1025,7 @@
 <!-- PAGE 17: PRACTICAL EXERCISES -->
 <div class="a4-page">
     <div class="global-header">
-        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
         <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៤</h1><p>ASP.NET CORE MVC & SQL SERVER</p></div>
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
@@ -1046,7 +1060,7 @@
 <!-- PAGE 18: ANSWER KEYS PART 1 -->
 <div class="a4-page">
     <div class="global-header">
-        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
         <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៤</h1><p>ASP.NET CORE MVC & SQL SERVER</p></div>
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
@@ -1096,7 +1110,7 @@
 <!-- PAGE 19: PRACTICAL SOLUTIONS -->
 <div class="a4-page">
     <div class="global-header">
-        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
         <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៤</h1><p>ASP.NET CORE MVC & SQL SERVER</p></div>
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
