@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ការយល់ដឹងស៊ីជម្រៅអំពី ASP.NET Core Service Lifetimes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@300;400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #f8fafc;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --card-bg: #ffffff;
+            --accent-transient: #ef4444;
+            --accent-transient-bg: #fef2f2;
+            --accent-scoped: #10b981;
+            --accent-scoped-bg: #ecfdf5;
+            --accent-singleton: #3b82f6;
+            --accent-singleton-bg: #eff6ff;
+            --border-color: #e2e8f0;
+            --code-bg: #1e1e2e;
+            --code-text: #cdd6f4;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Kantumruy Pro', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            line-height: 1.7;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            color: #0f172a;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        .intro-box {
+            background-color: var(--card-bg);
+            border-left: 5px solid #6366f1;
+            padding: 1.5rem;
+            border-radius: 4px;
+            margin-bottom: 3rem;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+        }
+
+        .lifetime-section {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05);
+            border: 1px solid var(--border-color);
+        }
+
+        .lifetime-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .section-transient { border-top: 4px solid var(--accent-transient); }
+        .section-transient .badge { background-color: var(--accent-transient-bg); color: var(--accent-transient); }
+        .section-transient h2 { color: var(--accent-transient); }
+
+        .section-scoped { border-top: 4px solid var(--accent-scoped); }
+        .section-scoped .badge { background-color: var(--accent-scoped-bg); color: var(--accent-scoped); }
+        .section-scoped h2 { color: var(--accent-scoped); }
+
+        .section-singleton { border-top: 4px solid var(--accent-singleton); }
+        .section-singleton .badge { background-color: var(--accent-singleton-bg); color: var(--accent-singleton); }
+        .section-singleton h2 { color: var(--accent-singleton); }
+
+        .grid-meta {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .grid-meta { grid-template-columns: 1fr; }
+            .lifetime-header { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+        }
+
+        .meta-box {
+            background-color: #f8fafc;
+            padding: 1.2rem;
+            border-radius: 8px;
+            border: 1px solid #edf2f7;
+        }
+
+        .meta-box h3 {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            color: #334155;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .code-block {
+            background-color: var(--code-bg);
+            color: var(--code-text);
+            padding: 1.5rem;
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            margin-top: 1rem;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .code-keyword { color: #cba6f7; }
+        .code-type { color: #f9e2af; }
+        .code-method { color: #89b4fa; }
+        .code-string { color: #a6e3a1; }
+        .code-comment { color: #6c7086; font-style: italic; }
+
+        .summary-table-section {
+            margin-top: 4rem;
+            background-color: var(--card-bg);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05);
+            border: 1px solid var(--border-color);
+        }
+
+        .summary-table-section h2 {
+            margin-bottom: 1.5rem;
+            color: #0f172a;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            margin-top: 1rem;
+        }
+
+        th, td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background-color: #f1f5f9;
+            color: #334155;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: #f8fafc;
+        }
+
+        .conclusion {
+            margin-top: 3rem;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>ការយល់ដឹងស៊ីជម្រៅអំពី ASP.NET Core Service Lifetimes</h1>
+        <p>មគ្គុទ្ទេសក៍លម្អិត អមដោយឧទាហរណ៍កូដជាក់ស្តែងសម្រាប់ស្ថាបត្យកម្មកម្រិត Enterprise</p>
+    </header>
+
+    <div class="intro-box">
+        <strong>💡 អំពី Dependency Injection (DI):</strong> នៅក្នុង ASP.NET Core ការគ្រប់គ្រងអាយុកាលរបស់ Object (Instance Lifetimes) គឺមានសារៈសំខាន់បំផុត ដើម្បីធានាបាននូវល្បឿន លំនឹងប្រព័ន្ធ និងការប្រើប្រាស់ Memory ប្រកបដោយប្រសិទ្ធភាពខ្ពស់។ ខាងក្រោមនេះជាការវិភាគលម្អិត និងការអនុវត្តកូដជាក់ស្តែង។
+    </div>
+
+    <!-- TRANSIENT -->
+    <div class="lifetime-section section-transient">
+        <div class="lifetime-header">
+            <h2>១. Transient (អាយុកាលខ្លីបំផុត / បង្កើតថ្មីជានិច្ច)</h2>
+            <span class="badge">Transient</span>
+        </div>
+        
+        <div class="grid-meta">
+            <div class="meta-box">
+                <h3>🔴 ទ្រឹស្តី និងជីវិតពិត</h3>
+                <p><strong>ទ្រឹស្តី៖</strong> ប្រព័ន្ធ DI container នឹងបង្កើត Object ថ្មីស្រឡាងរាល់ពេលដែលមានការហៅប្រើប្រាស់ (Injection) ទោះបីជាស្ថិតនៅក្នុង Request តែមួយ ឬ Request ផ្សេងគ្នាក៏ដោយ។</p>
+                <p style="margin-top: 0.5rem;"><strong>ឧទាហរណ៍៖</strong> កែវក្រដាសប្រើម្តងបោះចោល។ គ្រប់ពេលដែលចង់ញ៉ាំទឹក គឺត្រូវដកកែវថ្មីមកប្រើជានិច្ច មិនប្រើរួមគ្នាឡើយ។</p>
+            </div>
+            <div class="meta-box">
+                <h3>🛠️ ករណីប្រើប្រាស់សមស្រប</h3>
+                <p>ប្រើសម្រាប់សេវាកម្មដែលជាប្រភេទ <strong>Stateless</strong> (មិនរក្សាទុកស្ថានភាពទិន្នន័យ) ស្រាលៗ និងដំណើរការលឿន ដូចជា៖ សេវាកម្មជំនួយការគណនា, ជំនួយការបង្កើត UUID/Random String, ឬ Validation Services។</p>
+            </div>
+        </div>
+
+        <div>
+            <strong>💻 ឧទាហរណ៍កូដការអនុវត្ត (Implementation):</strong>
+            <div class="code-block">
+<span class="code-keyword">public interface</span> <span class="code-type">ITransientService</span> { <span class="code-type">Guid</span> GetOperationId(); }<br><br><span class="code-keyword">public class</span> <span class="code-type">TransientService</span> : <span class="code-type">ITransientService</span><br>{<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">private readonly</span> <span class="code-type">Guid</span> _id = <span class="code-type">Guid</span>.<span class="code-method">NewGuid</span>();<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">public</span> <span class="code-type">Guid</span> <span class="code-method">GetOperationId</span>() => _id;<br>}
+            </div>
+        </div>
+    </div>
+
+    <!-- SCOPED -->
+    <div class="lifetime-section section-scoped">
+        <div class="lifetime-header">
+            <h2>២. Scoped (អាយុកាលកម្រិត Request / តែមួយគត់ក្នុងមួយសំណើ)</h2>
+            <span class="badge">Scoped</span>
+        </div>
+        
+        <div class="grid-meta">
+            <div class="meta-box">
+                <h3>🟢 ទ្រឹស្តី និងជីវិតពិត</h3>
+                <p><strong>ទ្រឹស្តី៖</strong> Object ត្រូវបានបង្កើតឡើងតែម្តងគត់ក្នុងមួយ HTTP Request។ គ្រប់សមាសធាតុ (Classes/Services) ទាំងអស់ដែលហៅប្រើប្រាស់វានៅក្នុង Request តែមួយនោះ នឹងចែករំលែក Instance តែមួយរួមគ្នា។</p>
+                <p style="margin-top: 0.5rem;"><strong>ឧទាហរណ៍៖</strong> អ្នករត់តុបម្រើអតិថិជនតាមតុ។ ក្នុងអំឡុងពេលដែលអ្នកអង្គុយពិសារអាហារ (១ Request) គឺមានអ្នករត់តុដដែលបម្រើអ្នកតាំងពីដើមរហូតដល់ចប់។</p>
+            </div>
+            <div class="meta-box">
+                <h3>🛠️ ករណីប្រើប្រាស់សមស្រប</h3>
+                <p>ប្រើសម្រាប់សេវាកម្មដែលត្រូវរក្សាទុក State ក្នុងរង្វង់ Request មួយ ឬសេវាកម្មដែលទាក់ទងនឹង Database Connection ដូចជា <code>DbContext</code> របស់ Entity Framework Core, Repositories, ឬ Business Services (Unit of Work)។</p>
+            </div>
+        </div>
+
+        <div>
+            <strong>💻 ឧទាហរណ៍កូដការអនុវត្ត (Implementation):</strong>
+            <div class="code-block">
+<span class="code-keyword">public interface</span> <span class="code-type">IScopedService</span> { <span class="code-type">Guid</span> GetOperationId(); }<br><br><span class="code-keyword">public class</span> <span class="code-type">ScopedService</span> : <span class="code-type">IScopedService</span><br>{<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">private readonly</span> <span class="code-type">Guid</span> _id = <span class="code-type">Guid</span>.<span class="code-method">NewGuid</span>();<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">public</span> <span class="code-type">Guid</span> <span class="code-method">GetOperationId</span>() => _id;<br>}
+            </div>
+        </div>
+    </div>
+
+    <!-- SINGLETON -->
+    <div class="lifetime-section section-singleton">
+        <div class="lifetime-header">
+            <h2>៣. Singleton (អាយុកាលវែងបំផុត / រួមគ្នាពេញមួយកម្មវិធី)</h2>
+            <span class="badge">Singleton</span>
+        </div>
+        
+        <div class="grid-meta">
+            <div class="meta-box">
+                <h3>🔵 ទ្រឹស្តី និងជីវិតពិត</h3>
+                <p><strong>ទ្រឹស្តី៖</strong> Object ត្រូវបានបង្កើតឡើងតែម្តងគត់នៅពេលដែលកម្មវិធីចាប់ផ្តើម (Application Startup) ឬនៅពេលត្រូវបានហៅប្រើប្រាស់លើកដំបូង ហើយ Instance នោះនឹងត្រូវប្រើប្រាស់រួមគ្នាសម្រាប់គ្រប់ Request និងគ្រប់ User ទាំងអស់រហូតដល់ App ត្រូវបានបិទ។</p>
+                <p style="margin-top: 0.5rem;"><strong>ឧទាហរណ៍៖</strong> នាឡិកាព្យួរជញ្ជាំងក្នុងក្រុមហ៊ុន។ គ្រប់បុគ្គលិកទាំងអស់ (រាល់ Request ទាំងអស់) មើលម៉ោងពីនាឡិកាតែមួយរួមគ្នា។</p>
+            </div>
+            <div class="meta-box">
+                <h3>🛠️ ករណីប្រើប្រាស់សមស្រប</h3>
+                <p>ប្រើសម្រាប់សេវាកម្មដែលចំណាយធនធានច្រើនក្នុងការបង្កើត (Expensive to create) ឬត្រូវការរក្សាទុកទិន្នន័យជាសកល (Global State Cache) ដូចជា៖ Memory Cache, Configuration Settings, ឬ Message Broker Client (RabbitMQ Connection)។</p>
+            </div>
+        </div>
+
+        <div>
+            <strong>💻 ឧទាហរណ៍កូដការអនុវត្ត (Implementation):</strong>
+            <div class="code-block">
+<span class="code-keyword">public interface</span> <span class="code-type">ISingletonService</span> { <span class="code-type">Guid</span> GetOperationId(); }<br><br><span class="code-keyword">public class</span> <span class="code-type">SingletonService</span> : <span class="code-type">ISingletonService</span><br>{<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">private readonly</span> <span class="code-type">Guid</span> _id = <span class="code-type">Guid</span>.<span class="code-method">NewGuid</span>();<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">public</span> <span class="code-type">Guid</span> <span class="code-method">GetOperationId</span>() => _id;<br>}
+            </div>
+        </div>
+    </div>
+
+    <!-- REGISTRATION & API CONTROLLER DEMO -->
+    <div class="summary-table-section" style="border-top: 4px solid #6366f1;">
+        <h2>⚙️ ការចុះឈ្មោះសេវាកម្ម និងការប្រើប្រាស់ក្នុង Web API</h2>
+        <p>ដើម្បីមើលឃើញភាពខុសគ្នាជាក់ស្តែង យើងបង្កើត Web API Controller មួយដែលហៅសេវាកម្មទាំងនេះចំនួន ២ ដងក្នុង Request តែមួយ៖</p>
+
+        <div class="code-block">
+<span class="code-comment">// ១. ការចុះឈ្មោះក្នុង Program.cs</span><br><span class="code-keyword">var</span> builder = <span class="code-type">WebApplication</span>.<span class="code-method">CreateBuilder</span>(args);<br>builder.Services.<span class="code-method">AddTransient</span>&lt;<span class="code-type">ITransientService</span>, <span class="code-type">TransientService</span>&gt;();<br>builder.Services.<span class="code-method">AddScoped</span>&lt;<span class="code-type">IScopedService</span>, <span class="code-type">ScopedService</span>&gt;();<br>builder.Services.<span class="code-method">AddSingleton</span>&lt;<span class="code-type">ISingletonService</span>, <span class="code-type">SingletonService</span>&gt;();<br><br><span class="code-comment">// ២. បង្កើត Web API Controller ដើម្បីធ្វើតេស្ត</span><br>[<span class="code-type">ApiController</span>]<br>[<span class="code-method">Route</span>(<span class="code-string">"api/[controller]"</span>)]<br><span class="code-keyword">public class</span> <span class="code-type">LifetimesController</span> : <span class="code-type">ControllerBase</span><br>{<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">private readonly</span> <span class="code-type">ITransientService</span> _transient1;<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">private readonly</span> <span class="code-type">ITransientService</span> _transient2;<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">private readonly</span> <span class="code-type">IScopedService</span> _scoped1;<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">private readonly</span> <span class="code-type">IScopedService</span> _scoped2;<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">private readonly</span> <span class="code-type">ISingletonService</span> _singleton1;<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">private readonly</span> <span class="code-type">ISingletonService</span> _singleton2;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">public</span> <span class="code-method">LifetimesController</span>(<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-type">ITransientService</span> transient1, <span class="code-type">ITransientService</span> transient2,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-type">IScopedService</span> scoped1, <span class="code-type">IScopedService</span> scoped2,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-type">ISingletonService</span> singleton1, <span class="code-type">ISingletonService</span> singleton2)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_transient1 = transient1; _transient2 = transient2;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_scoped1 = scoped1; _scoped2 = scoped2;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_singleton1 = singleton1; _singleton2 = singleton2;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;[<span class="code-type">HttpGet</span>]<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">public</span> <span class="code-type">IActionResult</span> <span class="code-method">Get</span>()<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">return</span> <span class="code-method">Ok</span>(<span class="code-keyword">new</span><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Transient_1 = _transient1.<span class="code-method">GetOperationId</span>(),<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Transient_2 = _transient2.<span class="code-method">GetOperationId</span>(), <span class="code-comment">// នឹងបង្ហាញលទ្ធផលខុសគ្នាដាច់</span><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Scoped_1 = _scoped1.<span class="code-method">GetOperationId</span>(),<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Scoped_2 = _scoped2.<span class="code-method">GetOperationId</span>(),       <span class="code-comment">// នឹងបង្ហាញលទ្ធផលដូចគ្នា</span><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Singleton_1 = _singleton1.<span class="code-method">GetOperationId</span>(),<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Singleton_2 = _singleton2.<span class="code-method">GetOperationId</span>()    <span class="code-comment">// នឹងបង្ហាញលទ្ធផលដូចគ្នា ទោះហៅពី Request ផ្សេងក៏ដោយ</span><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;});<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}
+        </div>
+    </div>
+
+    <!-- SUMMARY TABLE -->
+    <div class="summary-table-section">
+        <h2>📊 តារាងប្រៀបធៀបសង្ខេប (Comparison Matrix)</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ប្រភេទអាយុកាល (Lifetime)</th>
+                    <th>ចំនួន Instance ក្នុងមួយ Request</th>
+                    <th>ចំនួន Instance ច្រើន Request</th>
+                    <th>ការប្រើប្រាស់ Memory</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="color: var(--accent-transient); font-weight: 600;">Transient</td>
+                    <td>បង្កើតថ្មីរាល់ពេលហៅ (ច្រើន)</td>
+                    <td>បង្កើតថ្មីជានិច្ច</td>
+                    <td>ទាប (ដោះលែងមកវិញភ្លាមៗក្រោយប្រើ)</td>
+                </tr>
+                <tr>
+                    <td style="color: var(--accent-scoped); font-weight: 600;">Scoped</td>
+                    <td>តែមួយគត់ (Instance តែមួយ)</td>
+                    <td>បង្កើតថ្មីសម្រាប់ Request ថ្មី</td>
+                    <td>មធ្យម (ដោះលែងក្រោយចប់ Request)</td>
+                </tr>
+                <tr>
+                    <td style="color: var(--accent-singleton); font-weight: 600;">Singleton</td>
+                    <td>តែមួយគត់ (Instance តែមួយ)</td>
+                    <td>រក្សាទុក Instance ដដែលដដែល</td>
+                    <td>ខ្ពស់/ថេរ (ស្ថិតក្នុង Memory រហូត)</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="conclusion">
+        <p>អភិវឌ្ឍន៍ និងរៀបចំរចនាសម្ព័ន្ធដោយយកចិត្តទុកដាក់ខ្ពស់សម្រាប់ប្រព័ន្ធកម្មវិធីល្បឿនលឿន។</p>
+    </div>
+</div>
+
+</body>
+</html>
