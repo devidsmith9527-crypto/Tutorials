@@ -187,9 +187,9 @@
     <div class="page-content">
         <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-layer-group"></i> ផ្នែកទី ១៖ លំហាត់ ASP.NET Core MVC (HTML Views)</div>
         
-        <div class="sub-heading">📝 លំហាត់ MVC ១៖ ការបង្ហាញព័ត៌មានទូទៅ (ViewBag Basic)</div>
+        <div class="sub-heading">📝 លំហាត់ MVC ១៖ ការបង្ហាញព័ត៌មានទូទៅ (ViewBag & Attribute Routing)</div>
         <div class="text-block">
-            <b>ប្រធានលំហាត់៖</b> ចូរបង្កើត Controller មួយឈ្មោះ <code>AboutController</code> ដើម្បីផ្ទុកព័ត៌មានរបស់ក្រុមហ៊ុន (ឈ្មោះ, អាសយដ្ឋាន, លេខទូរស័ព្ទ) ដោយប្រើប្រាស់ <code>ViewBag</code>។ បន្ទាប់មកបង្ហាញព័ត៌មានទាំងនេះនៅក្នុងឯកសារទិដ្ឋភាព (HTML View)។
+            <b>ប្រធានលំហាត់៖</b> ចូរបង្កើត <code>AboutController</code> និងប្ដូរ URL តាមរយៈ Route Attribute។ បន្ទាប់មកផ្ទុកព័ត៌មានក្រុមហ៊ុនក្នុង <code>ViewBag</code> ហើយបង្ហាញទិន្នន័យនេះក្នុងឯកសារទិដ្ឋភាព (HTML View)។
         </div>
 
         <div class="code-window">
@@ -201,8 +201,10 @@
 
 <span style="color:#C678DD;">namespace</span> SchoolApp.Controllers
 {
+    [Route(<span style="color:#98C379;">"Company"</span>)] <span style="color:#5C6370;">// បន្ថែម Route ផ្ទាល់ខ្លួនលើ Controller</span>
     <span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">AboutController</span> : Controller
     {
+        [Route(<span style="color:#98C379;">"Info"</span>)] <span style="color:#5C6370;">// បន្ថែម Route លើ Action នាំឱ្យ URL ក្លាយជា /Company/Info</span>
         <span style="color:#C678DD;">public</span> IActionResult <span style="color:#61AFEF;">Index</span>()
         {
             <span style="color:#5C6370;">// ស្តុកទិន្នន័យទៅក្នុង ViewBag មុននឹងបញ្ជូនទៅ View</span>
@@ -210,7 +212,7 @@
             ViewBag.Address = <span style="color:#98C379;">"ក្រុងសៀមរាប, កម្ពុជា"</span>;
             ViewBag.Phone = <span style="color:#98C379;">"012 345 678"</span>;
             
-            <span style="color:#C678DD;">return</span> <span style="color:#61AFEF;">View</span>(); <span style="color:#5C6370;">// បញ្ជូនទៅកាន់ឯកសារ Index.cshtml</span>
+            <span style="color:#C678DD;">return</span> <span style="color:#61AFEF;">View</span>(); <span style="color:#5C6370;">// បញ្ជូនទៅកាន់ឯកសារ Views/About/Index.cshtml</span>
         }
     }
 }</pre>
@@ -234,12 +236,12 @@
 
         <div class="lab-box">
             <h4><i class="fa-solid fa-desktop"></i> 🟢 លទ្ធផល (Output) លើ Browser៖</h4>
-            <p>នៅពេលវាយ URL <code>/About/Index</code> វានឹងបង្ហាញជាទំព័រ HTML ដែលមានចំណងជើង "អំពីក្រុមហ៊ុនយើង" ជាពណ៌ខៀវ និងមានបញ្ជីរាយព័ត៌មានក្រុមហ៊ុន (Tech Angkor Co., Ltd...) ត្រឹមត្រូវ។</p>
+            <p>នៅពេលវាយ URL <code>/Company/Info</code> វានឹងបង្ហាញជាទំព័រ HTML ដែលមានចំណងជើង "អំពីក្រុមហ៊ុនយើង" ជាពណ៌ខៀវ និងមានបញ្ជីរាយព័ត៌មានក្រុមហ៊ុន (Tech Angkor Co., Ltd...) ត្រឹមត្រូវ។</p>
         </div>
 
         <div class="analysis-box">
             <h4><i class="fa-solid fa-magnifying-glass-chart"></i> 🔍 វិភាគដំណើរការ៖</h4>
-            <p style="font-size: 10pt; line-height: 1.6;">ពេល Browser ហៅ Action <code>Index()</code> វាបង្កើត Dynamic Properties ៣ ចូលក្នុង <code>ViewBag</code> ដែលជាទីតាំង Memory បណ្ដោះអាសន្ន។ ពេល <code>View()</code> ត្រូវបានហៅ ម៉ាស៊ីន <b>Razor Engine</b> នឹងទាញយកតម្លៃពី ViewBag ទាំងនោះទៅចាក់បញ្ចូលជំនួសកន្លែងដែលមាននិមិត្តសញ្ញា <code>@</code> នៅក្នុងកូដ HTML មុននឹងបញ្ជូនកូដ HTML សម្រេចទៅឱ្យ Browser បង្ហាញ។</p>
+            <p style="font-size: 10pt; line-height: 1.6;">ដោយសារការប្រើ <code>[Route]</code> ធ្វើឱ្យយើងអាចផ្លាស់ប្តូរ URL ពី Default (<code>/About/Index</code>) មកជា Custom URL (<code>/Company/Info</code>) ងាយស្រួលចំណាំ។ ចំណែក <code>ViewBag</code> ជាទីតាំង Memory បណ្ដោះអាសន្ន ដែល Razor Engine ទាញយកតម្លៃទៅចាក់បញ្ចូលទីតាំងដែលមានសញ្ញា <code>@</code> ក្នុង HTML មុននឹងបញ្ជូនទៅ Browser បង្ហាញ។</p>
         </div>
     </div>
     <div class="global-footer">
@@ -256,9 +258,9 @@
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
     <div class="page-content">
-        <div class="sub-heading" style="margin-top:0;">📝 លំហាត់ MVC ២៖ ព័ត៌មានលម្អិតសៀវភៅ (Strongly-Typed Model)</div>
+        <div class="sub-heading" style="margin-top:0;">📝 លំហាត់ MVC ២៖ ព័ត៌មានសៀវភៅ (Strongly-Typed Model & Custom Route)</div>
         <div class="text-block">
-            <b>ប្រធានលំហាត់៖</b> ចូរបង្កើត Class Model <code>Book</code>។ ក្នុង Controller បង្កើត Object សៀវភៅមួយក្បាល រួចបញ្ជូនវាជាលក្ខណៈ <b>Strongly-typed</b> ទៅកាន់ View ដើម្បីបង្ហាញក្នុងទម្រង់ Card របស់ Bootstrap។
+            <b>ប្រធានលំហាត់៖</b> ចូរបង្កើត Class Model <code>Book</code>។ ក្នុង Controller កំណត់ Custom Route ហើយបង្កើត Object សៀវភៅមួយក្បាល រួចបញ្ជូនវាជាលក្ខណៈ <b>Strongly-typed</b> ទៅកាន់ View ដើម្បីបង្ហាញជា Card របស់ Bootstrap។
         </div>
 
         <div class="code-window">
@@ -283,6 +285,7 @@
 
 <span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">BookController</span> : Controller
 {
+    [Route(<span style="color:#98C379;">"store/book-detail"</span>)] <span style="color:#5C6370;">// ប្ដូរ URL ឱ្យកាន់តែមានអត្ថន័យល្អ (SEO Friendly)</span>
     <span style="color:#C678DD;">public</span> IActionResult <span style="color:#61AFEF;">Detail</span>()
     {
         <span style="color:#5C6370;">// បង្កើត Object និងដាក់តម្លៃ</span>
@@ -315,12 +318,12 @@
 
         <div class="lab-box">
             <h4><i class="fa-solid fa-desktop"></i> 🟢 លទ្ធផល (Output)៖</h4>
-            <p>បង្ហាញកាត (Bootstrap Card) ដ៏ស្រស់ស្អាតមួយ មានក្បាលពណ៌បៃតង "ព័ត៌មានសៀវភៅលេខ #101" និងមានបង្ហាញចំណងជើង "C# Programming" និងតម្លៃ "$25.50" ជាពណ៌ក្រហម។</p>
+            <p>ពេលវាយ URL <code>/store/book-detail</code> បង្ហាញកាត (Bootstrap Card) ដ៏ស្រស់ស្អាតមួយ មានក្បាលពណ៌បៃតង "ព័ត៌មានសៀវភៅលេខ #101" និងមានបង្ហាញចំណងជើង "C# Programming" និងតម្លៃ "$25.50" ជាពណ៌ក្រហម។</p>
         </div>
 
         <div class="analysis-box">
             <h4><i class="fa-solid fa-magnifying-glass-chart"></i> 🔍 វិភាគដំណើរការ៖</h4>
-            <p style="font-size: 10pt; line-height: 1.6;">កូដ <code>return View(myBook)</code> ជាអ្នកច្របាច់ទិន្នន័យ Object ភ្ជាប់ជាមួយ View ដោយផ្ទាល់។ ការប្រកាស <code>@model SchoolApp.Models.Book</code> អនុញ្ញាតឱ្យ View ស្គាល់រចនាសម្ព័ន្ធទិន្នន័យច្បាស់លាស់ (Type-Safety) ទើបយើងអាចសរសេរ <code>@Model.Title</code> ដោយមានកម្មវិធីជួយទាយពាក្យ (IntelliSense) ជួយការពារការសរសេរខុសអក្ខរាវិរុទ្ធ ដែលជាចំណុចខ្លាំងលើសការប្រើ ViewBag។</p>
+            <p style="font-size: 10pt; line-height: 1.6;">កូដ <code>return View(myBook)</code> ជាអ្នកច្របាច់ទិន្នន័យ Object ភ្ជាប់ជាមួយ View ។ ទោះបីប្ដូរ URL តាម Route Attribute មែន តែ <code>View()</code> នៅតែដឹងថាត្រូវស្វែងរកឯកសារ <code>Detail.cshtml</code> ក្នុង Folder <code>Views/Book</code> ដដែល។ ការប្រកាស <code>@model</code> ជួយឱ្យយើងអាចសរសេរ <code>@Model.Title</code> ដោយមានកម្មវិធីជួយទាយពាក្យ (IntelliSense) ជួយការពារការសរសេរខុសអក្ខរាវិរុទ្ធ (Type-Safety)។</p>
         </div>
     </div>
     <div class="global-footer">
@@ -339,7 +342,7 @@
     <div class="page-content">
         <div class="sub-heading" style="margin-top:0;">📝 លំហាត់ MVC ៣៖ បញ្ជីបុគ្គលិក និងការប្រើប្រាស់ Shared Layout</div>
         <div class="text-block">
-            <b>ប្រធានលំហាត់៖</b> ដើម្បីជៀសវាងការសរសេរកូដ HTML (Head, Body, Bootstrap Link) ដដែលៗ គ្រប់ទំព័រ ចូរបង្កើត Master Page (<code>_Layout.cshtml</code>) និងភ្ជាប់វាជាមួយ <code>_ViewStart.cshtml</code>។ បន្ទាប់មកបង្កើត Controller ដើម្បីបញ្ជូន <code>List&lt;Employee&gt;</code> ទៅកាន់ View និងប្រើ <code>@foreach</code> បង្ហាញជាតារាង។
+            <b>ប្រធានលំហាត់៖</b> ដើម្បីជៀសវាងការសរសេរកូដ HTML (Head, Body, Bootstrap Link) ដដែលៗ ចូរបង្កើត Master Page (<code>_Layout.cshtml</code>)។ បន្ទាប់មកបង្កើត Controller ព្រមទាំងកំណត់ URL Route ថ្មី ដើម្បីបញ្ជូន <code>List&lt;Employee&gt;</code> ទៅ View និងបង្ហាញជាតារាង។
         </div>
 
         <div class="code-window">
@@ -380,8 +383,10 @@
 {
     <span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">Employee</span> { <span style="color:#C678DD;">public string</span> Name {<span style="color:#C678DD;">get</span>;<span style="color:#C678DD;">set</span>;} <span style="color:#C678DD;">public string</span> Position {<span style="color:#C678DD;">get</span>;<span style="color:#C678DD;">set</span>;} }
 
+    [Route(<span style="color:#98C379;">"hr-system"</span>)] <span style="color:#5C6370;">// ប្ដូរ Route គោលរបស់ Controller</span>
     <span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">EmployeeController</span> : Controller
     {
+        [Route(<span style="color:#98C379;">"staff-directory"</span>)] <span style="color:#5C6370;">// URL បូកបញ្ចូលគ្នា: /hr-system/staff-directory</span>
         <span style="color:#C678DD;">public</span> IActionResult <span style="color:#61AFEF;">List</span>()
         {
             <span style="color:#5C6370;">// បង្កើត Collection នៃបុគ្គលិក</span>
@@ -451,7 +456,7 @@
 
         <div class="lab-box">
             <h4><i class="fa-solid fa-desktop"></i> 🟢 លទ្ធផល (Output)៖</h4>
-            <p>បង្ហាញទំព័រវែបសាយមួយ ដែលមានរបារពណ៌ខ្មៅ "HR System" នៅខាងលើ (មកពី Layout) ចំណែកខាងក្រោមបង្ហាញតារាង Table ដែលមានទិន្នន័យបុគ្គលិក ៣ នាក់ រៀបរយយ៉ាងស្អាតដោយ Bootstrap។</p>
+            <p>ពេលចូល URL <code>/hr-system/staff-directory</code> នឹងបង្ហាញទំព័រវែបសាយមួយ ដែលមានរបារពណ៌ខ្មៅ "HR System" នៅខាងលើ (មកពី Layout) ចំណែកខាងក្រោមបង្ហាញតារាង Table ដែលមានទិន្នន័យបុគ្គលិក ៣ នាក់ រៀបរយយ៉ាងស្អាត។</p>
         </div>
 
         <div class="analysis-box">
