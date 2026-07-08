@@ -197,10 +197,11 @@
 <body>
 
 <div class="no-print">
-    <p><b><i class="fa-solid fa-file-pdf"></i> ណែនាំ៖</b> ដើម្បីបោះពុម្ពជា PDF ឱ្យចំកណ្តាលទំព័រ A4 ល្អ សូមជ្រើសរើស <b>Margins: None</b> និងបើក <b>Background graphics</b> (Handout ១៩ ទំព័រ)។</p>
-    <button class="print-btn" onclick="window.print()"><i class="fa-solid fa-print"></i> បោះពុម្ពឯកសារជា PDF (A4 Handout ១៩ ទំព័រ)</button>
+    <p><b><i class="fa-solid fa-file-pdf"></i> ណែនាំ៖</b> ដើម្បីបោះពុម្ពជា PDF ឱ្យចំកណ្តាលទំព័រ A4 ល្អ សូមជ្រើសរើស <b>Margins: None</b> និងបើក <b>Background graphics</b> (Handout ២២ ទំព័រ)។</p>
+    <button class="print-btn" onclick="window.print()"><i class="fa-solid fa-print"></i> បោះពុម្ពឯកសារជា PDF (A4 Handout ២២ ទំព័រ)</button>
 </div>
 
+<!-- ទំព័រទី ១៖ Cover Page -->
 <div class="a4-page">
     <div class="page-content" style="justify-content: center; align-items: center; text-align: center; background: radial-gradient(circle at center, #F8FAFC 0%, #FFFFFF 100%);">
         <img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" style="width: 140px; margin-bottom: 20px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));">
@@ -224,6 +225,7 @@
     </div>
 </div>
 
+<!-- ទំព័រទី ២៖ មាតិកា -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
@@ -244,8 +246,9 @@
                 <tr><td class="toc-num">៣.២</td><td>ថ្នាក់គ្រឹះ Controller (Views) និង ControllerBase (Web API)</td></tr>
                 <tr><td class="toc-num">៣.៣</td><td>វិធីសាស្ត្របញ្ជូនទិន្នន័យទៅកាន់ Views (ViewBag, ViewData, Strongly-Typed Model)</td></tr>
                 <tr><td class="toc-num">៣.៤</td><td>ការបង្កើត Student Controller & រៀបចំឯកសារ Razor View (.cshtml)</td></tr>
-                <tr><td class="toc-num">៣.៥</td><td>ការបង្កើត Student API Controller សម្រាប់បញ្ចេញទិន្នន័យជា JSON Array</td></tr>
+                <tr><td class="toc-num">៣.៥</td><td>ការបង្កើត Web API និងដំណើរការ JSON Serialization</td></tr>
                 <tr><td class="toc-num">៣.៦</td><td>យន្តការ Routing, URL Endpoints និង ការតេស្តលទ្ធផលជាក់ស្តែង</td></tr>
+                <tr><td class="toc-num">៣.៧</td><td>ការរៀបចំទំព័រមេ (Master Layout) ជាមួយ Folder Shared ក្នុង Views</td></tr>
             </tbody>
         </table>
 
@@ -254,16 +257,17 @@
             <li><b class="highlight">ស្គាល់ច្បាស់ពីប្រព័ន្ធទាំងពីរ៖</b> យល់ពីភាពខុសគ្នារវាង Controller ប្រើសម្រាប់ Views (HTML) និង Controller សម្រាប់ API (JSON)។</li>
             <li><b class="highlight">បញ្ជូនទិន្នន័យទៅកាន់ Views៖</b> ចេះប្រើប្រាស់ ViewBag, ViewData និង Strongly-typed Models ដើម្បីបញ្ជូនទិន្នន័យពី C# ទៅ HTML។</li>
             <li><b class="highlight">រចនាទំព័រ Razor View៖</b> អាចសរសេរកូដ Razor Engine នៅក្នុងឯកសារ .cshtml ដើម្បីទាញបង្ហាញបញ្ជីទិន្នន័យក្នុង HTML Table។</li>
-            <li><b class="highlight">បង្កើត Web API endpoints៖</b> ចេះបង្កើត API endpoints និងយល់ពីដំណើរការ JSON Serialization ដោយប្រើ System.Text.Json។</li>
+            <li><b class="highlight">រៀបចំ Shared Layout៖</b> ចេះបង្កើត Master Page និងភ្ជាប់ <code>_ViewStart.cshtml</code> ដើម្បីប្រើប្រាស់ UI  مشترងាយស្រួល។</li>
             <li><b class="highlight">កំណត់ប្រព័ន្ធ Routing៖</b> អាចកំណត់រចនាសម្ព័ន្ធ URL Route ទាំងបែប Conventional (MVC) និង Attribute Routing (API)។</li>
         </ul>
     </div>
     <div class="global-footer">
         <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
-        <div class="footer-right">ទំព័រ ២ / ១៩</div>
+        <div class="footer-right">ទំព័រ ២ / ២២</div>
     </div>
 </div>
 
+<!-- ទំព័រទី ៣៖ 3.1 -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
@@ -336,10 +340,11 @@
     </div>
     <div class="global-footer">
         <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
-        <div class="footer-right">ទំព័រ ៣ / ១៩</div>
+        <div class="footer-right">ទំព័រ ៣ / ២២</div>
     </div>
 </div>
 
+<!-- ទំព័រទី ៤៖ Lab 3.1 -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
@@ -407,10 +412,11 @@
     </div>
     <div class="global-footer">
         <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
-        <div class="footer-right">ទំព័រ ៤ / ១៩</div>
+        <div class="footer-right">ទំព័រ ៤ / ២២</div>
     </div>
 </div>
 
+<!-- ទំព័រទី ៥៖ 3.2 & 3.3 -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
@@ -478,10 +484,11 @@
     </div>
     <div class="global-footer">
         <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
-        <div class="footer-right">ទំព័រ ៥ / ១៩</div>
+        <div class="footer-right">ទំព័រ ៥ / ២២</div>
     </div>
 </div>
 
+<!-- ទំព័រទី ៦៖ Lab 3.2 -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
@@ -538,10 +545,11 @@
     </div>
     <div class="global-footer">
         <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
-        <div class="footer-right">ទំព័រ ៦ / ១៩</div>
+        <div class="footer-right">ទំព័រ ៦ / ២២</div>
     </div>
 </div>
 
+<!-- ទំព័រទី ៧៖ 3.4 & 3.5 Models -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
@@ -595,10 +603,11 @@
     </div>
     <div class="global-footer">
         <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
-        <div class="footer-right">ទំព័រ ៧ / ១៩</div>
+        <div class="footer-right">ទំព័រ ៧ / ២២</div>
     </div>
 </div>
 
+<!-- ទំព័រទី ៨៖ Lab 3.3 -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
@@ -672,10 +681,11 @@
     </div>
     <div class="global-footer">
         <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
-        <div class="footer-right">ទំព័រ ៨ / ១៩</div>
+        <div class="footer-right">ទំព័រ ៨ / ២២</div>
     </div>
 </div>
 
+<!-- ទំព័រទី ៩៖ 3.6 Routing -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
@@ -730,10 +740,11 @@ SchoolApp/
     </div>
     <div class="global-footer">
         <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
-        <div class="footer-right">ទំព័រ ៩ / ១៩</div>
+        <div class="footer-right">ទំព័រ ៩ / ២២</div>
     </div>
 </div>
 
+<!-- ទំព័រទី ១០៖ 3.7 Layout Theory (NEW) -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
@@ -741,13 +752,151 @@ SchoolApp/
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
     <div class="page-content">
-        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-vial"></i> Lab ៣.៤: API & UI Comparison Testing Guide</div>
+        <div class="section-title" style="margin-top:0;"><i class="fa-regular fa-clone"></i> ៣.៧ ការរៀបចំទំព័រមេ (Master Layout) ជាមួយ Folder Shared ក្នុង Views</div>
+        <div class="text-block">
+            នៅក្នុងការអភិវឌ្ឍន៍គេហទំព័រ (Web App) ទំព័រជាច្រើនតែងតែមានផ្នែកដែលដូចគ្នា ដូចជា <b>Menu (Navbar)</b> និង <b>Footer</b>។ ដើម្បីជៀសវាងការសរសេរកូដ HTML ដដែលៗ (DRY Principle) ASP.NET Core MVC ប្រើប្រាស់ថត <code>Views/Shared/</code> ដើម្បីផ្ទុកឯកសារដែលអាចហៅមកប្រើរួមគ្នាបាន។
+        </div>
+
+        <div class="two-column" style="grid-template-columns: 1fr 1fr; align-items: start;">
+            <div class="graphic-box" style="padding: 10px; background: #F0FDF4; border-color: #BBF7D0;">
+                <b style="color:#166534; font-size: 10pt;"><i class="fa-solid fa-file-code"></i> ១. ឯកសារ _Layout.cshtml</b>
+                <p style="font-size:9.5pt; line-height: 1.5; color:#14532D; margin-top:5px;">
+                    ដើរតួជា <b>Master Page</b>។ វាមានផ្ទុកនូវទម្រង់ HTML ស្តង់ដារ (<code>&lt;html&gt;</code>, <code>&lt;head&gt;</code>, <code>&lt;body&gt;</code>) ព្រមទាំងភ្ជាប់ជាមួយ CSS/JS (ដូចជា Bootstrap)។ ចំណុចសំខាន់បំផុតគឺកូដ <code>@RenderBody()</code> ដែលជាកន្លែងសម្រាប់បញ្ចេញទិន្នន័យពី View កូនៗ (Child Views)។
+                </p>
+            </div>
+            
+            <div class="graphic-box" style="padding: 10px; background: #EEF2FF; border-color: #C7D2FE;">
+                <b style="color:#3730A3; font-size: 10pt;"><i class="fa-solid fa-bolt"></i> ២. ឯកសារ _ViewStart.cshtml</b>
+                <p style="font-size:9.5pt; line-height: 1.5; color:#312E81; margin-top:5px;">
+                    ឯកសារនេះត្រូវដាក់នៅក្នុងថត <code>Views/</code> ផ្ទាល់។ វានឹងដំណើរការមុនគេបង្អស់រាល់ពេលដែល View ណាមួយត្រូវបានហៅ។ យើងប្រើវាដើម្បីកំណត់ថា View ទាំងអស់ត្រូវប្រើប្រាស់ <code>_Layout.cshtml</code> មួយណាជាលំនាំដើម (Default Layout) ដោយស្វ័យប្រវត្ត។
+                </p>
+            </div>
+        </div>
+
+        <div class="graphic-box" style="text-align:center; padding:15px; border-radius:8px; margin-top: 5px;">
+            <div style="font-family:'Suwannaphum',sans-serif; color:var(--accent); font-size:10.5pt; margin-bottom:10px; font-weight:bold;"><i class="fa-solid fa-layer-group"></i> ទំនាក់ទំនងរវាង Layout និង Child View</div>
+            
+            <div style="background:#1E293B; border-radius:8px; padding:15px; color:white; font-family:var(--font-code); font-size:9.5pt; text-align:left;">
+                <div style="color:#94A3B8; margin-bottom:8px;">&lt;!-- _Layout.cshtml (Master Page) --&gt;</div>
+                <div style="padding-left:15px; border-left:2px solid #475569;">
+                    <span style="color:#E06C75;">&lt;html&gt;</span><br>
+                    <span style="color:#E06C75;">&lt;body&gt;</span><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#98C379;">&lt;header&gt;</span> <span style="color:#ABB2BF;">Navbar រួមរបស់ Web</span> <span style="color:#98C379;">&lt;/header&gt;</span><br>
+                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#5C6370;">&lt;!-- កន្លែងដែលទំព័រទូទៅនឹងលោតចូល (Inject) --&gt;</span><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span style="background:var(--accent); padding:2px 6px; border-radius:4px; font-weight:bold;">@RenderBody()</span><br>
+                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#98C379;">&lt;footer&gt;</span> <span style="color:#ABB2BF;">Footer រួមរបស់ Web</span> <span style="color:#98C379;">&lt;/footer&gt;</span><br>
+                    <span style="color:#E06C75;">&lt;/body&gt;</span><br>
+                    <span style="color:#E06C75;">&lt;/html&gt;</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ១០ / ២២</div>
+    </div>
+</div>
+
+<!-- ទំព័រទី ១១៖ Lab 3.5 Layout Code (NEW) -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៣</h1><p>ASP.NET CORE MVC & SQL SERVER</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="lab-box" style="margin-top:0; padding: 10px;">
+            <h4 style="font-size:10.5pt; margin-bottom:4px;"><i class="fa-solid fa-laptop-code"></i> Lab ៣.៥: ការបង្កើត និងប្រើប្រាស់ Master Layout ជាមួយ Bootstrap 5</h4>
+            
+            <p style="font-size:8.5pt; margin-bottom:2px;"><b>ជំហានទី ១៖ បង្កើតឯកសារ <code>_Layout.cshtml</code> ក្នុងថត <code>Views/Shared/</code></b></p>
+            <div class="code-window" style="margin: 1px 0 8px 0; font-size:7.5pt;">
+                <div class="code-header" style="padding: 4px 10px;">
+                    <div class="mac-dots"><div class="dot dot-r" style="width:8px; height:8px;"></div><div class="dot dot-y" style="width:8px; height:8px;"></div><div class="dot dot-g" style="width:8px; height:8px;"></div></div>
+                    <div class="code-title" style="font-size: 7.5pt;">Views/Shared/_Layout.cshtml</div>
+                </div>
+<pre style="padding: 8px;">&lt;!DOCTYPE html&gt;
+&lt;html lang=<span style="color:#98C379;">"km"</span>&gt;
+&lt;head&gt;
+    &lt;meta charset=<span style="color:#98C379;">"utf-8"</span> /&gt;
+    &lt;title&gt;<span style="color:#E06C75;">@ViewData["Title"]</span> - SchoolApp&lt;/title&gt;
+    <span style="color:#5C6370;">&lt;!-- ភ្ជាប់ Bootstrap 5 CDN (សរសេរម្តងប្រើបានគ្រប់ទំព័រ) --&gt;</span>
+    &lt;link href=<span style="color:#98C379;">"https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"</span> rel=<span style="color:#98C379;">"stylesheet"</span>&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    <span style="color:#5C6370;">&lt;!-- ចំណុចទី ១៖ Navbar រួម --&gt;</span>
+    &lt;nav class=<span style="color:#98C379;">"navbar navbar-dark bg-primary mb-4"</span>&gt;
+        &lt;div class=<span style="color:#98C379;">"container"</span>&gt;
+            &lt;a class=<span style="color:#98C379;">"navbar-brand"</span> href=<span style="color:#98C379;">"#"</span>&gt;Angkor University Web&lt;/a&gt;
+        &lt;/div&gt;
+    &lt;/nav&gt;
+
+    <span style="color:#5C6370;">&lt;!-- ចំណុចទី ២៖ Container កណ្តាលសម្រាប់បញ្ចេញ Child View --&gt;</span>
+    &lt;div class=<span style="color:#98C379;">"container"</span>&gt;
+        <span style="background:#512BD4; color:white; padding:2px 4px; border-radius:4px; font-weight:bold;">@RenderBody()</span>
+    &lt;/div&gt;
+
+    <span style="color:#5C6370;">&lt;!-- ចំណុចទី ៣៖ Footer រួម --&gt;</span>
+    &lt;footer class=<span style="color:#98C379;">"border-top footer text-muted mt-5 pt-3 text-center"</span>&gt;
+        &lt;div class=<span style="color:#98C379;">"container"</span>&gt;
+            &amp;copy; 2024 - SchoolApp - សាកលវិទ្យាល័យអង្គរ
+        &lt;/div&gt;
+    &lt;/footer&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+            </div>
+            
+            <p style="font-size:8.5pt; margin-bottom:2px;"><b>ជំហានទី ២៖ កំណត់ Default Layout ឱ្យ Child Views ទាំងអស់</b></p>
+            <div class="code-window" style="margin: 1px 0 8px 0; font-size:7.5pt;">
+                <div class="code-header" style="padding: 4px 10px;">
+                    <div class="mac-dots"><div class="dot dot-r" style="width:8px; height:8px;"></div><div class="dot dot-y" style="width:8px; height:8px;"></div><div class="dot dot-g" style="width:8px; height:8px;"></div></div>
+                    <div class="code-title" style="font-size: 7.5pt;">Views/_ViewStart.cshtml</div>
+                </div>
+<pre style="padding: 8px;"><span style="color:#E06C75;">@{</span>
+    <span style="color:#5C6370;">// កំណត់ថាគ្រប់ View ទាំងអស់ត្រូវរត់ទៅរកឯកសារ _Layout.cshtml នេះ</span>
+    Layout = <span style="color:#98C379;">"_Layout"</span>;
+<span style="color:#E06C75;">}</span></pre>
+            </div>
+            
+            <p style="font-size:8.5pt; margin-bottom:2px;"><b>ជំហានទី ៣៖ ទំព័រ Child View (ឥឡូវនេះវាក្លាយជាខ្លី និងស្រឡះល្អ)</b></p>
+            <div class="code-window" style="margin: 1px 0; font-size:7.5pt;">
+                <div class="code-header" style="padding: 4px 10px;">
+                    <div class="mac-dots"><div class="dot dot-r" style="width:8px; height:8px;"></div><div class="dot dot-y" style="width:8px; height:8px;"></div><div class="dot dot-g" style="width:8px; height:8px;"></div></div>
+                    <div class="code-title" style="font-size: 7.5pt;">Views/Student/Index.cshtml</div>
+                </div>
+<pre style="padding: 8px;"><span style="color:#E06C75;">@{</span>
+    ViewData[<span style="color:#98C379;">"Title"</span>] = <span style="color:#98C379;">"ទំព័រនិស្សិត"</span>; <span style="color:#5C6370;">// ផ្ញើ Title ទៅកាន់ទីតាំង &lt;title&gt; ក្នុង _Layout</span>
+<span style="color:#E06C75;">}</span>
+
+<span style="color:#5C6370;">&lt;!-- មិនចាំបាច់សរសេរ &lt;html&gt;, &lt;head&gt;, &lt;body&gt; និង Link Bootstrap ទៀតទេ! --&gt;</span>
+&lt;h2 class=<span style="color:#98C379;">"text-success"</span>&gt;បញ្ជីឈ្មោះនិស្សិត&lt;/h2&gt;
+&lt;p class=<span style="color:#98C379;">"lead"</span>&gt;សូមស្វាគមន៍មកកាន់ប្រព័ន្ធគ្រប់គ្រងនិស្សិត។&lt;/p&gt;
+&lt;button class=<span style="color:#98C379;">"btn btn-primary"</span>&gt;បន្ថែមនិស្សិតថ្មី&lt;/button&gt;</pre>
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ១១ / ២២</div>
+    </div>
+</div>
+
+<!-- ទំព័រទី ១២៖ Lab Testing Guide (Old 10) -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៣</h1><p>ASP.NET CORE MVC & SQL SERVER</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-vial"></i> ៣.៨ ការធ្វើតេស្ត API & UI Comparison Guide</div>
         <div class="text-block">
             ការធ្វើតេស្តលទ្ធផលជាក់ស្តែងរវាង MVC Web UI (HTML) និង Web API (JSON) អនុញ្ញាតឱ្យយើងយល់ច្បាស់អំពីភាពខុសគ្នានៃការ Render ទិន្នន័យនៅលើ Browser។
         </div>
 
         <div class="lab-box" style="margin-top:0;">
-            <h4><i class="fa-solid fa-terminal"></i> របៀបដំណើរការ និងធ្វើតេស្ត Endpoints ជាក់ស្តែង</h4>
+            <h4><i class="fa-solid fa-terminal"></i> Lab ៣.៦ របៀបដំណើរការ និងធ្វើតេស្ត Endpoints ជាក់ស្តែង</h4>
             <ol style="font-size:10pt; line-height:1.6; padding-left:20px; margin-top:5px;">
                 <li><b>ដំណើរការម៉ាស៊ីនមេ (Start Server)៖</b> បើកកម្មវិធី Terminal ក្នុងទីតាំង Folder គម្រោង រួចវាយបញ្ជា៖
                     <br><code class="inline-code">dotnet run</code>
@@ -772,10 +921,11 @@ SchoolApp/
     </div>
     <div class="global-footer">
         <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
-        <div class="footer-right">ទំព័រ ១០ / ១៩</div>
+        <div class="footer-right">ទំព័រ ១២ / ២២</div>
     </div>
 </div>
 
+<!-- ទំព័រទី ១៣៖ Glossary (Old 11) -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
@@ -811,8 +961,8 @@ SchoolApp/
                     <td>Class គ្រឹះរបស់ ASP.NET Core សម្រាប់បង្កើត Web API (មិនមានផ្ទុកយន្តការ render HTML View)។</td>
                 </tr>
                 <tr>
-                    <td><b>System.Text.Json</b></td>
-                    <td>បណ្ណាល័យបច្ចេកវិទ្យាក្នុង .NET សម្រាប់បំប្លែង C# Objects ទៅជា JSON (Serialization) និងច្រាសមកវិញ។</td>
+                    <td><b>_Layout.cshtml</b></td>
+                    <td>ឯកសារមេ (Master Page) ប្រើសម្រាប់រចនា Header, Footer និង CSS រួមគ្នាសម្រាប់គម្រោងទាំងមូល។</td>
                 </tr>
                 <tr>
                     <td><b>Conventional Routing</b></td>
@@ -831,10 +981,11 @@ SchoolApp/
     </div>
     <div class="global-footer">
         <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
-        <div class="footer-right">ទំព័រ ១១ / ១៩</div>
+        <div class="footer-right">ទំព័រ ១៣ / ២២</div>
     </div>
 </div>
 
+<!-- ទំព័រទី ១៤៖ Summary (Old 12) -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
@@ -847,6 +998,7 @@ SchoolApp/
             <li><b class="highlight">Controllers:</b> ជាខួរក្បាល និងជាអ្នកសម្របសម្រួលលំហូរការងារដ៏សំខាន់សម្រាប់ទាំងគម្រោង MVC (Views) និង Web API (JSON)។</li>
             <li><b class="highlight">MVC (Views) VS API (JSON)៖</b> MVC បញ្ជូនទំព័រ HTML Render ពី Server តាមរយៈ <code>Controller</code> រីឯ API បញ្ជូនទិន្នន័យសុទ្ធជា <code>JSON</code> តាមរយៈ <code>ControllerBase</code>។</li>
             <li><b class="highlight">យន្តការបញ្ជូនទិន្នន័យ៖</b> ការបញ្ជូនទិន្នន័យទៅកាន់ Views ល្អបំផុតត្រូវប្រើ Strongly-Typed Models ចៀសវាងការប្រើប្រាស់ ViewBag ឬ ViewData។</li>
+            <li><b class="highlight">Shared Layout៖</b> ការប្រើប្រាស់ `_Layout.cshtml` និង `_ViewStart.cshtml` ជួយសន្សំសំចៃការសរសេរកូដ និងធ្វើឱ្យ UI ទាំងមូលមានភាពស៊ីចង្វាក់គ្នា។</li>
             <li><b class="highlight">ប្រព័ន្ធ Routing៖</b> គម្រោង standard MVC ប្រើប្រាស់ Conventional Routing ចំណែកឯ Web API ប្រើប្រាស់ Attribute Routing ដើម្បីគ្រប់គ្រង endpoints។</li>
             <li><b class="highlight">Serialization ស្វ័យប្រវត្ត៖</b> ASP.NET Core ប្រើប្រាស់ <code>System.Text.Json</code> ដើម្បីបំប្លែងទិន្នន័យ C# objects ទៅជា JSON Response ដោយស្វ័យប្រវត្ត។</li>
         </ul>
@@ -861,10 +1013,11 @@ SchoolApp/
     </div>
     <div class="global-footer">
         <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
-        <div class="footer-right">ទំព័រ ១២ / ១៩</div>
+        <div class="footer-right">ទំព័រ ១៤ / ២២</div>
     </div>
 </div>
 
+<!-- ទំព័រទី ១៥៖ T/F (Old 13) -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
@@ -882,7 +1035,7 @@ SchoolApp/
             <li>Attribute <code class="inline-code">[ApiController]</code> ជួយបំពេញការងារត្រួតពិនិត្យ validation ទិន្នន័យដោយស្វ័យប្រវត្ត។</li>
             <li>យន្តការ ViewBag និង ViewData ផ្តល់នូវសុវត្ថិភាពទិន្នន័យ (Type Safety) ល្អបំផុតសម្រាប់ Razor Views។</li>
             <li>យន្តការ <code class="inline-code">Ok(data)</code> បញ្ជូន Status Code 200 OK ត្រឡប់ទៅកាន់ Client។</li>
-            <li>Attribute Routing គឺជាការសរសេរ Route URLs នៅលើក្បាល class ឬ method របស់ Controller ផ្ទាល់។</li>
+            <li>ឯកសារ `_Layout.cshtml` គឺជាទំព័រមេដែលអាចប្រើដើម្បីកំណត់ Navbar និង Footer រួម។</li>
             <li>បណ្ណាល័យ System.Text.Json បំប្លែង C# Objects ទៅជា JSON Response ដោយស្វ័យប្រវត្ត។</li>
             <li>សញ្ញា [] នៅក្នុងទម្រង់ JSON ត្រូវបានប្រើប្រាស់សម្រាប់សម្គាល់ Object នីមួយៗ។</li>
             <li>Conventional Routing ត្រូវបានណែនាំឱ្យប្រើប្រាស់ជាចម្បងក្នុងគម្រោង Web API របស់ .NET។</li>
@@ -892,10 +1045,11 @@ SchoolApp/
     </div>
     <div class="global-footer">
         <div class="footer-left"><span>សាស្ត្រាចារ្យ៖ សឿង លីម (Soeurng LIM)</span></div>
-        <div class="footer-right">ទំព័រ ១៣ / ១៩</div>
+        <div class="footer-right">ទំព័រ ១៥ / ២២</div>
     </div>
 </div>
 
+<!-- ទំព័រទី ១៦៖ MCQ (Old 14) -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
@@ -915,12 +1069,12 @@ SchoolApp/
                     <li>D. ViewComponent</li>
                 </ul>
             </li>
-            <li>តើ Http Status Code មួយណាដែលត្រូវបានត្រឡប់មកវិញដោយ Method <code class="inline-code">BadRequest()</code>?
+            <li>តើឯកសារមួយណាដែលដំណើរការមុនគេបង្អស់រាល់ពេល Views ត្រូវបានហៅ?
                 <ul class="mcq-opts">
-                    <li>A. 200 OK</li>
-                    <li>B. 400 Bad Request</li>
-                    <li>C. 404 Not Found</li>
-                    <li>D. 500 Internal Error</li>
+                    <li>A. _Layout.cshtml</li>
+                    <li>B. _ViewStart.cshtml</li>
+                    <li>C. Program.cs</li>
+                    <li>D. Index.cshtml</li>
                 </ul>
             </li>
             <li>តើ syntax មួយណាដែលប្រើសម្រាប់កំណត់ Strongly-typed model នៅផ្នែកខាងលើនៃ CSHTML View?
@@ -939,12 +1093,12 @@ SchoolApp/
                     <li>D. Binding</li>
                 </ul>
             </li>
-            <li>តើប្រព័ន្ធ Routing មួយណាដែលត្រូវបានណែនាំឱ្យប្រើប្រាស់បំផុតសម្រាប់ RESTful Web API?
+            <li>តើកូដអ្វីនៅក្នុង _Layout ដែលចាំបាច់បំផុតសម្រាប់បញ្ចេញទិន្នន័យពី Child View មកបង្ហាញ?
                 <ul class="mcq-opts">
-                    <li>A. Conventional Routing</li>
-                    <li>B. Attribute Routing</li>
-                    <li>C. Static Routing</li>
-                    <li>D. Dynamic Routing</li>
+                    <li>A. @RenderView()</li>
+                    <li>B. @RenderBody()</li>
+                    <li>C. @Html.Partial()</li>
+                    <li>D. @InvokeAsync()</li>
                 </ul>
             </li>
             <li>តើ Method មួយណាដែលប្រើសម្រាប់ត្រឡប់លទ្ធផល Http Status Code 404?
@@ -991,10 +1145,11 @@ SchoolApp/
     </div>
     <div class="global-footer">
         <div class="footer-left"><span>សាស្ត្រាចារ្យ៖ សឿង លីម (Soeurng LIM)</span></div>
-        <div class="footer-right">ទំព័រ ១៤ / ១៩</div>
+        <div class="footer-right">ទំព័រ ១៦ / ២២</div>
     </div>
 </div>
 
+<!-- ទំព័រទី ១៧៖ Matching/Essays (Old 15) -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
@@ -1011,20 +1166,20 @@ SchoolApp/
                 <tr><td style="font-weight:bold;">២. [ApiController]</td></tr>
                 <tr><td style="font-weight:bold;">៣. Ok()</td></tr>
                 <tr><td style="font-weight:bold;">៤. [HttpGet]</td></tr>
-                <tr><td style="font-weight:bold;">៥. Routing</td></tr>
+                <tr><td style="font-weight:bold;">៥. _Layout.cshtml</td></tr>
                 <tr><td style="font-weight:bold;">៦. System.Text.Json</td></tr>
                 <tr><td style="font-weight:bold;">៧. BadRequest()</td></tr>
-                <tr><td style="font-weight:bold;">៨. Mock Data</td></tr>
+                <tr><td style="font-weight:bold;">៨. _ViewStart.cshtml</td></tr>
                 <tr><td style="font-weight:bold;">៩. [Route]</td></tr>
                 <tr><td style="font-weight:bold;">១០. @model</td></tr>
             </table>
             <table class="standard-table" style="box-shadow:none; font-size: 8.5pt;">
                 <tr><td>A. Attribute កំណត់សេវាកម្ម HTTP GET Request លើ Action</td></tr>
-                <tr><td>B. យន្តការផ្គូផ្គង URL របស់ Client ទៅកាន់ Controller Action</td></tr>
+                <tr><td>B. ឯកសារទំព័រមេ (Master Page) សម្រាប់ផ្ទុក UI រួម</td></tr>
                 <tr><td>C. បណ្ណាល័យបំប្លែងទិន្នន័យ C# Objects ទៅជា JSON របស់ .NET</td></tr>
                 <tr><td>D. class គ្រឹះរបស់ API Controller ដែលគ្មាន view engine</td></tr>
                 <tr><td>E. បញ្ជូនលទ្ធផលជោគជ័យ រួមជាមួយ HTTP Status Code 200</td></tr>
-                <tr><td>F. ទិន្នន័យសិប្បនិម្មិតសម្រាប់តេស្ត endpoints បណ្ដោះអាសន្ន</td></tr>
+                <tr><td>F. ឯកសារកំណត់ Layout លំនាំដើមឱ្យរាល់ Child Views</td></tr>
                 <tr><td>G. Attribute កំណត់ URL Route នៅលើក្បាល class ឬ Method</td></tr>
                 <tr><td>H. បញ្ជូន HTTP Status Code 400 Bad Request ត្រឡប់ទៅ Client</td></tr>
                 <tr><td>I. Attribute បញ្ជាក់ថា class នេះគឺជា API Controller</td></tr>
@@ -1035,16 +1190,17 @@ SchoolApp/
         <div class="sub-heading" style="width:100%;">៤. សំណួរបកស្រាយ (Essay Questions)</div>
         <ol class="q-list" style="font-size:9.5pt; line-height:1.5;">
             <li>តើ class <code>Controller</code> និង <code>ControllerBase</code> មានភាពខុសគ្នាយ៉ាងដូចម្តេច?</li>
-            <li>តើដំណើរការ JSON Serialization មានសារៈសំខាន់យ៉ាងដូចម្តេចខ្លះក្នុងការបញ្ជូនទិន្នន័យក្នុង API?</li>
+            <li>តើឯកសារ <code>_Layout.cshtml</code> និង <code>_ViewStart.cshtml</code> មានតួនាទីអ្វីខ្លះក្នុងគម្រោង ASP.NET Core MVC?</li>
             <li>ចូរពន្យល់ពីដំណើរការនៃការកំណត់ URL endpoints ដោយប្រើប្រាស់ Attribute Routing។</li>
         </ol>
     </div>
     <div class="global-footer">
         <div class="footer-left"><span>សាស្ត្រាចារ្យ៖ សឿង លីម (Soeurng LIM)</span></div>
-        <div class="footer-right">ទំព័រ ១៥ / ១៩</div>
+        <div class="footer-right">ទំព័រ ១៧ / ២២</div>
     </div>
 </div>
 
+<!-- ទំព័រទី ១៨៖ Practical Exercises Easy/Med/Hard (Old 16) -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
@@ -1075,10 +1231,11 @@ SchoolApp/
     </div>
     <div class="global-footer">
         <div class="footer-left"><span>សាស្ត្រាចារ្យ៖ សឿង លីម (Soeurng LIM)</span></div>
-        <div class="footer-right">ទំព័រ ១៦ / ១៩</div>
+        <div class="footer-right">ទំព័រ ១៨ / ២២</div>
     </div>
 </div>
 
+<!-- ទំព័រទី ១៩៖ Extension Exercise Layout (NEW) -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
@@ -1086,7 +1243,72 @@ SchoolApp/
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
     <div class="page-content">
-        <div class="section-title" style="background:var(--success); color:white; justify-content:center; border-radius:8px; border:none; margin: 0; padding: 8px 0;"><i class="fa-solid fa-key" style="color:white; background:transparent;"></i> អត្រាកំណែ (Answer Keys)</div>
+        <div class="sub-heading" style="width: 100%; margin-top:0;"><i class="fa-solid fa-code-branch"></i> លំហាត់បន្ថែម (Extension Practical Exercises)</div>
+        <p style="font-size:10pt; margin-bottom:15px;"><b>ប្រធានលំហាត់ផ្តោតលើ Layout & Shared Views៖</b></p>
+
+        <div class="sub-heading" style="color:var(--accent); font-size:11pt; margin-bottom:5px;">ឃ. កំរិតពិសេស (Advanced Level: Shared Views)</div>
+        <ul class="obj-list" style="margin-top:0; margin-bottom:15px;">
+            <li><b>លំហាត់ 5.7 (Multiple Layouts)៖</b> 
+                នៅក្នុងគម្រោងមួយមាន Web ២ ផ្នែកគឺ User ទូទៅ និង Admin Dashboard។ <br>
+                ១. ចូរបង្កើតឯកសារ Layout ថ្មីមួយទៀតនៅក្នុងថត <code>Views/Shared/</code> ដាក់ឈ្មោះថា <code>_AdminLayout.cshtml</code> (ផ្តល់ពណ៌ Background ខ្មៅ ឱ្យប្លែកពីធម្មតា)។<br>
+                ២. បង្កើត Controller មួយឈ្មោះ <code>AdminController</code> និង Action <code>Dashboard()</code>។<br>
+                ៣. នៅក្នុង <code>Views/Admin/Dashboard.cshtml</code> សូមសរសេរកូដ Razor យ៉ាងណាដើម្បីបញ្ជាឱ្យទំព័រនេះ ទៅប្រើប្រាស់ <code>_AdminLayout.cshtml</code> ជំនួសឱ្យ <code>_Layout.cshtml</code> ធម្មតា។
+            </li>
+        </ul>
+
+        <div class="section-title" style="background:var(--success); color:white; justify-content:center; border-radius:8px; border:none; margin: 20px 0 10px 0; padding: 8px 0;"><i class="fa-solid fa-key" style="color:white; background:transparent;"></i> អត្រាកំណែ (Answer Key - Advanced)</div>
+        
+        <div style="font-size:9.5pt; font-weight:bold; color:var(--accent); margin-bottom:4px; margin-top:10px;"><i class="fa-solid fa-code"></i> លំហាត់ 5.7 (Multiple Layouts)</div>
+        <div class="code-window" style="margin:2px 0 8px 0; font-size:8pt;">
+            <div class="code-header" style="padding: 4px 10px;">
+                <div class="mac-dots"><div class="dot dot-r" style="width:8px; height:8px;"></div><div class="dot dot-y" style="width:8px; height:8px;"></div><div class="dot dot-g" style="width:8px; height:8px;"></div></div>
+                <div class="code-title" style="font-size: 7.5pt;">Views/Shared/_AdminLayout.cshtml</div>
+            </div>
+<pre style="padding: 8px;">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;&lt;title&gt;Admin Panel&lt;/title&gt;&lt;/head&gt;
+&lt;body style=<span style="color:#98C379;">"background-color: #1a1a1a; color: white;"</span>&gt;
+    &lt;h1&gt;Administrator Dashboard&lt;/h1&gt;
+    &lt;hr /&gt;
+    &lt;div class=<span style="color:#98C379;">"admin-content"</span>&gt;
+        <span style="color:#E06C75;">@RenderBody()</span> <span style="color:#5C6370;">&lt;!-- ទិន្នន័យពី Dashboard.cshtml នឹងលោតចូលទីនេះ --&gt;</span>
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+        </div>
+
+        <div class="code-window" style="margin:2px 0 8px 0; font-size:8pt;">
+            <div class="code-header" style="padding: 4px 10px;">
+                <div class="mac-dots"><div class="dot dot-r" style="width:8px; height:8px;"></div><div class="dot dot-y" style="width:8px; height:8px;"></div><div class="dot dot-g" style="width:8px; height:8px;"></div></div>
+                <div class="code-title" style="font-size: 7.5pt;">Views/Admin/Dashboard.cshtml (Override Layout)</div>
+            </div>
+<pre style="padding: 8px;"><span style="color:#E06C75;">@{</span>
+    <span style="color:#5C6370;">// កូដនេះនឹង Override លើ _ViewStart ដើម្បីប្តូរទៅប្រើ _AdminLayout វិញ</span>
+    Layout = <span style="color:#98C379;">"~/Views/Shared/_AdminLayout.cshtml"</span>;
+<span style="color:#E06C75;">}</span>
+
+&lt;h3 style=<span style="color:#98C379;">"color: #FACC15;"</span>&gt;សូមស្វាគមន៍មកកាន់ប្រព័ន្ធគ្រប់គ្រង (Admin)&lt;/h3&gt;
+&lt;p&gt;អ្នកមានសិទ្ធិពេញលេញក្នុងការគ្រប់គ្រងប្រព័ន្ធទាំងមូល។&lt;/p&gt;</pre>
+        </div>
+        <div class="graphic-box" style="padding: 10px; background: #FFFBEB; border-color: #FEF08A;">
+            <p style="font-size:9.5pt; color:#854D0E; margin:0;"><i class="fa-solid fa-lightbulb"></i> <b>គន្លឹះ (Tip):</b> ការកំណត់ <code>Layout = null;</code> នៅក្នុង View ណាមួយ នឹងធ្វើឱ្យទំព័រនោះក្លាយជាទំព័រទទេ (Blank Page) ដោយមិនទាញយក Navbar ឬ Footer មកប្រើឡើយ (សាកសមសម្រាប់ទំព័រ Login/Register)។</p>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ១៩ / ២២</div>
+    </div>
+</div>
+
+<!-- ទំព័រទី ២០៖ Ans Keys 1-4 (Old 17) -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៣</h1><p>ASP.NET CORE MVC & SQL SERVER</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="background:var(--success); color:white; justify-content:center; border-radius:8px; border-left:none; margin-top:0; padding: 8px 0;"><i class="fa-solid fa-key" style="color:white; background:transparent;"></i> អត្រាកំណែ (Answer Keys)</div>
             
         <div class="two-column" style="gap:15px; align-items:start; margin-top: 15px;">
             <div>
@@ -1117,17 +1339,18 @@ SchoolApp/
 
         <div class="sub-heading" style="margin-top:10px; font-size:10.5pt; color:var(--success); border-bottom: none;">៤. ចម្លើយ សំណួរបកស្រាយ (សង្ខេប)</div>
         <ul style="font-size:9.5pt; line-height:1.5; padding-left:20px; text-align:justify;">
-            <li style="margin-bottom:6px;"><b>១. ភាពខុសគ្នារវាង class Controller និង ControllerBase៖</b> class <code>Controller</code> ស្នងចេញពី class <code>ControllerBase</code> ប៉ុន្តែវាផ្ដល់បន្ថែមនូវការគាំទ្រដល់ Razor View Engine (ដូចជា Method <code>View()</code>) សម្រាប់ render HTML។ ចំណែកឯ class <code>ControllerBase</code> ផ្ដល់តែសមត្ថភាពស្នូលរបស់ HTTP/API (ដូចជា Method <code>Ok()</code>, <code>BadRequest()</code>) ដែលសាកសមបំផុតសម្រាប់ Web API ដែលមិនត្រូវការ render ទិដ្ឋភាព HTML។</li>
-            <li style="margin-bottom:6px;"><b>២. សារៈសំខាន់នៃ JSON Serialization ក្នុង API៖</b> វាជាដំណើរការបំប្លែងរចនាសម្ព័ន្ធទិន្នន័យ (C# Objects/Lists) ទៅជាទម្រង់អត្ថបទ JSON ស្ដង់ដារ ដើម្បីអាចចម្លងឆ្លងកាត់បណ្ដាញ Internet ទៅកាន់ម៉ាស៊ីន Client (ដូចជា Mobile App ឬ Web Browser) យកទៅបកប្រែប្រើប្រាស់បន្តបានយ៉ាងរហ័ស និងស្រាលបំផុត។</li>
-            <li style="margin-bottom:0;"><b>៣. ដំណើរការកំណត់ Attribute Routing៖</b> គឺការសរសេរ Attribute <code>[Route("...")]</code> ឬ <code>[HttpGet("...")]</code> នៅលើក្បាល Class ឬ Method ដើម្បីកំណត់ URL Endpoint ដោយផ្ទាល់ ជំនួសឱ្យការប្រើប្រាស់ Conventional Routing pattern សកល។ វាផ្ដល់ភាពច្បាស់លាស់ និងភាពងាយស្រួលសម្រាប់ការគ្រប់គ្រង RESTful API។</li>
+            <li style="margin-bottom:6px;"><b>១. ភាពខុសគ្នារវាង class Controller និង ControllerBase៖</b> class <code>Controller</code> ស្នងចេញពី class <code>ControllerBase</code> ប៉ុន្តែវាផ្ដល់បន្ថែមនូវការគាំទ្រដល់ Razor View Engine (ដូចជា Method <code>View()</code>) សម្រាប់ render HTML។ ចំណែកឯ class <code>ControllerBase</code> ផ្ដល់តែសមត្ថភាពស្នូលរបស់ HTTP/API ដែលសាកសមបំផុតសម្រាប់ Web API ដែលមិនត្រូវការ render HTML។</li>
+            <li style="margin-bottom:6px;"><b>២. មុខងារ _Layout និង _ViewStart៖</b> <code>_Layout.cshtml</code> ជា Master Page សម្រាប់ផ្ទុក UI ដែលប្រើរួមគ្នា (Header, Footer) ខណៈ <code>_ViewStart.cshtml</code> ដើរតួជាអ្នកបញ្ជាឱ្យទំព័រ View ទាំងអស់ទៅប្រើ Layout នោះដោយស្វ័យប្រវត្ត។</li>
+            <li style="margin-bottom:0;"><b>៣. ដំណើរការកំណត់ Attribute Routing៖</b> គឺការសរសេរ Attribute <code>[Route("...")]</code> ឬ <code>[HttpGet("...")]</code> នៅលើក្បាល Class ឬ Method ដើម្បីកំណត់ URL Endpoint ដោយផ្ទាល់ ជំនួសឱ្យការប្រើប្រាស់ Conventional Routing pattern សកល។ </li>
         </ul>
     </div>
     <div class="global-footer">
         <div class="footer-left"><span>សាស្ត្រាចារ្យ៖ សឿង លីម (Soeurng LIM)</span></div>
-        <div class="footer-right">ទំព័រ ១៧ / ១៩</div>
+        <div class="footer-right">ទំព័រ ២០ / ២២</div>
     </div>
 </div>
 
+<!-- ទំព័រទី ២១៖ Ans Keys Easy/Med (Old 18) -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
@@ -1213,10 +1436,11 @@ SchoolApp/
     </div>
     <div class="global-footer">
         <div class="footer-left"><span>សាស្ត្រាចារ្យ៖ សឿង លីម (Soeurng LIM)</span></div>
-        <div class="footer-right">ទំព័រ ១៨ / ១៩</div>
+        <div class="footer-right">ទំព័រ ២១ / ២២</div>
     </div>
 </div>
 
+<!-- ទំព័រទី ២២៖ Ans Keys Med/Hard (Old 19) -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
@@ -1291,7 +1515,7 @@ SchoolApp/
     </div>
     <div class="global-footer">
         <div class="footer-left"><span>សាស្ត្រាចារ្យ៖ សឿង លីម (Soeurng LIM)</span></div>
-        <div class="footer-right">ទំព័រ ១៩ / ១៩</div>
+        <div class="footer-right">ទំព័រ ២២ / ២២</div>
     </div>
 </div>
 
