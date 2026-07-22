@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Handout: ជំពូកទី ៥ - SQL Server, Entity Framework Core & DbContext Configuration</title>
+    <title>Handout: ជំពូកទី ៥ - SQL Server, EF Core & MVC vs API</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -64,7 +64,7 @@
         }
         .print-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(81, 43, 212, 0.4); }
 
-        /* STRICT A4 PAGE LAYOUT (FLEXBOX FLOW) */
+        /* STRICT A4 PAGE LAYOUT */
         .a4-page {
             width: 210mm; 
             height: 297mm;
@@ -121,14 +121,13 @@
         .text-block { font-size: 10.5pt; line-height: 1.6; margin-bottom: 10px; text-align: justify; }
         .highlight { color: var(--accent); font-weight: 700; }
 
-        /* TOC Table Specific */
+        /* TOC & Lists */
         .toc-table { width: 100%; border-collapse: collapse; margin: 10px 0; border: 1px solid var(--border-light); border-radius: 8px; overflow: hidden; }
         .toc-table th { background: var(--accent); color: white; font-family: var(--font-kh-heading); font-size: 11pt; padding: 10px 12px; text-align: left; }
         .toc-table td { padding: 10px 12px; border-bottom: 1px solid var(--border-light); font-size: 10.5pt; color: var(--text-main); }
         .toc-table tr:last-child td { border-bottom: none; }
         .toc-num { font-weight: bold; width: 15%; text-align: center; }
 
-        /* Objectives List Specific */
         .obj-list { list-style: none; padding-left: 0; margin-top: 10px; }
         .obj-list li { position: relative; padding-left: 20px; margin-bottom: 10px; font-size: 10.5pt; line-height: 1.6; }
         .obj-list li::before { content: '•'; position: absolute; left: 5px; color: var(--accent); font-size: 16px; font-weight: bold; top: -2px; }
@@ -139,11 +138,8 @@
         table.standard-table th { background: var(--accent); color: white; font-family: var(--font-kh-heading); font-size: 10.5pt; text-align: center; }
         table.standard-table td { font-size: 10pt; line-height: 1.5; }
 
-        /* Visual Frames and Inline Graphics */
-        .graphic-box {
-            background: var(--bg-light); border: 1px solid var(--border-light);
-            border-radius: 8px; padding: 12px; margin: 10px 0; width: 100%;
-        }
+        /* Visual Frames */
+        .graphic-box { background: var(--bg-light); border: 1px solid var(--border-light); border-radius: 8px; padding: 12px; margin: 10px 0; width: 100%; }
         .two-column { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 15px; margin: 10px 0; align-items: center;}
 
         /* Code & Boxes */
@@ -185,8 +181,8 @@
 <body>
 
 <div class="no-print">
-    <p><b><i class="fa-solid fa-file-pdf"></i> ណែនាំ៖</b> ដើម្បីបោះពុម្ពជា PDF ឱ្យចំកណ្តាលទំព័រ A4 ល្អ សូមជ្រើសរើស <b>Margins: None</b> និងបើក <b>Background graphics</b> (Handout ១៨ ទំព័រ)។</p>
-    <button class="print-btn" onclick="window.print()"><i class="fa-solid fa-print"></i> បោះពុម្ពឯកសារជា PDF (A4 Handout ១៨ ទំព័រ)</button>
+    <p><b><i class="fa-solid fa-file-pdf"></i> ណែនាំ៖</b> ដើម្បីបោះពុម្ពជា PDF ឱ្យចំកណ្តាលទំព័រ A4 ល្អ សូមជ្រើសរើស <b>Margins: None</b> និងបើក <b>Background graphics</b> (Handout ២២ ទំព័រ)។</p>
+    <button class="print-btn" onclick="window.print()"><i class="fa-solid fa-print"></i> បោះពុម្ពឯកសារជា PDF (A4 Handout ២២ ទំព័រ)</button>
 </div>
 
 <!-- PAGE 1: COVER -->
@@ -202,7 +198,7 @@
         
         <div style="background: var(--accent); color: white; padding: 10px 25px; border-radius: 8px; font-size: 14pt; font-family: 'Suwannaphum'; font-weight: 700; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(81, 43, 212, 0.3);">ឯកសារអាន (Handout) - ជំពូកទី ៥</div>
         
-        <h2 style="font-family: 'Suwannaphum'; font-size: 20pt; color: var(--text-heading); margin-bottom: 10px; line-height: 1.4; font-weight: 900;">ការកំណត់រចនាសម្ព័ន្ធ SQL Server, បច្ចេកវិទ្យា EF Core ORM<br>និងការចាក់បញ្ចូលសេវាកម្ម DbContext ក្នុងគម្រោង ASP.NET Core</h2>
+        <h2 style="font-family: 'Suwannaphum'; font-size: 20pt; color: var(--text-heading); margin-bottom: 10px; line-height: 1.4; font-weight: 900;">ការកំណត់រចនាសម្ព័ន្ធ EF Core & SQL Server<br>និងការអនុវត្តស្ថាបត្យកម្មរវាង Web API និង MVC</h2>
         <h3 style="font-family: 'Battambang'; font-size: 13pt; color: var(--secondary); margin-bottom: 40px; font-weight: 600;">បច្ចេកវិទ្យា ASP.NET និងប្រព័ន្ធគ្រប់គ្រងមូលដ្ឋានទិន្នន័យ SQL Server</h3>
         
         <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; background: white; padding: 15px 30px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid var(--border-light); width: 85%;">
@@ -217,7 +213,7 @@
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
-        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៥</h1><p>ASP.NET CORE API & SQL SERVER</p></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៥</h1><p>ASP.NET CORE & SQL SERVER</p></div>
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
     <div class="page-content">
@@ -230,104 +226,55 @@
                 </tr>
             </thead>
             <tbody>
-                <tr><td class="toc-num">៥.១</td><td>ប្រព័ន្ធគ្រប់គ្រងមូលដ្ឋានទិន្នន័យ SQL Server និងសញ្ញាណ ORM Entity Framework Core</td></tr>
-                <tr><td class="toc-num">៥.២</td><td>ការសិក្សាពី NuGet Packages: ស្វែងយល់ ការដំឡើង និងគ្រប់គ្រងកញ្ចប់បណ្ណាល័យ</td></tr>
-                <tr><td class="toc-num">៥.៣</td><td>ការរៀបចំ Connection String និងការដាក់បញ្ចូលទៅក្នុងឯកសារ appsettings.json</td></tr>
-                <tr><td class="toc-num">៥.៤</td><td>ការកសាង Class DbContext និងការប្រើប្រាស់ DbSet properties សម្រាប់ចងភ្ជាប់ Models</td></tr>
-                <tr><td class="toc-num">៥.៥</td><td>ការចុះឈ្មោះប្រើប្រាស់ DbContext នៅក្នុង Program.cs តាមរយៈ Dependency Injection</td></tr>
-                <tr><td class="toc-num">៥.៦</td><td>ការរៀបចំ SQL Server & SSMS សម្រាប់ធ្វើតេស្តសាកល្បង</td></tr>
+                <tr><td class="toc-num">៥.១</td><td>សញ្ញាណ ORM: ការប្រៀបធៀបរវាង EF Core និង ADO.NET ប្រពៃណី</td></tr>
+                <tr><td class="toc-num">៥.២</td><td>ការដំឡើង NuGet Packages សម្រាប់ EF Core និង SQL Server</td></tr>
+                <tr><td class="toc-num">៥.៣</td><td>រចនាសម្ព័ន្ធ និងសុវត្ថិភាព Connection String ក្នុង appsettings.json</td></tr>
+                <tr><td class="toc-num">៥.៤</td><td>ការកសាង Class DbContext និងការប្រើប្រាស់ DbSet សម្រាប់ចងភ្ជាប់ Models</td></tr>
+                <tr><td class="toc-num">៥.៥</td><td>ការចុះឈ្មោះប្រើប្រាស់ DbContext តាមរយៈ Dependency Injection (DI)</td></tr>
+                <tr><td class="toc-num">៥.៦</td><td>ការអនុវត្តស្ថាបត្យកម្ម MVC (View Integration) ទល់នឹង Web API (JSON Services)</td></tr>
             </tbody>
         </table>
 
         <div class="section-title"><i class="fa-solid fa-bullseye"></i> វត្ថុបំណងនៃជំពូកទី ៥ (Chapter Objectives)</div>
         <ul class="obj-list">
-            <li><b class="highlight">យល់ដឹងពីបច្ចេកវិទ្យា ORM:</b> យល់ដឹងច្បាស់ពីលំហូរការងារ និងអត្ថប្រយោជន៍របស់ Entity Framework Core ក្នុងការគ្រប់គ្រង Database ជំនួសឱ្យ ADO.NET ប្រពៃណី។</li>
-            <li><b class="highlight">គ្រប់គ្រង NuGet Packages:</b> ចេះប្រើប្រាស់ប្រព័ន្ធ .NET CLI ដើម្បីស្វែងរក និងដំឡើងកញ្ចប់បណ្ណាល័យ EF Core បានយ៉ាងត្រឹមត្រូវ។</li>
-            <li><b class="highlight">រៀបចំខ្សែស្រឡាយតភ្ជាប់៖</b> កំណត់រចនាសម្ព័ន្ធ Connection String ក្នុង <code>appsettings.json</code> និងយល់ច្បាស់ពីតួនាទីនៃប៉ារ៉ាមែត្រនីមួយៗ (Server, Database, Auth)។</li>
-            <li><b class="highlight">ស្ថាបនា DbContext & DI:</b> បង្កើត Class DbContext ដើម្បីគ្រប់គ្រង Models ទៅកាន់ SQL Tables និងចុះឈ្មោះវាទៅក្នុង <code>Program.cs</code>។</li>
-            <li><b class="highlight">រៀបចំប្រព័ន្ធ Database ជាក់ស្តែង៖</b> ចេះដំណើរការ និងកំណត់សិទ្ធិប្រើប្រាស់នៅក្នុង SQL Server Management Studio (SSMS) ឱ្យបានត្រឹមត្រូវ។</li>
+            <li><b class="highlight">យល់ដឹងពីបច្ចេកវិទ្យា ORM:</b> យល់ដឹងច្បាស់ពីលំហូរការងារ និងអត្ថប្រយោជន៍របស់ Entity Framework Core ក្នុងការគ្រប់គ្រង Database ។</li>
+            <li><b class="highlight">រៀបចំខ្សែស្រឡាយតភ្ជាប់៖</b> កំណត់រចនាសម្ព័ន្ធ Connection String ក្នុង <code>appsettings.json</code> ព្រមទាំងយល់ច្បាស់ពីតួនាទីនៃប៉ារ៉ាមែត្រនីមួយៗ។</li>
+            <li><b class="highlight">ស្ថាបនា DbContext & DI:</b> បង្កើត Class DbContext ដើម្បីគ្រប់គ្រង Models និងចុះឈ្មោះវាទៅក្នុង <code>Program.cs</code> តាមបច្ចេកទេស Dependency Injection។</li>
+            <li><b class="highlight">បែងចែក MVC និង API ច្បាស់លាស់៖</b> យល់ពីរបៀបដែល Syllabus កំណត់ទម្រង់ MVC (Backend API + Frontend HTML/JS View) និងអាចអនុវត្តការសរសេរកូដទាំងពីរផ្នែកនេះបានយ៉ាងស្ទាត់ជំនាញតាមលំដាប់លំដោយ។</li>
         </ul>
     </div>
     <div class="global-footer">
         <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
-        <div class="footer-right">ទំព័រ ២ / ១៨</div>
+        <div class="footer-right">ទំព័រ ២ / ២២</div>
     </div>
 </div>
 
-<!-- PAGE 3: SECTION 5.1 - SQL SERVER & EF CORE INTRODUCTION -->
+<!-- PAGE 3: SECTION 5.1 - ORM & ADO.NET -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
-        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៥</h1><p>ASP.NET CORE API & SQL SERVER</p></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៥</h1><p>ASP.NET CORE & SQL SERVER</p></div>
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
     <div class="page-content">
-        <div class="section-title"><i class="fa-solid fa-database"></i> ៥.១ ប្រព័ន្ធគ្រប់គ្រងមូលដ្ឋានទិន្នន័យ SQL Server និង ORM Entity Framework Core</div>
-        
-        <div class="sub-heading">សេចក្តីផ្តើមអំពី SQL Server និង ORM</div>
-        <div class="text-block">
-            ភាសាសរសេរកូដសម័យទំនើបដូចជា C# ប្រើប្រាស់ទ្រឹស្តី <b>Object-Oriented Programming (OOP)</b> ដែលមាន Objects, Classes និង Properties។ រីឯប្រព័ន្ធគ្រប់គ្រងមូលដ្ឋានទិន្នន័យដូចជា SQL Server ប្រើប្រាស់ទ្រឹស្តី <b>Relational Database (RDBMS)</b> ដែលទិន្នន័យត្រូវបានផ្ទុកក្នុងតារាង (Tables, Rows, Columns)។
-        </div>
+        <div class="section-title"><i class="fa-solid fa-database"></i> ៥.១ សញ្ញាណ ORM និងការប្រៀបធៀប EF Core ទល់នឹង ADO.NET</div>
         
         <div class="text-block">
-            គម្លាតទ្រឹស្តីរវាងប្រព័ន្ធទាំងពីរនេះត្រូវបានហៅថា <b>Object-Relational Impedance Mismatch</b>។ ដើម្បីសម្របសម្រួលបញ្ហានេះ គេត្រូវការបច្ចេកវិទ្យាកម្រិតកណ្ដាលមួយហៅថា <b>Object-Relational Mapper (ORM)</b>។
+            <b>Object-Relational Mapper (ORM)</b> គឺជាបច្ចេកវិទ្យាកម្រិតកណ្ដាលដែលជួយសម្របសម្រួលចន្លោះប្រហោងរវាង <b>កូដ C# (Object-Oriented)</b> និង <b>SQL Server (Relational Database)</b>។ នៅក្នុងប្រព័ន្ធ .NET, <b>Entity Framework Core (EF Core)</b> គឺជា ORM ផ្លូវការដែលជួយបំប្លែង Class ទៅជា Tables និងបំប្លែង LINQ ទៅជា SQL Scripts ដោយស្វ័យប្រវត្ត។
         </div>
 
-        <div class="two-column">
-            <div>
-                <table class="standard-table" style="margin-bottom:0;">
-                    <thead><tr><th style="background:var(--success);">C# Application (OOP)</th><th style="background:var(--secondary);">SQL Server (RDBMS)</th></tr></thead>
-                    <tbody>
-                        <tr><td>Class (ex: <code>Student</code>)</td><td>Table (ex: <code>Students</code>)</td></tr>
-                        <tr><td>Property (ex: <code>Id</code>, <code>Name</code>)</td><td>Column (ex: <code>Id</code>, <code>Name</code>)</td></tr>
-                        <tr><td>Object (Instance)</td><td>Row (Record)</td></tr>
-                    </tbody>
-                </table>
-            </div>
-            
-            <div class="graphic-box" style="padding: 10px; background: #F8FAFC; border-color:var(--accent);">
-                <div style="font-family:'Suwannaphum',sans-serif; color:var(--accent); font-size:10pt; margin-bottom:8px; text-align:center; font-weight:bold;">យន្តការដំណើរការរបស់ EF Core (ORM)</div>
-                <div style="display:flex; justify-content:space-between; align-items:center; font-size:8.5pt; font-family:var(--font-en-main); font-weight:bold;">
-                    <div style="background:#F5F3FF; padding:6px; border:1px solid #C084FC; border-radius:4px; color:var(--accent); text-align:center;">C# Code<br><span style="font-size:7pt; color:#64748B;">LINQ Queries</span></div>
-                    <div><i class="fa-solid fa-arrows-left-right" style="color:var(--secondary);"></i></div>
-                    <div style="background:#EFF6FF; padding:6px; border:1px solid #60A5FA; border-radius:4px; color:var(--secondary); text-align:center;">EF Core<br><span style="font-size:7pt; color:#64748B;">Translator</span></div>
-                    <div><i class="fa-solid fa-arrows-left-right" style="color:var(--success);"></i></div>
-                    <div style="background:#F0FDF4; padding:6px; border:1px solid #4ADE80; border-radius:4px; color:var(--success); text-align:center;">SQL Server<br><span style="font-size:7pt; color:#64748B;">SQL Scripts</span></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="sub-heading">ហេតុអ្វីបានជាយើងត្រូវការ EF Core ជំនួសឱ្យ ADO.NET ប្រពៃណី?</div>
-        <div class="text-block">
-            កាលពីមុន ដើម្បីភ្ជាប់កម្មវិធី .NET ទៅកាន់ Database គេត្រូវប្រើប្រាស់បច្ចេកវិទ្យា <b>ADO.NET</b> ដែលតម្រូវឱ្យសរសេរកូដបើក Connection, សរសេរ SQL Queries ជាអក្សរ String, និងបម្លែងទិន្នន័យ (Mapping) ដោយដៃ។ <b>EF Core</b> ជួយលុបបំបាត់ភាពស្មុគស្មាញទាំងនេះ ដោយធ្វើការងារទាំងអស់នោះដោយស្វ័យប្រវត្ត រក្សាសុវត្ថិភាព និងងាយស្រួលថែទាំ។
-        </div>
-    </div>
-    <div class="global-footer">
-        <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
-        <div class="footer-right">ទំព័រ ៣ / ១៨</div>
-    </div>
-</div>
-
-<!-- PAGE 4: SECTION 5.1 CONT & 5.2 - NUGET PACKAGE MANAGEMENT -->
-<div class="a4-page">
-    <div class="global-header">
-        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
-        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៥</h1><p>ASP.NET CORE API & SQL SERVER</p></div>
-        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
-    </div>
-    <div class="page-content">
-        <div class="sub-heading" style="margin-top:0;">ការប្រៀបធៀបរបៀបសរសេរកូដរវាង ADO.NET និង EF Core៖</div>
+        <div class="sub-heading">ការប្រៀបធៀបរបៀបសរសេរកូដ៖</div>
         <table class="standard-table">
             <thead>
                 <tr>
-                    <th style="width: 50%;">របៀបសរសេរកូដ ADO.NET ប្រពៃណី</th>
-                    <th style="width: 50%;">របៀបសរសេរកូដទំនើបជាមួយ EF Core ORM</th>
+                    <th style="width: 50%;">១. ការប្រើប្រាស់ ADO.NET ប្រពៃណី</th>
+                    <th style="width: 50%;">២. ការប្រើប្រាស់ EF Core (ORM ទំនើប)</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td style="vertical-align: top;">
-                        <div class="code-window" style="margin: 0; border: none;">
+                    <td style="vertical-align: top; padding: 0;">
+                        <div class="code-window" style="margin: 0; border: none; border-radius: 0;">
 <pre style="font-size:7.5pt; line-height:1.3; color:#E2E8F0;"><span style="color:#C678DD;">using</span> (var conn = <span style="color:#C678DD;">new</span> SqlConnection(connStr)) {
     conn.Open();
     var cmd = <span style="color:#C678DD;">new</span> SqlCommand(<span style="color:#98C379;">"SELECT * FROM Students"</span>, conn);
@@ -343,43 +290,77 @@
 }</pre>
                         </div>
                     </td>
-                    <td style="vertical-align: top;">
-                        <div class="code-window" style="margin: 0; border: none;">
-<pre style="font-size:7.5pt; line-height:1.3; color:#E2E8F0;"><span style="color:#5C6370;">// EF Core បម្លែងទិន្នន័យដោយស្វ័យប្រវត្ត!</span>
+                    <td style="vertical-align: top; padding: 0;">
+                        <div class="code-window" style="margin: 0; border: none; border-radius: 0; height: 100%;">
+<pre style="font-size:7.5pt; line-height:1.3; color:#E2E8F0;"><span style="color:#5C6370;">// EF Core ធ្វើការ Map ទិន្នន័យដោយស្វ័យប្រវត្ត!</span>
 <span style="color:#C678DD;">using</span> (var context = <span style="color:#C678DD;">new</span> AppDbContext()) {
     var students = context.Students.ToList();
 }</pre>
                         </div>
-                        <p class="text-block" style="font-size: 8.5pt; margin-top: 10px; color: var(--success); font-weight: bold;">
-                            <i class="fa-solid fa-circle-check"></i> កូដខ្លីជាងមុន ៨០% ងាយស្រួលអាន និងចៀសវាងកំហុសអក្ខរាវិរុទ្ធ (SQL Injection / Syntax Errors)។
-                        </p>
                     </td>
                 </tr>
             </tbody>
         </table>
+        
+        <div class="graphic-box" style="padding: 10px; background: #F8FAFC; border-color:var(--accent);">
+            <div style="font-family:'Suwannaphum',sans-serif; color:var(--accent); font-size:10pt; margin-bottom:8px; text-align:center; font-weight:bold;">យន្តការដំណើរការរបស់ EF Core (ORM)</div>
+            <div style="display:flex; justify-content:space-between; align-items:center; font-size:8.5pt; font-family:var(--font-en-main); font-weight:bold;">
+                <div style="background:#F5F3FF; padding:6px; border:1px solid #C084FC; border-radius:4px; color:var(--accent); text-align:center;">C# Code<br><span style="font-size:7pt; color:#64748B;">LINQ Queries</span></div>
+                <div><i class="fa-solid fa-arrows-left-right" style="color:var(--secondary);"></i></div>
+                <div style="background:#EFF6FF; padding:6px; border:1px solid #60A5FA; border-radius:4px; color:var(--secondary); text-align:center;">EF Core<br><span style="font-size:7pt; color:#64748B;">Translator Engine</span></div>
+                <div><i class="fa-solid fa-arrows-left-right" style="color:var(--success);"></i></div>
+                <div style="background:#F0FDF4; padding:6px; border:1px solid #4ADE80; border-radius:4px; color:var(--success); text-align:center;">SQL Server<br><span style="font-size:7pt; color:#64748B;">Database Tables</span></div>
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ៣ / ២២</div>
+    </div>
+</div>
 
-        <div class="section-title"><i class="fa-solid fa-cubes"></i> ៥.២ ការសិក្សា និងគ្រប់គ្រងកញ្ចប់បណ្ណាល័យបន្ថែម NuGet Packages</div>
+<!-- PAGE 4: SECTION 5.2 - NUGET PACKAGES -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៥</h1><p>ASP.NET CORE & SQL SERVER</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-cubes"></i> ៥.២ ការដំឡើង NuGet Packages សម្រាប់ EF Core</div>
         <div class="text-block">
-            ប្រព័ន្ធអភិវឌ្ឍន៍ .NET Core ទំនើបត្រូវបានរៀបចំឡើងជាលក្ខណៈ <b>Modular Architecture</b>។ គម្រោង .NET ដំបូងមានទំហំតូច និងផ្ទុកតែបណ្ណាល័យស្នូលចាំបាច់ប៉ុណ្ណោះ។ នៅពេលយើងត្រូវការភ្ជាប់ Database យើងត្រូវដំឡើងកញ្ចប់បណ្ណាល័យ EF Core តាមរយៈ <b>NuGet Package Manager</b> ដែលដើរតួដូច <code>npm</code> ក្នុង Node.js។
+            ប្រព័ន្ធ .NET Core មានទម្រង់ជា <b>Modular</b> ពោលគឺវាមានតែបណ្ណាល័យស្នូលប៉ុណ្ណោះពេលបង្កើតគម្រោងដំបូង។ ដើម្បីឱ្យកម្មវិធីអាចស្គាល់ EF Core និងអាចភ្ជាប់ទៅ SQL Server បាន យើងត្រូវដំឡើងកញ្ចប់បណ្ណាល័យបន្ថែមតាមរយៈ <b>NuGet Package Manager</b> ដោយប្រើប្រាស់ Terminal (CLI)។
         </div>
 
-        <div class="sub-heading">បញ្ជា .NET CLI សម្រាប់ដំឡើងកញ្ចប់ EF Core ទាំង ៤ សំខាន់ៗ៖</div>
+        <div class="sub-heading">បញ្ជា .NET CLI សម្រាប់ដំឡើង Packages ទាំង ៤ សំខាន់ៗ៖</div>
         <div class="code-window">
             <div class="code-header">
                 <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
                 <div class="code-title">Terminal - Command Prompt</div>
             </div>
-<pre>dotnet add package Microsoft.EntityFrameworkCore
+<pre><span style="color:#5C6370;"># ១. បណ្ណាល័យស្នូលរបស់ Entity Framework Core</span>
+dotnet add package Microsoft.EntityFrameworkCore
+
+<span style="color:#5C6370;"># ២. បណ្ណាល័យសម្រាប់អនុញ្ញាតឱ្យ EF Core ស្គាល់ Database SQL Server</span>
 dotnet add package Microsoft.EntityFrameworkCore.SqlServer
+
+<span style="color:#5C6370;"># ៣. បណ្ណាល័យសម្រាប់ប្រើប្រាស់មុខងារ Migrations ពេល Design កូដ</span>
 dotnet add package Microsoft.EntityFrameworkCore.Design
+
+<span style="color:#5C6370;"># ៤. បណ្ណាល័យឧបករណ៍ជំនួយក្នុងការបញ្ជា Database Command</span>
 dotnet add package Microsoft.EntityFrameworkCore.Tools</pre>
         </div>
-        <p style="font-size: 9pt; margin-top: 5px; color: var(--text-muted);"><b>ចំណាំ៖</b> បន្ទាប់ពីដំណើរការបញ្ជាទាំងនេះ កញ្ចប់នឹងត្រូវបានទាញយកពី <code class="inline-code">nuget.org</code> មកចុះឈ្មោះក្នុងឯកសារ <code>.csproj</code> របស់គម្រោងអ្នក។</p>
-
+        
+        <div class="lab-box">
+            <h4><i class="fa-solid fa-circle-info"></i> ចំណាំសំខាន់</h4>
+            <p>
+                បន្ទាប់ពីដំណើរការបញ្ជាទាំងនេះ កញ្ចប់បណ្ណាល័យនឹងត្រូវបានទាញយកពី <code class="inline-code">nuget.org</code> មកចុះឈ្មោះនៅក្នុងឯកសារ <code>.csproj</code> របស់គម្រោងអ្នកដោយស្វ័យប្រវត្ត។ សូមត្រួតពិនិត្យឯកសារនោះដើម្បីប្រាកដថា Version របស់ Packages ត្រូវគ្នានឹង Version របស់ .NET SDK ដែលអ្នកកំពុងប្រើ។
+            </p>
+        </div>
     </div>
     <div class="global-footer">
         <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
-        <div class="footer-right">ទំព័រ ៤ / ១៨</div>
+        <div class="footer-right">ទំព័រ ៤ / ២២</div>
     </div>
 </div>
 
@@ -387,16 +368,16 @@ dotnet add package Microsoft.EntityFrameworkCore.Tools</pre>
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
-        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៥</h1><p>ASP.NET CORE API & SQL SERVER</p></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៥</h1><p>ASP.NET CORE & SQL SERVER</p></div>
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
     <div class="page-content">
-        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-link"></i> ៥.៣ ការរៀបចំ Connection String ក្នុង appsettings.json</div>
+        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-link"></i> ៥.៣ រចនាសម្ព័ន្ធ Connection String ក្នុង appsettings.json</div>
         <div class="text-block">
-            <b>Connection String</b> គឺជាខ្សែស្រឡាយព័ត៌មានដែលផ្ទុកនូវទីតាំង Server, ឈ្មោះ Database និងសិទ្ធិអនុញ្ញាត (Credentials) ដើម្បីឱ្យកម្មវិធីអាចតភ្ជាប់ទៅកាន់ Database បាន។ Microsoft ណែនាំឱ្យរក្សាទុកវាក្នុងឯកសារ <code>appsettings.json</code> ជាជាងការសរសេរផ្ទាល់ក្នុងកូដ C# ដើម្បីរក្សាសុវត្ថិភាព និងងាយស្រួលផ្លាស់ប្តូរ។
+            <b>Connection String</b> គឺជាខ្សែអត្ថបទដែលផ្ទុកនូវព័ត៌មានលម្អិតដូចជា ទីតាំង Server, ឈ្មោះ Database និងសិទ្ធិអនុញ្ញាត (Credentials) ដើម្បីឱ្យ API អាចតភ្ជាប់ទៅកាន់ Database បាន។ តាមស្តង់ដារសុវត្ថិភាព យើងត្រូវសរសេរវានៅក្នុងឯកសារ <code>appsettings.json</code>។
         </div>
 
-        <div class="sub-heading">រចនាសម្ព័ន្ធ និង Syntax ក្នុង appsettings.json៖</div>
+        <div class="sub-heading">រចនាសម្ព័ន្ធកូដក្នុង appsettings.json៖</div>
         <div class="code-window">
             <div class="code-header">
                 <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
@@ -411,7 +392,7 @@ dotnet add package Microsoft.EntityFrameworkCore.Tools</pre>
 <span style="color:#C678DD;">}</span></pre>
         </div>
 
-        <div class="sub-heading">ការពន្យល់ពីប៉ារ៉ាមែត្រនីមួយៗ (Connection String Parameters)៖</div>
+        <div class="sub-heading">ការពន្យល់ពីប៉ារ៉ាមែត្រនីមួយៗនៃ Connection String៖</div>
         <table class="standard-table">
             <thead>
                 <tr>
@@ -422,11 +403,11 @@ dotnet add package Microsoft.EntityFrameworkCore.Tools</pre>
             <tbody>
                 <tr>
                     <td><b>Server=</b><br><code>localhost\\SQLEXPRESS;</code></td>
-                    <td>បញ្ជាក់ពីទីតាំងម៉ាស៊ីន (Localhost) និងឈ្មោះ Instance របស់ SQL Server។ សញ្ញា <code>\\</code> ត្រូវបានប្រើដើម្បី Escape នៅក្នុងទម្រង់ JSON។</td>
+                    <td>បញ្ជាក់ពីទីតាំងម៉ាស៊ីន និងឈ្មោះ Instance របស់ SQL Server។ សញ្ញា <code>\\</code> ត្រូវបានប្រើដើម្បី Escape Character នៅក្នុងទម្រង់ JSON។</td>
                 </tr>
                 <tr>
                     <td><b>Database=</b><br><code>SchoolDB;</code></td>
-                    <td>បញ្ជាក់ពីឈ្មោះមូលដ្ឋានទិន្នន័យ (Database Name) ដែលយើងចង់បង្កើត ឬចង់ប្រើ។</td>
+                    <td>បញ្ជាក់ពីឈ្មោះមូលដ្ឋានទិន្នន័យ (Database Name) ដែលយើងចង់បង្កើត ឬចង់ប្រើប្រាស់។</td>
                 </tr>
                 <tr>
                     <td><b>Trusted_Connection=</b><br><code>True;</code></td>
@@ -434,28 +415,28 @@ dotnet add package Microsoft.EntityFrameworkCore.Tools</pre>
                 </tr>
                 <tr>
                     <td><b>TrustServerCertificate=</b><br><code>True;</code></td>
-                    <td>រំលងការត្រួតពិនិត្យ SSL Certificate របស់ SQL Server សម្រាប់ការអភិវឌ្ឍន៍នៅម៉ាស៊ីន Local (Development Environment)។</td>
+                    <td>អនុញ្ញាតឱ្យរំលងការត្រួតពិនិត្យ SSL Certificate របស់ SQL Server សម្រាប់ការអភិវឌ្ឍន៍នៅម៉ាស៊ីន Local។</td>
                 </tr>
             </tbody>
         </table>
     </div>
     <div class="global-footer">
         <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
-        <div class="footer-right">ទំព័រ ៥ / ១៨</div>
+        <div class="footer-right">ទំព័រ ៥ / ២២</div>
     </div>
 </div>
 
-<!-- PAGE 6: SECTION 5.4 - CREATING DBCONTEXT CLASS -->
+<!-- PAGE 6: SECTION 5.4 - DBCONTEXT & MODELS -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
-        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៥</h1><p>ASP.NET CORE API & SQL SERVER</p></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៥</h1><p>ASP.NET CORE & SQL SERVER</p></div>
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
     <div class="page-content">
         <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-microchip"></i> ៥.៤ ការកសាង Class DbContext និងការប្រើប្រាស់ DbSet</div>
         <div class="text-block">
-            នៅក្នុង Entity Framework Core, <b>DbContext</b> គឺជា Class ស្នូលដែលចាត់ចែងរាល់កិច្ចការងារពាក់ព័ន្ធនឹងការតភ្ជាប់ទៅកាន់ Database។ វាតំណាងឱ្យការបើកសម័យកាលធ្វើការ (Session) មួយរវាងកម្មវិធី C# និង Database SQL Server។ រាល់តារាង (Tables) ដែលយើងចង់បង្កើត ត្រូវតែប្រកាសជា Property ប្រភេទ <b>DbSet&lt;TEntity&gt;</b> នៅក្នុង Class នេះ។
+            <b>DbContext</b> គឺជា Class ស្នូលរបស់ EF Core ដែលតំណាងឱ្យការបើកសម័យកាលធ្វើការ (Session) មួយរវាងកម្មវិធី C# និង Database SQL Server។ រាល់តារាង (Tables) ដែលយើងចង់បង្កើតនៅក្នុង DB ត្រូវតែប្រកាសជា Property ប្រភេទ <b>DbSet&lt;TEntity&gt;</b> នៅក្នុង Class នេះ។
         </div>
 
         <div class="sub-heading">រចនាសម្ព័ន្ធកូដ AppDbContext ពេញលេញ៖</div>
@@ -487,14 +468,14 @@ dotnet add package Microsoft.EntityFrameworkCore.Tools</pre>
         <div class="graphic-box" style="padding: 15px;">
             <ul class="obj-list" style="margin-top: 0;">
                 <li><b class="highlight">Table Names៖</b> ឈ្មោះ Property របស់ DbSet (ឧ. <code>Students</code>) នឹងត្រូវបានយកទៅដាក់ជាឈ្មោះ Table នៅក្នុង SQL Server ដោយស្វ័យប្រវត្ត។</li>
-                <li><b class="highlight">Primary Keys៖</b> Property នៅក្នុង Model ដែលមានឈ្មោះ <code>Id</code> ឬ <code>StudentId</code> នឹងត្រូវបានសម្គាល់ជា <b>Primary Key (Identity)</b> ដែលកើនឡើងលេខរៀងដោយខ្លួនឯង។</li>
-                <li><b class="highlight">Data Types៖</b> ប្រភេទ <code>string</code> ក្នុង C# នឹងត្រូវបានបម្លែងទៅជា <code>nvarchar(max)</code> ហើយប្រភេទ <code>int</code> នឹងក្លាយជា <code>int</code> នៅក្នុង SQL។</li>
+                <li><b class="highlight">Primary Keys៖</b> Property នៅក្នុង Model ដែលមានឈ្មោះ <code>Id</code> ឬ <code>StudentId</code> នឹងត្រូវបានសម្គាល់ជា <b>Primary Key (Identity)</b> ដែលកើនឡើងលេខរៀងដោយខ្លួនឯងដោយស្វ័យប្រវត្ត។</li>
+                <li><b class="highlight">Data Types៖</b> ប្រភេទ <code>string</code> ក្នុង C# នឹងត្រូវបានបម្លែងទៅជា <code>nvarchar(max)</code> នៅក្នុង SQL។</li>
             </ul>
         </div>
     </div>
     <div class="global-footer">
         <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
-        <div class="footer-right">ទំព័រ ៦ / ១៨</div>
+        <div class="footer-right">ទំព័រ ៦ / ២២</div>
     </div>
 </div>
 
@@ -502,38 +483,14 @@ dotnet add package Microsoft.EntityFrameworkCore.Tools</pre>
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
-        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៥</h1><p>ASP.NET CORE API & SQL SERVER</p></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៥</h1><p>ASP.NET CORE & SQL SERVER</p></div>
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
     <div class="page-content">
-        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-sliders"></i> ៥.៥ ការយល់ដឹងពីសញ្ញាណ Dependency Injection និងការចុះឈ្មោះក្នុង Program.cs</div>
+        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-sliders"></i> ៥.៥ ការចុះឈ្មោះ DbContext តាមរយៈ Dependency Injection</div>
         <div class="text-block">
-            <b>Dependency Injection (DI)</b> គឺជាបច្ចេកទេសរចនាកូដ (Design Pattern) ដែលត្រូវបានប្រើដើម្បីកាត់បន្ថយភាពចងភ្ជាប់គ្នា (Loose Coupling) រវាង Classes នីមួយៗ។ នៅក្នុង ASP.NET Core យើងមិនតម្រូវឱ្យបង្កើត Object នៃ DbContext ដោយប្រើពាក្យ <code>new</code> ឡើយ ផ្ទុយទៅវិញយើងឱ្យប្រព័ន្ធ <b>DI Container</b> ជាអ្នកចាត់ចែងបង្កើត និងបញ្ជូនវាទៅកាន់ Controller តាមរយៈ Constructor។
+            <b>Dependency Injection (DI)</b> គឺជាបច្ចេកទេសរចនាកូដ (Design Pattern) ដែលប្រើដើម្បីកាត់បន្ថយភាពចងភ្ជាប់គ្នា (Loose Coupling)។ នៅក្នុង ASP.NET Core យើងមិនប្រើពាក្យ <code>new AppDbContext()</code> គ្រប់ទីកន្លែងឡើយ តែយើងចុះឈ្មោះវាចូលទៅក្នុង <b>DI Container</b> នៃ <code>Program.cs</code> ដើម្បីឱ្យប្រព័ន្ធជាអ្នកបង្កើត និងបញ្ជូនវាទៅកាន់ Controller ដោយស្វ័យប្រវត្ត។
         </div>
-
-        <div class="sub-heading">ប្រភេទអាយុកាលសេវាកម្ម (Service Lifetimes) ក្នង DI៖</div>
-        <table class="standard-table">
-            <thead>
-                <tr>
-                    <th style="width: 20%;">ប្រភេទអាយុកាល</th>
-                    <th>ដំណើរការ និងការបង្កើត Object</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><b style="color:var(--danger);">Transient</b></td>
-                    <td>បង្កើត Object <b>ថ្មីជានិច្ច</b> រាល់ពេលដែលមានការស្នើសុំទាញយកទៅប្រើប្រាស់។</td>
-                </tr>
-                <tr>
-                    <td><b style="color:var(--success);">Scoped</b></td>
-                    <td>បង្កើត Object <b>តែមួយគត់</b> សម្រាប់រាល់ដំណើរការនៃ HTTP Request នីមួយៗ។ <br><i>(ចំណាំ៖ DbContext ត្រូវបានចុះឈ្មោះជាប្រភេទនេះជានិច្ច)</i></td>
-                </tr>
-                <tr>
-                    <td><b style="color:var(--secondary);">Singleton</b></td>
-                    <td>បង្កើត Object <b>តែមួយគត់</b> តាំងពីកម្មវិធីចាប់ផ្តើមរហូតដល់កម្មវិធីបិទ (Shared for all requests)។</td>
-                </tr>
-            </tbody>
-        </table>
 
         <div class="sub-heading">ការចុះឈ្មោះ AppDbContext នៅក្នុងឯកសារ Program.cs ៖</div>
         <div class="code-window">
@@ -560,68 +517,79 @@ app.UseAuthorization();
 app.MapControllers();
 app.Run();</pre>
         </div>
+
+        <div class="lab-box">
+            <h4><i class="fa-solid fa-stopwatch"></i> អាយុកាលសេវាកម្ម (Service Lifetime) របស់ DbContext</h4>
+            <p>
+                នៅពេលយើងប្រើប្រាស់ Method <code>AddDbContext()</code> ប្រព័ន្ធ .NET នឹងចុះឈ្មោះ AppDbContext ជាប្រភេទអាយុកាល <b>Scoped Lifetime</b> ដោយស្វ័យប្រវត្ត។ មានន័យថា ប្រព័ន្ធនឹងបង្កើត Object DbContext ថ្មីមួយ សម្រាប់រាល់ <b>HTTP Request</b> នីមួយៗ (ធានាសុវត្ថិភាពទិន្នន័យមិនឱ្យឆ្លងគ្នា)។
+            </p>
+        </div>
     </div>
     <div class="global-footer">
         <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
-        <div class="footer-right">ទំព័រ ៧ / ១៨</div>
+        <div class="footer-right">ទំព័រ ៧ / ២២</div>
     </div>
 </div>
 
-<!-- PAGE 8: SECTION 5.6 - SQL SERVER & SSMS SETUP -->
+<!-- PAGE 8: SECTION 5.6 - MVC vs API ARCHITECTURE -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
-        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៥</h1><p>ASP.NET CORE API & SQL SERVER</p></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៥</h1><p>ASP.NET CORE & SQL SERVER</p></div>
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
     <div class="page-content">
-        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-tools"></i> ៥.៦ ការរៀបចំ SQL Server & កម្មវិធីគ្រប់គ្រង SSMS</div>
+        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-sitemap"></i> ៥.៦ ស្ថាបត្យកម្ម MVC និង Web API ស្របតាម Syllabus</div>
         <div class="text-block">
-            មុននឹងដំណើរការកម្មវិធី និងធ្វើតេស្តការតភ្ជាប់ លោកអ្នកត្រូវធានាថា ប្រព័ន្ធគ្រប់គ្រងមូលដ្ឋានទិន្នន័យ <b>Microsoft SQL Server</b> និងកម្មវិធីជំនួយការគ្រប់គ្រង <b>SQL Server Management Studio (SSMS)</b> ត្រូវបានដំឡើង និងដំណើរការត្រឹមត្រូវក្នុងកុំព្យូទ័រ។
+            យោងតាម <b>Course Syllabus</b> មុខវិជ្ជានេះតម្រូវឱ្យនិស្សិតយល់ដឹងពីស្ថាបត្យកម្ម <b>Model-View-Controller (MVC)</b> ប៉ុន្តែក្នុងបរិបទទំនើប។ ជំនួសឱ្យការប្រើប្រាស់ Razor Views (MVC ប្រពៃណី) យើងបែងចែកប្រព័ន្ធជាពីរផ្នែកដាច់ពីគ្នា៖ <b>Backend Web API</b> (ដើរតួជា Model និង Controller) និង <b>Frontend HTML/JS</b> (ដើរតួជា View ឯករាជ្យ)។
         </div>
 
-        <div class="lab-box" style="margin-top: 15px;">
-            <h4><i class="fa-solid fa-server"></i> ជំហានទី ១៖ ត្រួតពិនិត្យ SQL Server Service នៅក្នុង Windows</h4>
-            <p style="margin-bottom: 5px; font-size: 9.5pt;">
-                ជួនកាល សេវាកម្មរបស់ SQL Server មិនបានដំណើរការដោយស្វ័យប្រវត្តឡើយ។ ដើម្បីត្រួតពិនិត្យ៖<br>
-                ១. ចុចប៊ូតុង <b>Windows + R</b> រួចវាយបញ្ចូលពាក្យ <code>services.msc</code> រួចចុច Enter។<br>
-                ២. ស្វែងរកសេវាកម្មឈ្មោះថា <b>SQL Server (SQLEXPRESS)</b>។<br>
-                ៣. ធានាថាស្ថានភាព (Status) របស់វាបង្ហាញពាក្យ <b>Running</b>។ បើមិនទាន់ដំណើរការទេ ចុចស្តាំ (Right-click) យកពាក្យ <b>Start</b>។
-            </p>
+        <div class="sub-heading">ការប្រៀបធៀបទម្រង់អភិវឌ្ឍន៍ទាំងពីរ៖</div>
+        <div class="two-column" style="grid-template-columns: 1fr 1fr; align-items: stretch;">
+            <div style="background: #F0FDF4; border: 1px solid #4ADE80; border-radius: 8px; padding: 15px;">
+                <h4 style="color: #166534; font-family: 'Suwannaphum'; font-size: 11pt; margin-bottom: 10px; text-align: center;"><i class="fa-solid fa-server"></i> Web API (Backend)</h4>
+                <ul style="font-size: 9.5pt; padding-left: 20px; color: #14532D; line-height: 1.6;">
+                    <li>ផ្តោតលើការគ្រប់គ្រង <b>Logic និងទិន្នន័យ</b> សុទ្ធសាធ។</li>
+                    <li>ប្រើប្រាស់ <code>ControllerBase</code> ជា Class គ្រឹះ។</li>
+                    <li>ឆ្លើយតបលទ្ធផលទៅកាន់ Client ជាទម្រង់អត្ថបទ <b>JSON</b> ។</li>
+                    <li>អាចប្រើប្រាស់រួមគ្នាបានជាមួយ Web, Mobile App និងប្រព័ន្ធផ្សេងៗទៀត។</li>
+                </ul>
+            </div>
+            
+            <div style="background: #EFF6FF; border: 1px solid #60A5FA; border-radius: 8px; padding: 15px;">
+                <h4 style="color: #1E3A8A; font-family: 'Suwannaphum'; font-size: 11pt; margin-bottom: 10px; text-align: center;"><i class="fa-brands fa-html5"></i> MVC View (Frontend UI)</h4>
+                <ul style="font-size: 9.5pt; padding-left: 20px; color: #1E3A8A; line-height: 1.6;">
+                    <li>ផ្តោតលើការបង្ហាញ <b>ចំណុចប្រទាក់អ្នកប្រើប្រាស់ (UI)</b> ។</li>
+                    <li>សរសេរកូដដោយប្រើប្រាស់ <b>HTML, CSS, និង JavaScript</b> ។</li>
+                    <li>ប្រើប្រាស់ JS <code>fetch()</code> API ដើម្បីហៅទិន្នន័យពី Backend API មកបង្ហាញលើ Table។</li>
+                    <li>ជាទម្រង់នៃការអភិវឌ្ឍន៍ Single Page Application (SPA) ទំនើប។</li>
+                </ul>
+            </div>
         </div>
 
-        <div class="lab-box" style="background:#F0FDF4; border-left-color:#22C55E; border-color:#BBF7D0; margin-top: 15px;">
-            <h4 style="color:#166534;"><i class="fa-solid fa-database"></i> ជំហានទី ២៖ បង្កើត Database នៅក្នុងកម្មវិធី SSMS</h4>
-            <p style="margin-bottom: 5px; font-size: 9.5pt;">
-                ដើម្បីឱ្យ API អាចភ្ជាប់ និងបង្កើតតារាងបាន (តាមរយៈ Migration នៅជំពូកក្រោយ) យើងគួរតែបង្កើត Database ទទេមួយជាមុន៖<br>
-                ១. បើកកម្មវិធី <b>SQL Server Management Studio (SSMS)</b>។<br>
-                ២. ត្រង់ផ្ទាំង Connect ជ្រើសរើស Server Type: <code>Database Engine</code>, Server Name: <code>localhost\SQLEXPRESS</code>, និង Authentication: <code>Windows Authentication</code> រួចចុច <b>Connect</b>។<br>
-                ៣. នៅក្នុងផ្ទាំង Object Explorer ខាងឆ្វេងដៃ ចុចស្តាំលើ Folder <b>Databases</b> រួចជ្រើសរើស <b>New Database...</b>។<br>
-                ៤. វាយបញ្ចូលឈ្មោះ <code>SchoolDB</code> ក្នុងប្រអប់ Database name រួចចុចប៊ូតុង <b>OK</b>។
-            </p>
-        </div>
-
-        <div class="graphic-box" style="margin-top:15px; display:flex; align-items:center; justify-content:center; gap:15px; padding: 15px;">
-            <div style="background:white; border: 1px solid var(--border-dark); padding: 10px; border-radius: 8px; text-align:center; flex:1;">
-                <i class="fa-solid fa-desktop" style="font-size: 24px; color:var(--text-muted); margin-bottom:5px;"></i><br>
-                <b style="font-size:9.5pt;">Server Name</b><br>
-                <code style="font-size:8.5pt; color:var(--accent);">localhost\SQLEXPRESS</code>
+        <div class="graphic-box" style="text-align: center; padding: 15px; margin-top: 15px;">
+            <div style="font-family:'Suwannaphum',sans-serif; color:var(--text-main); font-size:11pt; margin-bottom:15px; font-weight:bold;">លំហូរទិន្នន័យ (Data Flow) តាមស្ថាបត្យកម្ម Syllabus MVC</div>
+            
+            <div style="display: flex; justify-content: space-around; align-items: center; width: 100%;">
+                <div style="width: 28%; text-align: center;">
+                    <div style="background: #1E3A8A; color: white; padding: 10px; border-radius: 8px; font-weight: bold; font-size: 10pt;">VIEW<br><span style="font-size: 8pt; font-weight: normal;">HTML / JS Frontend</span></div>
+                </div>
+                <div style="width: 10%; color: var(--text-muted); font-size: 12pt;"><i class="fa-solid fa-right-left"></i> JSON</div>
+                <div style="width: 28%; text-align: center;">
+                    <div style="background: #512BD4; color: white; padding: 10px; border-radius: 8px; font-weight: bold; font-size: 10pt;">CONTROLLER<br><span style="font-size: 8pt; font-weight: normal;">C# API Endpoint</span></div>
+                </div>
+                <div style="width: 10%; color: var(--text-muted); font-size: 12pt;"><i class="fa-solid fa-right-left"></i> EF Core</div>
+                <div style="width: 28%; text-align: center;">
+                    <div style="background: #166534; color: white; padding: 10px; border-radius: 8px; font-weight: bold; font-size: 10pt;">MODEL<br><span style="font-size: 8pt; font-weight: normal;">SQL Database</span></div>
+                </div>
             </div>
-            <div style="background:white; border: 1px solid var(--border-dark); padding: 10px; border-radius: 8px; text-align:center; flex:1;">
-                <i class="fa-solid fa-shield-halved" style="font-size: 24px; color:var(--text-muted); margin-bottom:5px;"></i><br>
-                <b style="font-size:9.5pt;">Authentication</b><br>
-                <code style="font-size:8.5pt; color:var(--success);">Windows Authentication</code>
-            </div>
-            <div style="background:white; border: 1px solid var(--border-dark); padding: 10px; border-radius: 8px; text-align:center; flex:1;">
-                <i class="fa-solid fa-server" style="font-size: 24px; color:var(--text-muted); margin-bottom:5px;"></i><br>
-                <b style="font-size:9.5pt;">Database</b><br>
-                <code style="font-size:8.5pt; color:var(--warning);">SchoolDB</code>
-            </div>
+            
+            <p style="font-size: 9pt; color: var(--text-muted); margin-top: 15px; font-style: italic;">(នៅក្នុងលំហាត់អនុវត្តន៍ខាងមុខ យើងនឹងសរសេរកូដជាក់ស្តែងដើម្បីបំពេញស្ថាបត្យកម្មទាំងពីរផ្នែកនេះ)</p>
         </div>
     </div>
     <div class="global-footer">
         <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
-        <div class="footer-right">ទំព័រ ៨ / ១៨</div>
+        <div class="footer-right">ទំព័រ ៨ / ២២</div>
     </div>
 </div>
 
@@ -629,7 +597,7 @@ app.Run();</pre>
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
-        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៥</h1><p>ASP.NET CORE API & SQL SERVER</p></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៥</h1><p>ASP.NET CORE & SQL SERVER</p></div>
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
     <div class="page-content">
@@ -658,15 +626,15 @@ app.Run();</pre>
                 </tr>
                 <tr>
                     <td><b>Connection String</b></td>
-                    <td>ខ្សែស្រឡាយអត្ថបទដែលផ្ទុកព័ត៌មាន (ទីតាំង Server, ឈ្មោះ DB, User/Pass) ដើម្បីឱ្យកម្មវិធីអាចចូលភ្ជាប់ Database បាន។</td>
+                    <td>ខ្សែអត្ថបទដែលផ្ទុកព័ត៌មាន (ទីតាំង Server, ឈ្មោះ DB, User/Pass) ដើម្បីឱ្យកម្មវិធីអាចចូលភ្ជាប់ Database បាន។</td>
                 </tr>
                 <tr>
                     <td><b>appsettings.json</b></td>
-                    <td>ឯកសារសម្រាប់រក្សាទុកព័ត៌មានកំណត់រចនាសម្ព័ន្ធ (Configurations) របស់គម្រោង ASP.NET Core ដូចជា Connection String ជាដើម។</td>
+                    <td>ឯកសារសម្រាប់រក្សាទុកព័ត៌មានកំណត់រចនាសម្ព័ន្ធ (Configurations) របស់គម្រោង ASP.NET Core ។</td>
                 </tr>
                 <tr>
                     <td><b>DbContext</b></td>
-                    <td>Class ស្នូលរបស់ EF Core ដែលតំណាងឱ្យការបើកសម័យកាលធ្វើការ (Session connection) រវាង App របស់អ្នក និង Database។</td>
+                    <td>Class ស្នូលរបស់ EF Core ដែលតំណាងឱ្យការបើកសម័យកាលធ្វើការ (Session connection) រវាង App និង Database។</td>
                 </tr>
                 <tr>
                     <td><b>DbSet&lt;T&gt;</b></td>
@@ -674,18 +642,18 @@ app.Run();</pre>
                 </tr>
                 <tr>
                     <td><b>Dependency Injection (DI)</b></td>
-                    <td>បច្ចេកទេសរចនាកូដ (Design Pattern) ជួយកាត់បន្ថយភាពចងភ្ជាប់គ្នា (Loose Coupling) ដោយផ្ទេរការគ្រប់គ្រងការបង្កើត Object ទៅឱ្យប្រព័ន្ធកណ្តាល។</td>
+                    <td>បច្ចេកទេសរចនាកូដ (Design Pattern) ជួយកាត់បន្ថយភាពចងភ្ជាប់គ្នា ដោយផ្ទេរការគ្រប់គ្រងការបង្កើត Object ទៅឱ្យប្រព័ន្ធកណ្តាលរបស់ .NET វិញ។</td>
                 </tr>
                 <tr>
-                    <td><b>SSMS (SQL Server Management Studio)</b></td>
-                    <td>កម្មវិធីផ្តល់នូវផ្ទាំងក្រាហ្វិក (GUI) សម្រាប់គ្រប់គ្រង និងចាត់ចែងសេវាកម្មនានារបស់ Microsoft SQL Server។</td>
+                    <td><b>Frontend Fetch API</b></td>
+                    <td>មុខងាររបស់ JavaScript សម្រាប់ផ្ញើសំណើ HTTP (GET, POST) ពី Web Page ទៅកាន់ Backend Web API។</td>
                 </tr>
             </tbody>
         </table>
     </div>
     <div class="global-footer">
         <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
-        <div class="footer-right">ទំព័រ ៩ / ១៨</div>
+        <div class="footer-right">ទំព័រ ៩ / ២២</div>
     </div>
 </div>
 
@@ -693,30 +661,31 @@ app.Run();</pre>
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
-        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៥</h1><p>ASP.NET CORE API & SQL SERVER</p></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៥</h1><p>ASP.NET CORE & SQL SERVER</p></div>
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
     <div class="page-content">
         <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-list-check"></i> សេចក្តីសង្ខេបជំពូកទី ៥ (Summary)</div>
         <ul class="obj-list" style="margin-top:10px;">
-            <li><b class="highlight">EF Core ជាស្ពានចម្លង៖</b> បច្ចេកវិទ្យា ORM Entity Framework Core ជួយសម្រួលដល់ការគ្រប់គ្រង Database ដោយលុបបំបាត់ការសរសេរ SQL Queries ស្មុគស្មាញដោយដៃ មកប្រើប្រាស់ LINQ ក្នុង C# វិញ។</li>
-            <li><b class="highlight">ការដំឡើង Packages៖</b> គម្រោង .NET តម្រូវឱ្យដំឡើងកញ្ចប់ NuGet ធំៗចំនួន ៤ គឺ EFCore, EFCore.SqlServer, EFCore.Design និង EFCore.Tools ដើម្បីអាចប្រើប្រាស់មុខងារ Database បានពេញលេញ។</li>
+            <li><b class="highlight">EF Core ជាស្ពានចម្លង៖</b> បច្ចេកវិទ្យា ORM ជួយសម្រួលដល់ការគ្រប់គ្រង Database ដោយលុបបំបាត់ការសរសេរកូដ SQL Queries ដោយដៃ មកប្រើប្រាស់ LINQ ក្នុង C# វិញ។</li>
+            <li><b class="highlight">ការដំឡើង Packages៖</b> គម្រោង .NET តម្រូវឱ្យដំឡើងកញ្ចប់ NuGet ធំៗចំនួន ៤ (EFCore, SqlServer, Design, Tools) ដើម្បីអាចប្រើប្រាស់មុខងារ Database បាន។</li>
             <li><b class="highlight">ការរក្សាការសម្ងាត់៖</b> Connection String ដែលជាសោសម្រាប់បើកចូល Database គួរតែត្រូវបានរក្សាទុកឱ្យមានសុវត្ថិភាពនៅក្នុងឯកសារ <code>appsettings.json</code>។</li>
-            <li><b class="highlight">DbContext ជាអ្នកចាត់ចែងសកល៖</b> គ្រប់គម្រោងដែលប្រើ EF Core ត្រូវតែមាន Class ដែលស្នងពី DbContext សម្រាប់ផ្ទុកនូវ DbSet (តំណាងឱ្យ Tables) និងគ្រប់គ្រងចរន្តទិន្នន័យ។</li>
-            <li><b class="highlight">ការចុះឈ្មោះក្នុង Program.cs៖</b> ថ្នាក់ AppDbContext ត្រូវតែត្រូវបានចុះឈ្មោះចូលទៅក្នុងប្រព័ន្ធ Dependency Injection (DI) របស់ .NET (ប្រើប្រាស់ <code>AddDbContext</code>) ដើម្បីអាចដំណើរការការងារបានដោយស្វ័យប្រវត្តក្នុងសេណារីយ៉ូ Scoped Lifetime។</li>
+            <li><b class="highlight">DbContext ជាអ្នកចាត់ចែងសកល៖</b> គម្រោងដែលប្រើ EF Core ត្រូវតែមាន Class ដែលស្នងពី DbContext សម្រាប់ផ្ទុកនូវ DbSet (តំណាងឱ្យ Tables)។</li>
+            <li><b class="highlight">ការចុះឈ្មោះក្នង DI Container៖</b> ថ្នាក់ AppDbContext ត្រូវតែត្រូវបានចុះឈ្មោះចូលទៅក្នុងប្រព័ន្ធ Dependency Injection (តាមរយៈ <code>AddDbContext</code> ក្នុង <code>Program.cs</code>) ជាប្រភេទ Scoped Lifetime។</li>
+            <li><b class="highlight">ការញែក API និង View៖</b> ស្របតាម Syllabus យើងអភិវឌ្ឍន៍ Backend ដោយប្រើ Web API (Controller) និងអភិវឌ្ឍន៍ Frontend ដោយប្រើ HTML/JS (View) ដើម្បីបង្កើតជាប្រព័ន្ធ Full-Stack ដ៏មានឥទ្ធិពល។</li>
         </ul>
 
         <div class="section-title" style="margin-top:20px;"><i class="fa-solid fa-book"></i> ឯកសារយោង (References)</div>
         <ul class="obj-list" style="margin-top:10px;">
             <li><b>Microsoft Learn (Entity Framework Core Overview):</b> <span style="color:var(--secondary);">https://learn.microsoft.com/en-us/ef/core/</span></li>
-            <li><b>Microsoft Learn (DbContext Lifetime, Configuration, and Initialization):</b> <span style="color:var(--secondary);">https://learn.microsoft.com/en-us/ef/core/dbcontext-configuration/</span></li>
-            <li><b>Microsoft Learn (Dependency injection in ASP.NET Core):</b> <span style="color:var(--secondary);">https://learn.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection</span></li>
-            <li><b>សៀវភៅគោល៖</b> Freeman, A. (2024). <i>Pro ASP.NET Core 8</i>. Apress. (Chapter on Entity Framework Core).</li>
+            <li><b>Microsoft Learn (DbContext Configuration):</b> <span style="color:var(--secondary);">https://learn.microsoft.com/en-us/ef/core/dbcontext-configuration/</span></li>
+            <li><b>MDN Web Docs (Fetch API):</b> <span style="color:var(--secondary);">https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch</span></li>
+            <li><b>សៀវភៅគោល៖</b> Freeman, A. (2024). <i>Pro ASP.NET Core 8</i>. Apress.</li>
         </ul>
     </div>
     <div class="global-footer">
         <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
-        <div class="footer-right">ទំព័រ ១០ / ១៨</div>
+        <div class="footer-right">ទំព័រ ១០ / ២២</div>
     </div>
 </div>
 
@@ -724,7 +693,7 @@ app.Run();</pre>
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
-        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៥</h1><p>ASP.NET CORE API & SQL SERVER</p></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៥</h1><p>ASP.NET CORE & SQL SERVER</p></div>
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
     <div class="page-content">
@@ -735,20 +704,20 @@ app.Run();</pre>
         
         <ol class="q-list" style="font-size:10.5pt; line-height:1.6;">
             <li>Entity Framework Core គឺជាបច្ចេកវិទ្យា ORM (Object-Relational Mapper) ដែលជាផលិតផលផ្លូវការរបស់ Microsoft។</li>
-            <li>ការសរសេរកូដភ្ជាប់ Database ជាមួយ ADO.NET ប្រពៃណី ទាមទារឱ្យសរសេរកូដខ្លីជាងការប្រើប្រាស់ EF Core។</li>
+            <li>ការសរសេរកូដភ្ជាប់ Database ជាមួយ ADO.NET ប្រពៃណី ទាមទារឱ្យសរសេរកូដតិចជាងការប្រើប្រាស់ EF Core ច្រើន។</li>
             <li>Microsoft ណែនាំឱ្យសរសេរ Connection String ផ្ទាល់នៅក្នុងឯកសារ C# (Hardcoding) ដើម្បីសុវត្ថិភាពខ្ពស់។</li>
-            <li>Class <code>DbContext</code> ដើរតួជាតំណាងឱ្យការបើក Session តភ្ជាប់ទៅកាន់ Database។</li>
-            <li>ការប្រកាស <code>DbSet&lt;Product&gt; Products;</code> នឹងបម្លែង Class Product ទៅជា Table ឈ្មោះ 'Products' ដោយស្វ័យប្រវត្ត។</li>
-            <li>អាយុកាល (Lifetime) លំនាំដើមរបស់ DbContext នៅពេលចុះឈ្មោះក្នុង DI គឺ Singleton។</li>
+            <li>Class <code>DbContext</code> ដើរតួជាតំណាងឱ្យការបើក Session តភ្ជាប់ទៅកាន់ Database មួយ។</li>
+            <li>ការប្រកាស <code>DbSet&lt;Product&gt; Products;</code> នឹងបំប្លែង Class Product ទៅជា Table ឈ្មោះ 'Products' ដោយស្វ័យប្រវត្ត។</li>
+            <li>អាយុកាល (Lifetime) លំនាំដើមរបស់ DbContext នៅពេលចុះឈ្មោះក្នុង Dependency Injection គឺ Singleton។</li>
             <li>NuGet Package Manager ត្រូវបានប្រើប្រាស់ដើម្បីទាញយក និងដំឡើងបណ្ណាល័យកូដនានារបស់ .NET។</li>
-            <li>ឯកសារ <code>Program.cs</code> គឺជាទីតាំងដែលយើងត្រូវសរសេរកូដចុះឈ្មោះសេវាកម្ម AddDbContext។</li>
-            <li>EF Core មិនមានសមត្ថភាពក្នុងការបកប្រែ (Translate) កូដ LINQ របស់ C# ទៅជាភាសា SQL Script ឡើយ។</li>
-            <li>SSMS (SQL Server Management Studio) គឺជាកម្មវិធីកូដអេឌីទ័រ (Code Editor) សម្រាប់សរសេរកូដ C#។</li>
+            <li>នៅក្នុងស្ថាបត្យកម្ម MVC តាមកម្មវិធីសិក្សា (Syllabus) នេះ, HTML និង JS ដើរតួជា View ខណៈដែល Web API ដើរតួជា Controller។</li>
+            <li>ការចុះឈ្មោះសេវាកម្ម <code>AddDbContext</code> ត្រូវធ្វើឡើងនៅក្នុងឯកសារ <code>appsettings.json</code>។</li>
+            <li>JavaScript <code>fetch()</code> មុខងារត្រូវបានប្រើប្រាស់ដើម្បីហៅទិន្នន័យ (API Call) ពី Frontend ទៅកាន់ Backend API។</li>
         </ol>
     </div>
     <div class="global-footer">
         <div class="footer-left"><span>សាស្ត្រាចារ្យ៖ សឿង លីម (Soeurng LIM)</span></div>
-        <div class="footer-right">ទំព័រ ១១ / ១៨</div>
+        <div class="footer-right">ទំព័រ ១១ / ២២</div>
     </div>
 </div>
 
@@ -756,7 +725,7 @@ app.Run();</pre>
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
-        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៥</h1><p>ASP.NET CORE API & SQL SERVER</p></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៥</h1><p>ASP.NET CORE & SQL SERVER</p></div>
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
     <div class="page-content">
@@ -780,7 +749,7 @@ app.Run();</pre>
                     <li>D. Microsoft.EntityFrameworkCore.Tools</li>
                 </ul>
             </li>
-            <li>តើយើងគួររក្សាទុកខ្សែស្រឡាយ Connection String នៅក្នុងឯកសារមួយណាទើបមានសុវត្ថិភាព និងបត់បែន?
+            <li>តើយើងគួររក្សាទុកខ្សែស្រឡាយ Connection String នៅក្នុងឯកសារមួយណាទើបមានសុវត្ថិភាព?
                 <ul class="mcq-opts">
                     <li>A. Program.cs</li>
                     <li>B. DbContext.cs</li>
@@ -820,35 +789,35 @@ app.Run();</pre>
                     <li>D. PK</li>
                 </ul>
             </li>
-            <li>តើប្រភេទ C# `string` នឹងត្រូវ EF Core បម្លែងទៅជាប្រភេទអ្វីនៅក្នុង SQL Server Database?
+            <li>នៅក្នុងស្ថាបត្យកម្មនៃមុខវិជ្ជានេះ តើផ្នែកណាមួយដែលដើរតួជា "View"?
                 <ul class="mcq-opts">
-                    <li>A. varchar(255)</li>
-                    <li>B. text</li>
-                    <li>C. nvarchar(max)</li>
-                    <li>D. char(max)</li>
+                    <li>A. SQL Server Database</li>
+                    <li>B. C# Models</li>
+                    <li>C. HTML និង JavaScript</li>
+                    <li>D. Web API Controllers</li>
                 </ul>
             </li>
-            <li>តើកម្មវិធីមួយណាដែលមានមុខងារជា GUI សម្រាប់គ្រប់គ្រង Microsoft SQL Server ផ្ទាល់?
+            <li>តើអ្វីជាអត្ថប្រយោជន៍ចម្បងនៃ Dependency Injection (DI)?
                 <ul class="mcq-opts">
-                    <li>A. Visual Studio Code</li>
-                    <li>B. SQL Server Management Studio (SSMS)</li>
-                    <li>C. Windows Terminal</li>
-                    <li>D. NuGet Package Explorer</li>
+                    <li>A. បង្កើនល្បឿនអ៊ីនធឺណិត</li>
+                    <li>B. កាត់បន្ថយភាពចងភ្ជាប់គ្នា (Loose Coupling)</li>
+                    <li>C. បង្កើត Database ស្វ័យប្រវត្ត</li>
+                    <li>D. កាត់បន្ថយទំហំកូដ HTML</li>
                 </ul>
             </li>
-            <li>តើគោលបំណងចម្បងនៃការប្រើប្រាស់បច្ចេកទេស Dependency Injection (DI) គឺអ្វី?
+            <li>ដើម្បីអនុញ្ញាតឱ្យ Web Page អាចហៅទិន្នន័យពី API ដែលរត់លើ Port ខុសគ្នាបាន យើងត្រូវដោះស្រាយបញ្ហាអ្វី?
                 <ul class="mcq-opts">
-                    <li>A. ដើម្បីកាត់បន្ថយទំហំកូដ</li>
-                    <li>B. ដើម្បីបង្កើត Database ស្វ័យប្រវត្ត</li>
-                    <li>C. ដើម្បីកាត់បន្ថយភាពចងភ្ជាប់គ្នា (Loose Coupling)</li>
-                    <li>D. ដើម្បីបង្កើនល្បឿនអ៊ីនធឺណិត</li>
+                    <li>A. SQL Injection</li>
+                    <li>B. Dependency Injection</li>
+                    <li>C. CORS Policy</li>
+                    <li>D. JSON Parsing</li>
                 </ul>
             </li>
         </ol>
     </div>
     <div class="global-footer">
         <div class="footer-left"><span>សាស្ត្រាចារ្យ៖ សឿង លីម (Soeurng LIM)</span></div>
-        <div class="footer-right">ទំព័រ ១២ / ១៨</div>
+        <div class="footer-right">ទំព័រ ១២ / ២២</div>
     </div>
 </div>
 
@@ -856,7 +825,7 @@ app.Run();</pre>
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
-        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៥</h1><p>ASP.NET CORE API & SQL SERVER</p></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៥</h1><p>ASP.NET CORE & SQL SERVER</p></div>
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
     <div class="page-content">
@@ -873,18 +842,18 @@ app.Run();</pre>
                 <tr><td style="font-weight:bold;">៦. DbContext</td></tr>
                 <tr><td style="font-weight:bold;">៧. DbSet&lt;T&gt;</td></tr>
                 <tr><td style="font-weight:bold;">៨. Dependency Injection</td></tr>
-                <tr><td style="font-weight:bold;">៩. AddDbContext()</td></tr>
-                <tr><td style="font-weight:bold;">១០. SSMS</td></tr>
+                <tr><td style="font-weight:bold;">៩. Web API</td></tr>
+                <tr><td style="font-weight:bold;">១០. Fetch API (JavaScript)</td></tr>
             </table>
             <table class="standard-table" style="box-shadow:none; font-size: 8.5pt;">
-                <tr><td>A. បច្ចេកវិទ្យាតភ្ជាប់ Database ប្រពៃណីដែលទាមទារការសរសេរកូដច្រើន។</td></tr>
+                <tr><td>A. ដើរតួជា "Controller & Model" នៅក្នុងស្ថាបត្យកម្មនៃមុខវិជ្ជានេះ។</td></tr>
                 <tr><td>B. តំណាងឱ្យតារាង (Table) ក្នុង Database។</td></tr>
                 <tr><td>C. ប្រព័ន្ធគ្រប់គ្រង និងទាញយកកញ្ចប់បណ្ណាល័យបន្ថែមរបស់ .NET។</td></tr>
-                <tr><td>D. កម្មវិធីផ្តល់ជាផ្ទាំងក្រាហ្វិក (GUI) សម្រាប់គ្រប់គ្រង SQL Server។</td></tr>
+                <tr><td>D. មុខងារសម្រាប់ផ្ញើសំណើពី Frontend View ទៅកាន់ Backend។</td></tr>
                 <tr><td>E. បច្ចេកទេសរចនាកូដដែលផ្តោតលើការកាត់បន្ថយភាពចងភ្ជាប់គ្នា (Loose Coupling)។</td></tr>
                 <tr><td>F. បច្ចេកវិទ្យា ORM ដ៏មានប្រជាប្រិយភាព និងផ្លូវការរបស់ .NET។</td></tr>
                 <tr><td>G. ខ្សែអត្ថបទដែលមានផ្ទុកនូវទីតាំង Server និងសិទ្ធិចូលដំណើរការ។</td></tr>
-                <tr><td>H. Method សម្រាប់ចុះឈ្មោះសេវាកម្ម Database ចូលក្នុង DI Container។</td></tr>
+                <tr><td>H. បច្ចេកវិទ្យាតភ្ជាប់ Database ប្រពៃណីដែលទាមទារការសរសេរកូដ Query ផ្ទាល់ច្រើន។</td></tr>
                 <tr><td>I. ឯកសារទម្រង់ JSON សម្រាប់រក្សាទុកព័ត៌មាន Configuration។</td></tr>
                 <tr><td>J. Class ស្នូលដើរតួជាការបើកសម័យកាល (Session) ទៅកាន់ Database។</td></tr>
             </table>
@@ -893,56 +862,94 @@ app.Run();</pre>
         <div class="sub-heading" style="width:100%;">៤. សំណួរបកស្រាយ (Essay Questions)</div>
         <ol class="q-list" style="font-size:9.5pt; line-height:1.5;">
             <li>ចូរពន្យល់ពីអត្ថប្រយោជន៍ និងភាពខុសគ្នាសំខាន់ៗរវាងការប្រើប្រាស់ EF Core និងបច្ចេកវិទ្យា ADO.NET ប្រពៃណី។</li>
-            <li>តើ Class <code>DbContext</code> មានតួនាទីស្នូលអ្វីខ្លះនៅក្នុងការគ្រប់គ្រងមូលដ្ឋានទិន្នន័យ?</li>
-            <li>ចូររៀបរាប់ពីសមាសធាតុសំខាន់ៗដែលមាននៅក្នុងខ្សែស្រឡាយ Connection String សម្រាប់ភ្ជាប់ទៅ SQL Server រួមជាមួយឧទាហរណ៍។</li>
+            <li>យោងតាម Syllabus តើការអភិវឌ្ឍន៍ប្រព័ន្ធដោយបែងចែកស្ថាបត្យកម្មជា **Web API (Backend)** និង **HTML/JS (Frontend View)** មានអត្ថប្រយោជន៍អ្វីខ្លះបើធៀបនឹងការសរសេរកូដ MVC ចូលគ្នាតែមួយ (Traditional Razor Pages)?</li>
+            <li>ចូររៀបរាប់ពីសមាសធាតុសំខាន់ៗដែលមាននៅក្នុងខ្សែស្រឡាយ Connection String សម្រាប់ភ្ជាប់ទៅ SQL Server។</li>
         </ol>
     </div>
     <div class="global-footer">
         <div class="footer-left"><span>សាស្ត្រាចារ្យ៖ សឿង លីម (Soeurng LIM)</span></div>
-        <div class="footer-right">ទំព័រ ១៣ / ១៨</div>
+        <div class="footer-right">ទំព័រ ១៣ / ២២</div>
     </div>
 </div>
 
-<!-- PAGE 14: PRACTICAL EXERCISES -->
+<!-- PAGE 14: PRACTICAL EXERCISES INTRO -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
-        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៥</h1><p>ASP.NET CORE API & SQL SERVER</p></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៥</h1><p>ASP.NET CORE & SQL SERVER</p></div>
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
     <div class="page-content">
-        <div class="sub-heading" style="width: 100%; margin-top:0;"><i class="fa-solid fa-laptop-code"></i> ៥. លំហាត់អនុវត្តន៍ (Practical Exercises)</div>
-        <p style="font-size:10pt; margin-bottom:15px;"><b>សេចក្តីណែនាំ៖</b> សូមសរសេរកូដដោះស្រាយតាមប្រធានលំហាត់ខាងក្រោម (ដំណោះស្រាយពេញលេញស្ថិតក្នុងទំព័រ Answer Keys)។ លំហាត់ទាំងនេះបង្កើតជាលំហូរការងាររៀបចំ DB មួយពេញលេញ។</p>
+        <div class="sub-heading" style="width: 100%; margin-top:0; color:var(--success); font-size:14pt;"><i class="fa-solid fa-laptop-code"></i> ៥. លំហាត់អនុវត្តន៍ (Practical Exercises)</div>
+        <p style="font-size:10pt; margin-bottom:15px;">
+            <b>សេចក្តីណែនាំ៖</b> ដើម្បីឆ្លើយតបទៅនឹងគោលបំណងនៃ Syllabus លំហាត់នេះត្រូវបានរៀបចំតាមលំដាប់លំដោយ (Workflow) ដោយបែងចែកជាពីរផ្នែកធំៗគឺ៖<br>
+            <b>ផ្នែកទី ១ (Web API):</b> រៀបចំ Backend ជាមួយ EF Core ដើម្បីបញ្ចេញទិន្នន័យ (JSON)។<br>
+            <b>ផ្នែកទី ២ (MVC View Integration):</b> បង្កើតផ្ទាំង Frontend ដោយប្រើប្រាស់ HTML & JS ហៅទិន្នន័យពី API មកបង្ហាញ។
+        </p>
 
-        <div class="sub-heading" style="color:var(--accent); font-size:11pt; margin-bottom:5px;">ក. កំរិតស្រាល (Easy Level) - ២ លំហាត់</div>
+        <!-- PART 1: API SETUP -->
+        <div class="section-title" style="color:var(--accent); border-color:var(--accent); font-size:12pt; margin-bottom: 5px;">
+            <i class="fa-solid fa-server"></i> ផ្នែកទី ១៖ ការរៀបចំ Web API Backend
+        </div>
+        
         <ul class="obj-list" style="margin-top:0; margin-bottom:15px;">
-            <li><b>លំហាត់ 5.1 (Book Model)៖</b> ចូរបង្កើត Class Model មួយឈ្មោះ <code>Book</code> នៅក្នុង Folder <code>Models</code> ដែលមាន Properties ចំនួន ៣៖ <code>Id</code> (ជាសោចម្បងប្រភេទ int), <code>Title</code> (ប្រភេទ string), និង <code>Author</code> (ប្រភេទ string)។</li>
-            <li><b>លំហាត់ 5.2 (Category Model)៖</b> ចូរបង្កើត Class Model មួយឈ្មោះ <code>Category</code> ដែលមាន Properties ចំនួន ២៖ <code>Id</code> (ប្រភេទ int) និង <code>Name</code> (ប្រភេទ string)។</li>
+            <li><b>ជំហានទី ១ (បង្កើត Model)៖</b> ចូរបង្កើតឯកសារ <code>Models/Category.cs</code> ដែលមាន Properties ៖ <code>Id</code> (int) និង <code>Name</code> (string)។</li>
+            
+            <li><b>ជំហានទី ២ (បង្កើត DbContext)៖</b> ចូរបង្កើតឯកសារ <code>Data/StoreDbContext.cs</code> ដោយស្នងពី <code>DbContext</code> ព្រមទាំងប្រកាស <code>DbSet&lt;Category&gt;</code> នៅក្នុងនោះ។</li>
+            
+            <li><b>ជំហានទី ៣ (កំណត់ Config & DI)៖</b> នៅក្នុងឯកសារ <code>appsettings.json</code> ចូរបន្ថែម <code>ConnectionStrings</code> ឈ្មោះ <code>StoreConnection</code>។ បន្ទាប់មកក្នុងឯកសារ <code>Program.cs</code> ត្រូវចុះឈ្មោះ <code>StoreDbContext</code> ទៅក្នុងប្រព័ន្ធ DI ។</li>
+
+            <li><b>ជំហានទី ៤ (បង្កើត API Controller)៖</b> ចូរបង្កើតឯកសារ <code>Controllers/CategoryApiController.cs</code>។ ហៅ DbContext មកប្រើតាមរយៈ Constructor រួចបង្កើត <code>[HttpGet]</code> Endpoint ដើម្បី Return ទិន្នន័យ Categories ទាំងអស់។</li>
         </ul>
 
-        <div class="sub-heading" style="color:var(--warning); font-size:11pt; margin-bottom:5px;">ខ. កំរិតមធ្យម (Medium Level) - ២ លំហាត់</div>
-        <ul class="obj-list" style="margin-top:0; margin-bottom:15px;">
-            <li><b>លំហាត់ 5.3 (LibraryDbContext)៖</b> ចូរបង្កើត Class មួយឈ្មោះ <code>LibraryDbContext</code> នៅក្នុង Folder <code>Data</code> ដោយឱ្យវាស្នងពី <code>DbContext</code>។ បន្ទាប់មក សូមបង្កើត Constructor ទទួលយក options និងប្រកាស <code>DbSet</code> ចំនួនពីរសម្រាប់ Class `Book` និង `Category`។</li>
-            <li><b>លំហាត់ 5.4 (Connection String)៖</b> ចូរសរសេរកូដ JSON បន្ថែមផ្នែក <code>ConnectionStrings</code> ទៅក្នុងឯកសារ <code>appsettings.json</code> ដោយដាក់ឈ្មោះវាថា <code>LibraryConnection</code> និងភ្ជាប់ទៅ Database ឈ្មោះ <code>LibraryDB</code> ក្នុងម៉ាស៊ីន Localhost របស់លោកអ្នក (ប្រើ Windows Auth)។</li>
-        </ul>
-
-        <div class="sub-heading" style="color:var(--danger); font-size:11pt; margin-bottom:5px;">គ. កំរិតធ្ងន់ (Hard Level) - ២ លំហាត់</div>
-        <ul class="obj-list" style="margin-top:0;">
-            <li><b>លំហាត់ 5.5 (DI Registration)៖</b> នៅក្នុងឯកសារ <code>Program.cs</code> ចូរសរសេរកូដដើម្បីទាញយកខ្សែស្រឡាយ <code>LibraryConnection</code> ពីឯកសារ Configuration រួចប្រើប្រាស់វាដើម្បីចុះឈ្មោះ <code>LibraryDbContext</code> ចូលទៅក្នុងប្រព័ន្ធ Dependency Injection របស់កម្មវិធី។</li>
-            <li><b>លំហាត់ 5.6 (NuGet Commands)៖</b> ចូរសរសេរពាក្យបញ្ជា .NET CLI (Command-line) ចំនួន ២ បន្ទាត់ ដើម្បីដំឡើងបណ្ណាល័យស្នូលរបស់ EF Core និង Database Provider សម្រាប់ SQL Server។</li>
-        </ul>
     </div>
     <div class="global-footer">
         <div class="footer-left"><span>សាស្ត្រាចារ្យ៖ សឿង លីម (Soeurng LIM)</span></div>
-        <div class="footer-right">ទំព័រ ១៤ / ១៨</div>
+        <div class="footer-right">ទំព័រ ១៤ / ២២</div>
     </div>
 </div>
 
-<!-- PAGE 15: ANSWER KEYS -->
+<!-- PAGE 15: PRACTICAL EXERCISES PART 2 -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
-        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៥</h1><p>ASP.NET CORE API & SQL SERVER</p></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៥</h1><p>ASP.NET CORE & SQL SERVER</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <!-- PART 2: MVC VIEW INTEGRATION -->
+        <div class="section-title" style="color:var(--secondary); border-color:var(--secondary); font-size:12pt; margin-top:0; margin-bottom: 5px;">
+            <i class="fa-brands fa-html5"></i> ផ្នែកទី ២៖ ការអភិវឌ្ឍន៍ MVC Frontend (View Integration)
+        </div>
+        
+        <div class="text-block" style="font-size: 10pt;">
+            ឧបមាថា API របស់អ្នកឥឡូវនេះដំណើរការនៅ <code>http://localhost:5000/api/categoryapi</code>។ ជំហានបន្ទាប់ យើងត្រូវបង្កើត View សម្រាប់អ្នកប្រើប្រាស់ ដោយសរសេរ HTML/JS ដាច់ដោយឡែក។
+        </div>
+
+        <ul class="obj-list" style="margin-top:0; margin-bottom:15px;">
+            <li><b>ជំហានទី ៥ (រៀបចំផ្ទៃបង្ហាញ HTML)៖</b> ចូរបង្កើតឯកសារថ្មីមួយឈ្មោះ <code>index.html</code> (ដាក់នៅទីតាំងណាក៏បាន)។ បង្កើតតារាង (Table) មួយដែលមានក្បាល (Headers) <b>ID</b> និង <b>ឈ្មោះប្រភេទ</b> ហើយកំណត់ <code>id="data-table"</code> ទៅឱ្យ <code>&lt;tbody&gt;</code> នៃតារាងនោះ។</li>
+            
+            <li><b>ជំហានទី ៦ (តភ្ជាប់ View ទាញទិន្នន័យ JS)៖</b> នៅក្នុងឯកសារ <code>index.html</code> ដដែល ចូរបន្ថែម Tag <code>&lt;script&gt;</code> ដើម្បីប្រើប្រាស់មុខងារ <code>fetch()</code> ហៅទិន្នន័យពី API ខាងលើ។ រួចប្រើ Loop ដើម្បីតម្រៀបទិន្នន័យបញ្ចូលទៅក្នុងតារាងដោយស្វ័យប្រវត្ត។</li>
+        </ul>
+
+        <div class="lab-box" style="background:#FEF2F2; border-left-color:#EF4444; border-color:#FECACA;">
+            <h4 style="color:#991B1B;"><i class="fa-solid fa-shield-halved"></i> ចំណាំ៖ បញ្ហា CORS Policy</h4>
+            <p style="font-size: 9.5pt; color: #7F1D1D;">
+                នៅពេល Frontend (HTML) ហៅទិន្នន័យពី Backend API អ្នកនឹងជួបបញ្ហា <b>CORS Error</b> ព្រោះ .NET Core បិទមិនឱ្យ Web ក្រៅទាញទិន្នន័យបាន។ ដូចនេះនៅក្នុង <code>Program.cs</code> នៃជំហានទី ៣ យើងចាំបាច់ត្រូវសរសេរកូដអនុញ្ញាត CORS (AllowAnyOrigin) ជាមុនសិន។ (ចម្លើយលម្អិតនឹងបង្ហាញនៅទំព័រអត្រាកំណែ)។
+            </p>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ៖ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ១៥ / ២២</div>
+    </div>
+</div>
+
+<!-- PAGE 16: ANSWER KEYS - QUIZZES -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៥</h1><p>ASP.NET CORE & SQL SERVER</p></div>
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
     <div class="page-content">
@@ -955,7 +962,7 @@ app.Run();</pre>
                     <tr><th>១</th><th>២</th><th>៣</th><th>៤</th><th>៥</th></tr>
                     <tr><td>ត្រូវ</td><td>ខុស</td><td>ខុស</td><td>ត្រូវ</td><td>ត្រូវ</td></tr>
                     <tr><th>៦</th><th>៧</th><th>៨</th><th>៩</th><th>១០</th></tr>
-                    <tr><td>ខុស</td><td>ត្រូវ</td><td>ត្រូវ</td><td>ខុស</td><td>ខុស</td></tr>
+                    <tr><td>ខុស</td><td>ត្រូវ</td><td>ត្រូវ</td><td>ខុស</td><td>ត្រូវ</td></tr>
                 </table>
             </div>
             <div>
@@ -972,167 +979,355 @@ app.Run();</pre>
         <div class="sub-heading" style="margin-top:15px; font-size:10.5pt; color:var(--success); border-bottom: none;">៣. ចម្លើយ ផ្គូផ្គង (Matching Keys)</div>
         <table class="ans-table" style="margin-bottom: 15px;">
             <tr><th>១</th><th>២</th><th>៣</th><th>៤</th><th>៥</th><th>៦</th><th>៧</th><th>៨</th><th>៩</th><th>១0</th></tr>
-            <tr><td>F</td><td>A</td><td>C</td><td>I</td><td>G</td><td>J</td><td>B</td><td>E</td><td>H</td><td>D</td></tr>
+            <tr><td>F</td><td>H</td><td>C</td><td>I</td><td>G</td><td>J</td><td>B</td><td>E</td><td>A</td><td>D</td></tr>
         </table>
 
         <div class="sub-heading" style="margin-top:10px; font-size:10.5pt; color:var(--success); border-bottom: none;">៤. ចម្លើយ សំណួរបកស្រាយ (សង្ខេប)</div>
         <ul style="font-size:9.5pt; line-height:1.5; padding-left:20px; text-align:justify;">
-            <li style="margin-bottom:6px;"><b>១. អត្ថប្រយោជន៍ EF Core ធៀបនឹង ADO.NET៖</b> EF Core ជួយកាត់បន្ថយទំហំកូដដ៏វែងអន្លាយ និងស្មុគស្មាញរបស់ ADO.NET រហូតដល់ ៨០% ដោយវាធ្វើការបម្លែងទិន្នន័យពី Database Tables មកជា C# Objects ឱ្យដោយស្វ័យប្រវត្ត។ យើងអាចសរសេរ C# LINQ ជំនួសឱ្យការសរសេរ SQL strings ផ្ទាល់ ដែលជួយជៀសវាងកំហុសអក្ខរាវិរុទ្ធ និងការពារបញ្ហា SQL Injection។</li>
-            <li style="margin-bottom:6px;"><b>២. តួនាទីស្នូលរបស់ DbContext៖</b> ដើរតួជាអ្នកបើក Session តភ្ជាប់ទៅកាន់ Database, តាមដានបច្ចុប្បន្នភាពរាល់ការកែប្រែទិន្នន័យនៅលើ Objects, បកប្រែ LINQ Query ទៅជាកូដ SQL, និងមានភារកិច្ចរក្សាទុកលទ្ធផលចុងក្រោយទៅកាន់ Database តាមរយៈ Method <code>SaveChanges()</code>។</li>
-            <li style="margin-bottom:0;"><b>៣. សមាសធាតុនៃ Connection String៖</b> រួមមាន 1. <code>Server</code>: បញ្ជាក់ទីតាំងនិងឈ្មោះ instance របស់ DB (ex: localhost\\SQLEXPRESS), 2. <code>Database</code>: បញ្ជាក់ឈ្មោះ DB (ex: SchoolDB), និង 3. សិទ្ធិអនុញ្ញាត <code>Trusted_Connection=True</code> សម្រាប់ប្រើ Windows Auth ឬ <code>User Id=...;Password=...</code> សម្រាប់ SQL Auth។</li>
+            <li style="margin-bottom:6px;"><b>១. អត្ថប្រយោជន៍ EF Core ធៀបនឹង ADO.NET៖</b> EF Core ជួយកាត់បន្ថយទំហំកូដដ៏ស្មុគស្មាញរបស់ ADO.NET ដោយវាធ្វើការ Map ទិន្នន័យពី DB Tables មកជា C# Objects ឱ្យដោយស្វ័យប្រវត្ត។ យើងអាចសរសេរ C# LINQ ជំនួសឱ្យការសរសេរ SQL strings ផ្ទាល់ ដែលជួយជៀសវាងកំហុស និងការពារ SQL Injection។</li>
+            <li style="margin-bottom:6px;"><b>២. អត្ថប្រយោជន៍ស្ថាបត្យកម្ម Syllabus (API + HTML/JS View)៖</b> ការបែងចែកដាច់ស្រឡះរវាង Backend និង Frontend អនុញ្ញាតឱ្យក្រុមការងារធ្វើការព្រមគ្នាបាន។ ម្យ៉ាងទៀត API តែមួយអាចត្រូវបានហៅប្រើប្រាស់ដោយ Web ផង និងដោយ Mobile App ផង ដែលផ្តល់ភាពបត់បែនខ្ពស់ជាងការប្រើ Razor MVC ដែលជាប់គាំងតែនៅលើ Web តែមួយ។</li>
+            <li style="margin-bottom:0;"><b>៣. សមាសធាតុនៃ Connection String៖</b> រួមមាន 1. <code>Server</code>: បញ្ជាក់ទីតាំងនិងឈ្មោះ instance, 2. <code>Database</code>: បញ្ជាក់ឈ្មោះ DB, និង 3. <code>Trusted_Connection=True</code> សម្រាប់សិទ្ធិប្រើប្រាស់គណនី Windows (Windows Authentication)។</li>
         </ul>
     </div>
     <div class="global-footer">
         <div class="footer-left"><span>សាស្ត្រាចារ្យ៖ សឿង លីម (Soeurng LIM)</span></div>
-        <div class="footer-right">ទំព័រ ១៥ / ១៨</div>
+        <div class="footer-right">ទំព័រ ១៦ / ២២</div>
     </div>
 </div>
 
-<!-- PAGE 16: SOLUTIONS (EASY & MEDIUM) -->
+<!-- PAGE 17: SOLUTION - PART 1 (MODELS & DBCONTEXT) -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
-        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៥</h1><p>ASP.NET CORE API & SQL SERVER</p></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៥</h1><p>ASP.NET CORE & SQL SERVER</p></div>
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
     <div class="page-content">
-        <div class="sub-heading" style="width: 100%; margin-top:0; color:var(--success);"><i class="fa-solid fa-circle-check"></i> ៥. ដំណោះស្រាយលំហាត់ កំរិតស្រាល និងមធ្យម</div>
+        <div class="sub-heading" style="width: 100%; margin-top:0; color:var(--accent);"><i class="fa-solid fa-circle-check"></i> ដំណោះស្រាយ៖ ផ្នែកទី ១ (Web API Backend)</div>
         
-        <div style="font-size:9.5pt; font-weight:bold; color:var(--accent); margin-bottom:4px; margin-top:10px;"><i class="fa-solid fa-code"></i> លំហាត់ 5.1 និង 5.2 (Models) - Easy</div>
+        <div style="font-size:9.5pt; font-weight:bold; color:var(--text-main); margin-bottom:4px; margin-top:10px;"><span style="color:var(--accent);">១️⃣ ជំហានទី ១៖ </span>បង្កើត Model</div>
         <div class="code-window" style="margin:2px 0 15px 0; font-size:8pt;">
             <div class="code-header" style="padding: 4px 10px;">
                 <div class="mac-dots"><div class="dot dot-r" style="width:8px; height:8px;"></div><div class="dot dot-y" style="width:8px; height:8px;"></div><div class="dot dot-g" style="width:8px; height:8px;"></div></div>
-                <div class="code-title" style="font-size: 7.5pt;">Models/Book.cs និង Models/Category.cs</div>
+                <div class="code-title" style="font-size: 7.5pt;">Models/Category.cs</div>
             </div>
-<pre style="padding: 8px;"><span style="color:#C678DD;">namespace</span> LibraryApp.Models
+<pre style="padding: 8px;"><span style="color:#C678DD;">namespace</span> MyApp.Models
 {
-    <span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">Book</span> {
-        <span style="color:#C678DD;">public int</span> Id { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; }
-        <span style="color:#C678DD;">public string</span> Title { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; } = <span style="color:#C678DD;">string</span>.Empty;
-        <span style="color:#C678DD;">public string</span> Author { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; } = <span style="color:#C678DD;">string</span>.Empty;
-    }
-
-    <span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">Category</span> {
+    <span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">Category</span> 
+    {
         <span style="color:#C678DD;">public int</span> Id { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; }
         <span style="color:#C678DD;">public string</span> Name { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; } = <span style="color:#C678DD;">string</span>.Empty;
     }
 }</pre>
         </div>
 
-        <div style="font-size:9.5pt; font-weight:bold; color:var(--warning); margin-bottom:4px;"><i class="fa-solid fa-code"></i> លំហាត់ 5.3 (LibraryDbContext) - Medium</div>
+        <div style="font-size:9.5pt; font-weight:bold; color:var(--text-main); margin-bottom:4px;"><span style="color:var(--accent);">២️⃣ ជំហានទី ២៖ </span>បង្កើត DbContext</div>
         <div class="code-window" style="margin:2px 0 15px 0; font-size:8pt;">
             <div class="code-header" style="padding: 4px 10px;">
                 <div class="mac-dots"><div class="dot dot-r" style="width:8px; height:8px;"></div><div class="dot dot-y" style="width:8px; height:8px;"></div><div class="dot dot-g" style="width:8px; height:8px;"></div></div>
-                <div class="code-title" style="font-size: 7.5pt;">Data/LibraryDbContext.cs</div>
+                <div class="code-title" style="font-size: 7.5pt;">Data/StoreDbContext.cs</div>
             </div>
 <pre style="padding: 8px;"><span style="color:#C678DD;">using</span> Microsoft.EntityFrameworkCore;
-<span style="color:#C678DD;">using</span> LibraryApp.Models;
+<span style="color:#C678DD;">using</span> MyApp.Models;
 
-<span style="color:#C678DD;">namespace</span> LibraryApp.Data
+<span style="color:#C678DD;">namespace</span> MyApp.Data
 {
-    <span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">LibraryDbContext</span> : DbContext
+    <span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">StoreDbContext</span> : DbContext
     {
-        <span style="color:#C678DD;">public</span> <span style="color:#61AFEF;">LibraryDbContext</span>(DbContextOptions&lt;LibraryDbContext&gt; options) : <span style="color:#C678DD;">base</span>(options)
+        <span style="color:#C678DD;">public</span> <span style="color:#61AFEF;">StoreDbContext</span>(DbContextOptions&lt;StoreDbContext&gt; options) : <span style="color:#C678DD;">base</span>(options)
         {
         }
 
-        <span style="color:#C678DD;">public</span> DbSet&lt;Book&gt; Books { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; }
         <span style="color:#C678DD;">public</span> DbSet&lt;Category&gt; Categories { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; }
     }
 }</pre>
         </div>
-
     </div>
     <div class="global-footer">
         <div class="footer-left"><span>សាស្ត្រាចារ្យ៖ សឿង លីម (Soeurng LIM)</span></div>
-        <div class="footer-right">ទំព័រ ១៦ / ១៨</div>
+        <div class="footer-right">ទំព័រ ១៧ / ២២</div>
     </div>
 </div>
 
-<!-- PAGE 17: SOLUTIONS (MEDIUM CONT. & HARD) -->
+<!-- PAGE 18: SOLUTION - PART 1 (CONFIG & DI) -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
-        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៥</h1><p>ASP.NET CORE API & SQL SERVER</p></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៥</h1><p>ASP.NET CORE & SQL SERVER</p></div>
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
     <div class="page-content">
-        <div class="sub-heading" style="width: 100%; margin-top:0; color:var(--success);"><i class="fa-solid fa-circle-check"></i> ៥. ដំណោះស្រាយលំហាត់ កំរិតមធ្យម និងធ្ងន់ (បន្ត)</div>
+        <div class="sub-heading" style="width: 100%; margin-top:0; color:var(--accent);"><i class="fa-solid fa-circle-check"></i> ដំណោះស្រាយ៖ ផ្នែកទី ១ (បន្ត)</div>
 
-        <div style="font-size:9.5pt; font-weight:bold; color:var(--warning); margin-bottom:4px; margin-top:10px;"><i class="fa-solid fa-code"></i> លំហាត់ 5.4 (Connection String) - Medium</div>
-        <div class="code-window" style="margin:2px 0 15px 0; font-size:8pt;">
+        <div style="font-size:9.5pt; font-weight:bold; color:var(--text-main); margin-bottom:4px; margin-top:10px;"><span style="color:var(--accent);">៣️⃣ ជំហានទី ៣៖ </span>កំណត់ Connection String, ចុះឈ្មោះ DI និងបើកសិទ្ធិ CORS</div>
+        <div class="code-window" style="margin:2px 0 10px 0; font-size:8pt;">
             <div class="code-header" style="padding: 4px 10px;">
                 <div class="mac-dots"><div class="dot dot-r" style="width:8px; height:8px;"></div><div class="dot dot-y" style="width:8px; height:8px;"></div><div class="dot dot-g" style="width:8px; height:8px;"></div></div>
                 <div class="code-title" style="font-size: 7.5pt;">appsettings.json</div>
             </div>
 <pre style="padding: 8px;"><span style="color:#E06C75;">"ConnectionStrings"</span>: <span style="color:#C678DD;">{</span>
-    <span style="color:#E06C75;">"LibraryConnection"</span>: <span style="color:#98C379;">"Server=localhost\\SQLEXPRESS;Database=LibraryDB;Trusted_Connection=True;TrustServerCertificate=True;"</span>
+    <span style="color:#E06C75;">"StoreConnection"</span>: <span style="color:#98C379;">"Server=localhost\\SQLEXPRESS;Database=MyStoreDB;Trusted_Connection=True;TrustServerCertificate=True;"</span>
 <span style="color:#C678DD;">}</span></pre>
         </div>
 
-        <div style="font-size:9.5pt; font-weight:bold; color:var(--danger); margin-bottom:4px;"><i class="fa-solid fa-code"></i> លំហាត់ 5.5 (DI Registration) - Hard</div>
         <div class="code-window" style="margin:2px 0 15px 0; font-size:8pt;">
             <div class="code-header" style="padding: 4px 10px;">
                 <div class="mac-dots"><div class="dot dot-r" style="width:8px; height:8px;"></div><div class="dot dot-y" style="width:8px; height:8px;"></div><div class="dot dot-g" style="width:8px; height:8px;"></div></div>
-                <div class="code-title" style="font-size: 7.5pt;">Program.cs</div>
+                <div class="code-title" style="font-size: 7.5pt;">Program.cs (Configuration & CORS Setup)</div>
             </div>
 <pre style="padding: 8px;"><span style="color:#C678DD;">using</span> Microsoft.EntityFrameworkCore;
-<span style="color:#C678DD;">using</span> LibraryApp.Data;
+<span style="color:#C678DD;">using</span> MyApp.Data;
 
 <span style="color:#C678DD;">var</span> builder = WebApplication.CreateBuilder(args);
 
-<span style="color:#5C6370;">// ចាប់យក Connection String</span>
-<span style="color:#C678DD;">var</span> connectionString = builder.Configuration.GetConnectionString(<span style="color:#98C379;">"LibraryConnection"</span>);
+<span style="color:#5C6370;">// [ចំណុចទី ១]. ចាប់យក Connection និងចុះឈ្មោះចូល DI Container</span>
+<span style="color:#C678DD;">var</span> conn = builder.Configuration.GetConnectionString(<span style="color:#98C379;">"StoreConnection"</span>);
+builder.Services.AddDbContext&lt;StoreDbContext&gt;(opt =&gt; opt.UseSqlServer(conn));
 
-<span style="color:#5C6370;">// ចុះឈ្មោះ LibraryDbContext ទៅកាន់ Dependency Injection Container ជាមួយ SQL Server</span>
-builder.Services.AddDbContext&lt;LibraryDbContext&gt;(options =&gt;
-    options.UseSqlServer(connectionString));</pre>
+<span style="color:#5C6370;">// [ចំណុចទី ២]. ដោះស្រាយបញ្ហា CORS (អនុញ្ញាតឱ្យ Frontend ហៅ API ចូលបាន)</span>
+builder.Services.AddCors(options =&gt; {
+    options.AddPolicy(<span style="color:#98C379;">"AllowAll"</span>, policy =&gt; {
+        policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+    });
+});
+
+builder.Services.AddControllers();
+<span style="color:#C678DD;">var</span> app = builder.Build();
+
+<span style="color:#5C6370;">// [ចំណុចទី ៣]. បើកដំណើរការ CORS Policy ដែលទើបកំណត់ខាងលើ</span>
+app.UseCors(<span style="color:#98C379;">"AllowAll"</span>);
+
+app.MapControllers();
+app.Run();</pre>
         </div>
-
     </div>
     <div class="global-footer">
         <div class="footer-left"><span>សាស្ត្រាចារ្យ៖ សឿង លីម (Soeurng LIM)</span></div>
-        <div class="footer-right">ទំព័រ ១៧ / ១៨</div>
+        <div class="footer-right">ទំព័រ ១៨ / ២២</div>
     </div>
 </div>
 
-<!-- PAGE 18: SOLUTIONS (HARD CONT.) -->
+<!-- PAGE 19: SOLUTION - PART 1 (API CONTROLLER) -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
-        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៥</h1><p>ASP.NET CORE API & SQL SERVER</p></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៥</h1><p>ASP.NET CORE & SQL SERVER</p></div>
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
     <div class="page-content">
-        <div class="sub-heading" style="width: 100%; margin-top:0; color:var(--success);"><i class="fa-solid fa-circle-check"></i> ៥. ដំណោះស្រាយលំហាត់ កំរិតធ្ងន់ (បញ្ចប់)</div>
+        <div class="sub-heading" style="width: 100%; margin-top:0; color:var(--accent);"><i class="fa-solid fa-circle-check"></i> ដំណោះស្រាយ៖ ផ្នែកទី ១ (បញ្ចប់ API)</div>
 
-        <div style="font-size:9.5pt; font-weight:bold; color:var(--danger); margin-bottom:4px; margin-top:10px;"><i class="fa-solid fa-code"></i> លំហាត់ 5.6 (NuGet Commands) - Hard</div>
+        <div style="font-size:9.5pt; font-weight:bold; color:var(--text-main); margin-bottom:4px; margin-top:10px;"><span style="color:var(--accent);">៤️⃣ ជំហានទី ៤៖ </span>បង្កើត Controller បញ្ចេញទិន្នន័យ JSON</div>
         <div class="text-block" style="font-size: 9.5pt;">
-            ដើម្បីអាចប្រើប្រាស់ <code>DbContext</code> និង <code>UseSqlServer</code> នៅក្នុងគម្រោងបាន យើងចាំបាច់ត្រូវដំឡើងកញ្ចប់ NuGet Packages ទាំងពីរនេះជាមុនសិន ដោយប្រើ Terminal៖
+            កូដនេះបង្ហាញពីការប្រើប្រាស់ Dependency Injection ដើម្បីហៅ <code>StoreDbContext</code> មកប្រើក្នុង Controller រួចទាញទិន្នន័យពី Database បញ្ចេញជា JSON ទៅកាន់ View វិញ។
         </div>
+        
         <div class="code-window" style="margin:2px 0 15px 0; font-size:8pt;">
             <div class="code-header" style="padding: 4px 10px;">
                 <div class="mac-dots"><div class="dot dot-r" style="width:8px; height:8px;"></div><div class="dot dot-y" style="width:8px; height:8px;"></div><div class="dot dot-g" style="width:8px; height:8px;"></div></div>
-                <div class="code-title" style="font-size: 7.5pt;">Terminal / Command Prompt</div>
+                <div class="code-title" style="font-size: 7.5pt;">Controllers/CategoryApiController.cs</div>
             </div>
-<pre style="padding: 8px;"><span style="color:#5C6370;"># ដំឡើងបណ្ណាល័យស្នូល (Core Library) របស់ Entity Framework</span>
-dotnet add package Microsoft.EntityFrameworkCore
+<pre style="padding: 8px;"><span style="color:#C678DD;">using</span> Microsoft.AspNetCore.Mvc;
+<span style="color:#C678DD;">using</span> MyApp.Data;
 
-<span style="color:#5C6370;"># ដំឡើងកម្មវិធីបកប្រែ (Database Provider) សម្រាប់ SQL Server</span>
-dotnet add package Microsoft.EntityFrameworkCore.SqlServer</pre>
+<span style="color:#C678DD;">namespace</span> MyApp.Controllers
+{
+    [Route(<span style="color:#98C379;">"api/[controller]"</span>)] <span style="color:#5C6370;">// URL ដែលត្រូវហៅគឺ: /api/categoryapi</span>
+    [ApiController]
+    <span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">CategoryApiController</span> : ControllerBase
+    {
+        <span style="color:#C678DD;">private readonly</span> StoreDbContext _context;
+
+        <span style="color:#5C6370;">// Constructor ទទួលយក DbContext តាមរយៈ DI</span>
+        <span style="color:#C678DD;">public</span> <span style="color:#61AFEF;">CategoryApiController</span>(StoreDbContext context)
+        {
+            _context = context;
+        }
+
+        <span style="color:#5C6370;">// Endpoint សម្រាប់ទាញទិន្នន័យទាំងអស់ជាទម្រង់ JSON</span>
+        [HttpGet]
+        <span style="color:#C678DD;">public</span> IActionResult <span style="color:#61AFEF;">GetAllCategories</span>()
+        {
+            <span style="color:#5C6370;">// .ToList() នឹងបញ្ជាទៅ Database ឱ្យ Select ទិន្នន័យទាំងអស់ពី Table</span>
+            <span style="color:#C678DD;">var</span> categories = _context.Categories.ToList();
+            <span style="color:#C678DD;">return</span> Ok(categories);
+        }
+    }
+}</pre>
         </div>
 
-        <div class="lab-box" style="background:#F0FDF4; border-left-color:#22C55E; border-color:#BBF7D0; margin-top: 30px;">
-            <h4 style="color:#166534;"><i class="fa-solid fa-flag-checkered"></i> អបអរសាទរ!</h4>
-            <p style="margin-bottom: 5px; font-size: 10pt;">
-                លោកអ្នកបានបញ្ចប់ការសិក្សានិងអនុវត្តន៍មេរៀនជំពូកទី ៥ រួចរាល់។ លំហូរការងារដែលអ្នកបានអនុវត្ត (ការបង្កើត Models > រៀបចំ Connection String > កសាង DbContext > ចុះឈ្មោះក្នុង Program.cs) គឺជាគ្រឹះដ៏រឹងមាំ និងជាជំហានដំបូងជានិច្ចនៅពេលចាប់ផ្តើមអភិវឌ្ឍប្រព័ន្ធ API ដែលប្រើប្រាស់ Database។ នៅក្នុងជំពូកបន្ទាប់ យើងនឹងសិក្សាពីការបង្កើតតារាងក្នុង DB (Migrations) និងការសរសេរកូដបញ្ចូលទិន្នន័យ។
+        <div class="lab-box" style="margin-top: 15px;">
+            <h4><i class="fa-solid fa-server"></i> បញ្ជាក់ចំណុចប្រទាក់មុនបន្តទៅ View ៖</h4>
+            <p style="font-size: 9.5pt;">
+                ដើម្បីឱ្យ API នេះមានទិន្នន័យពិតប្រាកដ អ្នកត្រូវរត់ពាក្យបញ្ជា <code>dotnet ef migrations add Init</code> និង <code>dotnet ef database update</code> នៅក្នុង Terminal ជាមុនសិន។ បន្ទាប់មក បើកកម្មវិធី SSMS រួចបញ្ចូលទិន្នន័យសាកល្បង (Insert Data) ចំនួន ២-៣ ជួរចូលក្នុង Table <code>Categories</code> ដោយផ្ទាល់ដៃ។ <b>ចុងក្រោយ សូម Run Project ទុកចោល (API ត្រូវតែរត់ជានិច្ច)។</b>
+            </p>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ៖ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ១៩ / ២២</div>
+    </div>
+</div>
+
+<!-- PAGE 20: SOLUTION - PART 2 (MVC VIEW HTML) -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៥</h1><p>ASP.NET CORE & SQL SERVER</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-heading" style="width: 100%; margin-top:0; color:var(--secondary);"><i class="fa-solid fa-circle-check"></i> ដំណោះស្រាយ៖ ផ្នែកទី ២ (MVC View Integration)</div>
+
+        <div style="font-size:9.5pt; font-weight:bold; color:var(--text-main); margin-bottom:4px; margin-top:10px;"><span style="color:var(--secondary);">៥️⃣ ជំហានទី ៥៖ </span>រៀបចំផ្ទៃបង្ហាញ (HTML Section)</div>
+        <div class="text-block" style="font-size: 9.5pt;">
+            ឯកសារ HTML នេះដើរតួជា "View"។ យើងបង្កើតតារាងទទេមួយ ដែលមាន `id="data-table"` រង់ចាំទទួលទិន្នន័យពី API មកបញ្ចាំង។
+        </div>
+
+        <div class="code-window" style="margin:2px 0 15px 0; font-size:8pt;">
+            <div class="code-header" style="padding: 4px 10px; background: #0F172A;">
+                <div class="mac-dots"><div class="dot dot-r" style="width:8px; height:8px;"></div><div class="dot dot-y" style="width:8px; height:8px;"></div><div class="dot dot-g" style="width:8px; height:8px;"></div></div>
+                <div class="code-title" style="font-size: 7.5pt; color: #38BDF8;"><i class="fa-brands fa-html5"></i> index.html (ផ្នែកកូដ HTML)</div>
+            </div>
+<pre style="padding: 8px; color: #E2E8F0;">&lt;!DOCTYPE html&gt;
+&lt;<span style="color:#E06C75;">html</span> lang="en"&gt;
+&lt;<span style="color:#E06C75;">head</span>&gt;
+    &lt;<span style="color:#E06C75;">meta</span> charset="UTF-8"&gt;
+    &lt;<span style="color:#E06C75;">title</span>&gt;MVC View: Category List&lt;/<span style="color:#E06C75;">title</span>&gt;
+    &lt;<span style="color:#E06C75;">style</span>&gt;
+        <span style="color:#D19A66;">body</span> { font-family: Arial, sans-serif; padding: 20px; }
+        <span style="color:#D19A66;">table</span> { width: 50%; border-collapse: collapse; margin-top: 15px; }
+        <span style="color:#D19A66;">th, td</span> { border: 1px solid #ccc; padding: 10px; text-align: left; }
+        <span style="color:#D19A66;">th</span> { background-color: #f4f4f4; }
+    &lt;/<span style="color:#E06C75;">style</span>&gt;
+&lt;/<span style="color:#E06C75;">head</span>&gt;
+&lt;<span style="color:#E06C75;">body</span>&gt;
+
+    &lt;<span style="color:#E06C75;">h2</span>&gt;បញ្ជីប្រភេទផលិតផល (Categories)&lt;/<span style="color:#E06C75;">h2</span>&gt;
+    
+    &lt;<span style="color:#E06C75;">table</span>&gt;
+        &lt;<span style="color:#E06C75;">thead</span>&gt;
+            &lt;<span style="color:#E06C75;">tr</span>&gt;
+                &lt;<span style="color:#E06C75;">th</span>&gt;ID&lt;/<span style="color:#E06C75;">th</span>&gt;
+                &lt;<span style="color:#E06C75;">th</span>&gt;Category Name&lt;/<span style="color:#E06C75;">th</span>&gt;
+            &lt;/<span style="color:#E06C75;">tr</span>&gt;
+        &lt;/<span style="color:#E06C75;">thead</span>&gt;
+        
+        &lt;!-- តំបន់សម្រាប់បញ្ចេញទិន្នន័យតាមរយៈ JavaScript --&gt;
+        &lt;<span style="color:#E06C75;">tbody</span> id="data-table"&gt;
+            &lt;!-- ទិន្នន័យនឹងមកដល់ទីនេះដោយស្វ័យប្រវត្ត --&gt;
+        &lt;/<span style="color:#E06C75;">tbody</span>&gt;
+    &lt;/<span style="color:#E06C75;">table</span>&gt;
+
+&lt;!-- ផ្នែក JS នឹងត្រូវសរសេរនៅទីនេះ --&gt;
+&lt;/<span style="color:#E06C75;">body</span>&gt;
+&lt;/<span style="color:#E06C75;">html</span>&gt;</pre>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ៖ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ២០ / ២២</div>
+    </div>
+</div>
+
+<!-- PAGE 21: SOLUTION - PART 2 (MVC VIEW JS FETCH) -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៥</h1><p>ASP.NET CORE & SQL SERVER</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-heading" style="width: 100%; margin-top:0; color:var(--secondary);"><i class="fa-solid fa-circle-check"></i> ដំណោះស្រាយ៖ ផ្នែកទី ២ (បញ្ចប់ MVC View)</div>
+
+        <div style="font-size:9.5pt; font-weight:bold; color:var(--text-main); margin-bottom:4px; margin-top:10px;"><span style="color:var(--secondary);">៦️⃣ ជំហានទី ៦៖ </span>តភ្ជាប់ API មកកាន់ View (JS Section)</div>
+        <div class="text-block" style="font-size: 9.5pt;">
+            សូមសរសេរកូដ <code>&lt;script&gt;</code> នេះ នៅខាងក្រោម Tag <code>&lt;/table&gt;</code> នៅក្នុងឯកសារ <code>index.html</code> ខាងលើ។ កូដនេះនឹងធ្វើការខល (Fetch) ទៅ Backend យកទិន្នន័យ JSON មកតម្រៀបជាជួរ HTML ចូលក្នុង Table។
+        </div>
+
+        <div class="code-window" style="margin:2px 0 15px 0; font-size:8pt;">
+            <div class="code-header" style="padding: 4px 10px; background: #0F172A;">
+                <div class="mac-dots"><div class="dot dot-r" style="width:8px; height:8px;"></div><div class="dot dot-y" style="width:8px; height:8px;"></div><div class="dot dot-g" style="width:8px; height:8px;"></div></div>
+                <div class="code-title" style="font-size: 7.5pt; color: #FDE047;"><i class="fa-brands fa-js"></i> index.html (ផ្នែកកូដ JavaScript)</div>
+            </div>
+<pre style="padding: 8px; color: #E2E8F0;">&lt;<span style="color:#E06C75;">script</span>&gt;
+    <span style="color:#5C6370;">// ទីតាំង URL របស់ Backend API (ត្រូវប្រាកដថា Port ត្រូវគ្នានឹងការ Run ពិតជាក់ស្តែង)</span>
+    <span style="color:#C678DD;">const</span> apiUrl = <span style="color:#98C379;">'http://localhost:5000/api/categoryapi'</span>;
+
+    <span style="color:#5C6370;">// អនុវត្តមុខងារ Fetch ពេលឯកសារ HTML លោតចេញមកភ្លាម</span>
+    fetch(apiUrl)
+        .then(response =&gt; response.json()) <span style="color:#5C6370;">// បំប្លែងអត្ថបទទៅជា JSON Object</span>
+        .then(data =&gt; {
+            <span style="color:#C678DD;">const</span> tableBody = document.getElementById(<span style="color:#98C379;">'data-table'</span>);
+            
+            <span style="color:#5C6370;">// Loop តាមចំនួនទិន្នន័យ Categories ដែលទទួលបានពី Database</span>
+            data.forEach(category =&gt; {
+                <span style="color:#C678DD;">const</span> row = <span style="color:#98C379;">`
+                    &lt;tr&gt;
+                        &lt;td&gt;${category.id}&lt;/td&gt;
+                        &lt;td&gt;${category.name}&lt;/td&gt;
+                    &lt;/tr&gt;
+                `</span>;
+                <span style="color:#5C6370;">// បញ្ចូលជួរថ្មីទៅក្នុងតារាង</span>
+                tableBody.innerHTML += row; 
+            });
+        })
+        .catch(error =&gt; console.error(<span style="color:#98C379;">'មានបញ្ហាក្នុងការទាញទិន្នន័យ៖'</span>, error));
+&lt;/<span style="color:#E06C75;">script</span>&gt;</pre>
+        </div>
+
+        <div class="lab-box" style="margin-top: 15px;">
+            <h4><i class="fa-solid fa-play"></i> របៀបធ្វើតេស្តសាកល្បង៖</h4>
+            <p style="font-size: 9.5pt;">
+                ១. ធានាថា API របស់អ្នកកំពុងដំណើរការ (Running) នៅក្នុង VS Code Terminal។<br>
+                ២. ទៅកាន់ទីតាំងដែលអ្នកបាន Save ឯកសារ <code>index.html</code> (ឧ. លើ Desktop)។<br>
+                ៣. Double-click លើឯកសារនោះដើម្បីបើកក្នុង Chrome។ អ្នកនឹងឃើញទិន្នន័យចេញពី Database បង្ហាញក្នុង Table យ៉ាងស្រស់ស្អាត!
             </p>
         </div>
 
     </div>
     <div class="global-footer">
         <div class="footer-left"><span>សាស្ត្រាចារ្យ៖ សឿង លីម (Soeurng LIM)</span></div>
-        <div class="footer-right">ទំព័រ ១៨ / ១៨</div>
+        <div class="footer-right">ទំព័រ ២១ / ២២</div>
+    </div>
+</div>
+
+<!-- PAGE 22: CONGRATULATIONS -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៥</h1><p>ASP.NET CORE & SQL SERVER</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content" style="justify-content: center; align-items: center;">
+        
+        <div style="text-align: center; max-width: 80%;">
+            <i class="fa-solid fa-trophy" style="font-size: 60px; color: #F59E0B; margin-bottom: 20px;"></i>
+            <h2 style="font-family: 'Suwannaphum'; font-size: 22pt; color: var(--text-heading); margin-bottom: 15px; font-weight: 900;">អបអរសាទរ! លោកអ្នកទទួលបានជោគជ័យ។</h2>
+            
+            <p style="font-size: 11pt; color: var(--text-main); line-height: 1.8; margin-bottom: 25px;">
+                លោកអ្នកបានបញ្ចប់ការសិក្សា និងអនុវត្តន៍មេរៀនជំពូកទី ៥ រួចរាល់។ លំហូរការងារ (Workflow) តាំងពីជំហានទី ១ ដល់ទី ៦ ដែលអ្នកបានអនុវត្តន៍ គឺជាគ្រឹះដ៏មានឥទ្ធិពលបំផុតក្នុងការអភិវឌ្ឍន៍ប្រព័ន្ធ <b>Full-Stack (Backend API & Frontend View)</b> តាមស្ថាបត្យកម្ម MVC ក្នុងបរិបទទំនើប។
+            </p>
+            
+            <div style="background: #F8FAFC; border: 1px solid var(--border-dark); padding: 20px; border-radius: 8px; text-align: left;">
+                <h4 style="font-family: 'Suwannaphum'; font-size: 12pt; color: var(--accent); margin-bottom: 10px;"><i class="fa-solid fa-clipboard-check"></i> សង្ខេបសមិទ្ធផលដែលអ្នកសម្រេចបាន៖</h4>
+                <ul style="font-size: 10pt; line-height: 1.6; padding-left: 20px; color: var(--text-muted);">
+                    <li>យល់ដឹងពីការដំឡើង និងតភ្ជាប់ SQL Database ជាមួយកម្មវិធី C# ។</li>
+                    <li>អាចបង្កើត Web API (Model & Controller) ដំណើរការដោយ EF Core ដ៏រឹងមាំ។</li>
+                    <li>ដោះស្រាយបញ្ហា CORS Policy បានយ៉ាងជោគជ័យ។</li>
+                    <li>អាចបង្កើត Frontend View ដោយប្រើ HTML & JavaScript ឯករាជ្យ ដោយជោគជ័យក្នុងការតភ្ជាប់ទៅកាន់ API ។</li>
+                </ul>
+            </div>
+            
+            <div style="margin-top: 40px; color: var(--text-muted); font-size: 10pt; font-family: var(--font-en-main); font-weight: 600;">
+                *** END OF CHAPTER 5 ***
+            </div>
+        </div>
+        
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ៖ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ២២ / ២២</div>
     </div>
 </div>
 

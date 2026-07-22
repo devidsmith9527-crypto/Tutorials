@@ -1,0 +1,1326 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Handout: ជំពូកទី ៦ - Models, Annotations & EF Core Migrations</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Khmer+OS+Siemreap&family=Battambang:wght@400;700&family=Suwannaphum:wght@400;700;900&family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        :root {
+            /* Premium Color Palette */
+            --primary: #0F172A;        
+            --secondary: #0078D4;      
+            --accent: #512BD4;         
+            --success: #10B981;        
+            --warning: #D97706;        
+            --danger: #EF4444;         
+            
+            --text-main: #1E293B;
+            --text-heading: #0F172A;
+            --text-muted: #64748B;
+            
+            --bg-page: #FFFFFF;
+            --bg-workspace: #E2E8F0;
+            --bg-light: #F8FAFC;
+            
+            --border-light: #E2E8F0;
+            --border-dark: #CBD5E1;
+            
+            /* Fonts */
+            --font-kh-heading: 'Suwannaphum', serif;
+            --font-kh-body: 'Battambang', sans-serif;
+            --font-en-main: 'Inter', sans-serif;
+            --font-code: 'Fira Code', monospace;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-workspace);
+            font-family: var(--font-kh-body);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        /* Print Button Zone */
+        .no-print {
+            background: #FFFFFF; border: 1px solid var(--border-dark); padding: 15px 25px; border-radius: 12px;
+            margin-bottom: 25px; width: 210mm; text-align: center; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .no-print p { margin: 0; font-size: 14px; color: var(--text-muted); font-family: var(--font-kh-body);}
+        .print-btn {
+            background: var(--accent); color: white; border: none; padding: 10px 24px; border-radius: 8px; 
+            font-family: var(--font-kh-body); font-size: 15px; font-weight: 700; cursor: pointer;
+            box-shadow: 0 4px 12px rgba(81, 43, 212, 0.3); transition: all 0.2s ease;
+        }
+        .print-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(81, 43, 212, 0.4); }
+
+        /* STRICT A4 PAGE LAYOUT */
+        .a4-page {
+            width: 210mm; 
+            height: 297mm;
+            background: var(--bg-page); 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1); 
+            margin-bottom: 30px; 
+            position: relative; 
+            border-radius: 4px; 
+            page-break-after: always;
+            box-sizing: border-box;
+            padding: 15mm;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* HEADER & FOOTER */
+        .global-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 10px 15px; border-bottom: 3px solid var(--accent); background-color: var(--bg-light);
+            border-radius: 4px; margin-bottom: 10px;
+        }
+        .header-item { display: flex; align-items: center; gap: 8px; }
+        .header-item img { height: 35px; object-fit: contain; }
+        .header-item span { font-family: var(--font-kh-heading); font-size: 10pt; font-weight: bold; color: var(--accent); }
+        .header-text { flex-grow: 1; text-align: center; padding: 0 10px; }
+        .header-text h1 { font-family: var(--font-kh-heading); font-size: 12pt; color: var(--accent); margin-bottom: 2px; font-weight: 900;}
+        .header-text p { font-family: var(--font-en-main); font-size: 7.5pt; color: var(--text-muted); font-weight: 600; text-transform: uppercase;}
+
+        .global-footer {
+            display: flex; justify-content: space-between; align-items: center;
+            padding-top: 10px; border-top: 1px solid var(--border-light); margin-top: 10px;
+        }
+        .footer-left { display: flex; align-items: center; gap: 8px; }
+        .footer-left img { border-radius: 50%; width: 28px; height: 28px; object-fit: cover; border: 2px solid var(--accent); }
+        .footer-left span { font-size: 9.5pt; color: var(--text-main); font-weight: bold;}
+        .footer-right { 
+            font-size: 9.5pt; color: white; font-weight: 700; background: var(--accent); 
+            padding: 3px 12px; border-radius: 20px;
+        }
+
+        /* Content Zone */
+        .page-content { flex-grow: 1; display: flex; flex-direction: column; justify-content: flex-start; overflow: visible; }
+
+        /* TYPOGRAPHY */
+        .section-title {
+            border-bottom: 2px solid var(--accent); padding-bottom: 6px; margin: 10px 0 12px 0;
+            font-family: var(--font-kh-heading); font-size: 14pt; font-weight: 900; color: var(--text-heading);
+            display: flex; align-items: center; gap: 8px;
+        }
+        .section-title i { color: var(--accent); }
+        
+        .sub-heading { font-family: var(--font-kh-heading); font-weight: 900; font-size: 12pt; color: var(--accent); margin: 10px 0 8px 0; }
+        .text-block { font-size: 10.5pt; line-height: 1.6; margin-bottom: 10px; text-align: justify; }
+        .highlight { color: var(--accent); font-weight: 700; }
+
+        /* TOC & Lists */
+        .toc-table { width: 100%; border-collapse: collapse; margin: 10px 0; border: 1px solid var(--border-light); border-radius: 8px; overflow: hidden; }
+        .toc-table th { background: var(--accent); color: white; font-family: var(--font-kh-heading); font-size: 11pt; padding: 10px 12px; text-align: left; }
+        .toc-table td { padding: 10px 12px; border-bottom: 1px solid var(--border-light); font-size: 10.5pt; color: var(--text-main); }
+        .toc-table tr:last-child td { border-bottom: none; }
+        .toc-num { font-weight: bold; width: 15%; text-align: center; }
+
+        .obj-list { list-style: none; padding-left: 0; margin-top: 10px; }
+        .obj-list li { position: relative; padding-left: 20px; margin-bottom: 10px; font-size: 10.5pt; line-height: 1.6; }
+        .obj-list li::before { content: '•'; position: absolute; left: 5px; color: var(--accent); font-size: 16px; font-weight: bold; top: -2px; }
+
+        /* Tables (General) */
+        table.standard-table { width: 100%; border-collapse: collapse; margin-bottom: 12px; border: 1px solid var(--border-dark); }
+        table.standard-table th, table.standard-table td { border: 1px solid var(--border-dark); padding: 8px 10px; text-align: left; vertical-align: middle; }
+        table.standard-table th { background: var(--accent); color: white; font-family: var(--font-kh-heading); font-size: 10.5pt; text-align: center; }
+        table.standard-table td { font-size: 10pt; line-height: 1.5; }
+
+        /* Visual Frames */
+        .graphic-box { background: var(--bg-light); border: 1px solid var(--border-light); border-radius: 8px; padding: 12px; margin: 10px 0; width: 100%; }
+        .two-column { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 15px; margin: 10px 0; align-items: center;}
+
+        /* Code & Boxes */
+        .code-window { background: var(--primary); border-radius: 8px; overflow: hidden; margin: 10px 0; border: 1px solid #334155; box-shadow: 0 4px 6px rgba(0,0,0,0.1);}
+        .code-header { background: #1E293B; padding: 8px 12px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #0F172A;}
+        .mac-dots { display: flex; gap: 6px; }
+        .dot { width: 10px; height: 10px; border-radius: 50%; }
+        .dot-r { background: var(--danger); }
+        .dot-y { background: var(--warning); }
+        .dot-g { background: var(--success); }
+        .code-title { color: #94A3B8; font-family: var(--font-code); font-size: 8.5pt; font-weight: 500;}
+        pre { padding: 12px; color: #E2E8F0; font-family: var(--font-code); font-size: 9pt; line-height: 1.4; overflow-x: auto; margin: 0; tab-size: 4;}
+        code.inline-code { font-family: var(--font-code); background: #F1F5F9; color: var(--danger); padding: 2px 5px; border-radius: 4px; font-size: 9.5pt; font-weight: bold; border: 1px solid var(--border-light); }
+        
+        .lab-box { background: #FEFCE8; border-left: 5px solid #EAB308; padding: 12px; margin: 10px 0; border-radius: 4px; border: 1px solid #FEF08A; }
+        .lab-box h4 { color: #854D0E; margin-bottom: 6px; font-family: var(--font-kh-heading); font-size: 11pt;}
+        .lab-box p { font-size: 10pt; line-height: 1.5; margin: 0; }
+
+        /* Questions list */
+        .q-list { list-style: decimal; padding-left: 18px; font-size: 10.5pt; line-height: 1.6; }
+        .q-list li { margin-bottom: 12px; font-weight: bold; }
+        .mcq-opts { list-style-type: upper-alpha; padding-left: 18px; margin-top: 6px; font-weight: normal; display: grid; grid-template-columns: 1fr 1fr; gap: 6px;}
+        .mcq-opts li { margin-bottom: 0; }
+
+        /* Answer Table */
+        .ans-table { width: 100%; border-collapse: collapse; margin-top: 5px;}
+        .ans-table th { background: var(--bg-light); color: var(--text-heading); text-align: center; border: 1px solid var(--border-dark); padding: 5px; font-size: 9.5pt;}
+        .ans-table td { font-weight: bold; color: var(--accent); text-align: center; border: 1px solid var(--border-dark); padding: 5px; font-size: 9.5pt;}
+
+        @media print {
+            body { background: none; padding: 0; margin: 0; display: block; }
+            .no-print { display: none !important; }
+            @page { size: A4 portrait; margin: 0; }
+            .a4-page { width: 210mm !important; height: 297mm !important; margin: 0 !important; box-shadow: none !important; border: none !important; border-radius: 0 !important; }
+            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="no-print">
+    <p><b><i class="fa-solid fa-file-pdf"></i> ណែនាំ៖</b> ដើម្បីបោះពុម្ពជា PDF ឱ្យចំកណ្តាលទំព័រ A4 ល្អ សូមជ្រើសរើស <b>Margins: None</b> និងបើក <b>Background graphics</b> (Handout ២២ ទំព័រ)។</p>
+    <button class="print-btn" onclick="window.print()"><i class="fa-solid fa-print"></i> បោះពុម្ពឯកសារជា PDF (A4 Handout ២២ ទំព័រ)</button>
+</div>
+
+<!-- PAGE 1: COVER -->
+<div class="a4-page">
+    <div class="page-content" style="justify-content: center; align-items: center; text-align: center; background: radial-gradient(circle at center, #F8FAFC 0%, #FFFFFF 100%);">
+        <img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" style="width: 140px; margin-bottom: 20px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));">
+        <h1 style="font-family: 'Suwannaphum'; font-size: 28pt; color: var(--text-heading); margin-bottom: 2px; font-weight: 900;">សាកលវិទ្យាល័យអង្គរ</h1>
+        <p style="font-family: 'Inter'; font-size: 13pt; color: var(--text-muted); margin-bottom: 30px; font-weight: 600; letter-spacing: 2px;">ANGKOR UNIVERSITY</p>
+        
+        <div style="font-family: 'Suwannaphum'; font-size: 14pt; color: var(--text-main); margin-bottom: 25px; font-weight: 700; background: #F1F5F9; padding: 8px 25px; border-radius: 50px; border: 1px solid var(--border-light); display: inline-flex; align-items: center; gap: 8px;">
+            <i class="fa-solid fa-graduation-cap" style="color:var(--accent);"></i> បរិញ្ញាបត្រ វិទ្យាសាស្ត្រកុំព្យូទ័រ
+        </div>
+        
+        <div style="background: var(--accent); color: white; padding: 10px 25px; border-radius: 8px; font-size: 14pt; font-family: 'Suwannaphum'; font-weight: 700; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(81, 43, 212, 0.3);">ឯកសារអាន (Handout) - ជំពូកទី ៦ និង ៧</div>
+        
+        <h2 style="font-family: 'Suwannaphum'; font-size: 20pt; color: var(--text-heading); margin-bottom: 10px; line-height: 1.4; font-weight: 900;">ការរចនា Models កម្រិតខ្ពស់, Data Annotations<br>និងការអនុវត្ត Code-First Migrations ក្នុង EF Core</h2>
+        <h3 style="font-family: 'Battambang'; font-size: 13pt; color: var(--secondary); margin-bottom: 40px; font-weight: 600;">បច្ចេកវិទ្យា ASP.NET និងប្រព័ន្ធគ្រប់គ្រងមូលដ្ឋានទិន្នន័យ SQL Server</h3>
+        
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; background: white; padding: 15px 30px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid var(--border-light); width: 85%;">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" style="width: 110px; height: 100px; border-radius: 50%; object-fit: cover; border: 4px solid var(--accent); box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+            <p style="font-family: 'Battambang'; font-size: 11pt; color: var(--text-muted); margin: 0;">រៀបចំដោយសាស្ត្រាចារ្យ៖</p>
+            <strong style="font-family: 'Suwannaphum'; color: var(--text-heading); font-size: 15pt; font-weight: 900;">សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</strong>
+        </div>
+    </div>
+</div>
+
+<!-- PAGE 2: TOC & OBJECTIVES -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៦</h1><p>ASP.NET CORE & SQL SERVER</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title"><i class="fa-solid fa-list-ol"></i> មាតិកាជំពូកទី ៦ (Chapter Contents)</div>
+        <table class="toc-table">
+            <thead>
+                <tr>
+                    <th style="width: 15%; text-align: center;">ចំណុច</th>
+                    <th>ខ្លឹមសារមេរៀន (Topics)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td class="toc-num">៦.១</td><td>យល់ដឹងពីស្ថាបត្យកម្ម Code-First (Code-First Approach)</td></tr>
+                <tr><td class="toc-num">៦.២</td><td>ការប្រើប្រាស់ Data Annotations លើ Models ( [Key], [Required], [MaxLength] )</td></tr>
+                <tr><td class="toc-num">៦.៣</td><td>ការបង្កើតទំនាក់ទំនងរវាង Tables (Relationships: One-to-Many)</td></tr>
+                <tr><td class="toc-num">៦.៤</td><td>ដំណើរការនៃ EF Core Migrations (Add-Migration, Update-Database)</td></tr>
+                <tr><td class="toc-num">៦.៥</td><td>ការត្រួតពិនិត្យ Database Schema នៅក្នុងកម្មវិធី SSMS</td></tr>
+                <tr><td class="toc-num">៦.៦</td><td>លំហាត់អនុវត្តន៍ (Practical Exercises): ប្រព័ន្ធគ្រប់គ្រងសាលា (School System)</td></tr>
+            </tbody>
+        </table>
+
+        <div class="section-title"><i class="fa-solid fa-bullseye"></i> វត្ថុបំណងនៃជំពូកទី ៦ (Chapter Objectives)</div>
+        <ul class="obj-list">
+            <li><b class="highlight">រចនា Database ចេញពី C#:</b> យល់ដឹងពីវិធីសាស្ត្រ Code-First ដែលអនុញ្ញាតឱ្យយើងសរសេរ C# Class ដើម្បីបង្កើត Database Table ជាជាងការសរសេរ SQL ផ្ទាល់។</li>
+            <li><b class="highlight">គ្រប់គ្រងលក្ខខណ្ឌទិន្នន័យ (Constraints):</b> ចេះប្រើប្រាស់ Data Annotations ដើម្បីកំណត់លក្ខខណ្ឌដូចជា Not Null, ចំនួនតួអក្សរអតិបរមា, និងឈ្មោះ Table ឱ្យបានត្រឹមត្រូវ។</li>
+            <li><b class="highlight">រៀបចំរចនាសម្ព័ន្ធទំនាក់ទំនង (Relationships):</b> អាចកសាងទំនាក់ទំនងរវាងតារាង (One-to-Many) ឧទាហរណ៍៖ ជំនាញមួយមាននិស្សិតច្រើននាក់ ដោយប្រើ Navigation Properties។</li>
+            <li><b class="highlight">ស្ទាត់ជំនាញ EF Core CLI:</b> អាចប្រើប្រាស់ពាក្យបញ្ជា (Commands) ដើម្បីបង្កើតឯកសារ Migration និងបញ្ជាឱ្យវា Update ទៅកាន់ SQL Server បានយ៉ាងរលូន។</li>
+        </ul>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ២ / ២២</div>
+    </div>
+</div>
+
+<!-- PAGE 3: SECTION 6.1 - CODE-FIRST APPROACH -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៦</h1><p>ASP.NET CORE & SQL SERVER</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title"><i class="fa-solid fa-code"></i> ៦.១ យល់ដឹងពីស្ថាបត្យកម្ម Code-First (Code-First Approach)</div>
+        
+        <div class="text-block">
+            នៅក្នុងការអភិវឌ្ឍប្រព័ន្ធដោយប្រើប្រាស់ Entity Framework Core គេបែងចែកវិធីសាស្ត្រតភ្ជាប់ Database ជាពីរប្រភេទធំៗគឺ <b>Database-First</b> (មាន Database ស្រាប់ រួចទាញយកមកបង្កើតជា C# កូដ) និង <b>Code-First</b>។ 
+        </div>
+
+        <div class="text-block">
+            <b>Code-First Approach</b> គឺជាវិធីសាស្ត្រដ៏មានប្រជាប្រិយភាព និងត្រូវបានណែនាំឱ្យប្រើប្រាស់សម្រាប់គម្រោងថ្មីៗ។ វាអនុញ្ញាតឱ្យអ្នកសរសេរកូដ (C# Classes / Models) ជាមុន បន្ទាប់មកប្រព័ន្ធ EF Core នឹងយកកូដរបស់អ្នកទៅបំប្លែង (Translate) និងបង្កើតជា Database Tables នៅក្នុង SQL Server ដោយស្វ័យប្រវត្តិតាមរយៈយន្តការហៅថា <b>Migrations</b>។
+        </div>
+
+        <div class="graphic-box" style="padding: 15px; border-color: var(--accent);">
+            <div style="font-family:'Suwannaphum',sans-serif; color:var(--text-main); font-size:11pt; margin-bottom:15px; font-weight:bold; text-align:center;">លំហូរការងារនៃ Code-First Approach</div>
+            
+            <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                <div style="width: 25%; text-align: center;">
+                    <div style="background: #1E293B; color: white; padding: 12px; border-radius: 8px; font-family: 'Fira Code', monospace; font-size: 9pt;">public class User {<br>  int Id;<br>}</div>
+                    <div style="margin-top: 5px; font-size: 9pt; font-weight: bold; color: var(--text-main);">1. សរសេរ C# Models</div>
+                </div>
+                <div style="width: 12%; color: var(--accent); font-size: 14pt; text-align:center;"><i class="fa-solid fa-arrow-right"></i></div>
+                <div style="width: 25%; text-align: center;">
+                    <div style="background: #512BD4; color: white; padding: 12px; border-radius: 8px; font-family: 'Fira Code', monospace; font-size: 9pt;">dotnet ef<br>migrations add</div>
+                    <div style="margin-top: 5px; font-size: 9pt; font-weight: bold; color: var(--text-main);">2. បង្កើត Migration</div>
+                </div>
+                <div style="width: 12%; color: var(--success); font-size: 14pt; text-align:center;"><i class="fa-solid fa-arrow-right"></i></div>
+                <div style="width: 25%; text-align: center;">
+                    <div style="background: #10B981; color: white; padding: 12px; border-radius: 8px; font-family: 'Fira Code', monospace; font-size: 9pt;">CREATE TABLE<br>Users (...)</div>
+                    <div style="margin-top: 5px; font-size: 9pt; font-weight: bold; color: var(--text-main);">3. Database ត្រូវបានបង្កើត</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="sub-heading">អត្ថប្រយោជន៍នៃ Code-First៖</div>
+        <ul class="obj-list">
+            <li><b>ងាយស្រួលគ្រប់គ្រង Version កូដ៖</b> រាល់ការកែប្រែ Database Schema (ដូចជាថែម Column ថ្មី) ត្រូវបានកត់ត្រាទុកក្នុងកូដ C# ដែលងាយស្រួលរុញចូល GitHub ។</li>
+            <li><b>មិនបាច់ចេះ SQL ជ្រៅជ្រះ៖</b> EF Core ជាអ្នកសរសេរ T-SQL Scripts ជំនួសអ្នកទាំងស្រុង។</li>
+            <li><b>ការអភិវឌ្ឍរហ័ស (Rapid Development)៖</b> អ្នកអាចផ្តោតអារម្មណ៍តែលើការសរសេរ Business Logic នៅក្នុង C# ដោយមិនបាច់ប្តូរផ្ទាំងទៅមកជាមួយ SSMS ញឹកញាប់ឡើយ។</li>
+        </ul>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ៣ / ២២</div>
+    </div>
+</div>
+
+<!-- PAGE 4: SECTION 6.2 - DATA ANNOTATIONS -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៦</h1><p>ASP.NET CORE & SQL SERVER</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-tags"></i> ៦.២ ការប្រើប្រាស់ Data Annotations លើ Models</div>
+        <div class="text-block">
+            តាមលំនាំដើម (Convention) ប្រសិនបើអ្នកប្រកាស Property <code>string Name;</code> នោះ EF Core នឹងបង្កើត Column ក្នុង SQL ជាប្រភេទ <code>nvarchar(max)</code> ហើយអនុញ្ញាតឱ្យទទេ (Nullable)។ ប៉ុន្តែក្នុងការអនុវត្តជាក់ស្តែង យើងតែងតែចង់កំណត់លក្ខខណ្ឌដូចជា៖ ឈ្មោះមិនអាចទទេបាន (Not Null) និងមានប្រវែងត្រឹមតែ ៥០ តួអក្សរប៉ុណ្ណោះ។ 
+        </div>
+        <div class="text-block">
+            ដើម្បីធ្វើដូចនេះបាន យើងត្រូវប្រើប្រាស់ <b>Data Annotations</b> ដែលជា Attributes សរសេរនៅពីលើ Property នីមួយៗ (ទាមទារ Library <code>System.ComponentModel.DataAnnotations</code>)។
+        </div>
+
+        <div class="sub-heading">តារាងសង្ខេប Data Annotations សំខាន់ៗ៖</div>
+        <table class="standard-table">
+            <thead>
+                <tr>
+                    <th style="width: 30%;">Annotation Attribute</th>
+                    <th>តួនាទី និងការបកប្រែទៅកាន់ SQL Server</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>[Key]</code></td>
+                    <td>កំណត់ Property នោះឱ្យក្លាយជា <b>Primary Key</b>។ (ចំណាំ៖ បើ Property ឈ្មោះ <code>Id</code> វានឹងយកជា PK ស្វ័យប្រវត្តមិនបាច់ដាក់ក៏បាន)។</td>
+                </tr>
+                <tr>
+                    <td><code>[Required]</code></td>
+                    <td>កំណត់មិនឱ្យទិន្នន័យទទេឡើយ គឺស្មើនឹងលក្ខខណ្ឌ <b>NOT NULL</b> នៅក្នុង SQL។</td>
+                </tr>
+                <tr>
+                    <td><code>[MaxLength(50)]</code> ឬ<br><code>[StringLength(50)]</code></td>
+                    <td>កំណត់ប្រវែងអតិបរមានៃអក្សរ។ វាបំប្លែងពី <code>nvarchar(max)</code> ទៅជា <b>nvarchar(50)</b> ជួយសន្សំសំចៃទំហំ Database។</td>
+                </tr>
+                <tr>
+                    <td><code>[Column("col_name")]</code></td>
+                    <td>ប្រើសម្រាប់ប្តូរឈ្មោះ Column នៅក្នុង Database ឱ្យខុសពីឈ្មោះ Property ក្នុង C#។</td>
+                </tr>
+                <tr>
+                    <td><code>[Table("tbl_Students")]</code></td>
+                    <td>(ដាក់លើក្បាល Class) ប្តូរឈ្មោះ Table ក្នុង SQL ជំនួសឱ្យការយកឈ្មោះតាម DbSet។</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ៤ / ២២</div>
+    </div>
+</div>
+
+<!-- PAGE 5: SECTION 6.2 (CONT.) - DATA ANNOTATIONS CODE -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៦</h1><p>ASP.NET CORE & SQL SERVER</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-heading" style="width: 100%; margin-top:0;">កូដគំរូនៃការប្រើប្រាស់ Data Annotations៖</div>
+        
+        <div class="code-window" style="margin-top: 10px;">
+            <div class="code-header">
+                <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+                <div class="code-title">Models/Student.cs</div>
+            </div>
+<pre><span style="color:#C678DD;">using</span> System.ComponentModel.DataAnnotations;
+<span style="color:#C678DD;">using</span> System.ComponentModel.DataAnnotations.Schema;
+
+<span style="color:#C678DD;">namespace</span> SchoolApp.Models
+{
+    [Table(<span style="color:#98C379;">"tbl_Students"</span>)] <span style="color:#5C6370;">// បង្ខំឱ្យបង្កើត Table ឈ្មោះ tbl_Students</span>
+    <span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">Student</span>
+    {
+        [Key]
+        <span style="color:#C678DD;">public int</span> StudentId { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; } <span style="color:#5C6370;">// កំណត់ជា Primary Key</span>
+
+        [Required(ErrorMessage = <span style="color:#98C379;">"ឈ្មោះមិនអាចទទេឡើយ"</span>)]
+        [MaxLength(<span style="color:#D19A66;">100</span>)]
+        [Column(<span style="color:#98C379;">"FullName"</span>)]
+        <span style="color:#C678DD;">public string</span> Name { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; } = <span style="color:#C678DD;">string</span>.Empty;
+
+        [MaxLength(<span style="color:#D19A66;">15</span>)]
+        <span style="color:#C678DD;">public string?</span> PhoneNumber { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; } <span style="color:#5C6370;">// អនុញ្ញាតឱ្យ Null បាន (សញ្ញា ?)</span>
+    }
+}</pre>
+        </div>
+
+        <div class="lab-box" style="margin-top: 15px;">
+            <h4><i class="fa-solid fa-lightbulb"></i> អត្ថប្រយោជន៍ទ្វេដង (Dual Benefits)</h4>
+            <p style="font-size: 10pt;">
+                Data Annotations មិនត្រឹមតែត្រូវបាន EF Core យកទៅបំប្លែងជា Constraints (Not Null, varchar(100)) នៅក្នុង Database ប៉ុណ្ណោះទេ តែវាក៏ត្រូវបាន ASP.NET Core API យកទៅធ្វើជា <b>Model Validation</b> ដោយស្វ័យប្រវត្តផងដែរ។ មានន័យថា ប្រសិនបើ Client បញ្ជូនទិន្នន័យ (POST) មកដោយមិនមានបញ្ចូល Name នោះ API នឹងបដិសេធ (Return 400 Bad Request) ដោយស្វ័យប្រវត្ត មុននឹងវាទៅដល់ Database ម៉្លេះ។
+            </p>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ៥ / ២២</div>
+    </div>
+</div>
+
+<!-- PAGE 6: SECTION 6.3 - RELATIONSHIPS -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៦</h1><p>ASP.NET CORE & SQL SERVER</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-diagram-project"></i> ៦.៣ ការបង្កើតទំនាក់ទំនងរវាង Tables (One-to-Many)</div>
+        <div class="text-block">
+            នៅក្នុងប្រព័ន្ធ Relational Database តារាងនីមួយៗតែងតែមានទំនាក់ទំនងគ្នា។ ទំនាក់ទំនងដែលពេញនិយមជាងគេគឺ <b>One-to-Many (មួយទល់នឹងច្រើន)</b>។ ឧទាហរណ៍៖ <b>ជំនាញសិក្សាមួយ (Major)</b> អាចមាន <b>និស្សិតច្រើននាក់ (Students)</b> ចុះឈ្មោះរៀន។
+        </div>
+        
+        <div class="text-block">
+            ដើម្បីបង្កើតទំនាក់ទំនងនេះក្នុង EF Core យើងត្រូវប្រើប្រាស់ <b>Foreign Key Property</b> រួមជាមួយនឹង <b>Navigation Properties</b> នៅលើ Class ទាំងសងខាង។
+        </div>
+
+        <div class="graphic-box" style="padding: 15px; border-color: var(--secondary);">
+            <div style="display: flex; justify-content: space-around; align-items: stretch; width: 100%;">
+                
+                <!-- Major Table (The "One" side) -->
+                <div style="width: 42%; background: white; border: 2px solid var(--secondary); border-radius: 8px; overflow: hidden;">
+                    <div style="background: var(--secondary); color: white; padding: 8px; text-align: center; font-weight: bold; font-family: 'Inter', sans-serif;">Table: Majors (1)</div>
+                    <div style="padding: 10px; font-family: 'Fira Code', monospace; font-size: 8.5pt; color: var(--text-main);">
+                        <div style="border-bottom: 1px dashed #ccc; padding-bottom: 5px; margin-bottom: 5px;">
+                            <span style="color: var(--danger); font-weight: bold;">PK</span> Id (int)
+                        </div>
+                        <div>Name (string)</div>
+                        <div style="margin-top: 10px; color: var(--accent); font-weight: bold;">// Navigation Property</div>
+                        <div>List&lt;Student&gt; Students</div>
+                    </div>
+                </div>
+
+                <div style="width: 10%; display: flex; align-items: center; justify-content: center; font-size: 16pt; color: var(--secondary);">
+                    <i class="fa-solid fa-arrow-right-arrow-left"></i>
+                </div>
+
+                <!-- Student Table (The "Many" side) -->
+                <div style="width: 42%; background: white; border: 2px solid var(--success); border-radius: 8px; overflow: hidden;">
+                    <div style="background: var(--success); color: white; padding: 8px; text-align: center; font-weight: bold; font-family: 'Inter', sans-serif;">Table: Students (Many)</div>
+                    <div style="padding: 10px; font-family: 'Fira Code', monospace; font-size: 8.5pt; color: var(--text-main);">
+                        <div style="border-bottom: 1px dashed #ccc; padding-bottom: 5px; margin-bottom: 5px;">
+                            <span style="color: var(--danger); font-weight: bold;">PK</span> Id (int)
+                        </div>
+                        <div>Name (string)</div>
+                        <div style="margin-top: 10px; border-bottom: 1px dashed #ccc; padding-bottom: 5px; margin-bottom: 5px;">
+                            <span style="color: var(--warning); font-weight: bold;">FK</span> MajorId (int)
+                        </div>
+                        <div style="color: var(--accent); font-weight: bold;">// Navigation Property</div>
+                        <div>Major Major</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ៦ / ២២</div>
+    </div>
+</div>
+
+<!-- PAGE 7: SECTION 6.3 (CONT.) - RELATIONSHIPS CODE -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៦</h1><p>ASP.NET CORE & SQL SERVER</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-heading" style="width: 100%; margin-top:0;">ការសរសេរកូដ C# សម្រាប់ទំនាក់ទំនង One-to-Many៖</div>
+        
+        <div class="code-window" style="margin-top: 10px;">
+            <div class="code-header">
+                <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+                <div class="code-title">Models/Major.cs (The "One" side)</div>
+            </div>
+<pre><span style="color:#C678DD;">using</span> System.Collections.Generic;
+
+<span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">Major</span>
+{
+    <span style="color:#C678DD;">public int</span> Id { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; }
+    <span style="color:#C678DD;">public string</span> Name { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; } = <span style="color:#C678DD;">string</span>.Empty;
+
+    <span style="color:#5C6370;">// Navigation Property: ជំនាញមួយ មាននិស្សិតច្រើននាក់</span>
+    <span style="color:#C678DD;">public</span> List&lt;Student&gt; Students { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; } = <span style="color:#C678DD;">new</span> List&lt;Student&gt;();
+}</pre>
+        </div>
+
+        <div class="code-window" style="margin-top: 15px;">
+            <div class="code-header">
+                <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+                <div class="code-title">Models/Student.cs (The "Many" side)</div>
+            </div>
+<pre><span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">Student</span>
+{
+    <span style="color:#C678DD;">public int</span> Id { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; }
+    <span style="color:#C678DD;">public string</span> Name { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; } = <span style="color:#C678DD;">string</span>.Empty;
+
+    <span style="color:#5C6370;">// Foreign Key: ត្រូវមានឈ្មោះជា {NameOfReferenceClass}Id</span>
+    <span style="color:#C678DD;">public int</span> MajorId { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; }
+
+    <span style="color:#5C6370;">// Navigation Property: និស្សិតម្នាក់ ეკუთვნឹងជំនាញមួយ</span>
+    <span style="color:#C678DD;">public</span> Major? Major { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; } 
+}</pre>
+        </div>
+
+        <div class="lab-box" style="background:#F0FDF4; border-left-color:#22C55E; border-color:#BBF7D0; margin-top: 15px;">
+            <h4 style="color:#166534;"><i class="fa-solid fa-magic-wand-sparkles"></i> ភាពវៃឆ្លាតរបស់ EF Core Convention</h4>
+            <p style="font-size: 9.5pt;">
+                ដោយគ្រាន់តែដាក់ឈ្មោះ Property ថា <code>MajorId</code> (ប្រភេទ int) នៅខាងក្រោម Navigation Property <code>Major</code> នោះ EF Core នឹងយល់ដោយស្វ័យប្រវត្តថាវាជា <b>Foreign Key</b> ដែលតភ្ជាប់ទៅកាន់ Table <code>Majors</code>។ យើងមិនចាំបាច់សរសេរកូដ SQL <code>ADD CONSTRAINT FOREIGN KEY...</code> ដ៏ស្មុគស្មាញឡើយ។
+            </p>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ៧ / ២២</div>
+    </div>
+</div>
+
+<!-- PAGE 8: SECTION 6.4 - EF CORE MIGRATIONS -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៦</h1><p>ASP.NET CORE & SQL SERVER</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-truck-fast"></i> ៦.៤ ដំណើរការនៃ EF Core Migrations</div>
+        <div class="text-block">
+            បន្ទាប់ពីសរសេរ Class Models និងចុះឈ្មោះវាក្នុង <code>DbContext (DbSet)</code> រួចរាល់ ទិន្នន័យទាំងនេះគ្រាន់តែមាននៅក្នុងកូដ C# ប៉ុណ្ណោះ។ ដើម្បីបង្កើតវាទៅជាតារាងពិតប្រាកដនៅក្នុង SQL Server យើងត្រូវប្រើប្រាស់យន្តការ <b>Migrations</b> តាមរយៈឧបករណ៍ .NET CLI នៅក្នុង Terminal។
+        </div>
+
+        <div class="sub-heading">ពាក្យបញ្ជា (Commands) សំខាន់ៗចំនួន ២៖</div>
+        
+        <div style="background: white; border: 1px solid var(--border-dark); border-radius: 8px; padding: 15px; margin-bottom: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+            <div style="font-family: 'Fira Code', monospace; font-size: 10.5pt; font-weight: bold; color: var(--accent); margin-bottom: 8px;">1. dotnet ef migrations add &lt;MigrationName&gt;</div>
+            <p style="font-size: 10pt; line-height: 1.6; margin: 0; color: var(--text-muted);">
+                <b>តួនាទី៖</b> បញ្ជានេះនឹងស្កេនមើលរាល់ការផ្លាស់ប្តូរនៅក្នុង Models របស់អ្នក (ធៀបនឹងពេលមុន) រួចបង្កើតឯកសារ C# ថ្មីមួយនៅក្នុង Folder <code>Migrations</code>។ ឯកសារនេះផ្ទុកនូវកូដសម្រាប់ត្រៀមបង្កើត Tables (វាប្រៀបដូចជាសេចក្តីព្រាងប្លង់មេ មិនទាន់ប៉ះពាល់ Database ឡើយ)។ <br>
+                <i>ឧទាហរណ៍៖ <code>dotnet ef migrations add InitialCreate</code></i>
+            </p>
+        </div>
+
+        <div style="background: white; border: 1px solid var(--border-dark); border-radius: 8px; padding: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+            <div style="font-family: 'Fira Code', monospace; font-size: 10.5pt; font-weight: bold; color: var(--success); margin-bottom: 8px;">2. dotnet ef database update</div>
+            <p style="font-size: 10pt; line-height: 1.6; margin: 0; color: var(--text-muted);">
+                <b>តួនាទី៖</b> បញ្ជានេះនឹងយកឯកសារ Migration ដែលទើបបង្កើត រួចបកប្រែវាទៅជាភាសា SQL Scripts (CREATE TABLE, ALTER TABLE...) ហើយបញ្ជូនវាទៅប្រតិបត្តិនៅក្នុង SQL Server ផ្ទាល់តែម្តង។ ពេល Command នេះរត់ចប់ Database របស់អ្នកនឹងត្រូវបានបង្កើត ឬ Update ជោគជ័យ។
+            </p>
+        </div>
+        
+        <div class="lab-box" style="background:#FFFBEB; border-left-color:#F59E0B; border-color:#FEF3C7; margin-top: 15px;">
+            <h4 style="color:#92400E;"><i class="fa-solid fa-triangle-exclamation"></i> ករណី Command Error</h4>
+            <p style="font-size: 9.5pt; color: #92400E;">
+                ប្រសិនបើអ្នកវាយ command ខាងលើហើយចេញ Error <code>Could not execute because the specified command or file was not found</code> មានន័យថាអ្នកមិនទាន់បានដំឡើងឧបករណ៍ ef global tool ទេ។ សូមរត់បញ្ជា <code>dotnet tool install --global dotnet-ef</code> ជាមុនសិន។
+            </p>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ៨ / ២២</div>
+    </div>
+</div>
+
+<!-- PAGE 9: SECTION 6.4 (CONT.) - BEHIND THE SCENES -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៦</h1><p>ASP.NET CORE & SQL SERVER</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-heading" style="width: 100%; margin-top:0;">តើមានអ្វីកើតឡើងនៅពេលអ្នករត់បញ្ជា Migrations Add?</div>
+        <div class="text-block">
+            ប្រព័ន្ធនឹងបង្កើត Folder មួយឈ្មោះ <code>Migrations</code> នៅក្នុងគម្រោងរបស់អ្នក។ ក្នុងនោះមានឯកសារសំខាន់មួយដែលមានទម្រង់ឈ្មោះ <code>[TimeStamp]_InitialCreate.cs</code>។
+        </div>
+
+        <div class="code-window" style="margin-top: 10px;">
+            <div class="code-header">
+                <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+                <div class="code-title">Migrations/202501..._InitialCreate.cs (ឯកសារសង្ខេប)</div>
+            </div>
+<pre><span style="color:#C678DD;">public partial class</span> <span style="color:#61AFEF;">InitialCreate</span> : Migration
+{
+    <span style="color:#5C6370;">// Method នេះនឹងរត់នៅពេលយើងធ្វើ Update (បង្កើត Tables)</span>
+    <span style="color:#C678DD;">protected override void</span> <span style="color:#61AFEF;">Up</span>(MigrationBuilder migrationBuilder)
+    {
+        migrationBuilder.CreateTable(
+            name: <span style="color:#98C379;">"Majors"</span>,
+            columns: table =&gt; <span style="color:#C678DD;">new</span>
+            {
+                Id = table.Column&lt;<span style="color:#C678DD;">int</span>&gt;(type: <span style="color:#98C379;">"int"</span>, nullable: <span style="color:#D19A66;">false</span>)
+                    .Annotation(<span style="color:#98C379;">"SqlServer:Identity"</span>, <span style="color:#98C379;">"1, 1"</span>),
+                Name = table.Column&lt;<span style="color:#C678DD;">string</span>&gt;(type: <span style="color:#98C379;">"nvarchar(max)"</span>, nullable: <span style="color:#D19A66;">false</span>)
+            },
+            constraints: table =&gt;
+            {
+                table.PrimaryKey(<span style="color:#98C379;">"PK_Majors"</span>, x =&gt; x.Id);
+            });
+            <span style="color:#5C6370;">// ... កូដបង្កើត Table Students និង Foreign Key នៅបន្តបន្ទាប់</span>
+    }
+
+    <span style="color:#5C6370;">// Method នេះនឹងរត់ពេលយើងចង់ Reverse/Rollback (លុប Tables វិញ)</span>
+    <span style="color:#C678DD;">protected override void</span> <span style="color:#61AFEF;">Down</span>(MigrationBuilder migrationBuilder)
+    {
+        migrationBuilder.DropTable(name: <span style="color:#98C379;">"Students"</span>);
+        migrationBuilder.DropTable(name: <span style="color:#98C379;">"Majors"</span>);
+    }
+}</pre>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ៩ / ២២</div>
+    </div>
+</div>
+
+<!-- PAGE 10: SECTION 6.5 - SSMS INSPECTION -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៦</h1><p>ASP.NET CORE & SQL SERVER</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-magnifying-glass-chart"></i> ៦.៥ ការត្រួតពិនិត្យ Database Schema ក្នុងកម្មវិធី SSMS</div>
+        <div class="text-block">
+            បន្ទាប់ពីអ្នកបានរត់ពាក្យបញ្ជា <code>dotnet ef database update</code> ដោយជោគជ័យ (ចេញពាក្យ Done. ពណ៌បៃតងក្នុង Terminal) អ្នកគប្បីចូលទៅត្រួតពិនិត្យលទ្ធផលនៅក្នុងកម្មវិធី <b>SQL Server Management Studio (SSMS)</b> ដើម្បីប្រាកដថា Tables ត្រូវបានបង្កើតត្រឹមត្រូវតាមលក្ខខណ្ឌដែលអ្នកបានកំណត់ក្នុងកូដ C#។
+        </div>
+
+        <div class="lab-box" style="margin-top: 15px; border-color: var(--border-dark); background: white; border-left: 5px solid var(--secondary);">
+            <h4 style="color: var(--secondary);"><i class="fa-solid fa-list-check"></i> ជំហានក្នុងការត្រួតពិនិត្យ៖</h4>
+            <ol style="margin-top: 10px; padding-left: 20px; font-size: 10pt; line-height: 1.8;">
+                <li>បើកកម្មវិធី <b>SSMS</b> រួច Connect ទៅកាន់ <code>localhost\SQLEXPRESS</code>។</li>
+                <li>ពង្រីក (Expand) ថត <b>Databases</b> &rarr; រកមើល Database ដែលអ្នកបានដាក់ឈ្មោះក្នុង Connection String (ឧទាហរណ៍៖ <code>SchoolDB</code>)។</li>
+                <li>ពង្រីកថត <b>Tables</b> ខាងក្នុងនោះ។ អ្នកនឹងឃើញ៖
+                    <ul style="list-style-type: circle; padding-left: 20px; margin-top: 5px; color: var(--accent); font-weight: bold;">
+                        <li><code>dbo.Majors</code> (មកពី DbSet ក្នុង AppDbContext)</li>
+                        <li><code>dbo.tbl_Students</code> (ដោយសារយើងប្រើ Data Annotation [Table])</li>
+                        <li><code>dbo.__EFMigrationsHistory</code></li>
+                    </ul>
+                </li>
+            </ol>
+        </div>
+
+        <div class="graphic-box" style="margin-top:15px; padding: 15px; text-align: center;">
+            <div style="font-family:'Suwannaphum',sans-serif; color:var(--text-main); font-size:11pt; margin-bottom:10px; font-weight:bold;">តើអ្វីទៅជា Table __EFMigrationsHistory?</div>
+            <p style="font-size: 9.5pt; color: var(--text-muted); line-height: 1.6; text-align: justify; margin: 0;">
+                តារាងនេះត្រូវបានបង្កើតឡើងដោយស្វ័យប្រវត្តដោយ EF Core។ វាមានតួនាទីកត់ត្រានូវរាល់ឯកសារ Migration ដែលត្រូវបានរត់ចូលទៅក្នុង Database រួចរាល់។ វាជួយឱ្យប្រព័ន្ធដឹងថា Migration ណាមួយដែលមិនទាន់ត្រូវបាន Update (ការពារការ Update ជាន់គ្នានាពេលអនាគត)។ <br><br><b>ចំណាំ៖</b> សូមកុំលុប ឬកែប្រែទិន្នន័យក្នុងតារាងនេះឱ្យសោះ។
+            </p>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ១០ / ២២</div>
+    </div>
+</div>
+
+<!-- PAGE 11: GLOSSARY -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៦</h1><p>ASP.NET CORE & SQL SERVER</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-book-bookmark"></i> ពន្យល់ពាក្យគន្លឹះ (Glossary)</div>
+        <div class="text-block">ពាក្យបច្ចេកទេស និងការពន្យល់ន័យជាភាសាខ្មែរសម្រាប់ជំពូកទី ៦ នេះ៖</div>
+        
+        <table class="standard-table">
+            <thead>
+                <tr>
+                    <th style="width: 30%;">ពាក្យបច្ចេកទេស</th>
+                    <th>ការពន្យល់ជាភាសាខ្មែរ</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><b>Code-First Approach</b></td>
+                    <td>វិធីសាស្ត្រអភិវឌ្ឍន៍ដែលយើងសរសេរ C# Classes ជាមុន ទើបអនុញ្ញាតឱ្យ EF Core បង្កើត Database Tables តាមក្រោយ។</td>
+                </tr>
+                <tr>
+                    <td><b>Data Annotations</b></td>
+                    <td>Attributes (ដូចជា <code>[Required]</code>, <code>[MaxLength]</code>) ដែលសរសេរពីលើ Property ក្នុង C# ដើម្បីកំណត់លក្ខខណ្ឌទៅលើ Database Column។</td>
+                </tr>
+                <tr>
+                    <td><b>Navigation Property</b></td>
+                    <td>Property ដែលតំណាងឱ្យទំនាក់ទំនងរវាង Class មួយទៅ Class មួយទៀត (ឧទាហរណ៍៖ List នៃសិស្ស នៅក្នុង Class ជំនាញ)។</td>
+                </tr>
+                <tr>
+                    <td><b>Foreign Key (FK)</b></td>
+                    <td>សោរងដែលត្រូវបានប្រើដើម្បីតភ្ជាប់ទិន្នន័យពីតារាងមួយ (Many) ទៅកាន់សោចម្បង (PK) នៃតារាងមួយទៀត (One)។</td>
+                </tr>
+                <tr>
+                    <td><b>Migrations</b></td>
+                    <td>យន្តការរបស់ EF Core ក្នុងការកត់ត្រារាល់ការផ្លាស់ប្តូរនៃ Models និងការរក្សាប្រវត្តិ (Version Control) សម្រាប់ Database Schema។</td>
+                </tr>
+                <tr>
+                    <td><b>dotnet ef migrations add</b></td>
+                    <td>ពាក្យបញ្ជា (Command) សម្រាប់បង្កើតឯកសារ C# ព្រាងទុកនូវកូដសម្រាប់បង្កើត ឬកែប្រែ Tables។</td>
+                </tr>
+                <tr>
+                    <td><b>dotnet ef database update</b></td>
+                    <td>ពាក្យបញ្ជាសម្រាប់យកឯកសារ Migration ទៅប្រតិបត្តិជាភាសា SQL ចូលទៅក្នុង Database ផ្ទាល់។</td>
+                </tr>
+                <tr>
+                    <td><b>__EFMigrationsHistory</b></td>
+                    <td>តារាងប្រវត្តិដែល EF Core បង្កើតក្នុង SQL Server ដើម្បីកត់ចំណាំថា Migration ណាខ្លះដែលបានអាប់ដេតរួចរាល់។</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ១១ / ២២</div>
+    </div>
+</div>
+
+<!-- PAGE 12: SUMMARY & REFERENCES -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៦</h1><p>ASP.NET CORE & SQL SERVER</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-list-check"></i> សេចក្តីសង្ខេបជំពូកទី ៦ (Summary)</div>
+        <ul class="obj-list" style="margin-top:10px;">
+            <li><b class="highlight">កម្លាំងនៃ Code-First៖</b> Code-First ជួយឱ្យអ្នកអភិវឌ្ឍន៍អាចគ្រប់គ្រងទាំង Business Logic និងរចនាសម្ព័ន្ធ Database (Schema) ពីកន្លែងតែមួយគឺកូដ C#។ វាសាកសមបំផុតសម្រាប់ Agile Development ។</li>
+            <li><b class="highlight">សុវត្ថិភាពទិន្នន័យ (Data Integrity)៖</b> ការប្រើប្រាស់ Data Annotations ដូចជា <code>[Required]</code> និង <code>[MaxLength]</code> ការពារមិនឱ្យទិន្នន័យខុសទម្រង់ចូលទៅក្នុង Database ព្រមទាំងជួយសន្សំសំចៃទំហំ Disk Space (ឧ. កំណត់ nvarchar ឱ្យមានទំហំជាក់លាក់)។</li>
+            <li><b class="highlight">ភាពងាយស្រួលនៃ Relationships៖</b> EF Core មានភាពឆ្លាតវៃក្នុងការរៀបចំ Foreign Keys ដោយស្វ័យប្រវត្ត នៅពេលយើងប្រកាស Navigation Properties ត្រឹមត្រូវ។ វាងាយស្រួលជាងការសរសេរ JOIN Constraints ក្នុង SQL ឆ្ងាយណាស់។</li>
+            <li><b class="highlight">យន្តការ Migrations៖</b> ជាស្ពានភ្ជាប់តែមួយគត់រវាង C# Models និង SQL Server ។ ចងចាំជានិច្ចនូវលំដាប់លំដោយ៖ កែប្រែ Model &rarr; រត់បញ្ជា Add Migration &rarr; រត់បញ្ជា Update Database។</li>
+        </ul>
+
+        <div class="section-title" style="margin-top:20px;"><i class="fa-solid fa-book"></i> ឯកសារយោង (References)</div>
+        <ul class="obj-list" style="margin-top:10px;">
+            <li><b>Microsoft Learn (Migrations Overview):</b> <span style="color:var(--secondary);">https://learn.microsoft.com/en-us/ef/core/managing-schemas/migrations/</span></li>
+            <li><b>Microsoft Learn (Data Annotations):</b> <span style="color:var(--secondary);">https://learn.microsoft.com/en-us/ef/core/modeling/</span></li>
+            <li><b>Microsoft Learn (Relationships - One to Many):</b> <span style="color:var(--secondary);">https://learn.microsoft.com/en-us/ef/core/modeling/relationships</span></li>
+            <li><b>សៀវភៅគោល៖</b> Freeman, A. (2024). <i>Pro ASP.NET Core 8</i>. Apress.</li>
+        </ul>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ១២ / ២២</div>
+    </div>
+</div>
+
+<!-- PAGE 13: REVIEW QUESTIONS T/F -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៦</h1><p>ASP.NET CORE & SQL SERVER</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="background:var(--accent); color:white; justify-content:center; border-radius:8px; border-left:none; margin-top:0; padding: 8px 0;"><i class="fa-solid fa-pen-to-square"></i> សំណួររំលឹកមេរៀន (Review Questions)</div>
+        
+        <div class="sub-heading" style="width: 100%;">១. សំណួរ ខុស/ត្រូវ (True/False)</div>
+        <p style="font-size:10pt; margin-bottom:12px;"><b>សេចក្តីណែនាំ៖</b> សូមគូសសញ្ញា (ត្រូវ) ប្រសិនបើប្រយោគខាងក្រោមត្រឹមត្រូវ ឬសញ្ញា (ខុស) ប្រសិនបើខុស។</p>
+        
+        <ol class="q-list" style="font-size:10.5pt; line-height:1.6;">
+            <li>វិធីសាស្ត្រ Code-First តម្រូវឱ្យអ្នកមាន Database និង Tables នៅក្នុង SQL Server ជាមុន ទើបអាចសរសេរកូដ C# បាន។</li>
+            <li>Annotation <code>[Required]</code> ប្រើសម្រាប់កំណត់ Column នៅក្នុង Database មិនឱ្យមានតម្លៃ Null (NOT NULL)។</li>
+            <li>ប្រសិនបើ Property មានឈ្មោះថា <code>Id</code> នោះ EF Core នឹងកំណត់វាជា Primary Key ដោយស្វ័យប្រវត្តដោយមិនបាច់ប្រើ <code>[Key]</code> ឡើយ។</li>
+            <li>ពាក្យបញ្ជា <code>dotnet ef migrations add</code> នឹងធ្វើការបង្កើត ឬកែប្រែ Tables នៅក្នុង SQL Server ភ្លាមៗតែម្តង។</li>
+            <li>ការប្រកាស <code>List&lt;Student&gt; Students</code> នៅក្នុង Class Major គឺជាឧទាហរណ៍នៃ Navigation Property ។</li>
+            <li>តារាង <code>__EFMigrationsHistory</code> ប្រើសម្រាប់ផ្ទុកទិន្នន័យ (Data) របស់ User ដូចជាឈ្មោះ និងលេខទូរស័ព្ទ។</li>
+            <li>Annotation <code>[Table("tbl_Users")]</code> ជួយប្តូរឈ្មោះ Table នៅក្នុង Database ឱ្យខុសពីឈ្មោះ Class ឬឈ្មោះ DbSet ។</li>
+            <li>ដើម្បីបង្កើតទំនាក់ទំនង One-to-Many ខាងតារាង "Many" ត្រូវតែមាន Foreign Key Property ។</li>
+            <li>អ្នកត្រូវតែរត់ពាក្យបញ្ជា <code>dotnet ef database update</code> រាល់ពេលដែលអ្នកបន្ថែម Migration ថ្មី ដើម្បីឱ្យ SQL Server ស្គាល់ការកែប្រែ។</li>
+            <li>EF Core មិនអនុញ្ញាតឱ្យយើងកំណត់ប្រវែងតួអក្សរ (MaxLength) សម្រាប់ Property ប្រភេទ string ឡើយ វាមានតែ nvarchar(max) ប៉ុណ្ណោះ។</li>
+        </ol>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ៖ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ១៣ / ២២</div>
+    </div>
+</div>
+
+<!-- PAGE 14: REVIEW QUESTIONS MCQ -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៦</h1><p>ASP.NET CORE & SQL SERVER</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-heading" style="width: 100%; margin-top:0;">២. សំណួរ ពហុជ្រើសរើស (MCQs)</div>
+        <p style="font-size:10pt; margin-bottom:12px;"><b>សេចក្តីណែនាំ៖</b> សូមជ្រើសរើសចម្លើយដែលត្រឹមត្រូវបំផុតតែមួយគត់។</p>
+        
+        <ol class="q-list" style="font-size:9.5pt; line-height:1.45;">
+            <li>តើអត្ថប្រយោជន៍ចម្បងនៃ Code-First Approach គឺជាអ្វី?
+                <ul class="mcq-opts">
+                    <li>A. មិនបាច់សរសេរ C# Code ឡើយ</li>
+                    <li>B. បង្កើត Database និងគ្រប់គ្រង Schema តាមរយៈកូដ C# ដោយស្វ័យប្រវត្ត</li>
+                    <li>C. ធ្វើឱ្យ Web Page ដំណើរការលឿនជាងមុន</li>
+                    <li>D. លុបបំបាត់ការប្រើប្រាស់ SQL Server</li>
+                </ul>
+            </li>
+            <li>តើ Data Annotation មួយណាដែលប្រើសម្រាប់កំណត់ប្រវែងអតិបរមានៃតួអក្សរ?
+                <ul class="mcq-opts">
+                    <li>A. [Required]</li>
+                    <li>B. [Key]</li>
+                    <li>C. [MaxLength(50)]</li>
+                    <li>D. [Column("Name")]</li>
+                </ul>
+            </li>
+            <li>នៅក្នុងទំនាក់ទំនង One-to-Many រវាង `Major` និង `Student` តើ Class មួយណាគួរមាន Property `MajorId`?
+                <ul class="mcq-opts">
+                    <li>A. Major</li>
+                    <li>B. Student</li>
+                    <li>C. ទាំងពីរ</li>
+                    <li>D. មិនចាំបាច់មានទេ</li>
+                </ul>
+            </li>
+            <li>តើពាក្យបញ្ជា (Command) មួយណាដែលប្រើសម្រាប់រុញ (Apply) Migrations ចូលទៅក្នុង Database ពិតប្រាកដ?
+                <ul class="mcq-opts">
+                    <li>A. dotnet ef database update</li>
+                    <li>B. dotnet ef migrations add</li>
+                    <li>C. dotnet run</li>
+                    <li>D. dotnet build</li>
+                </ul>
+            </li>
+            <li>តើតារាង <code>__EFMigrationsHistory</code> បង្កើតឡើងសម្រាប់គោលបំណងអ្វី?
+                <ul class="mcq-opts">
+                    <li>A. កត់ត្រាប្រវត្តិសិស្ស</li>
+                    <li>B. កត់ត្រាប្រវត្តិនៃការកែប្រែ Database Schema (Migrations ដែលបានរត់រួច)</li>
+                    <li>C. ផ្ទុកឯកសារ Backup Database</li>
+                    <li>D. គ្រប់គ្រងសិទ្ធិ (Login History)</li>
+                </ul>
+            </li>
+            <li>ប្រសិនបើអ្នកចង់ឱ្យ Property <code>string? Email;</code> អាចអនុញ្ញាតឱ្យគ្មានទិន្នន័យ (Nullable) នៅក្នុង Database តើត្រូវធ្វើយ៉ាងណា?
+                <ul class="mcq-opts">
+                    <li>A. ដាក់ Attribute [Required]</li>
+                    <li>B. ដាក់សញ្ញា `?` បន្ទាប់ពីប្រភេទ string</li>
+                    <li>C. ដាក់ Attribute [Key]</li>
+                    <li>D. វាមិនអាចទៅរួចទេក្នុង EF Core</li>
+                </ul>
+            </li>
+            <li>តើឯកសារ Migration (ឧ. `[Timestamp]_InitialCreate.cs`) មានផ្ទុក Method ចម្បងចំនួនប៉ុន្មាន?
+                <ul class="mcq-opts">
+                    <li>A. 1 (Method Run)</li>
+                    <li>B. 2 (Method Up និង Down)</li>
+                    <li>C. 3 (Method Add, Update, Delete)</li>
+                    <li>D. គ្មាន Method ទេ</li>
+                </ul>
+            </li>
+            <li>នៅក្នុង C# ប្រសិនបើអ្នកមិនកំណត់ <code>[MaxLength]</code> លើ string ទេ តើ EF Core នឹងបង្កើត Column ជាប្រភេទអ្វី?
+                <ul class="mcq-opts">
+                    <li>A. varchar(255)</li>
+                    <li>B. nvarchar(max)</li>
+                    <li>C. char(50)</li>
+                    <li>D. text</li>
+                </ul>
+            </li>
+            <li>តើ Method <code>Down()</code> នៅក្នុងឯកសារ Migration មានតួនាទីអ្វី?
+                <ul class="mcq-opts">
+                    <li>A. បង្កើត Table ថ្មី</li>
+                    <li>B. បញ្ចុះតម្លៃទំនិញ</li>
+                    <li>C. Reverse ឬលុប (Drop) Table ដែលបានបង្កើតនៅពេល Rollback</li>
+                    <li>D. បិទដំណើរការ SQL Server</li>
+                </ul>
+            </li>
+            <li>តើ Error "Command not found" ពេលវាយ <code>dotnet ef</code> ច្រើនបណ្តាលមកពីអ្វី?
+                <ul class="mcq-opts">
+                    <li>A. មិនទាន់ភ្ជាប់អ៊ីនធឺណិត</li>
+                    <li>B. កុំព្យូទ័រខូច</li>
+                    <li>C. មិនទាន់ដំឡើង EF Core Global Tool (dotnet-ef)</li>
+                    <li>D. ខុសរចនាសម្ព័ន្ធ HTML</li>
+                </ul>
+            </li>
+        </ol>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ៖ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ១៤ / ២២</div>
+    </div>
+</div>
+
+<!-- PAGE 15: MATCHING & ESSAYS -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៦</h1><p>ASP.NET CORE & SQL SERVER</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-heading" style="width:100%; margin-top:0;">៣. សំណួរផ្គូផ្គង (Matching)</div>
+        <p style="font-size:10pt; margin-bottom:12px;"><b>សេចក្តីណែនាំ៖</b> សូមផ្គូផ្គងពាក្យនៅជួរឈរខាងឆ្វេង (១-១០) ទៅនឹងការពន្យល់នៅជួរឈរខាងស្តាំ (A-J) ឱ្យបានត្រឹមត្រូវ។</p>
+        
+        <div class="two-column" style="gap:15px; align-items:start; margin-bottom: 15px;">
+            <table class="standard-table" style="box-shadow:none; font-size: 8.5pt;">
+                <tr><td style="font-weight:bold;">១. Code-First Approach</td></tr>
+                <tr><td style="font-weight:bold;">២. [Required]</td></tr>
+                <tr><td style="font-weight:bold;">៣. [Table("Name")]</td></tr>
+                <tr><td style="font-weight:bold;">៤. [MaxLength(100)]</td></tr>
+                <tr><td style="font-weight:bold;">៥. Navigation Property</td></tr>
+                <tr><td style="font-weight:bold;">៦. Foreign Key</td></tr>
+                <tr><td style="font-weight:bold;">៧. EF Migrations</td></tr>
+                <tr><td style="font-weight:bold;">៨. <code>dotnet ef migrations add</code></td></tr>
+                <tr><td style="font-weight:bold;">៩. <code>dotnet ef database update</code></td></tr>
+                <tr><td style="font-weight:bold;">១០. Method Up()</td></tr>
+            </table>
+            <table class="standard-table" style="box-shadow:none; font-size: 8.5pt;">
+                <tr><td>A. យន្តការតាមដានរាល់ការកែប្រែ Models និងប្រវត្តិ Database Schema។</td></tr>
+                <tr><td>B. បង្ខំឱ្យ EF Core បង្កើត Table ដោយប្រើឈ្មោះជាក់លាក់មួយ។</td></tr>
+                <tr><td>C. បញ្ជាឱ្យអនុវត្ត (Execute) កូដ SQL Scripts ចូលទៅកាន់ Database ផ្ទាល់។</td></tr>
+                <tr><td>D. អថេរក្នុង Class សម្រាប់តភ្ជាប់ ឬបង្ហាញពីទំនាក់ទំនងរវាង Tables ទាំងពីរ។</td></tr>
+                <tr><td>E. ការអភិវឌ្ឍដោយសរសេរកូដ C# ជាមុន ទើប EF Core បង្កើត Database តាមក្រោយ។</td></tr>
+                <tr><td>F. តំណាងឱ្យលេខសម្គាល់ដែលភ្ជាប់តារាងមួយទៅកាន់ Primary Key របស់តារាងមួយទៀត។</td></tr>
+                <tr><td>G. បញ្ជាឱ្យស្កេន Models រួចបង្កើតឯកសារ C# (សេចក្តីព្រាង) ទុកក្នុង Folder Migrations។</td></tr>
+                <tr><td>H. កំណត់ Column មិនឱ្យទទួលទិន្នន័យទទេ (NOT NULL Constraint)។</td></tr>
+                <tr><td>I. ផ្ទុកនូវកូដសម្រាប់បង្កើត Tables ថ្មី ឬបន្ថែម Columns (Create/Alter)។</td></tr>
+                <tr><td>J. កំណត់ប្រវែងអតិបរមារបស់ String ជា nvarchar(100) ក្នុង Database។</td></tr>
+            </table>
+        </div>
+
+        <div class="sub-heading" style="width:100%;">៤. សំណួរបកស្រាយ (Essay Questions)</div>
+        <ol class="q-list" style="font-size:9.5pt; line-height:1.5;">
+            <li>ចូរពន្យល់ពីអត្ថប្រយោជន៍ធំៗចំនួន ២ នៃការប្រើប្រាស់បច្ចេកទេស Code-First Approach បើប្រៀបធៀបទៅនឹងការប្រើប្រាស់ Database-First (សរសេរ SQL មុន)។</li>
+            <li>តើ Data Annotations ដូចជា <code>[Required]</code> និង <code>[MaxLength]</code> ផ្តល់អត្ថប្រយោជន៍អ្វីខ្លះទាំងនៅលើ Database (SQL Server) និងទាំងនៅលើផ្នែក Application Programming Interface (API Validation)?</li>
+            <li>ចូររៀបរាប់ពីលំដាប់លំដោយ (Workflow) និងពាក្យបញ្ជា (Commands) ចំនួន ២ ដែលត្រូវប្រើដើម្បីរុញរាល់ការកែប្រែក្នុង C# Model ឱ្យទៅកើតជា Table ពិតប្រាកដក្នុង SQL Server។</li>
+        </ol>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ៖ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ១៥ / ២២</div>
+    </div>
+</div>
+
+<!-- PAGE 16: PRACTICAL EXERCISES INTRO -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៦</h1><p>ASP.NET CORE & SQL SERVER</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-heading" style="width: 100%; margin-top:0; color:var(--success); font-size:14pt;"><i class="fa-solid fa-laptop-code"></i> ៦. លំហាត់អនុវត្តន៍ (Practical Exercises)</div>
+        <p style="font-size:10pt; margin-bottom:15px;">
+            <b>សេចក្តីណែនាំ៖</b> លំហាត់នេះនឹងអនុវត្តនូវលំហូរការងារ (Workflow) ពេញលេញក្នុងការបង្កើត **ប្រព័ន្ធគ្រប់គ្រងសាលារៀន (School System)** ដ៏សាមញ្ញមួយ។ យើងនឹងកសាងទំនាក់ទំនង One-to-Many រវាង `Major` និង `Student` ព្រមទាំងប្រើប្រាស់ Migrations។
+        </p>
+
+        <div class="section-title" style="color:var(--accent); border-color:var(--accent); font-size:11.5pt; margin-bottom: 5px;">
+            <i class="fa-solid fa-layer-group"></i> ជំហានទី ១ ដល់ទី ៤៖ ការរចនា Models ជាមួយ Data Annotations
+        </div>
+        
+        <ul class="obj-list" style="margin-top:0; margin-bottom:15px;">
+            <li><b>ជំហានទី ១ (បង្កើត Major Model)៖</b> ចូរបង្កើតឯកសារ <code>Models/Major.cs</code> ។ ប្រើ <code>[Table("tbl_Majors")]</code>។ ប្រកាស Property: <code>Id</code> (ជា [Key]), <code>Title</code> (ជា [Required] និង [MaxLength(50)]), ព្រមទាំង Navigation Property <code>List&lt;Student&gt;</code> ។</li>
+            
+            <li><b>ជំហានទី ២ (បង្កើត Student Model)៖</b> ចូរបង្កើត <code>Models/Student.cs</code>។ ប្រើ <code>[Table("tbl_Students")]</code>។ ប្រកាស: <code>Id</code>, <code>FullName</code> (Required, MaxLength 100), <code>MajorId</code> (ជា Foreign Key ប្រភេទ int), និង Navigation Property <code>Major</code> ។</li>
+            
+            <li><b>ជំហានទី ៣ (ចុះឈ្មោះក្នុង DbContext)៖</b> ចូរបង្កើត <code>Data/SchoolDbContext.cs</code> (ស្នងពី DbContext)។ ប្រកាស <code>DbSet&lt;Major&gt;</code> និង <code>DbSet&lt;Student&gt;</code> នៅក្នុងនោះ។</li>
+
+            <li><b>ជំហានទី ៤ (ការកំណត់ Configuration)៖</b> ក្នុង <code>appsettings.json</code> បង្កើត ConnectionString ភ្ជាប់ទៅកាន់ Database ឈ្មោះ <code>SchoolDB_Migrations</code>។ ក្នុង <code>Program.cs</code> ចុះឈ្មោះ AddDbContext ។</li>
+        </ul>
+
+        <div class="section-title" style="color:var(--warning); border-color:var(--warning); font-size:11.5pt; margin-bottom: 5px; margin-top: 15px;">
+            <i class="fa-solid fa-terminal"></i> ជំហានទី ៥ ដល់ទី ៦៖ ការរត់បញ្ជា Migrations ក្នុង Terminal
+        </div>
+
+        <ul class="obj-list" style="margin-top:0;">
+            <li><b>ជំហានទី ៥ (Add Migration)៖</b> ប្រើ Terminal រត់បញ្ជាដើម្បីបង្កើតឯកសារ C# Migration ដំបូងគេ ដោយដាក់ឈ្មោះវាថា <code>InitialCreate</code> ។ ពិនិត្យមើល Folder Migrations ថ្មីដែលបានបង្កើត។</li>
+            <li><b>ជំហានទី ៦ (Update Database)៖</b> រត់បញ្ជាបន្ទាប់ដើម្បីអនុវត្តឯកសារព្រាងនេះទៅកាន់ SQL Server ។ បន្ទាប់មក បើកកម្មវិធី SSMS ដើម្បីផ្ទៀងផ្ទាត់មើល Tables ដែលទើបត្រូវបានបង្កើតថ្មីៗ។</li>
+        </ul>
+
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ៖ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ១៦ / ២២</div>
+    </div>
+</div>
+
+<!-- PAGE 17: ANSWER KEYS - QUIZZES -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៦</h1><p>ASP.NET CORE & SQL SERVER</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="background:var(--success); color:white; justify-content:center; border-radius:8px; border:none; margin: 0; padding: 8px 0;"><i class="fa-solid fa-key" style="color:white; background:transparent;"></i> អត្រាកំណែ (Answer Keys)</div>
+            
+        <div class="two-column" style="gap:15px; align-items:start; margin-top: 15px;">
+            <div>
+                <div class="sub-heading" style="margin-top: 0; font-size:10.5pt; color:var(--success); border-bottom: none;">១. ចម្លើយ ខុស/ត្រូវ</div>
+                <table class="ans-table">
+                    <tr><th>១</th><th>២</th><th>៣</th><th>៤</th><th>៥</th></tr>
+                    <tr><td>ខុស</td><td>ត្រូវ</td><td>ត្រូវ</td><td>ខុស</td><td>ត្រូវ</td></tr>
+                    <tr><th>៦</th><th>៧</th><th>៨</th><th>៩</th><th>១០</th></tr>
+                    <tr><td>ខុស</td><td>ត្រូវ</td><td>ត្រូវ</td><td>ត្រូវ</td><td>ខុស</td></tr>
+                </table>
+            </div>
+            <div>
+                <div class="sub-heading" style="margin-top: 0; font-size:10.5pt; color:var(--success); border-bottom: none;">២. ចម្លើយ ពហុជ្រើសរើស</div>
+                <table class="ans-table">
+                    <tr><th>១</th><th>២</th><th>៣</th><th>៤</th><th>៥</th></tr>
+                    <tr><td>B</td><td>C</td><td>B</td><td>A</td><td>B</td></tr>
+                    <tr><th>៦</th><th>៧</th><th>៨</th><th>៩</th><th>១០</th></tr>
+                    <tr><td>B</td><td>B</td><td>B</td><td>C</td><td>C</td></tr>
+                </table>
+            </div>
+        </div>
+        
+        <div class="sub-heading" style="margin-top:15px; font-size:10.5pt; color:var(--success); border-bottom: none;">៣. ចម្លើយ ផ្គូផ្គង (Matching Keys)</div>
+        <table class="ans-table" style="margin-bottom: 15px;">
+            <tr><th>១</th><th>២</th><th>៣</th><th>៤</th><th>៥</th><th>៦</th><th>៧</th><th>៨</th><th>៩</th><th>១0</th></tr>
+            <tr><td>E</td><td>H</td><td>B</td><td>J</td><td>D</td><td>F</td><td>A</td><td>G</td><td>C</td><td>I</td></tr>
+        </table>
+
+        <div class="sub-heading" style="margin-top:10px; font-size:10.5pt; color:var(--success); border-bottom: none;">៤. ចម្លើយ សំណួរបកស្រាយ (សង្ខេប)</div>
+        <ul style="font-size:9.5pt; line-height:1.5; padding-left:20px; text-align:justify;">
+            <li style="margin-bottom:6px;"><b>១. អត្ថប្រយោជន៍ Code-First៖</b> ផ្តល់ភាពងាយស្រួលដោយអ្នកអភិវឌ្ឍន៍ផ្តោតតែលើការសរសេរកូដ C# (Business Logic) តែមួយមុខ EF Core នឹងបង្កើត Database ឱ្យដោយស្វ័យប្រវត្ត។ ម្យ៉ាងទៀត វាងាយស្រួលក្នុងការគ្រប់គ្រង Version Control (ដូចជាប្រើ Git) ព្រោះការប្រែប្រួល Database Schema សុទ្ធតែស្ថិតក្នុងទម្រង់ជាកូដ C# នៃឯកសារ Migrations។</li>
+            <li style="margin-bottom:6px;"><b>២. អត្ថប្រយោជន៍ Data Annotations៖</b> សម្រាប់ Database វាកំណត់ទំហំ និងលក្ខខណ្ឌជាក់លាក់ (ឧ. nvarchar(100) និង NOT NULL) ជួយសន្សំទំហំ។ សម្រាប់ API វាក្លាយជា Validation ដោយស្វ័យប្រវត្ត ដែលបដិសេធ (Return 400) រាល់ Request ណាដែលបញ្ជូនទិន្នន័យខុសទម្រង់ មុននឹងធ្លាក់ទៅដល់ Database។</li>
+            <li style="margin-bottom:0;"><b>៣. Workflow នៃ Migrations៖</b> បន្ទាប់ពីកែប្រែ Model រួច ជំហានទី ១ គឺត្រូវរត់បញ្ជា <code>dotnet ef migrations add &lt;Name&gt;</code> ដើម្បីបង្កើតឯកសារព្រាង។ ជំហានទី ២ គឺត្រូវរត់បញ្ជា <code>dotnet ef database update</code> ដើម្បីរុញឯកសារព្រាងនោះឱ្យក្លាយជា Table ពិតប្រាកដក្នុង SQL Server។</li>
+        </ul>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ៖ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ១៧ / ២២</div>
+    </div>
+</div>
+
+<!-- PAGE 18: SOLUTION - EXERCISES STEP 1 & 2 -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៦</h1><p>ASP.NET CORE & SQL SERVER</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-heading" style="width: 100%; margin-top:0; color:var(--accent);"><i class="fa-solid fa-circle-check"></i> ដំណោះស្រាយ៖ ការរចនា Advanced Models & Relationships</div>
+        
+        <div style="font-size:9.5pt; font-weight:bold; color:var(--text-main); margin-bottom:4px; margin-top:10px;"><span style="color:var(--accent);">១️⃣ ជំហានទី ១៖ </span>បង្កើត Major Model (The "One" side)</div>
+        <div class="code-window" style="margin:2px 0 15px 0; font-size:8pt;">
+            <div class="code-header" style="padding: 4px 10px;">
+                <div class="mac-dots"><div class="dot dot-r" style="width:8px; height:8px;"></div><div class="dot dot-y" style="width:8px; height:8px;"></div><div class="dot dot-g" style="width:8px; height:8px;"></div></div>
+                <div class="code-title" style="font-size: 7.5pt;">Models/Major.cs</div>
+            </div>
+<pre style="padding: 8px;"><span style="color:#C678DD;">using</span> System.Collections.Generic;
+<span style="color:#C678DD;">using</span> System.ComponentModel.DataAnnotations;
+<span style="color:#C678DD;">using</span> System.ComponentModel.DataAnnotations.Schema;
+
+<span style="color:#C678DD;">namespace</span> SchoolApp.Models
+{
+    [Table(<span style="color:#98C379;">"tbl_Majors"</span>)]
+    <span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">Major</span>
+    {
+        [Key]
+        <span style="color:#C678DD;">public int</span> Id { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; }
+
+        [Required]
+        [MaxLength(<span style="color:#D19A66;">50</span>)]
+        <span style="color:#C678DD;">public string</span> Title { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; } = <span style="color:#C678DD;">string</span>.Empty;
+
+        <span style="color:#5C6370;">// Navigation Property (មួយ Major មាននិស្សិតច្រើន)</span>
+        <span style="color:#C678DD;">public</span> List&lt;Student&gt; Students { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; } = <span style="color:#C678DD;">new</span> List&lt;Student&gt;();
+    }
+}</pre>
+        </div>
+
+        <div style="font-size:9.5pt; font-weight:bold; color:var(--text-main); margin-bottom:4px;"><span style="color:var(--accent);">២️⃣ ជំហានទី ២៖ </span>បង្កើត Student Model (The "Many" side)</div>
+        <div class="code-window" style="margin:2px 0 15px 0; font-size:8pt;">
+            <div class="code-header" style="padding: 4px 10px;">
+                <div class="mac-dots"><div class="dot dot-r" style="width:8px; height:8px;"></div><div class="dot dot-y" style="width:8px; height:8px;"></div><div class="dot dot-g" style="width:8px; height:8px;"></div></div>
+                <div class="code-title" style="font-size: 7.5pt;">Models/Student.cs</div>
+            </div>
+<pre style="padding: 8px;"><span style="color:#C678DD;">using</span> System.ComponentModel.DataAnnotations;
+<span style="color:#C678DD;">using</span> System.ComponentModel.DataAnnotations.Schema;
+
+<span style="color:#C678DD;">namespace</span> SchoolApp.Models
+{
+    [Table(<span style="color:#98C379;">"tbl_Students"</span>)]
+    <span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">Student</span>
+    {
+        [Key]
+        <span style="color:#C678DD;">public int</span> Id { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; }
+
+        [Required]
+        [MaxLength(<span style="color:#D19A66;">100</span>)]
+        <span style="color:#C678DD;">public string</span> FullName { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; } = <span style="color:#C678DD;">string</span>.Empty;
+
+        <span style="color:#5C6370;">// Foreign Key Property</span>
+        <span style="color:#C678DD;">public int</span> MajorId { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; }
+
+        <span style="color:#5C6370;">// Navigation Property (ភ្ជាប់ទៅ Class Major)</span>
+        <span style="color:#C678DD;">public</span> Major? Major { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; }
+    }
+}</pre>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ៖ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ១៨ / ២២</div>
+    </div>
+</div>
+
+<!-- PAGE 19: SOLUTION - EXERCISES STEP 3 & 4 -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៦</h1><p>ASP.NET CORE & SQL SERVER</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-heading" style="width: 100%; margin-top:0; color:var(--accent);"><i class="fa-solid fa-circle-check"></i> ដំណោះស្រាយ៖ ការរៀបចំ DbContext និង Config</div>
+
+        <div style="font-size:9.5pt; font-weight:bold; color:var(--text-main); margin-bottom:4px; margin-top:10px;"><span style="color:var(--accent);">៣️⃣ ជំហានទី ៣៖ </span>កសាង DbContext សម្រាប់ Tables ទាំងពីរ</div>
+        <div class="code-window" style="margin:2px 0 10px 0; font-size:8pt;">
+            <div class="code-header" style="padding: 4px 10px;">
+                <div class="mac-dots"><div class="dot dot-r" style="width:8px; height:8px;"></div><div class="dot dot-y" style="width:8px; height:8px;"></div><div class="dot dot-g" style="width:8px; height:8px;"></div></div>
+                <div class="code-title" style="font-size: 7.5pt;">Data/SchoolDbContext.cs</div>
+            </div>
+<pre style="padding: 8px;"><span style="color:#C678DD;">using</span> Microsoft.EntityFrameworkCore;
+<span style="color:#C678DD;">using</span> SchoolApp.Models;
+
+<span style="color:#C678DD;">namespace</span> SchoolApp.Data
+{
+    <span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">SchoolDbContext</span> : DbContext
+    {
+        <span style="color:#C678DD;">public</span> <span style="color:#61AFEF;">SchoolDbContext</span>(DbContextOptions&lt;SchoolDbContext&gt; options) : <span style="color:#C678DD;">base</span>(options) {}
+
+        <span style="color:#5C6370;">// ប្រកាស Tables ទាំងពីរ</span>
+        <span style="color:#C678DD;">public</span> DbSet&lt;Major&gt; Majors { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; }
+        <span style="color:#C678DD;">public</span> DbSet&lt;Student&gt; Students { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; }
+    }
+}</pre>
+        </div>
+
+        <div style="font-size:9.5pt; font-weight:bold; color:var(--text-main); margin-bottom:4px; margin-top:15px;"><span style="color:var(--accent);">៤️⃣ ជំហានទី ៤៖ </span>កំណត់ Connection និងចុះឈ្មោះ DI Container</div>
+        <div class="code-window" style="margin:2px 0 10px 0; font-size:8pt;">
+            <div class="code-header" style="padding: 4px 10px;">
+                <div class="mac-dots"><div class="dot dot-r" style="width:8px; height:8px;"></div><div class="dot dot-y" style="width:8px; height:8px;"></div><div class="dot dot-g" style="width:8px; height:8px;"></div></div>
+                <div class="code-title" style="font-size: 7.5pt;">appsettings.json (បន្ថែមផ្នែក ConnectionStrings)</div>
+            </div>
+<pre style="padding: 8px;"><span style="color:#E06C75;">"ConnectionStrings"</span>: <span style="color:#C678DD;">{</span>
+    <span style="color:#E06C75;">"SchoolConnection"</span>: <span style="color:#98C379;">"Server=localhost\\SQLEXPRESS;Database=SchoolDB_Migrations;Trusted_Connection=True;TrustServerCertificate=True;"</span>
+<span style="color:#C678DD;">}</span></pre>
+        </div>
+
+        <div class="code-window" style="margin:2px 0 15px 0; font-size:8pt;">
+            <div class="code-header" style="padding: 4px 10px;">
+                <div class="mac-dots"><div class="dot dot-r" style="width:8px; height:8px;"></div><div class="dot dot-y" style="width:8px; height:8px;"></div><div class="dot dot-g" style="width:8px; height:8px;"></div></div>
+                <div class="code-title" style="font-size: 7.5pt;">Program.cs</div>
+            </div>
+<pre style="padding: 8px;"><span style="color:#C678DD;">using</span> Microsoft.EntityFrameworkCore;
+<span style="color:#C678DD;">using</span> SchoolApp.Data;
+
+<span style="color:#C678DD;">var</span> builder = WebApplication.CreateBuilder(args);
+
+<span style="color:#5C6370;">// ទាញយក ConnectionString ពីឯកសារកំណត់រចនាសម្ព័ន្ធ</span>
+<span style="color:#C678DD;">var</span> connectionString = builder.Configuration.GetConnectionString(<span style="color:#98C379;">"SchoolConnection"</span>);
+
+<span style="color:#5C6370;">// ចុះឈ្មោះ SchoolDbContext ជាមួយ SQL Server</span>
+builder.Services.AddDbContext&lt;SchoolDbContext&gt;(options =&gt;
+    options.UseSqlServer(connectionString));
+
+<span style="color:#5C6370;">// (កូដ Controller បន្តបន្ទាប់...)</span></pre>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ៖ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ១៩ / ២២</div>
+    </div>
+</div>
+
+<!-- PAGE 20: SOLUTION - EXERCISES STEP 5 & 6 (MIGRATIONS) -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៦</h1><p>ASP.NET CORE & SQL SERVER</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-heading" style="width: 100%; margin-top:0; color:var(--warning);"><i class="fa-solid fa-circle-check"></i> ដំណោះស្រាយ៖ ការរត់បញ្ជា Migrations ក្នុង Terminal</div>
+        
+        <div class="text-block" style="font-size: 9.5pt;">
+            <b>ការព្រមានមុនពេលចាប់ផ្តើម៖</b> សូមប្រាកដថាអ្នកបានដំឡើង NuGet Packages ចំនួនពីរ <code>Microsoft.EntityFrameworkCore.Design</code> និង <code>...SqlServer</code> រួចរាល់នៅក្នុងគម្រោង និងបាន Save ឯកសារ (Models, DbContext, Program.cs) ទាំងអស់។
+        </div>
+
+        <div style="font-size:9.5pt; font-weight:bold; color:var(--warning); margin-bottom:4px; margin-top:10px;"><span style="color:var(--warning);">៥️⃣ ជំហានទី ៥៖ </span>ការរុញ C# ទៅជាឯកសារព្រាង Migration</div>
+        <div class="code-window" style="margin:2px 0 15px 0; font-size:8pt;">
+            <div class="code-header" style="padding: 4px 10px;">
+                <div class="mac-dots"><div class="dot dot-r" style="width:8px; height:8px;"></div><div class="dot dot-y" style="width:8px; height:8px;"></div><div class="dot dot-g" style="width:8px; height:8px;"></div></div>
+                <div class="code-title" style="font-size: 7.5pt;">Terminal (VS Code)</div>
+            </div>
+<pre style="padding: 8px;"><span style="color:#5C6370;"># វាយពាក្យបញ្ជានេះ រួចចុច Enter (ត្រូវប្រាកដថាអ្នកនៅក្នុង Folder របស់គម្រោង)</span>
+dotnet ef migrations add InitialCreate
+
+<span style="color:#5C6370;"># លទ្ធផលដែលរំពឹងទុក៖ ប្រព័ន្ធនឹងលោតពាក្យ "Build started... Build succeeded." 
+# រួចវាបង្កើត Folder ឈ្មោះ "Migrations" ដែលមានឯកសារ C# ចំនួន ៣។</span></pre>
+        </div>
+
+        <div style="font-size:9.5pt; font-weight:bold; color:var(--warning); margin-bottom:4px; margin-top:10px;"><span style="color:var(--warning);">៦️⃣ ជំហានទី ៦៖ </span>អនុវត្តការបង្កើត Tables ចូលទៅក្នុង Database ពិតប្រាកដ</div>
+        <div class="code-window" style="margin:2px 0 15px 0; font-size:8pt;">
+            <div class="code-header" style="padding: 4px 10px;">
+                <div class="mac-dots"><div class="dot dot-r" style="width:8px; height:8px;"></div><div class="dot dot-y" style="width:8px; height:8px;"></div><div class="dot dot-g" style="width:8px; height:8px;"></div></div>
+                <div class="code-title" style="font-size: 7.5pt;">Terminal (VS Code)</div>
+            </div>
+<pre style="padding: 8px;"><span style="color:#5C6370;"># វាយពាក្យបញ្ជានេះដើម្បីអនុវត្ត (Execute) កូដ SQL</span>
+dotnet ef database update
+
+<span style="color:#5C6370;"># លទ្ធផលដែលរំពឹងទុក៖ ប្រព័ន្ធនឹងបង្ហាញកូដ CREATE TABLE ជាច្រើនបន្ទាត់ 
+# រួចបញ្ចាំងពាក្យ "Done." ពណ៌បៃតងនៅខាងចុង។</span></pre>
+        </div>
+
+        <div class="lab-box" style="background:#F0FDF4; border-left-color:#22C55E; border-color:#BBF7D0; margin-top: 15px;">
+            <h4 style="color:#166534;"><i class="fa-solid fa-list-check"></i> ផ្ទៀងផ្ទាត់ក្នុង SSMS (ភាពជោគជ័យ)</h4>
+            <p style="font-size: 9.5pt;">
+                សូមបើកកម្មវិធី <b>SQL Server Management Studio</b>។ អ្នកនឹងឃើញ Database ថ្មីឈ្មោះ <code>SchoolDB_Migrations</code>។ ពេលបើកចូលទៅក្នុង Tables អ្នកនឹងឃើញ <code>dbo.tbl_Majors</code> និង <code>dbo.tbl_Students</code> (មានផ្ទុក FK <code>MajorId</code>) ត្រូវបានបង្កើតយ៉ាងត្រឹមត្រូវ!
+            </p>
+        </div>
+
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ៖ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ២០ / ២២</div>
+    </div>
+</div>
+
+<!-- PAGE 21: (OPTIONAL EXCELLENCE) API CONTROLLER FOR RELATIONS -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៦</h1><p>ASP.NET CORE & SQL SERVER</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-heading" style="width: 100%; margin-top:0; color:var(--success);"><i class="fa-solid fa-star"></i> ចំណេះដឹងបន្ថែម (Bonus Workflow)៖ ការទាញទិន្នន័យដែលមានទំនាក់ទំនង (Include)</div>
+        
+        <div class="text-block" style="font-size: 9.5pt;">
+            នៅពេលយើងមានទំនាក់ទំនង One-to-Many បើយើងទាញយកត្រឹមតែ <code>_context.Students.ToList()</code> នោះវានឹងចេញតែឈ្មោះនិស្សិត និង MajorId (លេខ) ប៉ុណ្ណោះ វាលាក់ព័ត៌មានលម្អិតរបស់ Major ចោល។ ដើម្បីភ្ជាប់ទិន្នន័យ (ស្មើនឹង SQL JOIN) នៅក្នុង EF Core យើងត្រូវប្រើ Method <b><code>.Include()</code></b>។
+        </div>
+
+        <div style="font-size:9.5pt; font-weight:bold; color:var(--success); margin-bottom:4px; margin-top:10px;">ឧទាហរណ៍នៃការសរសេរ Controller ដើម្បីហៅទិន្នន័យដែលមាន JOIN៖</div>
+        <div class="code-window" style="margin:2px 0 15px 0; font-size:8pt;">
+            <div class="code-header" style="padding: 4px 10px;">
+                <div class="mac-dots"><div class="dot dot-r" style="width:8px; height:8px;"></div><div class="dot dot-y" style="width:8px; height:8px;"></div><div class="dot dot-g" style="width:8px; height:8px;"></div></div>
+                <div class="code-title" style="font-size: 7.5pt;">Controllers/StudentApiController.cs</div>
+            </div>
+<pre style="padding: 8px;"><span style="color:#C678DD;">using</span> Microsoft.AspNetCore.Mvc;
+<span style="color:#C678DD;">using</span> Microsoft.EntityFrameworkCore; <span style="color:#5C6370;">// ត្រូវការសម្រាប់ប្រើ .Include()</span>
+<span style="color:#C678DD;">using</span> SchoolApp.Data;
+
+<span style="color:#C678DD;">namespace</span> SchoolApp.Controllers
+{
+    [Route(<span style="color:#98C379;">"api/[controller]"</span>)]
+    [ApiController]
+    <span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">StudentApiController</span> : ControllerBase
+    {
+        <span style="color:#C678DD;">private readonly</span> SchoolDbContext _context;
+
+        <span style="color:#C678DD;">public</span> <span style="color:#61AFEF;">StudentApiController</span>(SchoolDbContext context) { _context = context; }
+
+        [HttpGet]
+        <span style="color:#C678DD;">public</span> IActionResult <span style="color:#61AFEF;">GetAllStudentsWithMajors</span>()
+        {
+            <span style="color:#5C6370;">// .Include(s =&gt; s.Major) ដើរតួដូច SQL INNER JOIN ទៅកាន់ Table Majors</span>
+            <span style="color:#C678DD;">var</span> students = _context.Students
+                                   .Include(s =&gt; s.Major) 
+                                   .ToList();
+
+            <span style="color:#C678DD;">return</span> Ok(students);
+        }
+    }
+}</pre>
+        </div>
+        <div class="text-block" style="font-size: 9.5pt; color: var(--text-muted); font-style: italic;">
+            <b>លទ្ធផល JSON ដែលរំពឹងទុក៖</b> វានឹងបង្ហាញឈ្មោះសិស្ស និងមានភ្ជាប់នូវ Object នៃ Major ទាំងមូល (មានទាំង Id និង Title របស់ជំនាញ) ដែលផ្តល់ភាពងាយស្រួលបំផុតដល់ Frontend Developer យកទៅប្រើប្រាស់។ (មេរៀនលម្អិតពី GET API នឹងមានក្នុងជំពូកបន្ទាប់)។
+        </div>
+
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ៖ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ២១ / ២២</div>
+    </div>
+</div>
+
+<!-- PAGE 22: CONGRATULATIONS -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៦</h1><p>ASP.NET CORE & SQL SERVER</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content" style="justify-content: center; align-items: center;">
+        
+        <div style="text-align: center; max-width: 80%;">
+            <i class="fa-solid fa-database" style="font-size: 60px; color: var(--accent); margin-bottom: 20px;"></i>
+            <h2 style="font-family: 'Suwannaphum'; font-size: 22pt; color: var(--text-heading); margin-bottom: 15px; font-weight: 900;">អបអរសាទរ! លោកអ្នកបានបញ្ចប់ជំពូកទី ៦។</h2>
+            
+            <p style="font-size: 11pt; color: var(--text-main); line-height: 1.8; margin-bottom: 25px;">
+                រចនាសម្ព័ន្ធទិន្នន័យ (Database Schema) គឺជាបេះដូងនៃប្រព័ន្ធគ្រប់គ្រងព័ត៌មានទាំងមូល។ ការយល់ច្បាស់ពីវិធីសាស្ត្រ <b>Code-First Migrations, Data Annotations, និង Relationships</b> បានជួយឱ្យអ្នកក្លាយជាអ្នកអភិវឌ្ឍន៍ Backend ប្រកបដោយវិជ្ជាជីវៈដែលអាចកសាងប្រព័ន្ធដែលមានសុវត្ថិភាពខ្ពស់ និងរៀបចំទិន្នន័យមានសណ្តាប់ធ្នាប់ល្អ។
+            </p>
+            
+            <div style="background: #F8FAFC; border: 1px solid var(--border-dark); padding: 20px; border-radius: 8px; text-align: left;">
+                <h4 style="font-family: 'Suwannaphum'; font-size: 12pt; color: var(--success); margin-bottom: 10px;"><i class="fa-solid fa-forward-step"></i> តើយើងនឹងរៀនអ្វីបន្តនៅជំពូកទី ៧ និង ៨?</h4>
+                <ul style="font-size: 10pt; line-height: 1.6; padding-left: 20px; color: var(--text-muted);">
+                    <li>នៅពេលដែល Database ត្រូវបានរៀបចំរួចរាល់ ជំហានបន្ទាប់គឺការទាញទិន្នន័យមកប្រើប្រាស់។</li>
+                    <li>យើងនឹងសិក្សាស៊ីជម្រៅពីការបង្កើត <b>GET API</b> និងការត្រងទិន្នន័យ។</li>
+                    <li>រួមទាំងការសរសេរ <b>JavaScript Fetch</b> ដើម្បីយកទិន្នន័យទាំងនោះមកបញ្ចាំងនៅលើទំព័រ HTML ដ៏ស្រស់ស្អាតជាក់ស្តែង។</li>
+                </ul>
+            </div>
+            
+            <div style="margin-top: 40px; color: var(--text-muted); font-size: 10pt; font-family: var(--font-en-main); font-weight: 600;">
+                *** END OF CHAPTER 6 ***
+            </div>
+        </div>
+        
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ៖ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ២២ / ២២</div>
+    </div>
+</div>
+
+</body>
+</html>
