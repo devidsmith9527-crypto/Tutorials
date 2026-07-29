@@ -1,0 +1,1607 @@
+
+
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Handout: ជំពូកទី ៩ - Update & Delete (MVC & Web API)</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Khmer+OS+Siemreap&family=Battambang:wght@400;700&family=Suwannaphum:wght@400;700;900&family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        :root {
+            /* Premium Color Palette */
+            --primary: #0F172A;        
+            --secondary: #0078D4;      
+            --accent: #512BD4;         
+            --mvc-color: #059669; /* Green for MVC */
+            --api-color: #E11D48; /* Red for API */
+            --success: #10B981;        
+            --warning: #D97706;        
+            --danger: #EF4444;         
+            
+            --text-main: #1E293B;
+            --text-heading: #0F172A;
+            --text-muted: #64748B;
+            
+            --bg-page: #FFFFFF;
+            --bg-workspace: #E2E8F0;
+            --bg-light: #F8FAFC;
+            
+            --border-light: #E2E8F0;
+            --border-dark: #CBD5E1;
+            
+            /* Fonts */
+            --font-kh-heading: 'Suwannaphum', serif;
+            --font-kh-body: 'Battambang', sans-serif;
+            --font-en-main: 'Inter', sans-serif;
+            --font-code: 'Fira Code', monospace;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-workspace);
+            font-family: var(--font-kh-body);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        /* Print Button Zone */
+        .no-print {
+            background: #FFFFFF; border: 1px solid var(--border-dark); padding: 15px 25px; border-radius: 12px;
+            margin-bottom: 25px; width: 210mm; text-align: center; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .no-print p { margin: 0; font-size: 14px; color: var(--text-muted); font-family: var(--font-kh-body);}
+        .print-btn {
+            background: var(--accent); color: white; border: none; padding: 10px 24px; border-radius: 8px; 
+            font-family: var(--font-kh-body); font-size: 15px; font-weight: 700; cursor: pointer;
+            box-shadow: 0 4px 12px rgba(81, 43, 212, 0.3); transition: all 0.2s ease;
+        }
+        .print-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(81, 43, 212, 0.4); }
+
+        /* STRICT A4 PAGE LAYOUT */
+        .a4-page {
+            width: 210mm; 
+            height: 297mm;
+            background: var(--bg-page); 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1); 
+            margin-bottom: 30px; 
+            position: relative; 
+            border-radius: 4px; 
+            page-break-after: always;
+            box-sizing: border-box;
+            padding: 15mm;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* HEADER & FOOTER */
+        .global-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 10px 15px; border-bottom: 3px solid var(--accent); background-color: var(--bg-light);
+            border-radius: 4px; margin-bottom: 10px;
+        }
+        .header-item { display: flex; align-items: center; gap: 8px; }
+        .header-item img { height: 35px; object-fit: contain; }
+        .header-text { flex-grow: 1; text-align: center; padding: 0 10px; }
+        .header-text h1 { font-family: var(--font-kh-heading); font-size: 12pt; color: var(--accent); margin-bottom: 2px; font-weight: 900;}
+        .header-text p { font-family: var(--font-en-main); font-size: 7.5pt; color: var(--text-muted); font-weight: 600; text-transform: uppercase;}
+
+        .global-footer {
+            display: flex; justify-content: space-between; align-items: center;
+            padding-top: 10px; border-top: 1px solid var(--border-light); margin-top: 10px;
+        }
+        .footer-left { display: flex; align-items: center; gap: 8px; font-size: 9.5pt; color: var(--text-main); font-weight: bold;}
+        .footer-right { font-size: 9.5pt; color: white; font-weight: 700; background: var(--accent); padding: 3px 12px; border-radius: 20px;}
+
+        /* Content Zone */
+        .page-content { flex-grow: 1; display: flex; flex-direction: column; justify-content: flex-start; overflow: visible; }
+
+        /* TYPOGRAPHY */
+        .section-title {
+            border-bottom: 2px solid var(--accent); padding-bottom: 6px; margin: 10px 0 12px 0;
+            font-family: var(--font-kh-heading); font-size: 14pt; font-weight: 900; color: var(--text-heading);
+            display: flex; align-items: center; gap: 8px;
+        }
+        .section-title i { color: var(--accent); }
+        .sub-heading { font-family: var(--font-kh-heading); font-weight: 900; font-size: 12pt; color: var(--accent); margin: 10px 0 8px 0; }
+        .text-block { font-size: 10.5pt; line-height: 1.7; margin-bottom: 12px; text-align: justify; }
+        .highlight { color: var(--accent); font-weight: 700; }
+        .badge-mvc { background: var(--mvc-color); color: white; padding: 2px 8px; border-radius: 4px; font-size: 9pt; font-weight: bold; font-family: 'Inter'; }
+        .badge-api { background: var(--api-color); color: white; padding: 2px 8px; border-radius: 4px; font-size: 9pt; font-weight: bold; font-family: 'Inter'; }
+
+        /* TOC & Lists */
+        .toc-table { width: 100%; border-collapse: collapse; margin: 10px 0; border: 1px solid var(--border-light); border-radius: 8px; overflow: hidden; }
+        .toc-table th { background: var(--accent); color: white; font-family: var(--font-kh-heading); font-size: 11pt; padding: 8px; text-align: left; }
+        .toc-table td { padding: 8px; border-bottom: 1px solid var(--border-light); font-size: 10.5pt; color: var(--text-main); }
+        .toc-num { font-weight: bold; width: 10%; text-align: center; }
+
+        .obj-list { list-style: none; padding-left: 0; margin-top: 10px; }
+        .obj-list li { position: relative; padding-left: 20px; margin-bottom: 10px; font-size: 10.5pt; line-height: 1.6; }
+        .obj-list li::before { content: '•'; position: absolute; left: 5px; color: var(--accent); font-size: 16px; font-weight: bold; top: -2px; }
+
+        /* Tables (General) */
+        table.standard-table { width: 100%; border-collapse: collapse; margin-bottom: 12px; border: 1px solid var(--border-dark); }
+        table.standard-table th, table.standard-table td { border: 1px solid var(--border-dark); padding: 8px 10px; text-align: left; vertical-align: middle; }
+        table.standard-table th { background: var(--accent); color: white; font-family: var(--font-kh-heading); font-size: 10.5pt; text-align: center; }
+        table.standard-table td { font-size: 10pt; line-height: 1.5; }
+
+        /* Visual Frames */
+        .graphic-box { background: var(--bg-light); border: 1px solid var(--border-light); border-radius: 8px; padding: 12px; margin: 10px 0; width: 100%; }
+        .two-column { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 10px 0; align-items: start;}
+
+        /* Code & Boxes */
+        .code-window { background: var(--primary); border-radius: 8px; overflow: hidden; margin: 10px 0; border: 1px solid #334155; box-shadow: 0 4px 6px rgba(0,0,0,0.1);}
+        .code-header { background: #1E293B; padding: 8px 12px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #0F172A;}
+        .mac-dots { display: flex; gap: 6px; }
+        .dot { width: 10px; height: 10px; border-radius: 50%; }
+        .dot-r { background: var(--danger); }
+        .dot-y { background: var(--warning); }
+        .dot-g { background: var(--success); }
+        .code-title { color: #94A3B8; font-family: var(--font-code); font-size: 8.5pt; font-weight: 500;}
+        pre { padding: 12px; color: #E2E8F0; font-family: var(--font-code); font-size: 8.5pt; line-height: 1.4; overflow-x: auto; margin: 0; tab-size: 4;}
+        code.inline-code { font-family: var(--font-code); background: #F1F5F9; color: var(--danger); padding: 2px 5px; border-radius: 4px; font-size: 9.5pt; font-weight: bold; border: 1px solid var(--border-light); }
+        
+        .lab-box { background: #FEFCE8; border-left: 5px solid #EAB308; padding: 12px; margin: 10px 0; border-radius: 4px; border: 1px solid #FEF08A; }
+        .lab-box h4 { color: #854D0E; margin-bottom: 6px; font-family: var(--font-kh-heading); font-size: 11pt;}
+        
+        /* Quiz */
+        .q-list { list-style: decimal; padding-left: 18px; font-size: 10.5pt; line-height: 1.6; }
+        .q-list li { margin-bottom: 12px; font-weight: bold; }
+        .mcq-opts { list-style-type: upper-alpha; padding-left: 18px; margin-top: 6px; font-weight: normal; display: grid; grid-template-columns: 1fr 1fr; gap: 6px;}
+        .ans-table { width: 100%; border-collapse: collapse; }
+        .ans-table th { background: var(--bg-light); border: 1px solid var(--border-dark); padding: 5px; font-size: 9.5pt;}
+        .ans-table td { font-weight: bold; color: var(--accent); text-align: center; border: 1px solid var(--border-dark); padding: 5px;}
+
+        @media print {
+            body { background: none; padding: 0; margin: 0; display: block; }
+            .no-print { display: none !important; }
+            @page { size: A4 portrait; margin: 0; }
+            .a4-page { width: 210mm !important; height: 297mm !important; margin: 0 !important; box-shadow: none !important; border: none !important; border-radius: 0 !important; }
+            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="no-print">
+    <p><b><i class="fa-solid fa-file-pdf"></i> ណែនាំ៖</b> សូមជ្រើសរើស <b>Margins: None</b> និងបើក <b>Background graphics</b> ពេល Print។</p>
+    <button class="print-btn" onclick="window.print()"><i class="fa-solid fa-print"></i> បោះពុម្ពឯកសារជា PDF (២៧ ទំព័រ)</button>
+</div>
+
+<!-- PAGE 1: COVER -->
+<div class="a4-page">
+    <div class="page-content" style="justify-content: center; align-items: center; text-align: center; background: radial-gradient(circle at top, #F8FAFC 0%, #FFFFFF 100%);">
+        <img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" style="width: 140px; margin-bottom: 20px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));">
+        <h1 style="font-family: 'Suwannaphum'; font-size: 28pt; color: var(--text-heading); margin-bottom: 2px; font-weight: 900;">សាកលវិទ្យាល័យអង្គរ</h1>
+        <p style="font-family: 'Inter'; font-size: 13pt; color: var(--text-muted); margin-bottom: 30px; font-weight: 600; letter-spacing: 2px;">ANGKOR UNIVERSITY</p>
+        
+        <div style="font-family: 'Suwannaphum'; font-size: 14pt; color: var(--text-main); margin-bottom: 25px; font-weight: 700; background: #F1F5F9; padding: 8px 25px; border-radius: 50px; border: 1px solid var(--border-light); display: inline-flex; align-items: center; gap: 8px;">
+            <i class="fa-solid fa-database" style="color:var(--accent);"></i> បរិញ្ញាបត្រ វិទ្យាសាស្ត្រកុំព្យូទ័រ
+        </div>
+        
+        <div style="background: var(--accent); color: white; padding: 10px 25px; border-radius: 8px; font-size: 14pt; font-family: 'Suwannaphum'; font-weight: 700; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(81, 43, 212, 0.3);">ឯកសារអាន (Handout) - ជំពូកទី ៩</div>
+        
+        <h2 style="font-family: 'Suwannaphum'; font-size: 19pt; color: var(--text-heading); margin-bottom: 10px; line-height: 1.5; font-weight: 900;">ប្រតិបត្តិការកែប្រែ និងលុបទិន្នន័យ (UPDATE & DELETE)<br>ក្នុងស្ថាបត្យកម្ម MVC និង Web API</h2>
+        <h3 style="font-family: 'Battambang'; font-size: 12.5pt; color: var(--secondary); margin-bottom: 40px; font-weight: 600;">បច្ចេកវិទ្យា ASP.NET Core និង SQL Server</h3>
+        
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; background: white; padding: 15px 30px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid var(--border-light); width: 85%;">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" style="width: 110px; height: 100px; border-radius: 50%; object-fit: cover; border: 4px solid var(--accent); box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+            <p style="font-family: 'Battambang'; font-size: 11pt; color: var(--text-muted); margin: 0;">រៀបចំដោយសាស្ត្រាចារ្យ៖</p>
+            <strong style="font-family: 'Suwannaphum'; color: var(--text-heading); font-size: 15pt; font-weight: 900;">សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</strong>
+        </div>
+    </div>
+</div>
+
+<!-- PAGE 2: TOC & OBJECTIVES -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៩</h1><p>ASP.NET CORE & SQL SERVER</p></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title"><i class="fa-solid fa-list-ol"></i> មាតិកាជំពូកទី ៩ (Chapter Contents)</div>
+        <table class="toc-table">
+            <thead>
+                <tr>
+                    <th class="toc-num">ចំណុច</th>
+                    <th>ខ្លឹមសារមេរៀន (Topics)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td class="toc-num">៩.១</td><td>សេចក្តីផ្តើម៖ លំហូរនៃការកែប្រែ និងលុបទិន្នន័យ (U & D ក្នុង CRUD)</td></tr>
+                <tr><td class="toc-num">៩.២</td><td>HTTP Status Codes សម្រាប់ Update និង Delete</td></tr>
+                <tr style="background:#F0FDF4;"><td colspan="2" style="font-family:var(--font-kh-heading); font-weight:bold; color:var(--mvc-color);">ផ្នែកក៖ ស្ថាបត្យកម្ម Traditional MVC</td></tr>
+                <tr><td class="toc-num">៩.៣</td><td>ការរៀបចំ Method Edit ក្នុង MVC (សារៈសំខាន់នៃ Hidden Input)</td></tr>
+                <tr><td class="toc-num">៩.៤</td><td>ការរៀបចំ Method Delete ក្នុង MVC (Get & Post Confirmed)</td></tr>
+                <tr style="background:#FFF1F2;"><td colspan="2" style="font-family:var(--font-kh-heading); font-weight:bold; color:var(--api-color);">ផ្នែកខ៖ ស្ថាបត្យកម្ម Web API (Decoupled & SPA)</td></tr>
+                <tr><td class="toc-num">៩.៥</td><td>ការបង្កើត [HttpPut] Controller សម្រាប់កែប្រែទិន្នន័យ</td></tr>
+                <tr><td class="toc-num">៩.៦</td><td>ការបង្កើត [HttpDelete] Controller សម្រាប់លុបទិន្នន័យ</td></tr>
+                <tr><td class="toc-num">៩.៧</td><td>ការប្រើ JS Fetch ជាមួយ Method 'PUT' និង 'DELETE' លើ Frontend</td></tr>
+                <tr><td class="toc-num">៩.៨</td><td>សេចក្តីសង្ខេប, សំណួររំលឹក និង លំហាត់អនុវត្តន៍ (Practical Exercises)</td></tr>
+            </tbody>
+        </table>
+
+        <div class="section-title"><i class="fa-solid fa-bullseye"></i> វត្ថុបំណងនៃជំពូកទី ៩ (Chapter Objectives)</div>
+        <ul class="obj-list">
+            <li><b class="highlight">គ្រប់គ្រង Update Flow៖</b> យល់ពីភាពចាំបាច់ដែលត្រូវទាញទិន្នន័យចាស់មកបង្ហាញសិន (GET by ID) មុននឹងអនុញ្ញាតឱ្យ User ធ្វើការកែប្រែរួចបញ្ជូនទៅ Save វិញ។</li>
+            <li><b class="highlight">យល់ពី Hidden Fields៖</b> ស្ទាត់ជំនាញប្រើ <code>&lt;input type="hidden" asp-for="Id" /&gt;</code> ក្នុង MVC ដើម្បីប្រាប់ EF Core ឱ្យដឹងថាវាជាការកែប្រែ (Update) មិនមែនបង្កើតថ្មី (Insert)។</li>
+            <li><b class="highlight">ប្រើ HTTP Methods ត្រឹមត្រូវ៖</b> ចេះបែងចែកនិងប្រើប្រាស់ <code>[HttpPut]</code> សម្រាប់ការកែប្រែ និង <code>[HttpDelete]</code> សម្រាប់ការលុបនៅក្នុង Web API តាមស្តង់ដារ RESTful។</li>
+            <li><b class="highlight">អនុវត្តការលុបដោយសុវត្ថិភាព៖</b> ចេះបង្កើតប្រអប់សួរបញ្ជាក់ (Confirmation) មុននឹងលុបទិន្នន័យ ទាំងក្នុង MVC Views និងប្រើប្រាស់ Javascript សម្រាប់ Web API។</li>
+        </ul>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">សាស្ត្រាចារ្យ សឿង លីម</div>
+        <div class="footer-right">ទំព័រ ២ / ២៧</div>
+    </div>
+</div>
+
+<!-- PAGE 3: 9.1 CONCEPTS -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៩</h1><p>ASP.NET CORE & SQL SERVER</p></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-pen-to-square"></i> ៩.១ លំហូរនៃការកែប្រែ និងលុបទិន្នន័យ (Update & Delete)</div>
+        
+        <div class="text-block">
+            បន្ទាប់ពីយើងចេះបញ្ចូល (Create) និងអាន (Read) រួចមក យើងត្រូវបញ្ចប់វដ្តជីវិតរបស់ CRUD ដោយសិក្សាពីការ **កែប្រែ (Update)** និងការ **លុប (Delete)**។ ប្រតិបត្តិការទាំងពីរនេះ ទាមទារឱ្យមានការកំណត់អត្តសញ្ញាណច្បាស់លាស់ នោះគឺ **Primary Key (Id)**។ 
+        </div>
+
+        <div class="graphic-box" style="padding: 15px; border-left: 4px solid var(--warning); margin-bottom: 15px;">
+            <div style="color:var(--warning); font-family:var(--font-kh-heading); font-size:12pt; font-weight:bold; margin-bottom: 10px;">
+                <i class="fa-solid fa-rotate"></i> ដំណើរការនៃការកែប្រែ (Update Flow)
+            </div>
+            <p style="font-size: 10pt; line-height: 1.6; margin-bottom: 10px;">
+                អ្នកមិនអាចកែប្រែអ្វីដែលអ្នកមើលមិនឃើញនោះទេ។ ដូច្នេះ មុននឹង Update អ្នកត្រូវធ្វើការ <b>GET (ById)</b> ដើម្បីទាញទិន្នន័យចាស់មកចាក់បំពេញក្នុង Form សិន ទើបឱ្យ User កែ និង Submit ទៅវិញ។
+            </p>
+            <div style="display: flex; align-items: center; justify-content: space-between; font-size: 9pt; text-align: center; font-weight: bold; color: var(--text-muted);">
+                <div>១. ចុចប៊ូតុង Edit<br>(ភ្ជាប់ Id ទៅ)</div>
+                <div style="color:var(--warning);">-- GET(Id) --></div>
+                <div>២. Form បង្ហាញ<br>ទិន្នន័យចាស់</div>
+                <div style="color:var(--warning);">-- POST/PUT --></div>
+                <div>៣. Server Save<br>ការកែប្រែ (Update)</div>
+            </div>
+        </div>
+
+        <div class="graphic-box" style="padding: 15px; border-left: 4px solid var(--danger);">
+            <div style="color:var(--danger); font-family:var(--font-kh-heading); font-size:12pt; font-weight:bold; margin-bottom: 10px;">
+                <i class="fa-solid fa-trash"></i> ដំណើរការនៃការលុប (Delete Flow)
+            </div>
+            <p style="font-size: 10pt; line-height: 1.6; margin-bottom: 10px;">
+                ការលុបជារឿងគ្រោះថ្នាក់! ទោះបីជាយើងអាចលុបដោយគ្រាន់តែបាញ់ Id ទៅក៏ដោយ ក៏ស្តង់ដារតម្រូវឱ្យយើងមាន <b>ការសួរបញ្ជាក់ (Confirmation)</b> មុននឹងអនុញ្ញាតឱ្យ Server ធ្វើការ <code>_context.Remove()</code> ជានិច្ច។
+            </p>
+            <div style="display: flex; align-items: center; justify-content: space-between; font-size: 9pt; text-align: center; font-weight: bold; color: var(--text-muted);">
+                <div>១. ចុចប៊ូតុង Delete</div>
+                <div style="color:var(--danger);">-- លោតសួរ --></div>
+                <div>២. Are you sure?</div>
+                <div style="color:var(--danger);">-- Yes (POST/DELETE) --></div>
+                <div>៣. រកមើល Id ក្នុង DB<br>រួចលុបចោល</div>
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">សាស្ត្រាចារ្យ សឿង លីម</div>
+        <div class="footer-right">ទំព័រ ៣ / ២៧</div>
+    </div>
+</div>
+
+<!-- PAGE 4: 9.2 HTTP STATUS CODES -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៩</h1><p>ASP.NET CORE & SQL SERVER</p></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-signal"></i> ៩.២ HTTP Status Codes សម្រាប់ Update និង Delete</div>
+        
+        <div class="text-block">
+            នៅក្នុង RESTful API នៅពេលយើង Update ឬ Delete ជោគជ័យ យើងច្រើនតែមិនបញ្ជូនទិន្នន័យ (Data) ត្រឡប់ទៅ Frontend វិញទេ ព្រោះ Frontend ដឹងរួចហើយថាវាបានលុប ឬកែអ្វី។ ដូច្នេះ យើងមាន Status Code ថ្មីមួយគឺ <b>204 No Content</b>។
+        </div>
+
+        <table class="standard-table" style="margin-top: 10px;">
+            <thead>
+                <tr>
+                    <th style="width: 20%;">Status Code</th>
+                    <th style="width: 15%;">ប្រើក្នុង</th>
+                    <th style="width: 25%;">C# Method</th>
+                    <th>អត្ថន័យ និងយន្តការ</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="color: var(--success); font-weight: bold; font-family: var(--font-en-main); text-align: center;">204 No Content</td>
+                    <td style="text-align: center;"><span class="badge-api">API</span></td>
+                    <td style="font-family: var(--font-code); text-align: center; font-size: 8.5pt;">return NoContent();</td>
+                    <td><b>ជោគជ័យ៖</b> ទិន្នន័យត្រូវ Update ឬ Delete រួចរាល់។ Server ប្រាប់ទៅ Client ថា "ការងារជោគជ័យហើយ តែខ្ញុំអត់មានអី(JSON)ហុចឱ្យវិញទេ!"។</td>
+                </tr>
+                <tr>
+                    <td style="color: var(--mvc-color); font-weight: bold; font-family: var(--font-en-main); text-align: center;">302 Found<br>(Redirect)</td>
+                    <td style="text-align: center;"><span class="badge-mvc">MVC</span></td>
+                    <td style="font-family: var(--font-code); text-align: center; font-size: 8.5pt;">return RedirectToAction("Index");</td>
+                    <td><b>ជោគជ័យ៖</b> ដូចគ្នានឹងការ Create ដែរ, ក្រោយ Update ឬ Delete រួច MVC នឹងបញ្ជា Browser ឱ្យលោតទៅទំព័រ Index វិញ។</td>
+                </tr>
+                <tr>
+                    <td style="color: var(--danger); font-weight: bold; font-family: var(--font-en-main); text-align: center;">404 Not Found</td>
+                    <td style="text-align: center;"><span class="badge-mvc">MVC</span> <span class="badge-api">API</span></td>
+                    <td style="font-family: var(--font-code); text-align: center; font-size: 8.5pt;">return NotFound();</td>
+                    <td><b>រកមិនឃើញ៖</b> អ្នកប្រើប្រាស់ព្យាយាម Edit ឬ Delete ទិន្នន័យដែលគ្មានក្នុង Database (ឧ. Id នោះត្រូវគេលុបបាត់ហើយ)។</td>
+                </tr>
+                <tr>
+                    <td style="color: var(--warning); font-weight: bold; font-family: var(--font-en-main); text-align: center;">400 Bad Request</td>
+                    <td style="text-align: center;"><span class="badge-api">API</span></td>
+                    <td style="font-family: var(--font-code); text-align: center; font-size: 8.5pt;">return BadRequest();</td>
+                    <td><b>ខុសទម្រង់៖</b> នៅក្នុង Web API ប្រសិនបើ Id នៅលើ URL មិនត្រូវគ្នានឹង Id នៅក្នុង JSON Body នោះវានឹងចាត់ទុកថាជា Bad Request។</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">សាស្ត្រាចារ្យ សឿង លីម</div>
+        <div class="footer-right">ទំព័រ ៤ / ២៧</div>
+    </div>
+</div>
+
+<!-- PAGE 5: 9.3 TRADITIONAL MVC - EDIT CONTROLLER -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៩</h1><p>ASP.NET CORE & SQL SERVER</p></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0; color: var(--mvc-color); border-color: var(--mvc-color);">
+            <i class="fa-solid fa-server"></i> ផ្នែកក៖ ៩.៣ ការរៀបចំ Method Edit ក្នុង MVC 
+        </div>
+        
+        <div class="text-block">
+            ដូចគ្នានឹងការ Create ដែរ ការ Edit ក៏ត្រូវការ <b>Action ចំនួន ២</b> ផងដែរ។ ទីមួយ (GET) សម្រាប់ទាញយកទិន្នន័យចាស់តាម Id មកបង្ហាញលើ Form។ ទីពីរ (POST) សម្រាប់ទទួលយកទិន្នន័យថ្មីដែល User បានកែប្រែ យកមក Update ក្នុង Database។
+        </div>
+
+        <div class="code-window" style="margin-top: 10px;">
+            <div class="code-header" style="background:#064E3B; border-bottom:1px solid #022C22;">
+                <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+                <div class="code-title" style="color:#A7F3D0;">Controllers/StudentController.cs (Edit Method)</div>
+            </div>
+<pre><span style="color:#5C6370;">// ១. [HttpGet] Edit - ទទួល Id, រកក្នុង DB, រួចបញ្ជូនទៅ View</span>
+[HttpGet]
+<span style="color:#C678DD;">public async</span> Task&lt;IActionResult&gt; <span style="color:#61AFEF;">Edit</span>(<span style="color:#C678DD;">int?</span> id)
+{
+    <span style="color:#C678DD;">if</span> (id == <span style="color:#D19A66;">null</span>) <span style="color:#C678DD;">return</span> NotFound(); <span style="color:#5C6370;">// បើមិនហុច Id មក គឺ Error 404</span>
+
+    <span style="color:#5C6370;">// ស្វែងរកទិន្នន័យក្នុង DB</span>
+    <span style="color:#C678DD;">var</span> student = <span style="color:#C678DD;">await</span> _context.Students.FindAsync(id);
+    <span style="color:#C678DD;">if</span> (student == <span style="color:#D19A66;">null</span>) <span style="color:#C678DD;">return</span> NotFound();
+
+    <span style="color:#5C6370;">// បញ្ជូនទិន្នន័យចាស់ទៅឱ្យ View ដើម្បីចាក់ចូលក្នុង Form</span>
+    <span style="color:#C678DD;">return</span> View(student); 
+}
+
+<span style="color:#5C6370;">// ២. [HttpPost] Edit - ទទួល Model ពី Form មក Update</span>
+[HttpPost]
+[ValidateAntiForgeryToken]
+<span style="color:#C678DD;">public async</span> Task&lt;IActionResult&gt; <span style="color:#61AFEF;">Edit</span>(<span style="color:#C678DD;">int</span> id, Student model)
+{
+    <span style="color:#C678DD;">if</span> (id != model.Id) <span style="color:#C678DD;">return</span> NotFound(); <span style="color:#5C6370;">// ការពារកុំឱ្យគេ Hack ប្តូរ Id</span>
+
+    <span style="color:#C678DD;">if</span> (ModelState.IsValid)
+    {
+        <span style="color:#5C6370;">// បញ្ជាឱ្យ EF Core ធ្វើការ Update រួច Save</span>
+        _context.Update(model);
+        <span style="color:#C678DD;">await</span> _context.SaveChangesAsync();
+        <span style="color:#C678DD;">return</span> RedirectToAction(nameof(Index));
+    }
+    
+    <span style="color:#5C6370;">// បើកែខុស Validation, បញ្ជូន Form មកឱ្យកែប្រែឡើងវិញ</span>
+    <span style="color:#C678DD;">return</span> View(model); 
+}</pre>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">សាស្ត្រាចារ្យ សឿង លីម</div>
+        <div class="footer-right">ទំព័រ ៥ / ២៧</div>
+    </div>
+</div>
+
+<!-- PAGE 6: 9.3 TRADITIONAL MVC - EDIT VIEW (HIDDEN ID) -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៩</h1><p>ASP.NET CORE & SQL SERVER</p></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0; color: var(--mvc-color); border-color: var(--mvc-color);">
+            <i class="fa-brands fa-html5"></i> ៩.៣ សារៈសំខាន់នៃ Hidden Input ក្នុង Edit View
+        </div>
+        
+        <div class="text-block">
+            ការបង្កើត <code>Edit.cshtml</code> គឺស្ទើរតែដូចគ្នាបេះបិទទៅនឹង <code>Create.cshtml</code> ដែរ ដោយវាប្រើប្រាស់ Tag Helpers ដើម្បីចាក់ទិន្នន័យចាស់ចូលទៅក្នុងប្រអប់។ ប៉ុន្តែ <b>ចំណុចខុសគ្នាដ៏ធំបំផុតតែមួយគត់</b> គឺអ្នកត្រូវតែលាក់ <code>Id</code> នៅក្នុង Form បើពុំនោះទេ ពេល Submit ទៅ Server វានឹងគិតថាអ្នកចង់ Create ថ្មី!
+        </div>
+
+        <div class="code-window" style="margin-top: 15px;">
+            <div class="code-header" style="background:#064E3B; border-bottom:1px solid #022C22;">
+                <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+                <div class="code-title" style="color:#A7F3D0;">Views/Student/Edit.cshtml</div>
+            </div>
+<pre><span style="color:#C678DD;">@model</span> SchoolApp.Models.Student
+
+<span style="color:#E06C75;">&lt;h2&gt;</span>កែប្រែទិន្នន័យនិស្សិត<span style="color:#E06C75;">&lt;/h2&gt;</span>
+
+<span style="color:#E06C75;">&lt;form <span style="color:#D19A66;">asp-action</span>=<span style="color:#98C379;">"Edit"</span> <span style="color:#D19A66;">method</span>=<span style="color:#98C379;">"post"</span>&gt;</span>
+    
+    <span style="color:#5C6370;">&lt;!-- សំខាន់បំផុត៖ ត្រូវលាក់ Id! បើគ្មានកូដមួយបន្ទាត់នេះទេ EF Core នឹង Error --&gt;</span>
+    <span style="color:#E06C75;">&lt;input <span style="color:#D19A66;">type</span>=<span style="color:#98C379;">"hidden"</span> <span style="color:#D19A66;">asp-for</span>=<span style="color:#98C379;">"Id"</span> /&gt;</span>
+
+    <span style="color:#E06C75;">&lt;div <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"form-group"</span>&gt;</span>
+        <span style="color:#E06C75;">&lt;label <span style="color:#D19A66;">asp-for</span>=<span style="color:#98C379;">"FullName"</span>&gt;</span>ឈ្មោះពេញ៖<span style="color:#E06C75;">&lt;/label&gt;</span>
+        <span style="color:#5C6370;">&lt;!-- ទិន្នន័យចាស់នឹងលោតចូលក្នុងប្រអប់នេះដោយស្វ័យប្រវត្ត --&gt;</span>
+        <span style="color:#E06C75;">&lt;input <span style="color:#D19A66;">asp-for</span>=<span style="color:#98C379;">"FullName"</span> <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"form-control"</span> /&gt;</span>
+        <span style="color:#E06C75;">&lt;span <span style="color:#D19A66;">asp-validation-for</span>=<span style="color:#98C379;">"FullName"</span> <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"text-danger"</span>&gt;&lt;/span&gt;</span>
+    <span style="color:#E06C75;">&lt;/div&gt;</span>
+
+    <span style="color:#E06C75;">&lt;div <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"form-group"</span>&gt;</span>
+        <span style="color:#E06C75;">&lt;label <span style="color:#D19A66;">asp-for</span>=<span style="color:#98C379;">"MajorId"</span>&gt;</span>លេខកូដជំនាញ៖<span style="color:#E06C75;">&lt;/label&gt;</span>
+        <span style="color:#E06C75;">&lt;input <span style="color:#D19A66;">asp-for</span>=<span style="color:#98C379;">"MajorId"</span> <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"form-control"</span> /&gt;</span>
+    <span style="color:#E06C75;">&lt;/div&gt;</span>
+
+    <span style="color:#E06C75;">&lt;button <span style="color:#D19A66;">type</span>=<span style="color:#98C379;">"submit"</span> <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"btn btn-primary"</span>&gt;</span>កែប្រែទិន្នន័យ (Update)<span style="color:#E06C75;">&lt;/button&gt;</span>
+<span style="color:#E06C75;">&lt;/form&gt;</span></pre>
+        </div>
+
+        <div class="lab-box" style="margin-top: 15px; border-color: var(--danger); background: #FEF2F2; border-left: 5px solid var(--danger);">
+            <h4 style="color: var(--danger);"><i class="fa-solid fa-triangle-exclamation"></i> ប្រយ័ត្ន៖ បញ្ហាពេលភ្លេចដាក់ Hidden Id</h4>
+            <p style="font-size: 10pt; line-height: 1.6; margin: 0; color: var(--text-main);">
+                ប្រសិនបើអ្នកមិនដាក់ <code>&lt;input type="hidden" asp-for="Id" /&gt;</code> នោះពេល Form ត្រូវបាន Submit, តម្លៃ Id នឹងស្មើ <code>0</code>។ ពេលនោះកូដ <code>if (id != model.Id)</code> នៅក្នុង Controller នឹងចាប់ខុស ហើយបាញ់ <b>404 NotFound</b> ឬបណ្តាលឱ្យ EF Core បង្កើតទិន្នន័យថ្មីត្រួតគ្នា!
+            </p>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">សាស្ត្រាចារ្យ សឿង លីម</div>
+        <div class="footer-right">ទំព័រ ៦ / ២៧</div>
+    </div>
+</div>
+
+<!-- PAGE 7: 9.4 TRADITIONAL MVC - DELETE CONTROLLER -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៩</h1><p>ASP.NET CORE & SQL SERVER</p></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0; color: var(--mvc-color); border-color: var(--mvc-color);">
+            <i class="fa-solid fa-trash-can"></i> ៩.៤ ការរៀបចំ Method Delete ក្នុង MVC
+        </div>
+        
+        <div class="text-block">
+            ការលុបទិន្នន័យក្នុង MVC គឺមានលក្ខណៈប្លែកបន្តិច។ ដើម្បីសុវត្ថិភាព យើងតែងតែបង្កើត Action [HttpGet] មួយដើម្បីបង្ហាញផ្ទាំង <b>"តើអ្នកពិតជាចង់លុបមែនទេ?" (Delete.cshtml)</b> ជាមួយនឹងព័ត៌មានលម្អិត។ បន្ទាប់មកទើបយើងមានប៊ូតុង Submit ដែលនឹងរត់ទៅរក Action [HttpPost] ដើម្បីលុបពិតប្រាកដ។
+        </div>
+
+        <div class="code-window" style="margin-top: 10px;">
+            <div class="code-header" style="background:#064E3B; border-bottom:1px solid #022C22;">
+                <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+                <div class="code-title" style="color:#A7F3D0;">Controllers/StudentController.cs (Delete Methods)</div>
+            </div>
+<pre><span style="color:#5C6370;">// ១. [HttpGet] Delete - បង្ហាញទំព័រសួរបញ្ជាក់</span>
+[HttpGet]
+<span style="color:#C678DD;">public async</span> Task&lt;IActionResult&gt; <span style="color:#61AFEF;">Delete</span>(<span style="color:#C678DD;">int?</span> id)
+{
+    <span style="color:#C678DD;">if</span> (id == <span style="color:#D19A66;">null</span>) <span style="color:#C678DD;">return</span> NotFound();
+
+    <span style="color:#C678DD;">var</span> student = <span style="color:#C678DD;">await</span> _context.Students.FindAsync(id);
+    <span style="color:#C678DD;">if</span> (student == <span style="color:#D19A66;">null</span>) <span style="color:#C678DD;">return</span> NotFound();
+
+    <span style="color:#C678DD;">return</span> View(student); <span style="color:#5C6370;">// បង្ហាញឯកសារ Delete.cshtml</span>
+}
+
+<span style="color:#5C6370;">// ២. [HttpPost] DeleteConfirmed - ទទួលការបញ្ជាក់ ទើបលុបពិតប្រាកដ</span>
+<span style="color:#5C6370;">// ចំណាំ៖ យើងប្រើ ActionName("Delete") ដើម្បីឱ្យវាត្រូវគ្នានឹង URL ខាងលើ</span>
+[HttpPost, ActionName(<span style="color:#98C379;">"Delete"</span>)]
+[ValidateAntiForgeryToken]
+<span style="color:#C678DD;">public async</span> Task&lt;IActionResult&gt; <span style="color:#61AFEF;">DeleteConfirmed</span>(<span style="color:#C678DD;">int</span> id)
+{
+    <span style="color:#5C6370;">// រកទិន្នន័យនោះឱ្យឃើញសិន</span>
+    <span style="color:#C678DD;">var</span> student = <span style="color:#C678DD;">await</span> _context.Students.FindAsync(id);
+    <span style="color:#C678DD;">if</span> (student != <span style="color:#D19A66;">null</span>)
+    {
+        <span style="color:#5C6370;">// បញ្ជាឱ្យ EF Core លុបចេញពី Database</span>
+        _context.Students.Remove(student);
+        <span style="color:#C678DD;">await</span> _context.SaveChangesAsync();
+    }
+    
+    <span style="color:#C678DD;">return</span> RedirectToAction(nameof(Index));
+}</pre>
+        </div>
+        <div class="text-block" style="font-size: 9.5pt; color: var(--text-muted);">
+            *យើងត្រូវប្តូរឈ្មោះ Method ទៅជា <code>DeleteConfirmed</code> ដោយសារតែ C# មិនអនុញ្ញាតឱ្យមាន Method ២ មានឈ្មោះ <code>Delete(int id)</code> ដូចគ្នា និង Parameter ដូចគ្នានោះទេ។ ប៉ុន្តែយើងប្រើ <code>ActionName("Delete")</code> ដើម្បីបន្លំឱ្យ MVC ដឹងថាវាគឺ Action តែមួយ។
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">សាស្ត្រាចារ្យ សឿង លីម</div>
+        <div class="footer-right">ទំព័រ ៧ / ២៧</div>
+    </div>
+</div>
+
+<!-- PAGE 8: 9.5 WEB API - PUT CONTROLLER -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៩</h1><p>ASP.NET CORE & SQL SERVER</p></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0; color: var(--api-color); border-color: var(--api-color);">
+            <i class="fa-solid fa-network-wired"></i> ផ្នែកខ៖ ៩.៥ ការបង្កើត [HttpPut] ក្នុង Web API
+        </div>
+        
+        <div class="text-block">
+            ផ្លាស់ប្តូរមកកាន់ស្ថាបត្យកម្ម <b>Web API</b> វិញម្តង។ សម្រាប់ API យើងមិនត្រូវការ Action ចំនួន ២ សម្រាប់ការ Update ទេ។ យើងត្រូវការតែមួយប៉ុណ្ណោះ នោះគឺ <code>[HttpPut]</code> ព្រោះ Frontend ជាអ្នកទទួលបន្ទុកក្នុងការទាញទិន្នន័យ (GET) ទៅបង្ហាញក្នុង Form ខ្លួនវា។
+        </div>
+        <div class="text-block">
+            យោងតាមស្តង់ដារ RESTful ការ Update ទាមទារឱ្យយើងបញ្ជូន <b>Id តាម URL</b> និង <b>ទិន្នន័យថ្មីតាម JSON Body</b>។
+        </div>
+
+        <div class="code-window" style="margin-top: 15px;">
+            <div class="code-header" style="background:#4C1D95; border-bottom:1px solid #2E1065;">
+                <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+                <div class="code-title" style="color:#DDD6FE;">Controllers/StudentApiController.cs (PUT)</div>
+            </div>
+<pre><span style="color:#5C6370;">// បញ្ជាក់ថា Method នេះទាមទារ Id នៅលើ URL (ឧ. /api/StudentApi/5)</span>
+[HttpPut(<span style="color:#98C379;">"{id}"</span>)]
+<span style="color:#C678DD;">public async</span> Task&lt;IActionResult&gt; <span style="color:#61AFEF;">UpdateStudent</span>(<span style="color:#C678DD;">int</span> id, [FromBody] Student model)
+{
+    <span style="color:#5C6370;">// ១. ផ្ទៀងផ្ទាត់ថា Id លើ URL និង Id ក្នុង JSON តួខ្លួនគឺដូចគ្នា (សុវត្ថិភាព)</span>
+    <span style="color:#C678DD;">if</span> (id != model.Id)
+    {
+        <span style="color:#C678DD;">return</span> BadRequest(<span style="color:#98C379;">"ID mismatch!"</span>);
+    }
+
+    <span style="color:#5C6370;">// ២. បញ្ជាឱ្យ EF Core Update</span>
+    _context.Entry(model).State = EntityState.Modified;
+
+    <span style="color:#C678DD;">try</span>
+    {
+        <span style="color:#C678DD;">await</span> _context.SaveChangesAsync();
+    }
+    <span style="color:#C678DD;">catch</span> (DbUpdateConcurrencyException)
+    {
+        <span style="color:#5C6370;">// ករណីរក Id នោះមិនឃើញក្នុង Database ពេលកំពុង Save</span>
+        <span style="color:#C678DD;">if</span> (!_context.Students.Any(e =&gt; e.Id == id))
+            <span style="color:#C678DD;">return</span> NotFound();
+        <span style="color:#C678DD;">else</span>
+            <span style="color:#C678DD;">throw</span>;
+    }
+
+    <span style="color:#5C6370;">// ៣. ជោគជ័យ! បញ្ចេញ Status 204 No Content ដោយមិនបាច់ហុច JSON ទៅវិញទេ</span>
+    <span style="color:#C678DD;">return</span> NoContent();
+}</pre>
+        </div>
+        <div class="text-block" style="font-size: 9.5pt; color: var(--text-muted);">
+            *ការប្រើ <code>EntityState.Modified</code> គឺជាវិធីសាស្រ្តមួយទៀតរបស់ EF Core ដែលមានភាពរហ័ស ព្រោះវាមិនបាច់ធ្វើការស្វែងរក (Find) ទិន្នន័យក្នុង DB ជាមុននោះទេ វាលោតទៅកែប្រែដោយផ្ទាល់តែម្តង។
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">សាស្ត្រាចារ្យ សឿង លីម</div>
+        <div class="footer-right">ទំព័រ ៨ / ២៧</div>
+    </div>
+</div>
+
+<!-- PAGE 9: 9.6 WEB API - DELETE CONTROLLER -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៩</h1><p>ASP.NET CORE & SQL SERVER</p></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0; color: var(--api-color); border-color: var(--api-color);">
+            <i class="fa-solid fa-trash-can"></i> ៩.៦ ការបង្កើត [HttpDelete] ក្នុង Web API
+        </div>
+        
+        <div class="text-block">
+            ការលុបទិន្នន័យក្នុង Web API គឺមានភាពសាមញ្ញ និងខ្លីបំផុត។ យើងប្រើ <code>[HttpDelete("{id}")]</code> ដើម្បីទទួលយក Id តាមរយៈ URL (មិនមាន Body JSON ទេ) ហើយធ្វើការលុបទិន្នន័យនោះចេញពី Database តែម្តង។
+        </div>
+
+        <div class="code-window" style="margin-top: 15px;">
+            <div class="code-header" style="background:#4C1D95; border-bottom:1px solid #2E1065;">
+                <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+                <div class="code-title" style="color:#DDD6FE;">Controllers/StudentApiController.cs (DELETE)</div>
+            </div>
+<pre>[HttpDelete(<span style="color:#98C379;">"{id}"</span>)]
+<span style="color:#C678DD;">public async</span> Task&lt;IActionResult&gt; <span style="color:#61AFEF;">DeleteStudent</span>(<span style="color:#C678DD;">int</span> id)
+{
+    <span style="color:#5C6370;">// ១. ស្វែងរកទិន្នន័យដែលត្រូវលុបនៅក្នុង Database</span>
+    <span style="color:#C678DD;">var</span> student = <span style="color:#C678DD;">await</span> _context.Students.FindAsync(id);
+    
+    <span style="color:#5C6370;">// ២. បើរកមិនឃើញ បាញ់កូដ 404 ប្រាប់ទៅ Frontend</span>
+    <span style="color:#C678DD;">if</span> (student == <span style="color:#D19A66;">null</span>)
+    {
+        <span style="color:#C678DD;">return</span> NotFound(<span style="color:#98C379;">"រកមិនឃើញទិន្នន័យដែលអ្នកចង់លុបឡើយ!"</span>);
+    }
+
+    <span style="color:#5C6370;">// ៣. បើរកឃើញ បញ្ជាឱ្យ EF Core លុបចោលរួច Save</span>
+    _context.Students.Remove(student);
+    <span style="color:#C678DD;">await</span> _context.SaveChangesAsync();
+
+    <span style="color:#5C6370;">// ៤. ឆ្លើយតបកូដ 204 No Content (ជោគជ័យ)</span>
+    <span style="color:#C678DD;">return</span> NoContent();
+}</pre>
+        </div>
+
+        <div class="lab-box" style="margin-top: 20px; border-color: var(--warning); background: #FFFBEB; border-left: 5px solid var(--warning);">
+            <h4 style="color: var(--warning);"><i class="fa-solid fa-lightbulb"></i> ចំណាំ៖ ការសួរបញ្ជាក់គឺធ្វើនៅ Frontend!</h4>
+            <p style="font-size: 10pt; line-height: 1.6; margin: 0; color: var(--text-main);">
+                ដោយសារ API គ្រាន់តែជារោងចក្រទទួលបញ្ជា វាមិនមាន Action [HttpGet] សម្រាប់លោតសួរ <i>"តើអ្នកចង់លុបមែនទេ?"</i> ដូច MVC ឡើយ។ ការសួរបញ្ជាក់ (Confirmation Alert) គឺជាភារកិច្ចរបស់អ្នកសរសេរ Javascript ខាង Frontend (SPA) មុននឹងសម្រេចចិត្តបាញ់ Fetch DELETE មក API។
+            </p>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">សាស្ត្រាចារ្យ សឿង លីម</div>
+        <div class="footer-right">ទំព័រ ៩ / ២៧</div>
+    </div>
+</div>
+
+<!-- PAGE 10: 9.7 JS FETCH PUT & DELETE -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៩</h1><p>ASP.NET CORE & SQL SERVER</p></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0; color: var(--api-color); border-color: var(--api-color);">
+            <i class="fa-brands fa-js"></i> ៩.៧ ការប្រើ JS Fetch (PUT & DELETE) លើ Frontend
+        </div>
+        <div class="text-block">
+            ដើម្បីកែប្រែ ឬលុប យើងគ្រាន់តែប្តូរ <code>method</code> នៅក្នុងជម្រើសរបស់ <code>fetch()</code> ជាការស្រេច។
+        </div>
+
+        <div class="sub-heading" style="color:var(--text-main); font-size:11pt;">១. ការបាញ់ Update (PUT Method)៖</div>
+        <div class="code-window" style="margin-top: 5px; margin-bottom:15px; font-size:8pt;">
+<pre><span style="color:#C678DD;">const</span> updateData = { <span style="color:#E06C75;">id</span>: <span style="color:#D19A66;">5</span>, <span style="color:#E06C75;">fullName</span>: <span style="color:#98C379;">"Sok New"</span>, <span style="color:#E06C75;">majorId</span>: <span style="color:#D19A66;">2</span> };
+
+<span style="color:#C678DD;">const</span> response = <span style="color:#C678DD;">await</span> <span style="color:#61AFEF;">fetch</span>(<span style="color:#98C379;">`https://localhost:7123/api/StudentApi/${updateData.id}`</span>, {
+    <span style="color:#E06C75;">method</span>: <span style="color:#98C379;">'PUT'</span>, <span style="color:#5C6370;">// ដូរពី POST មក PUT</span>
+    <span style="color:#E06C75;">headers</span>: { <span style="color:#98C379;">'Content-Type'</span>: <span style="color:#98C379;">'application/json'</span> },
+    <span style="color:#E06C75;">body</span>: <span style="color:#E5C07B;">JSON</span>.<span style="color:#61AFEF;">stringify</span>(updateData)
+});
+
+<span style="color:#C678DD;">if</span> (response.<span style="color:#E06C75;">ok</span>) <span style="color:#61AFEF;">alert</span>(<span style="color:#98C379;">"កែប្រែជោគជ័យ (204 No Content)!"</span>);</pre>
+        </div>
+
+        <div class="sub-heading" style="color:var(--danger); font-size:11pt;">២. ការបាញ់លុប (DELETE Method)៖</div>
+        <div class="code-window" style="margin-top: 5px; font-size:8pt;">
+<pre><span style="color:#C678DD;">async function</span> <span style="color:#61AFEF;">deleteStudent</span>(id) {
+    <span style="color:#5C6370;">// ការសួរបញ្ជាក់នៅលើ Frontend</span>
+    <span style="color:#C678DD;">if</span> (<span style="color:#61AFEF;">confirm</span>(<span style="color:#98C379;">"តើអ្នកពិតជាចង់លុបទិន្នន័យនេះមែនទេ?"</span>)) {
+        
+        <span style="color:#C678DD;">const</span> response = <span style="color:#C678DD;">await</span> <span style="color:#61AFEF;">fetch</span>(<span style="color:#98C379;">`https://localhost:7123/api/StudentApi/${id}`</span>, {
+            <span style="color:#E06C75;">method</span>: <span style="color:#98C379;">'DELETE'</span> <span style="color:#5C6370;">// មិនត្រូវការ headers និង body ទេព្រោះគ្មាន JSON បញ្ជូនទៅឡើយ</span>
+        });
+
+        <span style="color:#C678DD;">if</span> (response.<span style="color:#E06C75;">ok</span>) {
+            <span style="color:#61AFEF;">alert</span>(<span style="color:#98C379;">"លុបជោគជ័យ!"</span>);
+            <span style="color:#5C6370;">// ហៅ Function loadData() ម្តងទៀតដើម្បី Refresh តារាង</span>
+        } <span style="color:#C678DD;">else</span> {
+            <span style="color:#61AFEF;">alert</span>(<span style="color:#98C379;">"មានបញ្ហា ឬទិន្នន័យត្រូវបានគេលុបបាត់ហើយ!"</span>);
+        }
+    }
+}</pre>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">សាស្ត្រាចារ្យ សឿង លីម</div>
+        <div class="footer-right">ទំព័រ ១០ / ២៧</div>
+    </div>
+</div>
+
+<!-- PAGE 11: DEBUGGING PUT/DELETE -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៩</h1><p>ASP.NET CORE & SQL SERVER</p></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-bug-slash"></i> គន្លឹះដោះស្រាយបញ្ហា (Debugging Update/Delete)</div>
+        
+        <div class="text-block">
+            ការ Update តែងតែមានកំហុសញឹកញាប់ដោយសារតែបញ្ហា <b>Id Mismatch</b>។ ចំណែកការ Delete អាចមានបញ្ហាពាក់ព័ន្ធនឹង <b>Foreign Key Constraint</b> នៅក្នុង Database។
+        </div>
+
+        <div class="graphic-box" style="margin-top: 15px; border-color: var(--danger); border-left: 4px solid var(--danger);">
+            <div style="font-weight: bold; color: var(--danger); font-size: 11pt; margin-bottom: 5px;">
+                <i class="fa-solid fa-skull-crossbones"></i> បញ្ហា Error 400 ពេលបាញ់ PUT (API)
+            </div>
+            <p style="font-size: 9.5pt; line-height: 1.6; margin: 0;">
+                ប្រសិនបើអ្នកបាញ់ URL ទៅកាន់ <code>/api/StudentApi/5</code> ប៉ុន្តែ JSON Body របស់អ្នកគឺ <code>{"id": 0, "name": "Sok"}</code> (ឬភ្លេចដាក់ id ចូល) នោះកូដ C# <code>if(id != model.Id)</code> នឹងចាត់ទុកវាជា <b>400 Bad Request</b> ភ្លាម។ សូមឆែកមើល Payload ក្នុង Network Tab ឱ្យបានច្បាស់។
+            </p>
+        </div>
+
+        <div class="graphic-box" style="margin-top: 15px; border-color: var(--warning); border-left: 4px solid var(--warning);">
+            <div style="font-weight: bold; color: var(--warning); font-size: 11pt; margin-bottom: 5px;">
+                <i class="fa-solid fa-link-slash"></i> បញ្ហា Error 500 ពេលបាញ់ DELETE (Foreign Key)
+            </div>
+            <p style="font-size: 9.5pt; line-height: 1.6; margin: 0;">
+                ឧទាហរណ៍៖ ប្រសិនបើអ្នកព្យាយាមលុប "ជំនាញព័ត៌មានវិទ្យា (Category)" ដែលមាននិស្សិតកំពុងរៀនរាប់រយនាក់ (មានទិន្នន័យចងភ្ជាប់គ្នា) នោះ SQL Server នឹងមិនអនុញ្ញាតឱ្យលុបឡើយ ហើយវានឹងបាញ់ <b>500 Internal Server Error</b> មកវិញ។ ដំណោះស្រាយគឺត្រូវលុបនិស្សិតឱ្យអស់សិន ទើបអាចលុបជំនាញបាន។
+            </p>
+        </div>
+
+        <div class="lab-box" style="margin-top: 15px; border-color: var(--mvc-color); background: white; border-left: 5px solid var(--mvc-color);">
+            <h4 style="color: var(--mvc-color);"><i class="fa-solid fa-laptop-code"></i> គន្លឹះពិនិត្យកំហុស ក្នុង MVC Edit៖</h4>
+            <ul style="margin-top: 10px; padding-left: 20px; font-size: 10pt; line-height: 1.8;">
+                <li>ប្រសិនបើអ្នកចុច Edit រួច Save ទៅវាបង្កើតទិន្នន័យថ្មីមួយទៀត នោះមកពីអ្នកភ្លេចដាក់ <code>&lt;input type="hidden" asp-for="Id" /&gt;</code>។</li>
+                <li>ប្រសិនបើចុចប៊ូតុង Delete (URL <code>/Student/Delete/5</code>) ហើយចេញទំព័រស 404 មានន័យថាអ្នកភ្លេចបង្កើត Action [HttpGet] Delete នៅក្នុង Controller ។</li>
+            </ul>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">សាស្ត្រាចារ្យ សឿង លីម</div>
+        <div class="footer-right">ទំព័រ ១១ / ២៧</div>
+    </div>
+</div>
+
+<!-- PAGE 12: GLOSSARY -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៩</h1><p>ASP.NET CORE & SQL SERVER</p></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-book-bookmark"></i> ពន្យល់ពាក្យគន្លឹះ (Glossary)</div>
+        
+        <table class="standard-table">
+            <thead>
+                <tr>
+                    <th style="width: 30%;">ពាក្យបច្ចេកទេស</th>
+                    <th>ការពន្យល់ជាភាសាខ្មែរ</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background: #F8FAFC;"><td colspan="2" style="font-weight:bold; color:var(--text-main); text-align:center;">HTTP Methods និង Status</td></tr>
+                <tr>
+                    <td><b>PUT Request</b></td>
+                    <td>វិធីសាស្ត្រ (HTTP Method) ប្រើសម្រាប់ Update ទិន្នន័យទាំងស្រុងដោយទាមទារការបញ្ជូន Id តាម URL និងទិន្នន័យថ្មីតាម JSON Body។</td>
+                </tr>
+                <tr>
+                    <td><b>DELETE Request</b></td>
+                    <td>វិធីសាស្ត្រសម្រាប់លុបទិន្នន័យ ដោយគ្រាន់តែភ្ជាប់ Id ទៅលើ URL ជាការស្រេច។</td>
+                </tr>
+                <tr>
+                    <td><b>204 No Content</b></td>
+                    <td>Status ឆ្លើយតបជោគជ័យ ដែលមានន័យថា "ខ្ញុំបានធ្វើរួចរាល់ហើយ តែខ្ញុំមិនមានទិន្នន័យ(JSON)អ្វីត្រូវឆ្លើយតបទៅអ្នកវិញទេ" (ប្រើពេល Update/Delete)។</td>
+                </tr>
+                <tr>
+                    <td><b>404 Not Found</b></td>
+                    <td>Status ប្រាប់ថាទិន្នន័យ (Id) ដែលអ្នកកំពុងព្យាយាមកែប្រែ ឬលុបនោះ មិនមាននៅក្នុង Database ឡើយ។</td>
+                </tr>
+                
+                <tr style="background: #F8FAFC;"><td colspan="2" style="font-weight:bold; color:var(--text-main); text-align:center;">.NET Core មុខងារបច្ចេកទេស</td></tr>
+                <tr>
+                    <td><b>type="hidden"</b></td>
+                    <td>ប្រភេទប្រអប់ Input ក្នុង HTML ដែលលាក់មិនឱ្យ User ឃើញ ប្រើសម្រាប់រក្សាទុក <code>Id</code> ក្នុងពេល Edit តាមបែប MVC។</td>
+                </tr>
+                <tr>
+                    <td><b>_context.Update()</b></td>
+                    <td>បញ្ជាឱ្យ Entity Framework ត្រៀមខ្លួនក្នុងការកែប្រែទិន្នន័យ មុននឹងហៅ <code>SaveChangesAsync()</code>។</td>
+                </tr>
+                <tr>
+                    <td><b>_context.Remove()</b></td>
+                    <td>បញ្ជាឱ្យ Entity Framework ត្រៀមខ្លួនក្នុងការលុបទិន្នន័យចោល។</td>
+                </tr>
+                <tr>
+                    <td><b>ActionName("...")</b></td>
+                    <td>Attribute ក្នុង MVC ដែលអនុញ្ញាតឱ្យយើងប្តូរឈ្មោះ Method ក្នុង C# (ឧ. DeleteConfirmed) ឱ្យស្គាល់ជាឈ្មោះផ្សេងនៅលើ URL (ឧ. /Delete)។</td>
+                </tr>
+                <tr>
+                    <td><b>confirm()</b></td>
+                    <td>មុខងារ Javascript សម្រាប់លោតប្រអប់សួរ Yes/No ពីអ្នកប្រើប្រាស់ មុនពេលអនុញ្ញាតឱ្យកូដបន្តទៅមុខ (ប្រើញឹកញាប់ពេល Delete)។</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">សាស្ត្រាចារ្យ សឿង លីម</div>
+        <div class="footer-right">ទំព័រ ១២ / ២៧</div>
+    </div>
+</div>
+
+<!-- PAGE 13: SUMMARY & REFERENCES -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៩</h1><p>ASP.NET CORE & SQL SERVER</p></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-list-check"></i> ៩.៨ សេចក្តីសង្ខេបជំពូកទី ៩ (Summary)</div>
+        <ul class="obj-list" style="margin-top:10px;">
+            <li><b class="highlight" style="color:var(--mvc-color);">Traditional MVC៖</b> ការ Edit ត្រូវការ Action (GET) ដើម្បីទាញទិន្នន័យចាស់មកដាក់ក្នុង Form និង (POST) សម្រាប់ Save ឡើងវិញ។ ចំណុចស្លាប់រស់គឺការដាក់ <code>&lt;input type="hidden" asp-for="Id" /&gt;</code>។ ការ Delete ត្រូវមានការសួរបញ្ជាក់នៅលើ View មុននឹងបាញ់ POST ទៅកាន់ <code>DeleteConfirmed</code> Action ដើម្បីលុបចេញពី Database។</li>
+            
+            <li style="margin-top: 15px;"><b class="highlight" style="color:var(--api-color);">Web API & SPA៖</b> ការកែប្រែត្រូវប្រើប្រាស់ <code>[HttpPut("{id}")]</code> នៅក្នុង C# និងការបាញ់ <code>fetch</code> method 'PUT' ពី Frontend ដោយត្រូវធានាថា Id លើ URL ត្រូវគ្នានឹង Id ក្នុង Body។ ចំណែកការលុបប្រើ <code>[HttpDelete("{id}")]</code> ហើយ Frontend ត្រូវប្រើ <code>confirm()</code> របស់ JS ដើម្បីសួរមុននឹងបាញ់ fetch method 'DELETE'។ ទាំងពីរនេះគួរឆ្លើយតប <code>204 No Content</code>។</li>
+            
+            <li style="margin-top: 15px;"><b class="highlight">គោលដៅរួម (EF Core)៖</b> ទោះជាប្រើ MVC ក្តី ឬ Web API ក្តី ដំណើរការខាងក្រោយខ្នងគឺការប្រើ <code>_context.Update(model)</code> ឬ <code>_context.Remove(model)</code> រួចបញ្ចប់ដោយការ Commit តាមរយៈ <code>await _context.SaveChangesAsync()</code>។</li>
+        </ul>
+
+        <div class="section-title" style="margin-top:20px;"><i class="fa-solid fa-book"></i> ឯកសារយោង (References)</div>
+        <ul class="obj-list" style="margin-top:10px; font-size: 10pt;">
+            <li><b>Microsoft (Controller Actions for EF Core):</b> <span style="color:var(--secondary);">https://learn.microsoft.com/en-us/aspnet/core/data/ef-mvc/crud</span></li>
+            <li><b>Microsoft (Web API Routing & HTTP Methods):</b> <span style="color:var(--secondary);">https://learn.microsoft.com/en-us/aspnet/core/web-api/</span></li>
+            <li><b>MDN (Fetch API PUT/DELETE):</b> <span style="color:var(--secondary);">https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch</span></li>
+            <li><b>សៀវភៅគោល៖</b> Freeman, A. (2024). <i>Pro ASP.NET Core 8</i>. Apress.</li>
+        </ul>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">សាស្ត្រាចារ្យ សឿង លីម</div>
+        <div class="footer-right">ទំព័រ ១៣ / ២៧</div>
+    </div>
+</div>
+
+<!-- PAGE 14: REVIEW QUESTIONS T/F -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៩</h1><p>ASP.NET CORE & SQL SERVER</p></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="background:var(--accent); color:white; justify-content:center; border-radius:8px; border-left:none; margin: 0; padding: 8px 0;"><i class="fa-solid fa-pen-to-square"></i> សំណួររំលឹកមេរៀន (Review Questions)</div>
+        
+        <div class="sub-heading" style="width: 100%;">១. សំណួរ ខុស/ត្រូវ (True/False)</div>
+        <p style="font-size:10pt; margin-bottom:12px;"><b>សេចក្តីណែនាំ៖</b> សូមគូសសញ្ញា (ត្រូវ) ប្រសិនបើប្រយោគខាងក្រោមត្រឹមត្រូវ ឬសញ្ញា (ខុស) ប្រសិនបើខុស។</p>
+        
+        <ol class="q-list">
+            <li>នៅក្នុង MVC ការកែប្រែទិន្នន័យ (Edit) ទាមទារឱ្យយើងមាន Action តែមួយគត់ប្រភេទ [HttpPost] ដើម្បី Update។</li>
+            <li>ប្រសិនបើអ្នកភ្លេចដាក់ <code>&lt;input type="hidden" asp-for="Id" /&gt;</code> នៅក្នុង Edit View (MVC) នោះពេល Submit វាអាចនឹងបង្កើតទិន្នន័យថ្មីមួយទៀតជំនួសឱ្យការ Update។</li>
+            <li>នៅក្នុង Web API កូដ <code>if (id != model.Id)</code> គឺសម្រាប់ការពារកុំឱ្យមានការក្លែងបន្លំ Id ពេលធ្វើការកែប្រែទិន្នន័យ (PUT)។</li>
+            <li>Status Code 204 No Content មានន័យថា ការ Update ឬ Delete ទទួលបរាជ័យ ដោយសាររកមិនឃើញទិន្នន័យក្នុង Database។</li>
+            <li>ការប្រើប្រាស់ <code>ActionName("Delete")</code> ក្នុង MVC អនុញ្ញាតឱ្យ Method ឈ្មោះ <code>DeleteConfirmed</code> អាចត្រូវបានហៅតាមរយៈ URL <code>/Delete/5</code>។</li>
+            <li>សម្រាប់ Web API [HttpDelete] យើងត្រូវតែបញ្ជូនទិន្នន័យ JSON ចូលទៅក្នុង Body នៃ Fetch request ដើម្បីបញ្ជាក់ពីអ្វីដែលយើងចង់លុប។</li>
+            <li>ការហៅ <code>_context.Update(model)</code> នឹងធ្វើការផ្លាស់ប្តូរទិន្នន័យនៅក្នុង SQL Server ភ្លាមៗដោយមិនបាច់រង់ចាំអ្វីទៀតទេ។</li>
+            <li>មុខងារ <code>confirm()</code> របស់ Javascript ត្រូវបានប្រើប្រាស់ដើម្បីលោតសួរការអនុញ្ញាតពី User មុននឹងដំណើរការបាញ់កូដ Fetch DELETE ទៅកាន់ API។</li>
+            <li>បើយើងព្យាយាមលុបទិន្នន័យនៅក្នុង API ដែលមាន Id មិនមានក្នុង DB នោះ API គប្បីបញ្ចេញ Status Code 404 Not Found។</li>
+            <li>ការលុបទិន្នន័យដែលមានភ្ជាប់ Foreign Key Constraint ទៅកាន់ Table ផ្សេង នឹងធ្វើឱ្យមានបញ្ហា Exception (Error 500) ពេលហៅ <code>SaveChanges()</code>។</li>
+        </ol>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">សាស្ត្រាចារ្យ សឿង លីម</div>
+        <div class="footer-right">ទំព័រ ១៤ / ២៧</div>
+    </div>
+</div>
+
+<!-- PAGE 15: REVIEW QUESTIONS MCQ (1-7) -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៩</h1><p>ASP.NET CORE & SQL SERVER</p></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-heading" style="width: 100%; margin-top:0;">២. សំណួរ ពហុជ្រើសរើស (MCQs)</div>
+        <p style="font-size:10pt; margin-bottom:12px;"><b>សេចក្តីណែនាំ៖</b> សូមជ្រើសរើសចម្លើយដែលត្រឹមត្រូវបំផុតតែមួយគត់។</p>
+        
+        <ol class="q-list" style="font-size:9.5pt; line-height:1.5;">
+            <li>តើ HTTP Method មួយណាដែលត្រូវបានប្រើប្រាស់ស្តង់ដារសម្រាប់ការកែប្រែទិន្នន័យទាំងស្រុង (Full Update) នៅក្នុង Web API?
+                <ul class="mcq-opts">
+                    <li>A. GET</li>
+                    <li>B. POST</li>
+                    <li>C. PUT</li>
+                    <li>D. DELETE</li>
+                </ul>
+            </li>
+            <li>ហេតុអ្វីបានជា MVC Edit View ត្រូវការ <code>&lt;input type="hidden" asp-for="Id" /&gt;</code>?
+                <ul class="mcq-opts">
+                    <li>A. ដើម្បីលាក់ទិន្នន័យមិនឱ្យ Hacker ឃើញ</li>
+                    <li>B. ដើម្បីភ្ជាប់ Id ត្រឡប់ទៅឱ្យ Server វិញពេល Submit ដើម្បីដឹងថាត្រូវ Update មួយណា</li>
+                    <li>C. ដើម្បីបង្កើតទិន្នន័យថ្មីដោយស្វ័យប្រវត្ត</li>
+                    <li>D. ដើម្បីចាប់កំហុស Validation</li>
+                </ul>
+            </li>
+            <li>តើ HTTP Status Code មួយណាដែល Web API គួរតែបញ្ចេញ (Return) នៅពេលការ Update ឬ Delete ទទួលបានជោគជ័យ?
+                <ul class="mcq-opts">
+                    <li>A. 200 OK</li>
+                    <li>B. 302 Found</li>
+                    <li>C. 201 Created</li>
+                    <li>D. 204 No Content</li>
+                </ul>
+            </li>
+            <li>តើអ្វីទៅជាតួនាទីរបស់ <code>ActionName("Delete")</code> នៅពីលើ Method <code>DeleteConfirmed</code> ក្នុង MVC?
+                <ul class="mcq-opts">
+                    <li>A. ការពារការលុបទិន្នន័យដោយចៃដន្យ</li>
+                    <li>B. អនុញ្ញាតឱ្យ Method នេះទទួលសំណើពី URL ដែលមានឈ្មោះ Action ថា /Delete</li>
+                    <li>C. បញ្ជាឱ្យ Entity Framework លុបទិន្នន័យ</li>
+                    <li>D. បង្ហាញផ្ទាំងសួរបញ្ជាក់ (Confirmation)</li>
+                </ul>
+            </li>
+            <li>តើ Method មួយណាដែលប្រាប់ Entity Framework ឱ្យត្រៀមលុបទិន្នន័យចេញពី Memory?
+                <ul class="mcq-opts">
+                    <li>A. .Add()</li>
+                    <li>B. .Update()</li>
+                    <li>C. .Remove()</li>
+                    <li>D. .Delete()</li>
+                </ul>
+            </li>
+            <li>នៅពេលប្រើ <code>fetch()</code> សម្រាប់ DELETE ទិន្នន័យទៅ Web API តើយើងចាំបាច់ត្រូវមាន <code>body: JSON.stringify(...)</code> ដែរឬទេ?
+                <ul class="mcq-opts">
+                    <li>A. ត្រូវតែមាន ជានិច្ច</li>
+                    <li>B. មានក៏បាន អត់ក៏បាន</li>
+                    <li>C. មិនចាំបាច់ទេ ព្រោះ Id ត្រូវបានបញ្ជូនតាមរយៈ URL រួចហើយ</li>
+                    <li>D. ត្រូវតែមាន ដើម្បីបញ្ជាក់ Id</li>
+                </ul>
+            </li>
+            <li>ប្រសិនបើ API ឆ្លើយតបមកវិញនូវកូដ <code>404 Not Found</code> ពេលកំពុងធ្វើការ DELETE តើវាមានន័យដូចម្តេច?
+                <ul class="mcq-opts">
+                    <li>A. គ្មានអ៊ីនធឺណិត</li>
+                    <li>B. ទិន្នន័យ(Id)ដែលអ្នកចង់លុបនោះ មិនមាននៅក្នុង Database ឡើយ</li>
+                    <li>C. Server គាំង</li>
+                    <li>D. ជាប់បញ្ហា Foreign Key</li>
+                </ul>
+            </li>
+        </ol>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">សាស្ត្រាចារ្យ សឿង លីម</div>
+        <div class="footer-right">ទំព័រ ១៥ / ២៧</div>
+    </div>
+</div>
+
+<!-- PAGE 16: REVIEW QUESTIONS MCQ (8-15) -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៩</h1><p>ASP.NET CORE & SQL SERVER</p></div>
+    </div>
+    <div class="page-content">
+        <ol class="q-list" start="8" style="font-size:9.5pt; line-height:1.5; margin-top:0;">
+            <li>នៅក្នុង API មុននឹងធ្វើការ <code>_context.Update()</code> គេតែងតែឆែក <code>if (id != model.Id)</code>។ តើនេះដើម្បីអ្វី?
+                <ul class="mcq-opts">
+                    <li>A. ដើម្បីដឹងថាទិន្នន័យទទេឬអត់</li>
+                    <li>B. ដើម្បីផ្ទៀងផ្ទាត់ថា Id លើ URL និង Id ក្នុង JSON Body គឺដូចគ្នា (សុវត្ថិភាព)</li>
+                    <li>C. ដើម្បីឆែកមើលថា Id ជាប្រភេទអក្សរឬលេខ</li>
+                    <li>D. មិនមានប្រយោជន៍អ្វីទេ</li>
+                </ul>
+            </li>
+            <li>នៅក្នុង MVC តើលំហូរនៃការលុបទិន្នន័យ (Delete Flow) ដ៏មានសុវត្ថិភាពត្រូវឆ្លងកាត់ប៉ុន្មាន Action Methods?
+                <ul class="mcq-opts">
+                    <li>A. ១ ប៉ុណ្ណោះ (POST យកតែម្តង)</li>
+                    <li>B. ២ (GET សម្រាប់សួរបញ្ជាក់ និង POST សម្រាប់លុបពិតប្រាកដ)</li>
+                    <li>C. ៣</li>
+                    <li>D. មិនបាច់ប្រើ Action Method ទេ</li>
+                </ul>
+            </li>
+            <li>តើកូដ <code>confirm("តើអ្នកចង់លុបទេ?")</code> នៅក្នុង Javascript នឹងផ្តល់លទ្ធផលជាអ្វីប្រសិនបើ User ចុចប៊ូតុង "Cancel"?
+                <ul class="mcq-opts">
+                    <li>A. ផ្តល់តម្លៃ <code>true</code></li>
+                    <li>B. ផ្តល់តម្លៃ <code>false</code> (នាំឱ្យកូដ Fetch មិនដំណើរការ)</li>
+                    <li>C. ផ្តល់កូដ 400 Bad Request</li>
+                    <li>D. លុបទិន្នន័យភ្លាមៗ</li>
+                </ul>
+            </li>
+            <li>តើ <code>EntityState.Modified</code> នៅក្នុង EF Core ប្រើសម្រាប់គោលបំណងអ្វី?
+                <ul class="mcq-opts">
+                    <li>A. ប្រាប់ EF ថា Model នេះត្រូវបានបង្កើតថ្មី</li>
+                    <li>B. ប្រាប់ EF ថា Model នេះត្រូវបានកែប្រែ (Update) ត្រៀម Save</li>
+                    <li>C. ប្រាប់ EF ថា Model នេះត្រូវបានលុបចោល</li>
+                    <li>D. សម្រាប់ទាញយកទិន្នន័យពី DB</li>
+                </ul>
+            </li>
+            <li>ពេលដែលយើងហៅ Method <code>_context.Remove(student)</code> រួចហើយ តើទិន្នន័យនឹងត្រូវលុបចេញពី Database ភ្លាមៗឬទេ?
+                <ul class="mcq-opts">
+                    <li>A. បាទ, វាលុបភ្លាមៗ</li>
+                    <li>B. ទេ, វាគ្រាន់តែ Mark ទុកសិន រហូតទាល់តែហៅ <code>SaveChangesAsync()</code> ទើបលុប</li>
+                    <li>C. វាលុបតែក្នុង C# Memory ប៉ុណ្ណោះ</li>
+                    <li>D. អាស្រ័យលើប្រភេទ Database</li>
+                </ul>
+            </li>
+            <li>នៅក្នុង Web API កូដ <code>[HttpPut("{id}")]</code> មានតួនាទីអ្វី?
+                <ul class="mcq-opts">
+                    <li>A. ទទួលយក Id តាមរយៈ Query String</li>
+                    <li>B. ទទួលយកសំណើ PUT ដោយទាមទារឱ្យមាន Id ភ្ជាប់មកជាមួយនៅលើ URL</li>
+                    <li>C. បង្ហាញទំព័រ Edit</li>
+                    <li>D. លុបទិន្នន័យ</li>
+                </ul>
+            </li>
+            <li>ប្រសិនបើអ្នកចង់បង្ហាញសារលោត "លុបជោគជ័យ" បន្ទាប់ពីការហៅ Fetch API តើកូដណាត្រឹមត្រូវ?
+                <ul class="mcq-opts">
+                    <li>A. <code>if (response.ok) alert("ជោគជ័យ!");</code></li>
+                    <li>B. <code>if (response.status == 404) alert("ជោគជ័យ!");</code></li>
+                    <li>C. <code>if (response.type == 'json') alert("ជោគជ័យ!");</code></li>
+                    <li>D. <code>alert(response.success);</code></li>
+                </ul>
+            </li>
+            <li>ហេតុអ្វីបានជាការលុបទិន្នន័យជួនកាលផ្តល់នូវកំហុស Exception (500 Internal Error)?
+                <ul class="mcq-opts">
+                    <li>A. ព្រោះ Javascript សរសេរខុស</li>
+                    <li>B. ព្រោះទិន្នន័យនោះជាប់ Foreign Key Constraint (មានទិន្នន័យកូនចៅផ្សេងទៀតកំពុងពឹងផ្អែកលើវា)</li>
+                    <li>C. ព្រោះភ្លេចដាក់ [FromBody]</li>
+                    <li>D. ព្រោះ Browser គាំង</li>
+                </ul>
+            </li>
+        </ol>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">សាស្ត្រាចារ្យ សឿង លីម</div>
+        <div class="footer-right">ទំព័រ ១៦ / ២៧</div>
+    </div>
+</div>
+
+<!-- PAGE 17: MATCHING & ESSAYS -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៩</h1><p>ASP.NET CORE & SQL SERVER</p></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-heading" style="width:100%; margin-top:0;">៣. សំណួរផ្គូផ្គង (Matching)</div>
+        <p style="font-size:10pt; margin-bottom:12px;"><b>សេចក្តីណែនាំ៖</b> សូមផ្គូផ្គងពាក្យនៅជួរឈរខាងឆ្វេង (១-១០) ទៅនឹងការពន្យល់នៅជួរឈរខាងស្តាំ (A-J) ឱ្យបានត្រឹមត្រូវ។</p>
+        
+        <div class="two-column" style="gap:10px; align-items:start; margin-bottom: 15px;">
+            <table class="standard-table" style="box-shadow:none; font-size: 8.5pt;">
+                <tr><td style="font-weight:bold;">១. [HttpPut]</td></tr>
+                <tr><td style="font-weight:bold;">២. 204 No Content</td></tr>
+                <tr><td style="font-weight:bold;">៣. type="hidden"</td></tr>
+                <tr><td style="font-weight:bold;">៤. ActionName("Delete")</td></tr>
+                <tr><td style="font-weight:bold;">៥. _context.Remove()</td></tr>
+                <tr><td style="font-weight:bold;">៦. confirm()</td></tr>
+                <tr><td style="font-weight:bold;">៧. 404 Not Found</td></tr>
+                <tr><td style="font-weight:bold;">៨. 400 Bad Request (API Edit)</td></tr>
+                <tr><td style="font-weight:bold;">៩. .SaveChangesAsync()</td></tr>
+                <tr><td style="font-weight:bold;">១០. method: 'DELETE'</td></tr>
+            </table>
+            <table class="standard-table" style="box-shadow:none; font-size: 8pt;">
+                <tr><td>A. ប្រើប្រាស់ក្នុង JS ដើម្បីលោតសួរការបញ្ជាក់ពី User (Yes/No)។</td></tr>
+                <tr><td>B. កំណត់ Option នៅក្នុងមុខងារ Fetch ដើម្បីប្រាប់ Server ឱ្យលុបទិន្នន័យ។</td></tr>
+                <tr><td>C. បញ្ជាឱ្យ EF Core សរសេរការកែប្រែ ឬការលុបចូល Database ពិតប្រាកដ។</td></tr>
+                <tr><td>D. អនុញ្ញាតឱ្យ Method ឈ្មោះផ្សេង អាចរង់ចាំទទួល URL ដែលមានឈ្មោះ /Delete។</td></tr>
+                <tr><td>E. HTTP Method សម្រាប់ទទួលទិន្នន័យយកមកកែប្រែ (Update) ក្នុង API។</td></tr>
+                <tr><td>F. បញ្ជាឱ្យ EF Core ត្រៀមខ្លួនលុបទិន្នន័យចេញពី Memory។</td></tr>
+                <tr><td>G. Status បញ្ជាក់ថាការ Update/Delete ជោគជ័យ តែគ្មាន Data ត្រូវហុចមកវិញទេ។</td></tr>
+                <tr><td>H. កើតឡើងនៅពេល Id លើ URL មិនត្រូវគ្នានឹង Id នៅក្នុង JSON Body។</td></tr>
+                <tr><td>I. កើតឡើងនៅពេលព្យាយាមលុប ឬកែប្រែទិន្នន័យដែលគ្មានក្នុង DB។</td></tr>
+                <tr><td>J. ប្រើក្នុង MVC Edit View ដើម្បីលាក់ Id កុំឱ្យ User ឃើញ តែអាច Submit ទៅ Server បាន។</td></tr>
+            </table>
+        </div>
+
+        <div class="sub-heading" style="width:100%;">៤. សំណួរបកស្រាយ (Essay Questions)</div>
+        <ol class="q-list" style="font-size:9.5pt; line-height:1.5;">
+            <li>ហេតុអ្វីបានជានៅក្នុង Traditional MVC, ការកែប្រែទិន្នន័យ (Edit) ទាមទារឱ្យមាន Action Methods ចំនួនពីរ (GET និង POST) ចំណែកឯនៅក្នុង Web API ទាមទារតែមួយគត់ (PUT)?</li>
+            <li>ចូរពន្យល់ពីសារៈសំខាន់នៃកូដ <code>&lt;input type="hidden" asp-for="Id" /&gt;</code> នៅក្នុង MVC Edit View។ តើនឹងមានអ្វីកើតឡើងប្រសិនបើយើងភ្លេចសរសេរកូដនេះ?</li>
+            <li>នៅក្នុងកិច្ចការលុបទិន្នន័យ តើអ្នកមានវិធានការបែបណាដើម្បីការពារកុំឱ្យអ្នកប្រើប្រាស់ចុចលុបដោយអចេតនា (ច្រឡំដៃ)? ចូរពន្យល់ពីយន្តការទាំងក្នុង MVC និងក្នុង SPA (Fetch)។</li>
+        </ol>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">សាស្ត្រាចារ្យ សឿង លីម</div>
+        <div class="footer-right">ទំព័រ ១៧ / ២៧</div>
+    </div>
+</div>
+
+<!-- PAGE 18: PRACTICAL EXERCISES INTRO -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៩</h1><p>ASP.NET CORE & SQL SERVER</p></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-heading" style="width: 100%; margin-top:0; color:var(--success); font-size:14pt;"><i class="fa-solid fa-laptop-code"></i> លំហាត់អនុវត្តន៍ (Practical Exercises)</div>
+        <p style="font-size:10pt; margin-bottom:15px;">
+            <b>សេចក្តីណែនាំ៖</b> លំហាត់នេះតម្រូវឱ្យអ្នកតភ្ជាប់មុខងារ កែប្រែ (Update) និង លុប (Delete) បន្តពីជំពូកទី ៨ សម្រាប់ **ប្រព័ន្ធគ្រប់គ្រងទំនិញ (E-Commerce)**។ 
+        </p>
+
+        <div class="section-title" style="color:var(--mvc-color); border-color:var(--mvc-color); font-size:11.5pt; margin-bottom: 5px;">
+            <i class="fa-solid fa-server"></i> កិច្ចការទី ១៖ Update & Delete ទំនិញ (Product) តាម MVC
+        </div>
+        <ul class="obj-list" style="margin-top:0; margin-bottom:15px;">
+            <li><b>ជំហានទី ១ (Edit Controller):</b> បើក <code>ProductController.cs</code>។ បង្កើត <code>Edit(int? id)</code> [HttpGet] ស្វែងរក Product ចាក់ចូល View។ និងបង្កើត <code>Edit(int id, Product model)</code> [HttpPost] ដើម្បី Update។</li>
+            <li><b>ជំហានទី ២ (Edit View):</b> បង្កើត <code>Views/Product/Edit.cshtml</code>។ កុំភ្លេចដាក់ Hidden Input សម្រាប់ Id។</li>
+            <li><b>ជំហានទី ៣ (Delete Controller & View):</b> បង្កើត <code>Delete</code> [HttpGet] សម្រាប់បង្ហាញផ្ទាំង Confirmation និង <code>DeleteConfirmed</code> [HttpPost] សម្រាប់លុបចេញពី DB។</li>
+        </ul>
+
+        <div class="section-title" style="color:var(--api-color); border-color:var(--api-color); font-size:11.5pt; margin-bottom: 5px; margin-top: 15px;">
+            <i class="fa-solid fa-network-wired"></i> កិច្ចការទី ២៖ Update & Delete ប្រភេទ (Category) តាម API
+        </div>
+        <ul class="obj-list" style="margin-top:0;">
+            <li><b>ជំហានទី ១ (API Controller):</b> បើក <code>CategoryApiController.cs</code> រួចបន្ថែម <code>[HttpPut("{id}")]</code> សម្រាប់ Update និង <code>[HttpDelete("{id}")]</code> សម្រាប់ Delete។ ទាំងពីរត្រូវបញ្ចេញ NoContent() ប្រសិនបើជោគជ័យ។</li>
+            <li><b>ជំហានទី ២ (JS Fetch DELETE):</b> នៅក្នុងឯកសារ HTML បង្កើត Function មួយដែលទទួលយក id, ប្រើ <code>confirm()</code> សួរអ្នកប្រើប្រាស់, រួចបាញ់ <code>fetch(url, {method: 'DELETE'})</code> ទៅកាន់ API ដើម្បីលុបដោយមិនបាច់ Refresh ទំព័រ។</li>
+        </ul>
+
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">សាស្ត្រាចារ្យ សឿង លីម</div>
+        <div class="footer-right">ទំព័រ ១៨ / ២៧</div>
+    </div>
+</div>
+
+<!-- PAGE 19: ANSWER KEYS - QUIZZES -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៩</h1><p>ASP.NET CORE & SQL SERVER</p></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="background:var(--success); color:white; justify-content:center; border-radius:8px; border:none; margin: 0; padding: 8px 0;"><i class="fa-solid fa-key" style="color:white; background:transparent;"></i> អត្រាកំណែ (Answer Keys)</div>
+            
+        <div class="two-column" style="gap:15px; align-items:start; margin-top: 15px;">
+            <div>
+                <div class="sub-heading" style="margin-top: 0; font-size:10.5pt; color:var(--success); border-bottom: none;">១. ចម្លើយ ខុស/ត្រូវ</div>
+                <table class="ans-table">
+                    <tr><th>១</th><th>២</th><th>៣</th><th>៤</th><th>៥</th></tr>
+                    <tr><td>ខុស</td><td>ត្រូវ</td><td>ត្រូវ</td><td>ខុស</td><td>ត្រូវ</td></tr>
+                    <tr><th>៦</th><th>៧</th><th>៨</th><th>៩</th><th>១០</th></tr>
+                    <tr><td>ខុស</td><td>ខុស</td><td>ត្រូវ</td><td>ត្រូវ</td><td>ត្រូវ</td></tr>
+                </table>
+            </div>
+            <div>
+                <div class="sub-heading" style="margin-top: 0; font-size:10.5pt; color:var(--success); border-bottom: none;">២. ចម្លើយ ពហុជ្រើសរើស (MCQ)</div>
+                <table class="ans-table">
+                    <tr><th>១</th><th>២</th><th>៣</th><th>៤</th><th>៥</th></tr>
+                    <tr><td>C</td><td>B</td><td>D</td><td>B</td><td>C</td></tr>
+                    <tr><th>៦</th><th>៧</th><th>៨</th><th>៩</th><th>១០</th></tr>
+                    <tr><td>C</td><td>B</td><td>B</td><td>B</td><td>B</td></tr>
+                    <tr><th>១១</th><th>១២</th><th>១៣</th><th>១៤</th><th>១៥</th></tr>
+                    <tr><td>B</td><td>B</td><td>B</td><td>A</td><td>B</td></tr>
+                </table>
+            </div>
+        </div>
+        
+        <div class="sub-heading" style="margin-top:15px; font-size:10.5pt; color:var(--success); border-bottom: none;">៣. ចម្លើយ ផ្គូផ្គង (Matching)</div>
+        <table class="ans-table" style="margin-bottom: 15px; width: 100%;">
+            <tr><th>១</th><th>២</th><th>៣</th><th>៤</th><th>៥</th><th>៦</th><th>៧</th><th>៨</th><th>៩</th><th>១0</th></tr>
+            <tr><td>E</td><td>G</td><td>J</td><td>D</td><td>F</td><td>A</td><td>I</td><td>H</td><td>C</td><td>B</td></tr>
+        </table>
+
+        <div class="sub-heading" style="margin-top:10px; font-size:10.5pt; color:var(--success); border-bottom: none;">៤. ចម្លើយ សំណួរបកស្រាយ (សង្ខេប)</div>
+        <ul style="font-size:9pt; line-height:1.5; padding-left:20px; text-align:justify;">
+            <li style="margin-bottom:4px;"><b>១. មូលហេតុចំនួន Action Methods៖</b> ក្នុង MVC ត្រូវការ 2 Actions ព្រោះទីមួយ (GET) ត្រូវទាញទិន្នន័យពី DB មកគូរ (Render) HTML Form បង្ហាញ User សិន ហើយទីពីរ (POST) ទើបរង់ចាំទទួលទិន្នន័យពេលគេចុច Save។ ចំណែក Web API ត្រូវការតែមួយ (PUT) ព្រោះការទាញទិន្នន័យ (GET) មកគូរ Form គឺជាការងាររបស់ Frontend (React/Vue/JS) ខាង API គ្រាន់តែចាំទទួល JSON ដែលបានកែរួចប៉ុណ្ណោះ។</li>
+            <li style="margin-bottom:4px;"><b>២. សារៈសំខាន់ Hidden Input៖</b> កូដ <code>&lt;input type="hidden" asp-for="Id" /&gt;</code> ជួយរក្សាទុកតម្លៃ Id របស់ទិន្នន័យនៅពេលបង្ហាញ Form។ បើភ្លេចដាក់ ពេល Submit ត្រឡប់មកវិញ តម្លៃ Id នឹងក្លាយជា 0 ធ្វើឱ្យ EF Core មិនដឹងថាត្រូវ Update មួយណា ហើយវាអាចនឹងបង្កើត (Insert) ទិន្នន័យថ្មីត្រួតគ្នាមួយទៀត។</li>
+            <li style="margin-bottom:0;"><b>៣. យន្តការការពារការលុប៖</b> ក្នុង MVC យើងប្រើប្រាស់ Action [HttpGet] ដើម្បីបញ្ជូន User ទៅកាន់ទំព័រមួយទៀត (Delete.cshtml) ដែលបង្ហាញព័ត៌មានលម្អិត រួមជាមួយប៊ូតុង "យល់ព្រមលុប" ដើម្បីឱ្យប្រាកដប្រជាមុនបាញ់ POST។ ចំណែកក្នុង SPA (JS Fetch) យើងប្រើមុខងារ <code>confirm("តើអ្នកចង់លុបទេ?")</code> របស់ Browser ដែលលោតជា Popup សួរ User។ បើគេចុច Ok (true) ទើបយើងអនុញ្ញាតឱ្យបាញ់សំណើ `fetch(DELETE)` ទៅកាន់ API។</li>
+        </ul>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">សាស្ត្រាចារ្យ សឿង លីម</div>
+        <div class="footer-right">ទំព័រ ១៩ / ២៧</div>
+    </div>
+</div>
+
+<!-- PAGE 20: FULL CODE - MVC CONTROLLER -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៩</h1><p>ASP.NET CORE & SQL SERVER</p></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="color:var(--mvc-color); border-color:var(--mvc-color); font-size:12pt; margin-top:0;">
+            <i class="fa-solid fa-server"></i> ផ្នែកក៖ កូដពេញលេញសម្រាប់ MVC Edit & Delete
+        </div>
+        
+        <div class="code-window" style="margin:2px 0 15px 0; font-size:8pt;">
+            <div class="code-header" style="background:#064E3B; border-bottom:1px solid #022C22; padding: 4px 10px;">
+                <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+                <div class="code-title" style="color:#A7F3D0;">Controllers/ProductController.cs (បន្ថែមពីលើកូដចាស់)</div>
+            </div>
+<pre style="padding: 10px;"><span style="color:#5C6370;">// ------------------ ផ្នែកកែប្រែ (EDIT) ------------------</span>
+[HttpGet]
+<span style="color:#C678DD;">public async</span> Task&lt;IActionResult&gt; <span style="color:#61AFEF;">Edit</span>(<span style="color:#C678DD;">int?</span> id)
+{
+    <span style="color:#C678DD;">if</span> (id == <span style="color:#D19A66;">null</span>) <span style="color:#C678DD;">return</span> NotFound();
+    <span style="color:#C678DD;">var</span> product = <span style="color:#C678DD;">await</span> _context.Products.FindAsync(id);
+    <span style="color:#C678DD;">if</span> (product == <span style="color:#D19A66;">null</span>) <span style="color:#C678DD;">return</span> NotFound();
+    <span style="color:#C678DD;">return</span> View(product); <span style="color:#5C6370;">// បញ្ជូនទៅកាន់ Edit.cshtml</span>
+}
+
+[HttpPost]
+[ValidateAntiForgeryToken]
+<span style="color:#C678DD;">public async</span> Task&lt;IActionResult&gt; <span style="color:#61AFEF;">Edit</span>(<span style="color:#C678DD;">int</span> id, Product model)
+{
+    <span style="color:#C678DD;">if</span> (id != model.Id) <span style="color:#C678DD;">return</span> NotFound();
+
+    <span style="color:#C678DD;">if</span> (ModelState.IsValid)
+    {
+        _context.Update(model);
+        <span style="color:#C678DD;">await</span> _context.SaveChangesAsync();
+        <span style="color:#C678DD;">return</span> RedirectToAction(nameof(Index));
+    }
+    <span style="color:#C678DD;">return</span> View(model);
+}
+
+<span style="color:#5C6370;">// ------------------ ផ្នែកលុប (DELETE) ------------------</span>
+[HttpGet]
+<span style="color:#C678DD;">public async</span> Task&lt;IActionResult&gt; <span style="color:#61AFEF;">Delete</span>(<span style="color:#C678DD;">int?</span> id)
+{
+    <span style="color:#C678DD;">if</span> (id == <span style="color:#D19A66;">null</span>) <span style="color:#C678DD;">return</span> NotFound();
+    <span style="color:#C678DD;">var</span> product = <span style="color:#C678DD;">await</span> _context.Products.FindAsync(id);
+    <span style="color:#C678DD;">if</span> (product == <span style="color:#D19A66;">null</span>) <span style="color:#C678DD;">return</span> NotFound();
+    <span style="color:#C678DD;">return</span> View(product); <span style="color:#5C6370;">// បញ្ជូនទៅសួរនៅ Delete.cshtml</span>
+}
+
+[HttpPost, ActionName(<span style="color:#98C379;">"Delete"</span>)]
+[ValidateAntiForgeryToken]
+<span style="color:#C678DD;">public async</span> Task&lt;IActionResult&gt; <span style="color:#61AFEF;">DeleteConfirmed</span>(<span style="color:#C678DD;">int</span> id)
+{
+    <span style="color:#C678DD;">var</span> product = <span style="color:#C678DD;">await</span> _context.Products.FindAsync(id);
+    <span style="color:#C678DD;">if</span> (product != <span style="color:#D19A66;">null</span>)
+    {
+        _context.Products.Remove(product);
+        <span style="color:#C678DD;">await</span> _context.SaveChangesAsync();
+    }
+    <span style="color:#C678DD;">return</span> RedirectToAction(nameof(Index));
+}</pre>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">សាស្ត្រាចារ្យ សឿង លីម</div>
+        <div class="footer-right">ទំព័រ ២០ / ២៧</div>
+    </div>
+</div>
+
+<!-- PAGE 21: FULL CODE - MVC VIEW (EDIT) -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៩</h1><p>ASP.NET CORE & SQL SERVER</p></div>
+    </div>
+    <div class="page-content">
+        <div style="font-size:9.5pt; font-weight:bold; color:var(--text-main); margin-bottom:4px; margin-top:5px;"><span style="color:var(--mvc-color);">រៀបចំ Razor View សម្រាប់ Edit៖</span></div>
+        <div class="code-window" style="margin:2px 0 10px 0; font-size:8pt;">
+            <div class="code-header" style="background:#064E3B; border-bottom:1px solid #022C22; padding: 4px 10px;">
+                <div class="mac-dots"><div class="dot dot-r" style="width:8px; height:8px;"></div><div class="dot dot-y" style="width:8px; height:8px;"></div><div class="dot dot-g" style="width:8px; height:8px;"></div></div>
+                <div class="code-title" style="color:#A7F3D0;">Views/Product/Edit.cshtml</div>
+            </div>
+<pre style="padding: 10px;"><span style="color:#C678DD;">@model</span> SchoolApp.Models.Product
+
+<span style="color:#E06C75;">&lt;div <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"container mt-4"</span>&gt;</span>
+    <span style="color:#E06C75;">&lt;h2 <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"text-warning"</span>&gt;</span>កែប្រែទំនិញ<span style="color:#E06C75;">&lt;/h2&gt;</span>
+    <span style="color:#E06C75;">&lt;hr /&gt;</span>
+
+    <span style="color:#E06C75;">&lt;div <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"row"</span>&gt;</span>
+        <span style="color:#E06C75;">&lt;div <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"col-md-6"</span>&gt;</span>
+            <span style="color:#E06C75;">&lt;form <span style="color:#D19A66;">asp-action</span>=<span style="color:#98C379;">"Edit"</span> <span style="color:#D19A66;">method</span>=<span style="color:#98C379;">"post"</span>&gt;</span>
+                
+                <span style="color:#5C6370;">&lt;!-- ចំណុចសំខាន់៖ លាក់ Id! បើគ្មានកូដនេះ Update មិនចេញទេ --&gt;</span>
+                <span style="color:#E06C75;">&lt;input <span style="color:#D19A66;">type</span>=<span style="color:#98C379;">"hidden"</span> <span style="color:#D19A66;">asp-for</span>=<span style="color:#98C379;">"Id"</span> /&gt;</span>
+
+                <span style="color:#5C6370;">&lt;!-- ប្រអប់ឈ្មោះ និងតម្លៃ ដូចគ្នានឹង Create ដែរ --&gt;</span>
+                <span style="color:#E06C75;">&lt;div <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"form-group mb-3"</span>&gt;</span>
+                    <span style="color:#E06C75;">&lt;label <span style="color:#D19A66;">asp-for</span>=<span style="color:#98C379;">"Name"</span> <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"control-label fw-bold"</span>&gt;</span>ឈ្មោះទំនិញ៖<span style="color:#E06C75;">&lt;/label&gt;</span>
+                    <span style="color:#E06C75;">&lt;input <span style="color:#D19A66;">asp-for</span>=<span style="color:#98C379;">"Name"</span> <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"form-control"</span> /&gt;</span>
+                    <span style="color:#E06C75;">&lt;span <span style="color:#D19A66;">asp-validation-for</span>=<span style="color:#98C379;">"Name"</span> <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"text-danger"</span>&gt;&lt;/span&gt;</span>
+                <span style="color:#E06C75;">&lt;/div&gt;</span>
+
+                <span style="color:#E06C75;">&lt;div <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"form-group mb-4"</span>&gt;</span>
+                    <span style="color:#E06C75;">&lt;label <span style="color:#D19A66;">asp-for</span>=<span style="color:#98C379;">"Price"</span> <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"control-label fw-bold"</span>&gt;</span>តម្លៃលក់ ($)៖<span style="color:#E06C75;">&lt;/label&gt;</span>
+                    <span style="color:#E06C75;">&lt;input <span style="color:#D19A66;">asp-for</span>=<span style="color:#98C379;">"Price"</span> <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"form-control"</span> /&gt;</span>
+                    <span style="color:#E06C75;">&lt;span <span style="color:#D19A66;">asp-validation-for</span>=<span style="color:#98C379;">"Price"</span> <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"text-danger"</span>&gt;&lt;/span&gt;</span>
+                <span style="color:#E06C75;">&lt;/div&gt;</span>
+
+                <span style="color:#E06C75;">&lt;div <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"form-group"</span>&gt;</span>
+                    <span style="color:#E06C75;">&lt;button <span style="color:#D19A66;">type</span>=<span style="color:#98C379;">"submit"</span> <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"btn btn-warning"</span>&gt;</span>រក្សាទុកការកែប្រែ<span style="color:#E06C75;">&lt;/button&gt;</span>
+                    <span style="color:#E06C75;">&lt;a <span style="color:#D19A66;">asp-action</span>=<span style="color:#98C379;">"Index"</span> <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"btn btn-secondary ms-2"</span>&gt;</span>ថយក្រោយ<span style="color:#E06C75;">&lt;/a&gt;</span>
+                <span style="color:#E06C75;">&lt;/div&gt;</span>
+            <span style="color:#E06C75;">&lt;/form&gt;</span>
+        <span style="color:#E06C75;">&lt;/div&gt;</span>
+    <span style="color:#E06C75;">&lt;/div&gt;</span>
+<span style="color:#E06C75;">&lt;/div&gt;</span>
+
+<span style="color:#C678DD;">@section</span> Scripts { <span style="color:#E06C75;">&lt;partial <span style="color:#D19A66;">name</span>=<span style="color:#98C379;">"_ValidationScriptsPartial"</span> /&gt;</span> }</pre>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">សាស្ត្រាចារ្យ សឿង លីម</div>
+        <div class="footer-right">ទំព័រ ២១ / ២៧</div>
+    </div>
+</div>
+
+<!-- PAGE 22: FULL CODE - MVC VIEW (DELETE) -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៩</h1><p>ASP.NET CORE & SQL SERVER</p></div>
+    </div>
+    <div class="page-content">
+        <div style="font-size:9.5pt; font-weight:bold; color:var(--text-main); margin-bottom:4px; margin-top:5px;"><span style="color:var(--mvc-color);">រៀបចំ Razor View សម្រាប់ផ្ទាំងបញ្ជាក់ Delete៖</span></div>
+        <div class="code-window" style="margin:2px 0 10px 0; font-size:8pt;">
+            <div class="code-header" style="background:#064E3B; border-bottom:1px solid #022C22; padding: 4px 10px;">
+                <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+                <div class="code-title" style="color:#A7F3D0;">Views/Product/Delete.cshtml</div>
+            </div>
+<pre style="padding: 10px;"><span style="color:#C678DD;">@model</span> SchoolApp.Models.Product
+
+<span style="color:#E06C75;">&lt;div <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"container mt-4"</span>&gt;</span>
+    <span style="color:#E06C75;">&lt;h2 <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"text-danger"</span>&gt;</span>លុបទំនិញ<span style="color:#E06C75;">&lt;/h2&gt;</span>
+    <span style="color:#E06C75;">&lt;h4&gt;</span>តើអ្នកពិតជាចង់លុបទិន្នន័យនេះមែនទេ?<span style="color:#E06C75;">&lt;/h4&gt;</span>
+    <span style="color:#E06C75;">&lt;hr /&gt;</span>
+
+    <span style="color:#5C6370;">&lt;!-- បង្ហាញព័ត៌មានលម្អិតឱ្យ User មើលសិន --&gt;</span>
+    <span style="color:#E06C75;">&lt;dl <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"row"</span>&gt;</span>
+        <span style="color:#E06C75;">&lt;dt <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"col-sm-2"</span>&gt;</span>ឈ្មោះទំនិញ៖<span style="color:#E06C75;">&lt;/dt&gt;</span>
+        <span style="color:#E06C75;">&lt;dd <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"col-sm-10"</span>&gt;</span><span style="color:#C678DD;">@Model</span>.Name<span style="color:#E06C75;">&lt;/dd&gt;</span>
+
+        <span style="color:#E06C75;">&lt;dt <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"col-sm-2"</span>&gt;</span>តម្លៃលក់៖<span style="color:#E06C75;">&lt;/dt&gt;</span>
+        <span style="color:#E06C75;">&lt;dd <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"col-sm-10"</span>&gt;</span>$<span style="color:#C678DD;">@Model</span>.Price<span style="color:#E06C75;">&lt;/dd&gt;</span>
+    <span style="color:#E06C75;">&lt;/dl&gt;</span>
+
+    <span style="color:#5C6370;">&lt;!-- Form បញ្ជូនការលុប (POST) --&gt;</span>
+    <span style="color:#E06C75;">&lt;form <span style="color:#D19A66;">asp-action</span>=<span style="color:#98C379;">"Delete"</span> <span style="color:#D19A66;">method</span>=<span style="color:#98C379;">"post"</span>&gt;</span>
+        <span style="color:#5C6370;">&lt;!-- ត្រូវតែលាក់ Id ដើម្បីឱ្យ Controller ដឹងថាត្រូវលុបមួយណា --&gt;</span>
+        <span style="color:#E06C75;">&lt;input <span style="color:#D19A66;">type</span>=<span style="color:#98C379;">"hidden"</span> <span style="color:#D19A66;">asp-for</span>=<span style="color:#98C379;">"Id"</span> /&gt;</span>
+        
+        <span style="color:#E06C75;">&lt;button <span style="color:#D19A66;">type</span>=<span style="color:#98C379;">"submit"</span> <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"btn btn-danger"</span>&gt;</span>យល់ព្រមលុប<span style="color:#E06C75;">&lt;/button&gt;</span>
+        <span style="color:#E06C75;">&lt;a <span style="color:#D19A66;">asp-action</span>=<span style="color:#98C379;">"Index"</span> <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"btn btn-secondary ms-2"</span>&gt;</span>បោះបង់ (Cancel)<span style="color:#E06C75;">&lt;/a&gt;</span>
+    <span style="color:#E06C75;">&lt;/form&gt;</span>
+<span style="color:#E06C75;">&lt;/div&gt;</span></pre>
+        </div>
+
+        <div class="text-block" style="font-size: 9.5pt; color: var(--text-muted); background: var(--bg-light); padding: 10px; border-radius: 4px; border: 1px solid var(--border-light); margin-top: 20px;">
+            <i class="fa-solid fa-circle-info" style="color: var(--secondary);"></i> <b>ចំណាំ៖</b> បន្ទាប់ពីសរសេរកូដទាំង ៣ ទំព័រខាងលើរួច អ្នកត្រូវចូលទៅ <code>Views/Product/Index.cshtml</code> (តារាងចាស់ពីជំពូក ៧) ហើយបន្ថែមប៊ូតុង Edit និង Delete ក្បែរទិន្នន័យនីមួយៗ ដោយប្រើ <code>&lt;a asp-action="Edit" asp-route-id="@item.Id"&gt;Edit&lt;/a&gt;</code> ជាការស្រេច។
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">សាស្ត្រាចារ្យ សឿង លីម</div>
+        <div class="footer-right">ទំព័រ ២២ / ២៧</div>
+    </div>
+</div>
+
+<!-- PAGE 23: FULL CODE - API CONTROLLER -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៩</h1><p>ASP.NET CORE & SQL SERVER</p></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="color:var(--api-color); border-color:var(--api-color); font-size:12pt; margin-top:0;">
+            <i class="fa-solid fa-network-wired"></i> ផ្នែកខ៖ កូដពេញលេញសម្រាប់ Web API (PUT & DELETE)
+        </div>
+        
+        <div class="code-window" style="margin:2px 0 15px 0; font-size:8pt;">
+            <div class="code-header" style="background:#4C1D95; border-bottom:1px solid #2E1065; padding: 4px 10px;">
+                <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+                <div class="code-title" style="color:#DDD6FE; font-size: 7.5pt;">Controllers/CategoryApiController.cs</div>
+            </div>
+<pre style="padding: 10px;"><span style="color:#5C6370;">// បន្ថែម Method ទាំង ២ នេះទៅក្នុង Controller របស់អ្នក</span>
+
+<span style="color:#5C6370;">// ------------------ ផ្នែកកែប្រែ (PUT) ------------------</span>
+[HttpPut(<span style="color:#98C379;">"{id}"</span>)]
+<span style="color:#C678DD;">public async</span> Task&lt;IActionResult&gt; <span style="color:#61AFEF;">UpdateCategory</span>(<span style="color:#C678DD;">int</span> id, [FromBody] Category model)
+{
+    <span style="color:#C678DD;">if</span> (id != model.Id) <span style="color:#C678DD;">return</span> BadRequest(<span style="color:#98C379;">"ID មិនត្រូវគ្នា!"</span>);
+
+    _context.Entry(model).State = EntityState.Modified;
+
+    <span style="color:#C678DD;">try</span>
+    {
+        <span style="color:#C678DD;">await</span> _context.SaveChangesAsync();
+    }
+    <span style="color:#C678DD;">catch</span> (DbUpdateConcurrencyException)
+    {
+        <span style="color:#C678DD;">if</span> (!_context.Categories.Any(e =&gt; e.Id == id)) <span style="color:#C678DD;">return</span> NotFound();
+        <span style="color:#C678DD;">else</span> <span style="color:#C678DD;">throw</span>;
+    }
+    
+    <span style="color:#C678DD;">return</span> NoContent(); <span style="color:#5C6370;">// ជោគជ័យ (204)</span>
+}
+
+<span style="color:#5C6370;">// ------------------ ផ្នែកលុប (DELETE) ------------------</span>
+[HttpDelete(<span style="color:#98C379;">"{id}"</span>)]
+<span style="color:#C678DD;">public async</span> Task&lt;IActionResult&gt; <span style="color:#61AFEF;">DeleteCategory</span>(<span style="color:#C678DD;">int</span> id)
+{
+    <span style="color:#C678DD;">var</span> category = <span style="color:#C678DD;">await</span> _context.Categories.FindAsync(id);
+    <span style="color:#C678DD;">if</span> (category == <span style="color:#D19A66;">null</span>)
+    {
+        <span style="color:#C678DD;">return</span> NotFound(); <span style="color:#5C6370;">// រកមិនឃើញ</span>
+    }
+
+    _context.Categories.Remove(category);
+    <span style="color:#C678DD;">await</span> _context.SaveChangesAsync();
+
+    <span style="color:#C678DD;">return</span> NoContent(); <span style="color:#5C6370;">// ជោគជ័យ (204)</span>
+}</pre>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">សាស្ត្រាចារ្យ សឿង លីម</div>
+        <div class="footer-right">ទំព័រ рахунок ២៣ / ២៧</div>
+    </div>
+</div>
+
+<!-- PAGE 24: FULL CODE - HTML + JS FETCH (DELETE & PUT) -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៩</h1><p>ASP.NET CORE & SQL SERVER</p></div>
+    </div>
+    <div class="page-content">
+        <div style="font-size:9.5pt; font-weight:bold; color:var(--text-main); margin-bottom:4px; margin-top:5px;"><span style="color:var(--api-color);">កូដ JS សម្រាប់ហៅ API លុប (SPA Style)៖</span></div>
+        <div class="code-window" style="margin:2px 0 10px 0; font-size:8pt;">
+            <div class="code-header" style="background:#4C1D95; border-bottom:1px solid #2E1065; padding: 4px 10px;">
+                <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+                <div class="code-title" style="color:#DDD6FE;">wwwroot/categories.html (ផ្នែក Script)</div>
+            </div>
+<pre style="padding: 10px;"><span style="color:#5C6370;">// ឧបមាថាយើងមានប៊ូតុងលុបនៅក្នុងតារាង &lt;button onclick="deleteCategory(5)"&gt;លុប&lt;/button&gt;</span>
+
+<span style="color:#C678DD;">async function</span> <span style="color:#61AFEF;">deleteCategory</span>(id) {
+    <span style="color:#5C6370;">// ១. សួរ User ជាមុនសិន តាមរយៈ confirm()</span>
+    <span style="color:#C678DD;">const</span> isConfirmed = <span style="color:#61AFEF;">confirm</span>(<span style="color:#98C379;">"តើអ្នកពិតជាចង់លុបទិន្នន័យ (ID: "</span> + id + <span style="color:#98C379;">") នេះមែនទេ?"</span>);
+    
+    <span style="color:#C678DD;">if</span> (!isConfirmed) {
+        <span style="color:#C678DD;">return</span>; <span style="color:#5C6370;">// បើគេចុច Cancel ឈប់ធ្វើការ!</span>
+    }
+
+    <span style="color:#C678DD;">try</span> {
+        <span style="color:#5C6370;">// ២. បាញ់សំណើ DELETE ទៅកាន់ API ដោយភ្ជាប់ id នៅលើ URL</span>
+        <span style="color:#C678DD;">const</span> response = <span style="color:#C678DD;">await</span> <span style="color:#61AFEF;">fetch</span>(<span style="color:#98C379;">`https://localhost:7123/api/CategoryApi/${id}`</span>, {
+            <span style="color:#E06C75;">method</span>: <span style="color:#98C379;">'DELETE'</span> 
+            <span style="color:#5C6370;">// មិនត្រូវការ headers និង body ទេព្រោះយើងអត់មាន JSON អីផ្ញើទៅទេ</span>
+        });
+
+        <span style="color:#5C6370;">// ៣. ពិនិត្យលទ្ធផល</span>
+        <span style="color:#C678DD;">if</span> (response.<span style="color:#E06C75;">ok</span>) {
+            <span style="color:#61AFEF;">alert</span>(<span style="color:#98C379;">"លុបចេញពី Database ជោគជ័យ!"</span>);
+            
+            <span style="color:#5C6370;">// ហៅ Function loadData() ម្តងទៀតដើម្បី Refresh តារាង (Pro Tip)</span>
+            <span style="color:#5C6370;">// loadAllCategories(); </span>
+        } <span style="color:#C678DD;">else</span> {
+            <span style="color:#61AFEF;">alert</span>(<span style="color:#98C379;">"បរាជ័យក្នុងការលុប! អាចមកពីទិន្នន័យជាប់ Foreign Key។"</span>);
+        }
+    } <span style="color:#C678DD;">catch</span>(err) {
+        <span style="color:#E5C07B;">console</span>.<span style="color:#61AFEF;">error</span>(<span style="color:#98C379;">'បញ្ហាតភ្ជាប់ API:'</span>, err);
+    }
+}</pre>
+        </div>
+
+        <div class="text-block" style="font-size: 9.5pt; color: var(--text-muted); background: var(--bg-light); padding: 10px; border-radius: 4px; border: 1px solid var(--border-light); margin-top: 15px;">
+            <i class="fa-solid fa-code" style="color: var(--api-color);"></i> <b>ចំណាំ (ចំណេះដឹង Update)៖</b> សម្រាប់ការ Update តាម API វាទាមទារកូដច្រើនជាងនេះ ដោយសារអ្នកត្រូវមាន Form មួយទៀត (Modal) សម្រាប់ចាក់ទិន្នន័យចូលសិន រួចទើបបាញ់ <code>fetch(method:'PUT', body:JSON)</code> ត្រឡប់ទៅវិញ។
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">សាស្ត្រាចារ្យ សឿង លីម</div>
+        <div class="footer-right">ទំព័រ ២៤ / ២៧</div>
+    </div>
+</div>
+
+<!-- PAGE 25: VERIFICATION AND LIVE SERVER -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៩</h1><p>ASP.NET CORE & SQL SERVER</p></div>
+    </div>
+    <div class="page-content">
+        
+        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-desktop"></i> របៀបផ្ទៀងផ្ទាត់លទ្ធផល (How to Run & Verify)</div>
+        
+        <div class="lab-box" style="margin-top: 10px; border-color: var(--mvc-color); background: white; border-left: 5px solid var(--mvc-color);">
+            <h4 style="color: var(--mvc-color);"><i class="fa-solid fa-server"></i> របៀបតេស្ត MVC (Product Edit/Delete)៖</h4>
+            <ol style="margin-top: 5px; padding-left: 20px; font-size: 10pt; line-height: 1.8;">
+                <li>សូមចុច Run គម្រោង ASP.NET Core របស់អ្នក។</li>
+                <li>បើក Browser ទៅកាន់ទំព័រ Index (បញ្ជីទំនិញ)៖ <code>https://localhost:7123/Product</code>។</li>
+                <li>សាកល្បងវាយអាសយដ្ឋាន៖ <code>https://localhost:7123/Product/Edit/1</code> (ដើម្បីសាកកែទំនិញទី១)។</li>
+                <li>សាកល្បងកែឈ្មោះទំនិញ រួចចុច "រក្សាទុកការកែប្រែ"។ ប្រព័ន្ធនឹង <b>Redirect</b> មកកាន់ Index វិញ ហើយអ្នកនឹងឃើញឈ្មោះថ្មី។</li>
+                <li>សាកល្បងវាយអាសយដ្ឋាន៖ <code>https://localhost:7123/Product/Delete/1</code>។ វានឹងលោតផ្ទាំងសួរអ្នក។ ចុចប៊ូតុងពណ៌ក្រហមដើម្បីលុបវាចេញ។</li>
+            </ol>
+        </div>
+
+        <div class="lab-box" style="margin-top: 15px; border-color: var(--api-color); background: white; border-left: 5px solid var(--api-color);">
+            <h4 style="color: var(--api-color);"><i class="fa-solid fa-network-wired"></i> របៀបតេស្ត Web API (Category Delete)៖</h4>
+            <ol style="margin-top: 5px; padding-left: 20px; font-size: 10pt; line-height: 1.8;">
+                <li>ប្រាកដថាគម្រោង Backend កំពុងតែ Run។</li>
+                <li>សម្រាប់ Frontend បើក <code>categories.html</code> តាមរយៈ <b>Live Server</b>។</li>
+                <li>បើក <b>F12 (Developer Tools) -> Console</b> ដើម្បីរង់ចាំមើល Error។</li>
+                <li>នៅក្នុងកូដ HTML របស់អ្នក (បើអ្នកបានបង្កើតប៊ូតុង <code>&lt;button onclick="deleteCategory(1)"&gt;</code> រួច) សូមសាកល្បងចុចលើវា។</li>
+                <li>វានឹងលោត <b>Popup "តើអ្នកពិតជាចង់លុບមែនទេ?"</b>។ បើចុច OK, ទិន្នន័យនឹងត្រូវលុបដោយមិនបាច់ Refresh ទំព័រឡើយ!</li>
+            </ol>
+        </div>
+
+        <div style="background: #FFFBEB; border: 1px solid var(--warning); padding: 15px; border-radius: 8px; margin-top: 20px; text-align: center;">
+            <i class="fa-solid fa-database" style="color: var(--warning); font-size: 24px; margin-bottom: 10px;"></i>
+            <p style="font-size: 10pt; color: var(--text-main); margin: 0; font-weight: bold; line-height: 1.6;">
+                បើសិនជាចង់ឱ្យកាន់តែច្បាស់ អ្នកអាចបើកកម្មវិធី SQL Server Management Studio (SSMS) រួច Select មើល Table Product និង Category ដើម្បីបញ្ជាក់ថាទិន្នន័យពិតជាត្រូវកែប្រែ និងលុបចេញពី Database អចិន្ត្រៃយ៍ពិតប្រាកដមែន!
+            </p>
+        </div>
+
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">សាស្ត្រាចារ្យ សឿង លីម</div>
+        <div class="footer-right">ទំព័រ ២៥ / ២៧</div>
+    </div>
+</div>
+
+<!-- PAGE 26: PRO TIP (SWEETALERT2) -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៩</h1><p>ASP.NET CORE & SQL SERVER</p></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-star"></i> ចំណេះដឹងបន្ថែម (Pro Tip)</div>
+        
+        <div class="sub-heading" style="color:var(--accent);">លោតសួរ (Confirm) ឱ្យស្រស់ស្អាតជាមួយ SweetAlert2</div>
+        <div class="text-block" style="font-size: 9.5pt;">
+            ការប្រើប្រាស់ <code>confirm()</code> របស់ Browser ធម្មតា គឺមានរូបរាងចាស់គំរឹល និងមិនអាចកែច្នៃរចនាប័ទ្មបានទេ។ នៅក្នុងគម្រោងពិត គេនិយមប្រើប្រាស់បណ្ណាល័យ (Library) ឈ្មោះ <b>SweetAlert2</b> សម្រាប់បង្កើតប្រអប់សួរ ដែលមានចលនានិងស្រស់ស្អាត ពេលលុបទិន្នន័យ (API)។
+        </div>
+        
+        <div class="code-window" style="margin:2px 0 15px 0; font-size:8pt;">
+            <div class="code-header" style="background:#1E293B; border-bottom:1px solid #0F172A; padding: 4px 10px;">
+                <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+                <div class="code-title" style="color:#94A3B8;">categories.html (ប្រើប្រាស់ SweetAlert2)</div>
+            </div>
+<pre style="padding: 10px;"><span style="color:#5C6370;">&lt;!-- ១. ភ្ជាប់ CDN របស់ SweetAlert2 នៅលើក្បាល HTML (head) --&gt;</span>
+<span style="color:#E06C75;">&lt;script <span style="color:#D19A66;">src</span>=<span style="color:#98C379;">"https://cdn.jsdelivr.net/npm/sweetalert2@11"</span>&gt;&lt;/script&gt;</span>
+
+<span style="color:#5C6370;">&lt;script&gt;</span>
+<span style="color:#C678DD;">function</span> <span style="color:#61AFEF;">deleteCategory</span>(id) {
+    <span style="color:#5C6370;">// ២. ហៅប្រើមុខងារ Swal.fire() ជំនួសឱ្យ confirm() ចាស់</span>
+    Swal.<span style="color:#61AFEF;">fire</span>({
+        <span style="color:#E06C75;">title</span>: <span style="color:#98C379;">"តើអ្នកប្រាកដទេ?"</span>,
+        <span style="color:#E06C75;">text</span>: <span style="color:#98C379;">"ទិន្នន័យនេះនឹងត្រូវលុបរហូត!"</span>,
+        <span style="color:#E06C75;">icon</span>: <span style="color:#98C379;">"warning"</span>,
+        <span style="color:#E06C75;">showCancelButton</span>: <span style="color:#D19A66;">true</span>,
+        <span style="color:#E06C75;">confirmButtonColor</span>: <span style="color:#98C379;">"#d33"</span>,
+        <span style="color:#E06C75;">cancelButtonColor</span>: <span style="color:#98C379;">"#3085d6"</span>,
+        <span style="color:#E06C75;">confirmButtonText</span>: <span style="color:#98C379;">"បាទ, លុបវាចោល!"</span>
+    }).<span style="color:#61AFEF;">then</span>(<span style="color:#C678DD;">async</span> (result) =&gt; {
+        <span style="color:#C678DD;">if</span> (result.<span style="color:#E06C75;">isConfirmed</span>) {
+            
+            <span style="color:#5C6370;">// ៣. បើ User ចុច "បាទ, លុបវាចោល!" ទើបយើងបាញ់ Fetch API</span>
+            <span style="color:#C678DD;">const</span> res = <span style="color:#C678DD;">await</span> <span style="color:#61AFEF;">fetch</span>(<span style="color:#98C379;">`/api/CategoryApi/${id}`</span>, { <span style="color:#E06C75;">method</span>: <span style="color:#98C379;">'DELETE'</span> });
+            
+            <span style="color:#C678DD;">if</span>(res.<span style="color:#E06C75;">ok</span>) {
+                Swal.<span style="color:#61AFEF;">fire</span>(<span style="color:#98C379;">"ជោគជ័យ!"</span>, <span style="color:#98C379;">"ទិន្នន័យត្រូវបានលុប។"</span>, <span style="color:#98C379;">"success"</span>);
+                <span style="color:#5C6370;">// loadAllCategories(); // Refresh </span>
+            }
+        }
+    });
+}
+<span style="color:#E06C75;">&lt;/script&gt;</span></pre>
+        </div>
+        
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">សាស្ត្រាចារ្យ សឿង លីម</div>
+        <div class="footer-right">ទំព័រ ២៦ / ២៧</div>
+    </div>
+</div>
+
+<!-- PAGE 27: CONGRATULATIONS -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៩</h1><p>ASP.NET CORE & SQL SERVER</p></div>
+    </div>
+    <div class="page-content" style="justify-content: center; align-items: center;">
+        
+        <div style="text-align: center; max-width: 80%;">
+            <div style="display:flex; justify-content:center; gap:20px; margin-bottom: 20px;">
+                <i class="fa-solid fa-pen-to-square" style="font-size: 50px; color: var(--warning);"></i>
+                <i class="fa-solid fa-database" style="font-size: 40px; color: var(--text-muted); margin-top:10px;"></i>
+                <i class="fa-solid fa-trash-can" style="font-size: 50px; color: var(--danger);"></i>
+            </div>
+            
+            <h2 style="font-family: 'Suwannaphum'; font-size: 22pt; color: var(--text-heading); margin-bottom: 15px; font-weight: 900;">អបអរសាទរ! លោកអ្នកបានបញ្ចប់ជំពូកទី ៩។</h2>
+            
+            <p style="font-size: 11pt; color: var(--text-main); line-height: 1.8; margin-bottom: 25px;">
+                ពេលនេះអ្នកបានរៀនចេះបញ្ចប់នូវវដ្តជីវិត <b>CRUD (Create, Read, Update, Delete)</b> ទាំងស្រុងហើយ! អ្នកដឹងពីរបៀបប្រើ Hidden Id សម្រាប់ Update ក្នុង MVC, របៀបសួរបញ្ជាក់មុននឹងលុប ព្រមទាំងការប្រើប្រាស់ <code>PUT</code> និង <code>DELETE</code> Methods នៅក្នុង Web API។
+            </p>
+            
+            <div style="background: #F8FAFC; border: 1px solid var(--border-dark); padding: 20px; border-radius: 8px; text-align: left;">
+                <h4 style="font-family: 'Suwannaphum'; font-size: 12pt; color: var(--success); margin-bottom: 10px;"><i class="fa-solid fa-trophy"></i> សមិទ្ធផលរបស់អ្នក៖</h4>
+                <ul style="font-size: 10pt; line-height: 1.6; padding-left: 20px; color: var(--text-muted);">
+                    <li>អ្នកអាចកសាងប្រព័ន្ធ Traditional MVC ពេញលេញដោយប្រើ Entity Framework។</li>
+                    <li>អ្នកអាចកសាង RESTful API សម្រាប់ Frontend (React/Vue/JS) បានដោយជោគជ័យ។</li>
+                    <li>នៅក្នុងជំពូកបន្ទាប់ យើងនឹងចាប់ផ្តើមរៀនពីការធ្វើ <b>Authentication & Authorization (Login/Logout)</b> ដើម្បីការពារប្រព័ន្ធរបស់យើង!</li>
+                </ul>
+            </div>
+            
+            <div style="margin-top: 40px; color: var(--text-muted); font-size: 10pt; font-family: var(--font-en-main); font-weight: 600;">
+                *** END OF CHAPTER 9 ***
+            </div>
+        </div>
+        
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">សាស្ត្រាចារ្យ សឿង លីម</div>
+        <div class="footer-right">ទំព័រ ២៧ / ២៧</div>
+    </div>
+</div>
+
+</body>
+</html>
