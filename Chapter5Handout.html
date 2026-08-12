@@ -109,13 +109,26 @@
         /* Content Zone */
         .page-content { flex-grow: 1; display: flex; flex-direction: column; justify-content: flex-start; overflow: visible; }
 
-        /* TYPOGRAPHY */
+        /* TYPOGRAPHY & BLOOM TAGS */
         .section-title {
             border-bottom: 2px solid var(--accent); padding-bottom: 6px; margin: 10px 0 12px 0;
             font-family: var(--font-kh-heading); font-size: 14pt; font-weight: 900; color: var(--text-heading);
-            display: flex; align-items: center; gap: 8px;
+            display: flex; align-items: center; justify-content: space-between;
         }
+        .section-title-text { display: flex; align-items: center; gap: 8px; }
         .section-title i { color: var(--accent); }
+
+        /* Bloom Taxonomy Badge Components */
+        .bloom-badge {
+            font-family: var(--font-en-main); font-size: 7.5pt; font-weight: 700; text-transform: uppercase;
+            padding: 3px 8px; border-radius: 12px; color: white; letter-spacing: 0.5px;
+        }
+        .bloom-remember { background-color: #64748B; } /* Slate */
+        .bloom-understand { background-color: #0284C7; } /* Sky Blue */
+        .bloom-apply { background-color: #059669; } /* Emerald */
+        .bloom-analyze { background-color: #D97706; } /* Amber */
+        .bloom-evaluate { background-color: #7C3AED; } /* Violet */
+        .bloom-create { background-color: #DB2777; } /* Pink */
         
         .sub-heading { font-family: var(--font-kh-heading); font-weight: 900; font-size: 12pt; color: var(--accent); margin: 10px 0 8px 0; }
         .text-block { font-size: 10.5pt; line-height: 1.6; margin-bottom: 10px; text-align: justify; }
@@ -209,7 +222,7 @@
     </div>
 </div>
 
-<!-- PAGE 2: TOC & OBJECTIVES -->
+<!-- PAGE 2: TOC & BLOOM-ALIGNED OBJECTIVES -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
@@ -217,7 +230,9 @@
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
     <div class="page-content">
-        <div class="section-title"><i class="fa-solid fa-list-ol"></i> មាតិកាជំពូកទី ៥ (Chapter Contents)</div>
+        <div class="section-title">
+            <span class="section-title-text"><i class="fa-solid fa-list-ol"></i> មាតិកាជំពូកទី ៥ (Chapter Contents)</span>
+        </div>
         <table class="toc-table">
             <thead>
                 <tr>
@@ -235,12 +250,19 @@
             </tbody>
         </table>
 
-        <div class="section-title"><i class="fa-solid fa-bullseye"></i> វត្ថុបំណងនៃជំពូកទី ៥ (Chapter Objectives)</div>
-        <ul class="obj-list">
-            <li><b class="highlight">យល់ដឹងពីបច្ចេកវិទ្យា ORM:</b> យល់ដឹងច្បាស់ពីលំហូរការងារ និងអត្ថប្រយោជន៍របស់ Entity Framework Core ក្នុងការគ្រប់គ្រង Database ។</li>
-            <li><b class="highlight">រៀបចំខ្សែស្រឡាយតភ្ជាប់៖</b> កំណត់រចនាសម្ព័ន្ធ Connection String ក្នុង <code>appsettings.json</code> ព្រមទាំងយល់ច្បាស់ពីតួនាទីនៃប៉ារ៉ាមែត្រនីមួយៗ។</li>
-            <li><b class="highlight">ស្ថាបនា DbContext & DI:</b> បង្កើត Class DbContext ដើម្បីគ្រប់គ្រង Models និងចុះឈ្មោះវាទៅក្នុង <code>Program.cs</code> តាមបច្ចេកទេស Dependency Injection។</li>
-            <li><b class="highlight">បែងចែក MVC និង API ច្បាស់លាស់៖</b> យល់ពីរបៀបដែល Syllabus កំណត់ទម្រង់ MVC (Backend API + Frontend HTML/JS View) និងអាចអនុវត្តការសរសេរកូដទាំងពីរផ្នែកនេះបានយ៉ាងស្ទាត់ជំនាញតាមលំដាប់លំដោយ។</li>
+        <div class="section-title" style="margin-top:15px;">
+            <span class="section-title-text"><i class="fa-solid fa-bullseye"></i> វត្ថុបំណងនៃជំពូកទី ៥ (Bloom's Taxonomy Objectives)</span>
+        </div>
+        <p style="font-size: 9.5pt; color: var(--text-muted); margin-bottom: 8px;">
+            បន្ទាប់ពីសិក្សាចប់ជំពូកនេះ និស្សិតនឹងទទួលបានសមត្ថភាពតាមកម្រិតទាំង ៦ នៃ <b>ឋានានុក្រមប៊្លូម (Bloom's Taxonomy)</b> ដូចខាងក្រោម៖
+        </p>
+        <ul class="obj-list" style="margin-top: 5px;">
+            <li><span class="bloom-badge bloom-remember">១. ចងចាំ (Remembering)</span> <b class="highlight">ស្គាល់ និងចងចាំ៖</b> ស្គាល់បញ្ជា CLI, ឈ្មោះ NuGet packages, និងរចនាសម្ព័ន្ធ parameters នៃ Connection String។</li>
+            <li><span class="bloom-badge bloom-understand">២. យល់ដឹង (Understanding)</span> <b class="highlight">យល់ និងពន្យល់៖</b> ពន្យល់ពីលំហូរការងាររបស់ ORM (EF Core) ធៀបនឹង ADO.NET ព្រមទាំងតួនាទីរបស់ Class DbContext។</li>
+            <li><span class="bloom-badge bloom-apply">៣. អនុវត្ត (Applying)</span> <b class="highlight">បង្កើត និងកំណត់ Config៖</b> បង្កើត Class Model, DbContext, ចុះឈ្មោះ DI ក្នុង Program.cs និងកំណត់ Connection String ក្នុង appsettings.json។</li>
+            <li><span class="bloom-badge bloom-analyze">៤. វិភាគ (Analyzing)</span> <b class="highlight">បែងចែក និងដោះស្រាយ៖</b> បែងចែកស្ថាបត្យកម្ម Web API ពី MVC View និងវិភាគមូលហេតុនៃការកើតមាន CORS error។</li>
+            <li><span class="bloom-badge bloom-evaluate">៥. វាយតម្លៃ (Evaluating)</span> <b class="highlight">វាយតម្លៃអាយុកាលសេវា៖</b> វាយតម្លៃពីអត្ថប្រយោជន៍នៃ Scoped Lifetime របស់ DbContext និងការជ្រើសរើសស្ថាបត្យកម្មសមស្រប។</li>
+            <li><span class="bloom-badge bloom-create">៦. បង្កើត (Creating)</span> <b class="highlight">ស្ថាបនា Full-Stack Pipeline៖</b> អភិវឌ្ឍន៍ Backend Web API ភ្ជាប់ SQL Server និងសរសេរ Frontend View (HTML/JS) ទាញទិន្នន័យបង្ហាញបានជោគជ័យ។</li>
         </ul>
     </div>
     <div class="global-footer">
@@ -257,7 +279,10 @@
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
     <div class="page-content">
-        <div class="section-title"><i class="fa-solid fa-database"></i> ៥.១ សញ្ញាណ ORM និងការប្រៀបធៀប EF Core ទល់នឹង ADO.NET</div>
+        <div class="section-title">
+            <span class="section-title-text"><i class="fa-solid fa-database"></i> ៥.១ សញ្ញាណ ORM និងការប្រៀបធៀប EF Core ទល់នឹង ADO.NET</span>
+            <span class="bloom-badge bloom-understand">យល់ដឹង - Understand</span>
+        </div>
         
         <div class="text-block">
             <b>Object-Relational Mapper (ORM)</b> គឺជាបច្ចេកវិទ្យាកម្រិតកណ្ដាលដែលជួយសម្របសម្រួលចន្លោះប្រហោងរវាង <b>កូដ C# (Object-Oriented)</b> និង <b>SQL Server (Relational Database)</b>។ នៅក្នុងប្រព័ន្ធ .NET, <b>Entity Framework Core (EF Core)</b> គឺជា ORM ផ្លូវការដែលជួយបំប្លែង Class ទៅជា Tables និងបំប្លែង LINQ ទៅជា SQL Scripts ដោយស្វ័យប្រវត្ត។
@@ -327,7 +352,10 @@
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
     <div class="page-content">
-        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-cubes"></i> ៥.២ ការដំឡើង NuGet Packages សម្រាប់ EF Core</div>
+        <div class="section-title" style="margin-top:0;">
+            <span class="section-title-text"><i class="fa-solid fa-cubes"></i> ៥.២ ការដំឡើង NuGet Packages សម្រាប់ EF Core</span>
+            <span class="bloom-badge bloom-remember">ចងចាំ - Remember</span>
+        </div>
         <div class="text-block">
             ប្រព័ន្ធ .NET Core មានទម្រង់ជា <b>Modular</b> ពោលគឺវាមានតែបណ្ណាល័យស្នូលប៉ុណ្ណោះពេលបង្កើតគម្រោងដំបូង។ ដើម្បីឱ្យកម្មវិធីអាចស្គាល់ EF Core និងអាចភ្ជាប់ទៅ SQL Server បាន យើងត្រូវដំឡើងកញ្ចប់បណ្ណាល័យបន្ថែមតាមរយៈ <b>NuGet Package Manager</b> ដោយប្រើប្រាស់ Terminal (CLI)។
         </div>
@@ -372,7 +400,10 @@ dotnet add package Microsoft.EntityFrameworkCore.Tools</pre>
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
     <div class="page-content">
-        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-link"></i> ៥.៣ រចនាសម្ព័ន្ធ Connection String ក្នុង appsettings.json</div>
+        <div class="section-title" style="margin-top:0;">
+            <span class="section-title-text"><i class="fa-solid fa-link"></i> ៥.៣ រចនាសម្ព័ន្ធ Connection String ក្នុង appsettings.json</span>
+            <span class="bloom-badge bloom-analyze">វិភាគ - Analyze</span>
+        </div>
         <div class="text-block">
             <b>Connection String</b> គឺជាខ្សែអត្ថបទដែលផ្ទុកនូវព័ត៌មានលម្អិតដូចជា ទីតាំង Server, ឈ្មោះ Database និងសិទ្ធិអនុញ្ញាត (Credentials) ដើម្បីឱ្យ API អាចតភ្ជាប់ទៅកាន់ Database បាន។ តាមស្តង់ដារសុវត្ថិភាព យើងត្រូវសរសេរវានៅក្នុងឯកសារ <code>appsettings.json</code>។
         </div>
@@ -434,7 +465,10 @@ dotnet add package Microsoft.EntityFrameworkCore.Tools</pre>
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
     <div class="page-content">
-        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-microchip"></i> ៥.៤ ការកសាង Class DbContext និងការប្រើប្រាស់ DbSet</div>
+        <div class="section-title" style="margin-top:0;">
+            <span class="section-title-text"><i class="fa-solid fa-microchip"></i> ៥.៤ ការកសាង Class DbContext និងការប្រើប្រាស់ DbSet</span>
+            <span class="bloom-badge bloom-apply">អនុវត្ត - Apply</span>
+        </div>
         <div class="text-block">
             <b>DbContext</b> គឺជា Class ស្នូលរបស់ EF Core ដែលតំណាងឱ្យការបើកសម័យកាលធ្វើការ (Session) មួយរវាងកម្មវិធី C# និង Database SQL Server។ រាល់តារាង (Tables) ដែលយើងចង់បង្កើតនៅក្នុង DB ត្រូវតែប្រកាសជា Property ប្រភេទ <b>DbSet&lt;TEntity&gt;</b> នៅក្នុង Class នេះ។
         </div>
@@ -487,7 +521,10 @@ dotnet add package Microsoft.EntityFrameworkCore.Tools</pre>
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
     <div class="page-content">
-        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-sliders"></i> ៥.៥ ការចុះឈ្មោះ DbContext តាមរយៈ Dependency Injection</div>
+        <div class="section-title" style="margin-top:0;">
+            <span class="section-title-text"><i class="fa-solid fa-sliders"></i> ៥.៥ ការចុះឈ្មោះ DbContext តាមរយៈ Dependency Injection</span>
+            <span class="bloom-badge bloom-evaluate">វាយតម្លៃ - Evaluate</span>
+        </div>
         <div class="text-block">
             <b>Dependency Injection (DI)</b> គឺជាបច្ចេកទេសរចនាកូដ (Design Pattern) ដែលប្រើដើម្បីកាត់បន្ថយភាពចងភ្ជាប់គ្នា (Loose Coupling)។ នៅក្នុង ASP.NET Core យើងមិនប្រើពាក្យ <code>new AppDbContext()</code> គ្រប់ទីកន្លែងឡើយ តែយើងចុះឈ្មោះវាចូលទៅក្នុង <b>DI Container</b> នៃ <code>Program.cs</code> ដើម្បីឱ្យប្រព័ន្ធជាអ្នកបង្កើត និងបញ្ជូនវាទៅកាន់ Controller ដោយស្វ័យប្រវត្ត។
         </div>
@@ -539,7 +576,10 @@ app.Run();</pre>
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
     <div class="page-content">
-        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-sitemap"></i> ៥.៦ ស្ថាបត្យកម្ម MVC និង Web API ស្របតាម Syllabus</div>
+        <div class="section-title" style="margin-top:0;">
+            <span class="section-title-text"><i class="fa-solid fa-sitemap"></i> ៥.៦ ស្ថាបត្យកម្ម MVC និង Web API ស្របតាម Syllabus</span>
+            <span class="bloom-badge bloom-analyze">វិភាគ - Analyze</span>
+        </div>
         <div class="text-block">
             យោងតាម <b>Course Syllabus</b> មុខវិជ្ជានេះតម្រូវឱ្យនិស្សិតយល់ដឹងពីស្ថាបត្យកម្ម <b>Model-View-Controller (MVC)</b> ប៉ុន្តែក្នុងបរិបទទំនើប។ ជំនួសឱ្យការប្រើប្រាស់ Razor Views (MVC ប្រពៃណី) យើងបែងចែកប្រព័ន្ធជាពីរផ្នែកដាច់ពីគ្នា៖ <b>Backend Web API</b> (ដើរតួជា Model និង Controller) និង <b>Frontend HTML/JS</b> (ដើរតួជា View ឯករាជ្យ)។
         </div>
@@ -601,7 +641,10 @@ app.Run();</pre>
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
     <div class="page-content">
-        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-book-bookmark"></i> ពន្យល់ពាក្យគន្លឹះ (Glossary)</div>
+        <div class="section-title" style="margin-top:0;">
+            <span class="section-title-text"><i class="fa-solid fa-book-bookmark"></i> ពន្យល់ពាក្យគន្លឹះ (Glossary)</span>
+            <span class="bloom-badge bloom-remember">ចងចាំ - Remember</span>
+        </div>
         <div class="text-block">ពាក្យបច្ចេកទេស និងការពន្យល់ន័យជាភាសាខ្មែរសម្រាប់ជំពូកទី ៥ នេះ៖</div>
         
         <table class="standard-table">
@@ -665,7 +708,10 @@ app.Run();</pre>
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
     <div class="page-content">
-        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-list-check"></i> សេចក្តីសង្ខេបជំពូកទី ៥ (Summary)</div>
+        <div class="section-title" style="margin-top:0;">
+            <span class="section-title-text"><i class="fa-solid fa-list-check"></i> សេចក្តីសង្ខេបជំពូកទី ៥ (Summary)</span>
+            <span class="bloom-badge bloom-understand">យល់ដឹង - Understand</span>
+        </div>
         <ul class="obj-list" style="margin-top:10px;">
             <li><b class="highlight">EF Core ជាស្ពានចម្លង៖</b> បច្ចេកវិទ្យា ORM ជួយសម្រួលដល់ការគ្រប់គ្រង Database ដោយលុបបំបាត់ការសរសេរកូដ SQL Queries ដោយដៃ មកប្រើប្រាស់ LINQ ក្នុង C# វិញ។</li>
             <li><b class="highlight">ការដំឡើង Packages៖</b> គម្រោង .NET តម្រូវឱ្យដំឡើងកញ្ចប់ NuGet ធំៗចំនួន ៤ (EFCore, SqlServer, Design, Tools) ដើម្បីអាចប្រើប្រាស់មុខងារ Database បាន។</li>
@@ -675,7 +721,9 @@ app.Run();</pre>
             <li><b class="highlight">ការញែក API និង View៖</b> ស្របតាម Syllabus យើងអភិវឌ្ឍន៍ Backend ដោយប្រើ Web API (Controller) និងអភិវឌ្ឍន៍ Frontend ដោយប្រើ HTML/JS (View) ដើម្បីបង្កើតជាប្រព័ន្ធ Full-Stack ដ៏មានឥទ្ធិពល។</li>
         </ul>
 
-        <div class="section-title" style="margin-top:20px;"><i class="fa-solid fa-book"></i> ឯកសារយោង (References)</div>
+        <div class="section-title" style="margin-top:20px;">
+            <span class="section-title-text"><i class="fa-solid fa-book"></i> ឯកសារយោង (References)</span>
+        </div>
         <ul class="obj-list" style="margin-top:10px;">
             <li><b>Microsoft Learn (Entity Framework Core Overview):</b> <span style="color:var(--secondary);">https://learn.microsoft.com/en-us/ef/core/</span></li>
             <li><b>Microsoft Learn (DbContext Configuration):</b> <span style="color:var(--secondary);">https://learn.microsoft.com/en-us/ef/core/dbcontext-configuration/</span></li>
@@ -689,7 +737,7 @@ app.Run();</pre>
     </div>
 </div>
 
-<!-- PAGE 11: REVIEW QUESTIONS T/F -->
+<!-- PAGE 11: REVIEW QUESTIONS T/F (TIER 1 BLOOM) -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
@@ -697,9 +745,14 @@ app.Run();</pre>
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
     <div class="page-content">
-        <div class="section-title" style="background:var(--accent); color:white; justify-content:center; border-radius:8px; border-left:none; margin-top:0; padding: 8px 0;"><i class="fa-solid fa-pen-to-square"></i> សំណួររំលឹកមេរៀន (Review Questions)</div>
+        <div class="section-title" style="background:var(--accent); color:white; justify-content:center; border-radius:8px; border-left:none; margin-top:0; padding: 8px 0;">
+            <i class="fa-solid fa-pen-to-square"></i> សំណួររំលឹកមេរៀន (Review Questions)
+        </div>
         
-        <div class="sub-heading" style="width: 100%;">១. សំណួរ ខុស/ត្រូវ (True/False)</div>
+        <div class="sub-heading" style="width: 100%; display:flex; justify-content:space-between; align-items:center;">
+            <span>១. សំណួរ ខុស/ត្រូវ (True/False)</span>
+            <span class="bloom-badge bloom-remember">កម្រិត៖ ចងចាំ & យល់ដឹង</span>
+        </div>
         <p style="font-size:10pt; margin-bottom:12px;"><b>សេចក្តីណែនាំ៖</b> សូមគូសសញ្ញា (ត្រូវ) ប្រសិនបើប្រយោគខាងក្រោមត្រឹមត្រូវ ឬសញ្ញា (ខុស) ប្រសិនបើខុស។</p>
         
         <ol class="q-list" style="font-size:10.5pt; line-height:1.6;">
@@ -721,7 +774,7 @@ app.Run();</pre>
     </div>
 </div>
 
-<!-- PAGE 12: REVIEW QUESTIONS MCQ -->
+<!-- PAGE 12: REVIEW QUESTIONS MCQ (TIER 2 BLOOM) -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
@@ -729,7 +782,10 @@ app.Run();</pre>
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
     <div class="page-content">
-        <div class="sub-heading" style="width: 100%; margin-top:0;">២. សំណួរ ពហុជ្រើសរើស (MCQs)</div>
+        <div class="sub-heading" style="width: 100%; margin-top:0; display:flex; justify-content:space-between; align-items:center;">
+            <span>២. សំណួរ ពហុជ្រើសរើស (MCQs)</span>
+            <span class="bloom-badge bloom-apply">កម្រិត៖ អនុវត្ត & វិភាគ</span>
+        </div>
         <p style="font-size:10pt; margin-bottom:12px;"><b>សេចក្តីណែនាំ៖</b> សូមជ្រើសរើសចម្លើយដែលត្រឹមត្រូវបំផុតតែមួយគត់។</p>
         
         <ol class="q-list" style="font-size:9.5pt; line-height:1.45;">
@@ -821,7 +877,7 @@ app.Run();</pre>
     </div>
 </div>
 
-<!-- PAGE 13: MATCHING & ESSAYS -->
+<!-- PAGE 13: MATCHING & ESSAYS (TIER 3 BLOOM) -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
@@ -829,7 +885,10 @@ app.Run();</pre>
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
     <div class="page-content">
-        <div class="sub-heading" style="width:100%; margin-top:0;">៣. សំណួរផ្គូផ្គង (Matching)</div>
+        <div class="sub-heading" style="width:100%; margin-top:0; display:flex; justify-content:space-between; align-items:center;">
+            <span>៣. សំណួរផ្គូផ្គង (Matching)</span>
+            <span class="bloom-badge bloom-understand">កម្រិត៖ យល់ដឹង</span>
+        </div>
         <p style="font-size:10pt; margin-bottom:12px;"><b>សេចក្តីណែនាំ៖</b> សូមផ្គូផ្គងពាក្យនៅជួរឈរខាងឆ្វេង (១-១០) ទៅនឹងការពន្យល់នៅជួរឈរខាងស្តាំ (A-J) ឱ្យបានត្រឹមត្រូវ។</p>
         
         <div class="two-column" style="gap:15px; align-items:start; margin-bottom: 15px;">
@@ -859,11 +918,14 @@ app.Run();</pre>
             </table>
         </div>
 
-        <div class="sub-heading" style="width:100%;">៤. សំណួរបកស្រាយ (Essay Questions)</div>
+        <div class="sub-heading" style="width:100%; display:flex; justify-content:space-between; align-items:center;">
+            <span>៤. សំណួរបកស្រាយ និងវិភាគ (Essay & Case Analysis)</span>
+            <span class="bloom-badge bloom-evaluate">កម្រិត៖ វាយតម្លៃ & វិភាគ</span>
+        </div>
         <ol class="q-list" style="font-size:9.5pt; line-height:1.5;">
-            <li>ចូរពន្យល់ពីអត្ថប្រយោជន៍ និងភាពខុសគ្នាសំខាន់ៗរវាងការប្រើប្រាស់ EF Core និងបច្ចេកវិទ្យា ADO.NET ប្រពៃណី។</li>
-            <li>យោងតាម Syllabus តើការអភិវឌ្ឍន៍ប្រព័ន្ធដោយបែងចែកស្ថាបត្យកម្មជា **Web API (Backend)** និង **HTML/JS (Frontend View)** មានអត្ថប្រយោជន៍អ្វីខ្លះបើធៀបនឹងការសរសេរកូដ MVC ចូលគ្នាតែមួយ (Traditional Razor Pages)?</li>
-            <li>ចូររៀបរាប់ពីសមាសធាតុសំខាន់ៗដែលមាននៅក្នុងខ្សែស្រឡាយ Connection String សម្រាប់ភ្ជាប់ទៅ SQL Server។</li>
+            <li><b>[វិភាគ - Analyze]</b> ចូរពន្យល់ពីអត្ថប្រយោជន៍ និងភាពខុសគ្នាសំខាន់ៗរវាងការប្រើប្រាស់ EF Core និងបច្ចេកវិទ្យា ADO.NET ប្រពៃណី។</li>
+            <li><b>[វាយតម្លៃ - Evaluate]</b> យោងតាម Syllabus តើការអភិវឌ្ឍន៍ប្រព័ន្ធដោយបែងចែកស្ថាបត្យកម្មជា **Web API (Backend)** និង **HTML/JS (Frontend View)** មានអត្ថប្រយោជន៍អ្វីខ្លះបើធៀបនឹងការសរសេរកូដ MVC ចូលគ្នាតែមួយ (Traditional Razor Pages)?</li>
+            <li><b>[ដោះស្រាយបញ្ហា - Troubleshooting]</b> ប្រសិនបើ Frontend លោត Error <code>"Access to fetch at ... has been blocked by CORS policy"</code> តើអ្នកត្រូវវិភាគរកមូលហេតុ និងសរសេរកូដដោះស្រាយក្នុង Program.cs យ៉ាងដូចម្តេច?</li>
         </ol>
     </div>
     <div class="global-footer">
@@ -880,7 +942,10 @@ app.Run();</pre>
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
     <div class="page-content">
-        <div class="sub-heading" style="width: 100%; margin-top:0; color:var(--success); font-size:14pt;"><i class="fa-solid fa-laptop-code"></i> ៥. លំហាត់អនុវត្តន៍ (Practical Exercises)</div>
+        <div class="sub-heading" style="width: 100%; margin-top:0; color:var(--success); font-size:14pt; display:flex; justify-content:space-between; align-items:center;">
+            <span><i class="fa-solid fa-laptop-code"></i> ៥. លំហាត់អនុវត្តន៍ (Practical Exercises)</span>
+            <span class="bloom-badge bloom-create">កម្រិត៖ បង្កើត & អនុវត្ត</span>
+        </div>
         <p style="font-size:10pt; margin-bottom:15px;">
             <b>សេចក្តីណែនាំ៖</b> ដើម្បីឆ្លើយតបទៅនឹងគោលបំណងនៃ Syllabus លំហាត់នេះត្រូវបានរៀបចំតាមលំដាប់លំដោយ (Workflow) ដោយបែងចែកជាពីរផ្នែកធំៗគឺ៖<br>
             <b>ផ្នែកទី ១ (Web API):</b> រៀបចំ Backend ជាមួយ EF Core ដើម្បីបញ្ចេញទិន្នន័យ (JSON)។<br>
@@ -889,7 +954,8 @@ app.Run();</pre>
 
         <!-- PART 1: API SETUP -->
         <div class="section-title" style="color:var(--accent); border-color:var(--accent); font-size:12pt; margin-bottom: 5px;">
-            <i class="fa-solid fa-server"></i> ផ្នែកទី ១៖ ការរៀបចំ Web API Backend
+            <span class="section-title-text"><i class="fa-solid fa-server"></i> ផ្នែកទី ១៖ ការរៀបចំ Web API Backend</span>
+            <span class="bloom-badge bloom-apply">Apply</span>
         </div>
         
         <ul class="obj-list" style="margin-top:0; margin-bottom:15px;">
@@ -919,7 +985,8 @@ app.Run();</pre>
     <div class="page-content">
         <!-- PART 2: MVC VIEW INTEGRATION -->
         <div class="section-title" style="color:var(--secondary); border-color:var(--secondary); font-size:12pt; margin-top:0; margin-bottom: 5px;">
-            <i class="fa-brands fa-html5"></i> ផ្នែកទី ២៖ ការអភិវឌ្ឍន៍ MVC Frontend (View Integration)
+            <span class="section-title-text"><i class="fa-brands fa-html5"></i> ផ្នែកទី ២៖ ការអភិវឌ្ឍន៍ MVC Frontend (View Integration)</span>
+            <span class="bloom-badge bloom-create">Create</span>
         </div>
         
         <div class="text-block" style="font-size: 10pt;">
@@ -986,7 +1053,7 @@ app.Run();</pre>
         <ul style="font-size:9.5pt; line-height:1.5; padding-left:20px; text-align:justify;">
             <li style="margin-bottom:6px;"><b>១. អត្ថប្រយោជន៍ EF Core ធៀបនឹង ADO.NET៖</b> EF Core ជួយកាត់បន្ថយទំហំកូដដ៏ស្មុគស្មាញរបស់ ADO.NET ដោយវាធ្វើការ Map ទិន្នន័យពី DB Tables មកជា C# Objects ឱ្យដោយស្វ័យប្រវត្ត។ យើងអាចសរសេរ C# LINQ ជំនួសឱ្យការសរសេរ SQL strings ផ្ទាល់ ដែលជួយជៀសវាងកំហុស និងការពារ SQL Injection។</li>
             <li style="margin-bottom:6px;"><b>២. អត្ថប្រយោជន៍ស្ថាបត្យកម្ម Syllabus (API + HTML/JS View)៖</b> ការបែងចែកដាច់ស្រឡះរវាង Backend និង Frontend អនុញ្ញាតឱ្យក្រុមការងារធ្វើការព្រមគ្នាបាន។ ម្យ៉ាងទៀត API តែមួយអាចត្រូវបានហៅប្រើប្រាស់ដោយ Web ផង និងដោយ Mobile App ផង ដែលផ្តល់ភាពបត់បែនខ្ពស់ជាងការប្រើ Razor MVC ដែលជាប់គាំងតែនៅលើ Web តែមួយ។</li>
-            <li style="margin-bottom:0;"><b>៣. សមាសធាតុនៃ Connection String៖</b> រួមមាន 1. <code>Server</code>: បញ្ជាក់ទីតាំងនិងឈ្មោះ instance, 2. <code>Database</code>: បញ្ជាក់ឈ្មោះ DB, និង 3. <code>Trusted_Connection=True</code> សម្រាប់សិទ្ធិប្រើប្រាស់គណនី Windows (Windows Authentication)។</li>
+            <li style="margin-bottom:0;"><b>៣. ការដោះស្រាយ CORS Policy៖</b> យើងត្រូវកំណត់កូដ ២ ផ្នែកក្នុង <code>Program.cs</code> ៖ ១) ចុះឈ្មោះសេវាកម្ម <code>builder.Services.AddCors(...)</code> ជាមួយ Policy `AllowAnyOrigin()` និង ២) ហៅប្រើប្រាស់ Middleware <code>app.UseCors(...)</code> មុនពេល `app.MapControllers()`។</li>
         </ul>
     </div>
     <div class="global-footer">

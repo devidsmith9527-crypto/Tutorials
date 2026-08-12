@@ -1,10 +1,11 @@
 
+
 <!DOCTYPE html>
 <html lang="km">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Handout: ជំពូកទី ៧ - Web API & Decoupled MVC (Frontend Integration)</title>
+    <title>Handout: ជំពូកទី ៧ - Dual Architecture: Traditional MVC & Decoupled Web API Integration</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,6 +21,7 @@
             --success: #10B981;        
             --warning: #D97706;        
             --danger: #EF4444;         
+            --purple: #9333EA;
             
             --text-main: #1E293B;
             --text-heading: #0F172A;
@@ -92,7 +94,7 @@
         .header-item img { height: 35px; object-fit: contain; }
         .header-item span { font-family: var(--font-kh-heading); font-size: 10pt; font-weight: bold; color: var(--accent); }
         .header-text { flex-grow: 1; text-align: center; padding: 0 10px; }
-        .header-text h1 { font-family: var(--font-kh-heading); font-size: 12pt; color: var(--accent); margin-bottom: 2px; font-weight: 900;}
+        .header-text h1 { font-family: var(--font-kh-heading); font-size: 11pt; color: var(--accent); margin-bottom: 2px; font-weight: 900;}
         .header-text p { font-family: var(--font-en-main); font-size: 7.5pt; color: var(--text-muted); font-weight: 600; text-transform: uppercase;}
 
         .global-footer {
@@ -113,62 +115,86 @@
         /* TYPOGRAPHY */
         .section-title {
             border-bottom: 2px solid var(--accent); padding-bottom: 6px; margin: 10px 0 12px 0;
-            font-family: var(--font-kh-heading); font-size: 14pt; font-weight: 900; color: var(--text-heading);
-            display: flex; align-items: center; gap: 8px;
+            font-family: var(--font-kh-heading); font-size: 13pt; font-weight: 900; color: var(--text-heading);
+            display: flex; align-items: center; justify-content: space-between;
         }
+        .section-title-left { display: flex; align-items: center; gap: 8px; }
         .section-title i { color: var(--accent); }
         
-        .sub-heading { font-family: var(--font-kh-heading); font-weight: 900; font-size: 12pt; color: var(--accent); margin: 10px 0 8px 0; }
-        .text-block { font-size: 10.5pt; line-height: 1.7; margin-bottom: 12px; text-align: justify; }
+        .sub-heading { font-family: var(--font-kh-heading); font-weight: 900; font-size: 11pt; color: var(--accent); margin: 10px 0 8px 0; display: flex; align-items: center; justify-content: space-between; }
+        .text-block { font-size: 10pt; line-height: 1.65; margin-bottom: 10px; text-align: justify; }
         .highlight { color: var(--accent); font-weight: 700; }
+
+        /* BLOOM TAXONOMY BADGES */
+        .bloom-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 7.5pt;
+            font-weight: bold;
+            color: white;
+            font-family: var(--font-en-main);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .bloom-l1 { background: #64748B; } /* Remember - Slate */
+        .bloom-l2 { background: #0284C7; } /* Understand - Sky */
+        .bloom-l3 { background: #16A34A; } /* Apply - Green */
+        .bloom-l4 { background: #D97706; } /* Analyze - Amber */
+        .bloom-l5 { background: #DC2626; } /* Evaluate - Red */
+        .bloom-l6 { background: #9333EA; } /* Create - Purple */
 
         /* TOC & Lists */
         .toc-table { width: 100%; border-collapse: collapse; margin: 10px 0; border: 1px solid var(--border-light); border-radius: 8px; overflow: hidden; }
-        .toc-table th { background: var(--accent); color: white; font-family: var(--font-kh-heading); font-size: 11pt; padding: 10px 12px; text-align: left; }
-        .toc-table td { padding: 10px 12px; border-bottom: 1px solid var(--border-light); font-size: 10.5pt; color: var(--text-main); }
+        .toc-table th { background: var(--accent); color: white; font-family: var(--font-kh-heading); font-size: 10pt; padding: 8px 12px; text-align: left; }
+        .toc-table td { padding: 7px 12px; border-bottom: 1px solid var(--border-light); font-size: 9.5pt; color: var(--text-main); }
         .toc-table tr:last-child td { border-bottom: none; }
-        .toc-num { font-weight: bold; width: 15%; text-align: center; }
+        .toc-num { font-weight: bold; width: 10%; text-align: center; }
 
-        .obj-list { list-style: none; padding-left: 0; margin-top: 10px; }
-        .obj-list li { position: relative; padding-left: 20px; margin-bottom: 10px; font-size: 10.5pt; line-height: 1.6; }
+        .obj-list { list-style: none; padding-left: 0; margin-top: 8px; }
+        .obj-list li { position: relative; padding-left: 20px; margin-bottom: 8px; font-size: 9.5pt; line-height: 1.55; }
         .obj-list li::before { content: '•'; position: absolute; left: 5px; color: var(--accent); font-size: 16px; font-weight: bold; top: -2px; }
 
         /* Tables (General) */
-        table.standard-table { width: 100%; border-collapse: collapse; margin-bottom: 12px; border: 1px solid var(--border-dark); }
-        table.standard-table th, table.standard-table td { border: 1px solid var(--border-dark); padding: 8px 10px; text-align: left; vertical-align: middle; }
-        table.standard-table th { background: var(--accent); color: white; font-family: var(--font-kh-heading); font-size: 10.5pt; text-align: center; }
-        table.standard-table td { font-size: 10pt; line-height: 1.5; }
+        table.standard-table { width: 100%; border-collapse: collapse; margin-bottom: 10px; border: 1px solid var(--border-dark); }
+        table.standard-table th, table.standard-table td { border: 1px solid var(--border-dark); padding: 7px 9px; text-align: left; vertical-align: middle; }
+        table.standard-table th { background: var(--accent); color: white; font-family: var(--font-kh-heading); font-size: 9.5pt; text-align: center; }
+        table.standard-table td { font-size: 9pt; line-height: 1.5; }
 
         /* Visual Frames */
-        .graphic-box { background: var(--bg-light); border: 1px solid var(--border-light); border-radius: 8px; padding: 12px; margin: 10px 0; width: 100%; }
-        .two-column { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 10px 0; align-items: start;}
+        .graphic-box { background: var(--bg-light); border: 1px solid var(--border-light); border-radius: 8px; padding: 10px; margin: 8px 0; width: 100%; }
+        .two-column { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 8px 0; align-items: start;}
 
         /* Code & Boxes */
-        .code-window { background: var(--primary); border-radius: 8px; overflow: hidden; margin: 10px 0; border: 1px solid #334155; box-shadow: 0 4px 6px rgba(0,0,0,0.1);}
-        .code-header { background: #1E293B; padding: 8px 12px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #0F172A;}
+        .code-window { background: var(--primary); border-radius: 8px; overflow: hidden; margin: 8px 0; border: 1px solid #334155; box-shadow: 0 4px 6px rgba(0,0,0,0.1);}
+        .code-header { background: #1E293B; padding: 6px 12px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #0F172A;}
         .mac-dots { display: flex; gap: 6px; }
-        .dot { width: 10px; height: 10px; border-radius: 50%; }
+        .dot { width: 9px; height: 9px; border-radius: 50%; }
         .dot-r { background: var(--danger); }
         .dot-y { background: var(--warning); }
         .dot-g { background: var(--success); }
-        .code-title { color: #94A3B8; font-family: var(--font-code); font-size: 8.5pt; font-weight: 500;}
-        pre { padding: 12px; color: #E2E8F0; font-family: var(--font-code); font-size: 9pt; line-height: 1.4; overflow-x: auto; margin: 0; tab-size: 4;}
-        code.inline-code { font-family: var(--font-code); background: #F1F5F9; color: var(--danger); padding: 2px 5px; border-radius: 4px; font-size: 9.5pt; font-weight: bold; border: 1px solid var(--border-light); }
+        .code-title { color: #94A3B8; font-family: var(--font-code); font-size: 8pt; font-weight: 500;}
+        pre { padding: 10px; color: #E2E8F0; font-family: var(--font-code); font-size: 8pt; line-height: 1.4; overflow-x: auto; margin: 0; tab-size: 4;}
+        code.inline-code { font-family: var(--font-code); background: #F1F5F9; color: var(--danger); padding: 2px 5px; border-radius: 4px; font-size: 8.5pt; font-weight: bold; border: 1px solid var(--border-light); }
         
-        .lab-box { background: #FEFCE8; border-left: 5px solid #EAB308; padding: 12px; margin: 10px 0; border-radius: 4px; border: 1px solid #FEF08A; }
-        .lab-box h4 { color: #854D0E; margin-bottom: 6px; font-family: var(--font-kh-heading); font-size: 11pt;}
-        .lab-box p { font-size: 10pt; line-height: 1.5; margin: 0; }
+        .lab-box { background: #FEFCE8; border-left: 5px solid #EAB308; padding: 10px; margin: 8px 0; border-radius: 4px; border: 1px solid #FEF08A; }
+        .lab-box h4 { color: #854D0E; margin-bottom: 4px; font-family: var(--font-kh-heading); font-size: 10pt; display: flex; justify-content: space-between; align-items: center;}
+        .lab-box p { font-size: 9pt; line-height: 1.5; margin: 0; }
+
+        .eval-box { background: #FEF2F2; border-left: 5px solid #EF4444; padding: 10px; margin: 8px 0; border-radius: 4px; border: 1px solid #FCA5A5; }
+        .eval-box h4 { color: #991B1B; margin-bottom: 4px; font-family: var(--font-kh-heading); font-size: 10pt; display: flex; justify-content: space-between; align-items: center;}
+        .eval-box p { font-size: 9pt; line-height: 1.5; margin: 0; }
 
         /* Questions list */
-        .q-list { list-style: decimal; padding-left: 18px; font-size: 10.5pt; line-height: 1.6; }
-        .q-list li { margin-bottom: 12px; font-weight: bold; }
-        .mcq-opts { list-style-type: upper-alpha; padding-left: 18px; margin-top: 6px; font-weight: normal; display: grid; grid-template-columns: 1fr 1fr; gap: 6px;}
+        .q-list { list-style: decimal; padding-left: 18px; font-size: 9.5pt; line-height: 1.55; }
+        .q-list li { margin-bottom: 10px; font-weight: bold; }
+        .mcq-opts { list-style-type: upper-alpha; padding-left: 18px; margin-top: 4px; font-weight: normal; display: grid; grid-template-columns: 1fr 1fr; gap: 4px;}
         .mcq-opts li { margin-bottom: 0; }
 
         /* Answer Table */
         .ans-table { width: 100%; border-collapse: collapse; margin-top: 5px;}
-        .ans-table th { background: var(--bg-light); color: var(--text-heading); text-align: center; border: 1px solid var(--border-dark); padding: 5px; font-size: 9.5pt;}
-        .ans-table td { font-weight: bold; color: var(--accent); text-align: center; border: 1px solid var(--border-dark); padding: 5px; font-size: 9.5pt;}
+        .ans-table th { background: var(--bg-light); color: var(--text-heading); text-align: center; border: 1px solid var(--border-dark); padding: 4px; font-size: 8.5pt;}
+        .ans-table td { font-weight: bold; color: var(--accent); text-align: center; border: 1px solid var(--border-dark); padding: 4px; font-size: 8.5pt;}
 
         @media print {
             body { background: none; padding: 0; margin: 0; display: block; }
@@ -193,24 +219,24 @@
         <h1 style="font-family: 'Suwannaphum'; font-size: 28pt; color: var(--text-heading); margin-bottom: 2px; font-weight: 900;">សាកលវិទ្យាល័យអង្គរ</h1>
         <p style="font-family: 'Inter'; font-size: 13pt; color: var(--text-muted); margin-bottom: 30px; font-weight: 600; letter-spacing: 2px;">ANGKOR UNIVERSITY</p>
         
-        <div style="font-family: 'Suwannaphum'; font-size: 14pt; color: var(--text-main); margin-bottom: 25px; font-weight: 700; background: #F1F5F9; padding: 8px 25px; border-radius: 50px; border: 1px solid var(--border-light); display: inline-flex; align-items: center; gap: 8px;">
+        <div style="font-family: 'Suwannaphum'; font-size: 13pt; color: var(--text-main); margin-bottom: 25px; font-weight: 700; background: #F1F5F9; padding: 8px 25px; border-radius: 50px; border: 1px solid var(--border-light); display: inline-flex; align-items: center; gap: 8px;">
             <i class="fa-solid fa-laptop-code" style="color:var(--accent);"></i> បរិញ្ញាបត្រ វិទ្យាសាស្ត្រកុំព្យូទ័រ
         </div>
         
-        <div style="background: var(--accent); color: white; padding: 10px 25px; border-radius: 8px; font-size: 14pt; font-family: 'Suwannaphum'; font-weight: 700; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(81, 43, 212, 0.3);">ឯកសារអាន (Handout) - ជំពូកទី ៧</div>
+        <div style="background: var(--accent); color: white; padding: 10px 25px; border-radius: 8px; font-size: 13.5pt; font-family: 'Suwannaphum'; font-weight: 700; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(81, 43, 212, 0.3);">ឯកសារអាន (Handout) - ជំពូកទី ៧ (Dual-Track Edition)</div>
         
-        <h2 style="font-family: 'Suwannaphum'; font-size: 18.5pt; color: var(--text-heading); margin-bottom: 10px; line-height: 1.5; font-weight: 900;">ស្ថាបត្យកម្ម Web API (Decoupled MVC) ការអានទិន្នន័យអសមកាល និង JavaScript Fetch API</h2>
-        <h3 style="font-family: 'Battambang'; font-size: 12.5pt; color: var(--secondary); margin-bottom: 40px; font-weight: 600;">បច្ចេកវិទ្យា ASP.NET និងប្រព័ន្ធគ្រប់គ្រងមូលដ្ឋានទិន្នន័យ SQL Server</h3>
+        <h2 style="font-family: 'Suwannaphum'; font-size: 18pt; color: var(--text-heading); margin-bottom: 10px; line-height: 1.5; font-weight: 900;">ស្ថាបត្យកម្មរួមផ្សំ៖ Traditional MVC (Razor Views) និង Decoupled Web API (JS Fetch Integration)</h2>
+        <h3 style="font-family: 'Battambang'; font-size: 12pt; color: var(--secondary); margin-bottom: 40px; font-weight: 600;">បច្ចេកវិទ្យា ASP.NET Core និងប្រព័ន្ធគ្រប់គ្រងមូលដ្ឋានទិន្នន័យ SQL Server</h3>
         
         <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; background: white; padding: 15px 30px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid var(--border-light); width: 85%;">
-            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" style="width: 110px; height: 100px; border-radius: 50%; object-fit: cover; border: 4px solid var(--accent); box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
-            <p style="font-family: 'Battambang'; font-size: 11pt; color: var(--text-muted); margin: 0;">រៀបចំដោយសាស្ត្រាចារ្យ៖</p>
-            <strong style="font-family: 'Suwannaphum'; color: var(--text-heading); font-size: 15pt; font-weight: 900;">សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</strong>
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" style="width: 100px; height: 95px; border-radius: 50%; object-fit: cover; border: 4px solid var(--accent); box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+            <p style="font-family: 'Battambang'; font-size: 10.5pt; color: var(--text-muted); margin: 0;">រៀបចំដោយសាស្ត្រាចារ្យ៖</p>
+            <strong style="font-family: 'Suwannaphum'; color: var(--text-heading); font-size: 14.5pt; font-weight: 900;">សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</strong>
         </div>
     </div>
 </div>
 
-<!-- PAGE 2: TOC & OBJECTIVES -->
+<!-- PAGE 2: TOC & OBJECTIVES (BLOOM TAXONOMY ALIGNED) -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
@@ -218,31 +244,42 @@
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
     <div class="page-content">
-        <div class="section-title"><i class="fa-solid fa-list-ol"></i> មាតិកាជំពូកទី ៧ (Chapter Contents)</div>
+        <div class="section-title">
+            <div class="section-title-left"><i class="fa-solid fa-list-ol"></i> មាតិកាជំពូកទី ៧ (Chapter Contents)</div>
+        </div>
         <table class="toc-table">
             <thead>
                 <tr>
-                    <th style="width: 15%; text-align: center;">ចំណុច</th>
+                    <th style="width: 10%; text-align: center;">ចំណុច</th>
                     <th>ខ្លឹមសារមេរៀន (Topics)</th>
+                    <th style="width: 25%; text-align: center;">Bloom's Level</th>
                 </tr>
             </thead>
             <tbody>
-                <tr><td class="toc-num">៧.១</td><td>ស្ថាបត្យកម្មទំនើប៖ ភាពខុសគ្នារវាង Traditional MVC និង Decoupled API</td></tr>
-                <tr><td class="toc-num">៧.២</td><td>ការយល់ដឹងពី GET Request, JSON និង HTTP Status Codes</td></tr>
-                <tr><td class="toc-num">៧.៣</td><td>ការបង្កើត Controller ជាមួយ Entity Framework (Async/Await)</td></tr>
-                <tr><td class="toc-num">៧.៤</td><td>ការសាកល្បង API ដោយប្រើប្រាស់ Swagger UI</td></tr>
-                <tr><td class="toc-num">៧.៥</td><td>ការដោះស្រាយបញ្ហាសុវត្ថិភាព CORS Policy (Same-Origin Policy)</td></tr>
-                <tr><td class="toc-num">៧.៦</td><td>ការប្រើប្រាស់ JS Fetch API (Async/Await) បញ្ចូលទិន្នន័យទៅ HTML</td></tr>
-                <tr><td class="toc-num">៧.៧</td><td>លំហាត់អនុវត្តន៍ (Practical Exercises): ប្រព័ន្ធគ្រប់គ្រងទំនិញកម្រិតដំបូង</td></tr>
+                <tr><td class="toc-num">៧.១</td><td>ស្ថាបត្យកម្មឌុយអាល់៖ Traditional MVC (SSR) ទល់នឹង Decoupled Web API (CSR)</td><td style="text-align:center;"><span class="bloom-badge bloom-l2">2. Understand</span></td></tr>
+                <tr><td class="toc-num">៧.២</td><td>ការរៀបចំ Data Layer (EF Core Context & Model) សម្រាប់ប្រើប្រាស់រួមគ្នា</td><td style="text-align:center;"><span class="bloom-badge bloom-l3">3. Apply</span></td></tr>
+                <tr><td class="toc-num">៧.៣</td><td>Track A: Traditional MVC - Controller, Razor View (.cshtml) & Model Binding</td><td style="text-align:center;"><span class="bloom-badge bloom-l3">3. Apply</span></td></tr>
+                <tr><td class="toc-num">៧.៤</td><td>Track B: Decoupled Web API - Async Controller, JSON Output & Swagger UI</td><td style="text-align:center;"><span class="bloom-badge bloom-l3">3. Apply</span></td></tr>
+                <tr><td class="toc-num">៧.៥</td><td>ការដោះស្រាយ CORS Policy & Security ក្នុង Decoupled Web API</td><td style="text-align:center;"><span class="bloom-badge bloom-l5">5. Evaluate</span></td></tr>
+                <tr><td class="toc-num">៧.៦</td><td>Track B Frontend: HTML View & JS Fetch API (Async/Await) Integration</td><td style="text-align:center;"><span class="bloom-badge bloom-l3">3. Apply</span></td></tr>
+                <tr><td class="toc-num">៧.៧</td><td>លំហាត់អនុវត្តន៍ (Practical Exercises): អភិវឌ្ឍន៍ប្រព័ន្ធលើស្ថាបត្យកម្មទាំងពីរ</td><td style="text-align:center;"><span class="bloom-badge bloom-l6">6. Create</span></td></tr>
             </tbody>
         </table>
 
-        <div class="section-title"><i class="fa-solid fa-bullseye"></i> វត្ថុបំណងនៃជំពូកទី ៧ (Chapter Objectives)</div>
+        <div class="section-title">
+            <div class="section-title-left"><i class="fa-solid fa-bullseye"></i> វត្ថុបំណងនៃជំពូកទី ៧ (Bloom's Learning Objectives)</div>
+        </div>
+        <div class="text-block" style="font-size:9.5pt; color:var(--text-muted); margin-bottom:6px;">
+            បកស្រាយតាមក្របខ័ណ្ឌគរុកោសល្យ <b>Bloom's Taxonomy</b> និស្សិតនឹងទទួលបានសមត្ថភាពតាមកម្រិតដូចខាងក្រោម៖
+        </div>
+
         <ul class="obj-list">
-            <li><b class="highlight">កសាងស្ថាបត្យកម្ម API:</b> យល់ច្បាស់ពីការបំបែកគម្រោងជាពីរ (Backend API និង Frontend Web) និងការប្រើប្រាស់ <code>[ApiController]</code> ដើម្បីបញ្ចេញទិន្នន័យ Database ទៅជាទម្រង់ JSON ស្តង់ដារ។</li>
-            <li><b class="highlight">អនុវត្តការសរសេរកូដអសមកាល:</b> ចេះប្រើប្រាស់ <code>async / await</code> ទាំងនៅក្នុង C# (EF Core `ToListAsync`) និងនៅក្នុង JavaScript ដើម្បីបង្កើនល្បឿន និងប្រសិទ្ធភាពកម្មវិធី (Performance)។</li>
-            <li><b class="highlight">គ្រប់គ្រងសុវត្ថិភាព:</b> យល់ពីមូលហេតុដែល Web Browser ទប់ស្កាត់ការហៅទិន្នន័យឆ្លង Domain (CORS Error) និងចេះកំណត់ <code>AddCors()</code> នៅក្នុង <code>Program.cs</code> ប្រកបដោយវិជ្ជាជីវៈ។</li>
-            <li><b class="highlight">តភ្ជាប់ Full-Stack (Integration):</b> ស្ទាត់ជំនាញក្នុងការប្រើប្រាស់ <code>fetch()</code> របស់ JS ដើម្បីទាញទិន្នន័យពី Backend មកបញ្ចូល (Manipulate DOM) ក្នុងតារាង HTML ដោយស្វ័យប្រវត្ត។</li>
+            <li><span class="bloom-badge bloom-l1">1. ចងចាំ (Remember)</span> <b class="highlight">កំណត់ពាក្យគន្លឹះ៖</b> ចងចាំនិយមន័យនៃ Server-Side Rendering (SSR), Client-Side Rendering (CSR), Razor View Syntax, HTTP GET, Status Codes, និង CORS Policy។</li>
+            <li><span class="bloom-badge bloom-l2">2. យល់ដឹង (Understand)</span> <b class="highlight">ប្រៀបធៀបស្ថាបត្យកម្ម៖</b> បកស្រាយពីភាពខុសគ្នារវាង Traditional MVC (ដែលបកប្រែ HTML លើ Server) និង Web API (ដែលផ្ញើ JSON ឱ្យ Client)។</li>
+            <li><span class="bloom-badge bloom-l3">3. អនុវត្ត (Apply)</span> <b class="highlight">សរសេរកូដទាញទិន្នន័យ៖</b> អភិវឌ្ឍ Traditional Controller ជាមួយ Razor View `.cshtml` និង API Controller ជាមួយ `fetch()` ក្នុង JavaScript។</li>
+            <li><span class="bloom-badge bloom-l4">4. វិភាគ (Analyze)</span> <b class="highlight">ដោះស្រាយកំហុស (Debug):</b> វិភាគ និងដោះស្រាយកំហុស Model Binding ក្នុង Razor View, បញ្ហា CORS, និង Console Errors ក្នុង Web Browser។</li>
+            <li><span class="bloom-badge bloom-l5">5. វាយតម្លៃ (Evaluate)</span> <b class="highlight">វាយតម្លៃជ្រើសរើសស្ថាបត្យកម្ម៖</b> វាយតម្លៃថាពេលណាគួរបង្កើតប្រព័ន្ធបែប Traditional MVC ឬ Decoupled Web API ផ្អែកលើ SEO, Security, និង Mobile App Support។</li>
+            <li><span class="bloom-badge bloom-l6">6. បង្កើត (Create)</span> <b class="highlight">កសាងប្រព័ន្ធ Dual-Track Application:</b> អភិវឌ្ឍន៍ប្រព័ន្ធគ្រប់គ្រងទំនិញ (Catalog System) ដែលមានទាំងទំព័រ Razor View និងទំព័រ Dynamic Web API + Fetch UI។</li>
         </ul>
     </div>
     <div class="global-footer">
@@ -251,7 +288,7 @@
     </div>
 </div>
 
-<!-- PAGE 3: SECTION 7.1 - DECOUPLED ARCHITECTURE -->
+<!-- PAGE 3: SECTION 7.1 - DUAL ARCHITECTURE COMPARISON -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
@@ -259,55 +296,78 @@
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
     <div class="page-content">
-        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-layer-group"></i> ៧.១ ស្ថាបត្យកម្មទំនើប៖ Traditional MVC ទល់នឹង Decoupled Web API</div>
+        <div class="section-title" style="margin-top:0;">
+            <div class="section-title-left"><i class="fa-solid fa-layer-group"></i> ៧.១ ស្ថាបត្យកម្មឌុយអាល់៖ Traditional MVC (SSR) ទល់នឹង Decoupled Web API (CSR)</div>
+            <span class="bloom-badge bloom-l2">2. Understand</span>
+        </div>
         
         <div class="text-block">
-            យោងតាមកម្មវិធីសិក្សា (Syllabus) របស់មុខវិជ្ជានេះ យើងកំពុងសិក្សាអំពីទម្រង់ <b>Model-View-Controller (MVC)</b> ប៉ុន្តែស្ថិតក្នុងបរិបទនៃ <b>Modern Web API</b>។ ដើម្បីកុំឱ្យមានការភ័ន្តច្រឡំ យើងត្រូវយល់ពីភាពខុសគ្នារវាងស្ថាបត្យកម្មទាំងពីរនេះជាមុនសិន។
+            ក្នុងការអភិវឌ្ឍកម្មវិធី Web ទំនើបជាមួយ ASP.NET Core អ្នកអភិវឌ្ឍន៍អាចជ្រើសរើស ឬប្រើប្រាស់រួមគ្នានូវស្ថាបត្យកម្មចម្បងពីរ ទៅតាមតម្រូវការជាក់ស្តែងនៃអាជីវកម្ម៖
         </div>
 
-        <div class="two-column" style="margin-top: 15px; gap: 15px;">
-            <div style="background: white; border: 1px solid var(--border-dark); border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
-                <div style="background: var(--text-muted); color: white; padding: 10px; text-align: center; font-weight: bold; font-family: var(--font-en-main); font-size: 10pt;">1. Traditional MVC (Server-Side Rendering)</div>
-                <div style="padding: 12px; font-size: 9.5pt; line-height: 1.6; color: var(--text-main);">
-                    ក្នុងទម្រង់ចាស់នេះ Model, View (.cshtml) និង Controller គឺស្ថិតនៅក្នុង Project .NET តែមួយ។ ពេល User ស្នើសុំទំព័រ (Request) Server នឹងយកទិន្នន័យទៅបិទភ្ជាប់ក្នុង HTML រួចទើបបញ្ជូន HTML ទាំងផ្ទាំងនោះទៅឱ្យ Browser។ <br>
-                    <b style="color: var(--danger);">បញ្ហា៖</b> វាដំណើរការយឺត (ត្រូវ Refresh វេបសាយរហូត) និងពិបាកយកទៅភ្ជាប់ជាមួយ Mobile App។
+        <div class="two-column" style="margin-top: 10px; gap: 12px;">
+            <div style="background: white; border: 2px solid var(--secondary); border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+                <div style="background: var(--secondary); color: white; padding: 8px; text-align: center; font-weight: bold; font-family: var(--font-en-main); font-size: 9.5pt;">1. Traditional MVC (Server-Side Rendering - SSR)</div>
+                <div style="padding: 10px; font-size: 9pt; line-height: 1.55; color: var(--text-main);">
+                    <b>លក្ខណៈ៖</b> Model, Controller និង Razor View (<code>.cshtml</code>) ស្ថិតក្នុង Project តែមួយ។ <br>
+                    <b>ដំណើរការ៖</b> Server យកទិន្នន័យពី DB បញ្ចូលក្នុង HTML ទើបបញ្ជូន HTML ទាំងផ្ទាំងមក Browser។ <br>
+                    <b style="color: var(--success);">ចំណុចខ្លាំង៖</b> ល្អសម្រាប់ SEO, សុវត្ថិភាពខ្ពស់, និងរៀបចំដំបូងលឿន។ <br>
+                    <b style="color: var(--danger);">ចំណុចខ្សោយ៖</b> ត្រូវ Refresh ទំព័ររហូត និងមិនអាចចែករំលែកកូដទៅ Mobile App ឡើយ។
                 </div>
             </div>
             
             <div style="background: white; border: 2px solid var(--accent); border-radius: 8px; overflow: hidden; box-shadow: 0 4px 10px rgba(81, 43, 212, 0.1);">
-                <div style="background: var(--accent); color: white; padding: 10px; text-align: center; font-weight: bold; font-family: var(--font-en-main); font-size: 10pt;">2. Decoupled Web API (Client-Side Rendering)</div>
-                <div style="padding: 12px; font-size: 9.5pt; line-height: 1.6; color: var(--text-main);">
-                    ទម្រង់ទំនើបដែលយើងកំពុងរៀន! គម្រោងត្រូវបានបំបែកជាពីរ៖ 
-                    <ul style="padding-left: 20px; margin-top: 5px; color: var(--accent); font-weight: bold;">
-                        <li><b>Backend:</b> ផ្ទុកត្រឹមតែ Model និ Controller ហើយបញ្ចេញតែទិន្នន័យ (JSON) ប៉ុណ្ណោះ។</li>
-                        <li><b>Frontend (View):</b> គឺជា HTML/JS ឯករាជ្យដែលទាញ JSON យកមកបង្ហាញដោយមិនបាច់ Refresh វេបសាយ (SPA)។ វាងាយស្រួលភ្ជាប់ជាមួយ Mobile App ទៀតផង។</li>
-                    </ul>
+                <div style="background: var(--accent); color: white; padding: 8px; text-align: center; font-weight: bold; font-family: var(--font-en-main); font-size: 9.5pt;">2. Decoupled Web API (Client-Side Rendering - CSR)</div>
+                <div style="padding: 10px; font-size: 9pt; line-height: 1.55; color: var(--text-main);">
+                    <b>លក្ខណៈ៖</b> Backend បញ្ចេញតែ JSON Data រីឯ Frontend (HTML/JS/React) ស្ថិតនៅដាច់ដោយឡែក។ <br>
+                    <b>ដំណើរការ៖</b> Browser ទាញយកតែទិន្នន័យ JSON មកបិទភ្ជាប់លើ UI តាម JavaScript (`fetch()`)។ <br>
+                    <b style="color: var(--success);">ចំណុចខ្លាំង៖</b> លឿន (គ្មាន Refresh Page), អាចប្រើជាមួយ Mobile Apps, React, Vue, Angular។ <br>
+                    <b style="color: var(--danger);">ចំណុចខ្សោយ៖</b> ជួបបញ្ហា CORS, ពិបាកធ្វើ SEO ជាង SSR។
                 </div>
             </div>
         </div>
 
-        <div class="graphic-box" style="padding: 15px; border-color: var(--accent); margin-top: 20px;">
-            <div style="font-family:'Suwannaphum',sans-serif; color:var(--text-main); font-size:11pt; margin-bottom:15px; font-weight:bold; text-align:center;">លំហូរការងារនៃ Decoupled Web API</div>
-            
-            <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-                <div style="width: 25%; text-align: center;">
-                    <i class="fa-solid fa-database" style="font-size: 35px; color: var(--text-muted); margin-bottom: 5px;"></i>
-                    <div style="font-size: 9pt; font-weight: bold;">SQL Server</div>
-                    <div style="font-size: 7.5pt; color: var(--text-muted);">(Model / EF Core)</div>
-                </div>
-                <div style="width: 12%; color: var(--secondary); font-size: 14pt; text-align:center;"><i class="fa-solid fa-arrow-right-arrow-left"></i></div>
-                <div style="width: 25%; text-align: center;">
-                    <i class="fa-solid fa-server" style="font-size: 35px; color: var(--accent); margin-bottom: 5px;"></i>
-                    <div style="font-size: 9pt; font-weight: bold;">ASP.NET Web API</div>
-                    <div style="font-size: 7.5pt; color: var(--text-muted);">(Controller / JSON)</div>
-                </div>
-                <div style="width: 12%; color: var(--success); font-size: 14pt; text-align:center;"><i class="fa-solid fa-arrow-right-arrow-left"></i></div>
-                <div style="width: 25%; text-align: center;">
-                    <i class="fa-brands fa-html5" style="font-size: 35px; color: #E34F26; margin-bottom: 5px;"></i>
-                    <div style="font-size: 9pt; font-weight: bold;">Web Browser</div>
-                    <div style="font-size: 7.5pt; color: var(--text-muted);">(View / JS Fetch)</div>
-                </div>
-            </div>
+        <table class="standard-table" style="margin-top:10px;">
+            <thead>
+                <tr>
+                    <th>លក្ខណៈវិនិច្ឆ័យ (Metric)</th>
+                    <th style="width: 40%;">Traditional MVC (Razor Views)</th>
+                    <th style="width: 40%;">Decoupled Web API (JS Fetch)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><b>កន្លែង Render HTML</b></td>
+                    <td>នៅលើ Web Server (.NET Core)</td>
+                    <td>នៅលើ Web Browser (JavaScript)</td>
+                </tr>
+                <tr>
+                    <td><b>ទម្រង់ទិន្នន័យបញ្ជូន</b></td>
+                    <td>HTML Markup ពេញលេញ (HTML String)</td>
+                    <td>Raw Data ទម្រង់ JSON</td>
+                </tr>
+                <tr>
+                    <td><b>បទពិសោធន៍អ្នកប្រើ (UX)</b></td>
+                    <td>Page Refresh រាល់ពេលប្តូរទិន្នន័យ</td>
+                    <td>Single Page Application (SPA) គ្មាន Refresh</td>
+                </tr>
+                <tr>
+                    <td><b>ការប្រើប្រាស់ឡើងវិញ (Reusability)</b></td>
+                    <td>ប្រើបានតែលើ Web Browser ប៉ុណ្ណោះ</td>
+                    <td>ប្រើរួមគ្នាបានទាំង Web, iOS, Android Apps</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- BLOOM EVALUATE / THINKING BOX -->
+        <div class="eval-box">
+            <h4>
+                <span><i class="fa-solid fa-brain"></i> សំណួរគិតពិចារណា (Cognitive Reflection)</span>
+                <span class="bloom-badge bloom-l5">5. Evaluate</span>
+            </h4>
+            <p>
+                ប្រសិនបើអ្នកត្រូវបង្កើតប្រព័ន្ធគ្រប់គ្រងសាលារៀនដែលតម្រូវឱ្យមាន <b>Web Admin Panel</b> សម្រាប់បុគ្គលិកធ្វើការក្នុងអូហ្វីស និង <b>Mobile App</b> សម្រាប់សិស្សពិនិត្យពិន្ទុ តើអ្នកគួរបង្កើតប្រព័ន្ធនេះតាមស្ថាបត្យកម្មមួយណា? ព្រោះអ្វី?
+            </p>
         </div>
     </div>
     <div class="global-footer">
@@ -316,7 +376,7 @@
     </div>
 </div>
 
-<!-- PAGE 4: SECTION 7.2 - GET, JSON & HTTP STATUS CODS -->
+<!-- PAGE 4: SECTION 7.2 - SHARED DATA LAYER (EF CORE MODEL & CONTEXT) -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
@@ -324,53 +384,72 @@
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
     <div class="page-content">
-        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-network-wired"></i> ៧.២ ការយល់ដឹងពី GET Request, JSON និង HTTP Status</div>
+        <div class="section-title" style="margin-top:0;">
+            <div class="section-title-left"><i class="fa-solid fa-database"></i> ៧.២ ការរៀបចំ Data Layer (EF Core Context & Model) រួមគ្នា</div>
+            <span class="bloom-badge bloom-l3">3. Apply</span>
+        </div>
         
         <div class="text-block">
-            ដើម្បីឱ្យ Frontend និង Backend អាចទាក់ទងគ្នាបាន ពួកវាប្រើប្រាស់ពិធីការ <b>HTTP (HyperText Transfer Protocol)</b>។ ប្រតិបត្តិការចម្បងដែលយើងនឹងរៀននៅថ្ងៃនេះគឺការ "អានទិន្នន័យ" ដែលត្រូវនឹង <b>GET Request</b> (តំណាងឱ្យអក្សរ R - Read ក្នុងវដ្ត CRUD)។
+            ចំណុចខ្លាំងនៃ ASP.NET Core គឺ <b>Data Access Layer (EF Core)</b> អាចប្រើប្រាស់រួមគ្នា (Shared Layer) បានទាំងសម្រាប់ Traditional MVC Controller និង Web API Controller។ យើងមិនចាំបាច់បង្កើត Model ឬ Database Context ច្រើនដងឡើយ។
         </div>
 
-        <div class="sub-heading">តើ JSON គឺជាអ្វី?</div>
-        <div class="text-block">
-            ទិន្នន័យដែល C# ទាញបានពី SQL Server គឺជា C# Objects ដែលកុំព្យូទ័រផ្សេងមិនអាចយល់បានឡើយ។ ហេតុនេះ .NET Core ត្រូវបំប្លែងវាទៅជា <b>JSON (JavaScript Object Notation)</b> ដែលជាទម្រង់អត្ថបទស្តង់ដារអន្តរជាតិ (ស្រាល និងងាយស្រួលអាន) មុននឹងបញ្ជូនទៅឱ្យ Frontend។
+        <div class="sub-heading">
+            <span>១. ការបង្កើត Entity Model (Student.cs)</span>
+            <span class="bloom-badge bloom-l3">C# Implementation</span>
         </div>
 
-        <div class="sub-heading">HTTP Status Codes សំខាន់ៗដែលអ្នកអភិវឌ្ឍន៍ត្រូវដឹង៖</div>
-        <div class="text-block" style="font-size: 10pt;">
-            រាល់ពេលដែល Backend ឆ្លើយតបទៅកាន់ Frontend (Response) វាតែងតែភ្ជាប់មកជាមួយនូវ "លេខកូដស្ថានភាព" ដើម្បីប្រាប់ថាប្រតិបត្តិការនោះជោគជ័យ ឬបរាជ័យដោយសារអ្វី។
+        <div class="code-window">
+            <div class="code-header">
+                <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+                <div class="code-title">Models/Student.cs</div>
+            </div>
+<pre><span style="color:#C678DD;">namespace</span> SchoolApp.Models
+{
+    <span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">Student</span>
+    {
+        <span style="color:#C678DD;">public int</span> Id { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; }
+        <span style="color:#C678DD;">public string</span> FullName { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; } = <span style="color:#98C379;">""</span>;
+        <span style="color:#C678DD;">public string</span> Gender { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; } = <span style="color:#98C379;">""</span>;
+        <span style="color:#C678DD;">public double</span> GPA { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; }
+    }
+}</pre>
         </div>
 
-        <table class="standard-table" style="margin-top: 10px;">
-            <thead>
-                <tr>
-                    <th style="width: 25%;">Status Code</th>
-                    <th style="width: 25%;">C# Method ក្នុង API</th>
-                    <th>អត្ថន័យ និងការប្រើប្រាស់</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td style="color: var(--success); font-weight: bold; font-family: var(--font-en-main); text-align: center;">200 OK</td>
-                    <td style="font-family: var(--font-code); text-align: center;">return Ok(data);</td>
-                    <td><b>ជោគជ័យ!</b> Server រកឃើញទិន្នន័យ និងបានបញ្ជូនវាត្រឡប់ទៅឱ្យ Client រួចរាល់។</td>
-                </tr>
-                <tr>
-                    <td style="color: var(--warning); font-weight: bold; font-family: var(--font-en-main); text-align: center;">400 Bad Request</td>
-                    <td style="font-family: var(--font-code); text-align: center;">return BadRequest();</td>
-                    <td><b>កំហុសអ្នកស្នើសុំ៖</b> ភាគច្រើនដោយសារ Client បញ្ជូនទិន្នន័យខុសទម្រង់ដែលមិនអាចដំណើរការបាន។</td>
-                </tr>
-                <tr>
-                    <td style="color: var(--warning); font-weight: bold; font-family: var(--font-en-main); text-align: center;">404 Not Found</td>
-                    <td style="font-family: var(--font-code); text-align: center;">return NotFound();</td>
-                    <td><b>រកមិនឃើញ៖</b> URL ខុស ឬទិន្នន័យ (ឧ. សិស្សលេខសម្គាល់ ៩៩) មិនមាននៅក្នុង Database ឡើយ។</td>
-                </tr>
-                <tr>
-                    <td style="color: var(--danger); font-weight: bold; font-family: var(--font-en-main); text-align: center;">500 Internal Error</td>
-                    <td style="font-family: var(--font-code); text-align: center;">- (កើតឡើងស្វ័យប្រវត្ត)</td>
-                    <td><b>កំហុស Server៖</b> កូដ C# មានបញ្ហាធ្ងន់ធ្ងរ (Exceptions) ឬដាច់ការតភ្ជាប់ពី SQL Server។</td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="sub-heading">
+            <span>២. ការបង្កើត Database Context (SchoolDbContext.cs)</span>
+            <span class="bloom-badge bloom-l3">EF Core Context</span>
+        </div>
+
+        <div class="code-window">
+            <div class="code-header">
+                <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+                <div class="code-title">Data/SchoolDbContext.cs</div>
+            </div>
+<pre><span style="color:#C678DD;">using</span> Microsoft.EntityFrameworkCore;
+<span style="color:#C678DD;">using</span> SchoolApp.Models;
+
+<span style="color:#C678DD;">namespace</span> SchoolApp.Data
+{
+    <span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">SchoolDbContext</span> : DbContext
+    {
+        <span style="color:#C678DD;">public</span> <span style="color:#61AFEF;">SchoolDbContext</span>(DbContextOptions&lt;SchoolDbContext&gt; options) : <span style="color:#C678DD;">base</span>(options) { }
+
+        <span style="color:#5C6370;">// តំណាងឱ្យតារាង Students នៅក្នុង SQL Server</span>
+        <span style="color:#C678DD;">public</span> DbSet&lt;Student&gt; Students =&gt; Set&lt;Student&gt;();
+    }
+}</pre>
+        </div>
+
+        <div class="lab-box">
+            <h4>
+                <span><i class="fa-solid fa-link"></i> ការចុះឈ្មោះ Connection String ក្នុង Program.cs</span>
+                <span class="bloom-badge bloom-l3">Configuration</span>
+            </h4>
+            <p>
+                ដើម្បីឱ្យ Controller ទាំងពីរប្រភេទអាចទាញយក <code>SchoolDbContext</code> ទៅប្រើប្រាស់បាន យើងត្រូវចុះឈ្មោះវានៅក្នុង <code>Program.cs</code>៖ <br>
+                <code>builder.Services.AddDbContext&lt;SchoolDbContext&gt;(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));</code>
+            </p>
+        </div>
     </div>
     <div class="global-footer">
         <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
@@ -378,7 +457,7 @@
     </div>
 </div>
 
-<!-- PAGE 5: SECTION 7.3 - GET CONTROLLER (ASYNC) -->
+<!-- PAGE 5: TRACK A - TRADITIONAL MVC CONTROLLER (APPLY LEVEL) -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
@@ -386,45 +465,61 @@
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
     <div class="page-content">
-        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-code-merge"></i> ៧.៣ ការបង្កើត Controller ជាមួយ EF Core (Async/Await)</div>
+        <div class="section-title" style="margin-top:0;">
+            <div class="section-title-left"><i class="fa-solid fa-window-restore"></i> ៧.៣ Track A: Traditional MVC Controller & Razor View</div>
+            <span class="bloom-badge bloom-l3">3. Apply</span>
+        </div>
+        
         <div class="text-block">
-            ដើម្បីអនុញ្ញាតឱ្យ Frontend អាចទាញទិន្នន័យសិស្សពី Database យើងត្រូវបង្កើត <b>API Controller</b>។ នៅក្នុងកម្រិតវិជ្ជាជីវៈ (Professional Level) យើងមិនប្រើ `.ToList()` ធម្មតាទេ តែយើងត្រូវប្រើការសរសេរកូដអសមកាល (Asynchronous) `ToListAsync()` ជានិច្ច ដើម្បីកុំឱ្យ Server គាំងពេលមានអ្នកចូលប្រើច្រើន។
+            នៅក្នុងស្ថាបត្យកម្ម Traditional MVC ពេលដែលមាន Request ចូលមក Controller នឹងទាញយកទិន្នន័យពី Database រួចបោះទិន្នន័យនោះទៅឱ្យ <b>Razor View (`.cshtml`)</b> ដើម្បីបកប្រែជា HTML នៅលើ Server រួចផ្ញើ HTML នោះទៅកាន់ Browser។
         </div>
 
-        <div class="sub-heading">ការរៀបចំ Controller និង Dependency Injection</div>
-        <div class="code-window" style="margin-top: 10px;">
+        <div class="sub-heading">
+            <span>១. ការបង្កើត Traditional MVC Controller (StudentController.cs)</span>
+            <span class="bloom-badge bloom-l3">C# Implementation</span>
+        </div>
+
+        <div class="code-window">
             <div class="code-header">
                 <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
-                <div class="code-title">Controllers/StudentApiController.cs</div>
+                <div class="code-title">Controllers/StudentController.cs</div>
             </div>
 <pre><span style="color:#C678DD;">using</span> Microsoft.AspNetCore.Mvc;
-<span style="color:#C678DD;">using</span> Microsoft.EntityFrameworkCore; <span style="color:#5C6370;">// ត្រូវការសម្រាប់ប្រើ Async</span>
+<span style="color:#C678DD;">using</span> Microsoft.EntityFrameworkCore;
 <span style="color:#C678DD;">using</span> SchoolApp.Data;
 
 <span style="color:#C678DD;">namespace</span> SchoolApp.Controllers
 {
-    [Route(<span style="color:#98C379;">"api/[controller]"</span>)] <span style="color:#5C6370;">// កំណត់ Endpoint URL</span>
-    [ApiController]
-    <span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">StudentApiController</span> : ControllerBase
+    <span style="color:#5C6370;">// ស្នងពី Controller ធម្មតា (មាន View Support)</span>
+    <span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">StudentController</span> : Controller
     {
-        <span style="color:#5C6370;">// ១. ប្រកាសអញ្ញាតសម្រាប់ផ្ទុកការតភ្ជាប់ Database</span>
         <span style="color:#C678DD;">private readonly</span> SchoolDbContext _context;
 
-        <span style="color:#5C6370;">// ២. Constructor Injection សម្រាប់ទាញ Service មកប្រើ</span>
-        <span style="color:#C678DD;">public</span> <span style="color:#61AFEF;">StudentApiController</span>(SchoolDbContext context)
+        <span style="color:#C678DD;">public</span> <span style="color:#61AFEF;">StudentController</span>(SchoolDbContext context)
         {
             _context = context;
         }
-        
-        <span style="color:#5C6370;">// ... កូដ GET Method នឹងសរសេរនៅទីនេះ (មើលទំព័របន្ទាប់) ...</span>
+
+        <span style="color:#5C6370;">// GET: /Student/Index</span>
+        <span style="color:#C678DD;">public async</span> Task&lt;IActionResult&gt; <span style="color:#61AFEF;">Index</span>()
+        {
+            <span style="color:#5C6370;">// ១. ទាញយកទិន្នន័យសិស្សពី SQL Server</span>
+            <span style="color:#C678DD;">var</span> students = <span style="color:#C678DD;">await</span> _context.Students.ToListAsync();
+
+            <span style="color:#5C6370;">// ២. បោះទិន្នន័យ Model ទៅឱ្យ Razor View (.cshtml)</span>
+            <span style="color:#C678DD;">return</span> View(students);
+        }
     }
 }</pre>
         </div>
 
-        <div class="lab-box" style="margin-top: 15px;">
-            <h4><i class="fa-solid fa-lightbulb"></i> ការពន្យល់កូដ (Code Explanation)</h4>
-            <p style="font-size: 10pt;">
-                <code>[Route("api/[controller]")]</code> គឺជាការកំណត់អាសយដ្ឋាន (Endpoint URL)។ ពាក្យ <code>[controller]</code> នឹងត្រូវជំនួសដោយឈ្មោះ Class ខាងមុខពាក្យ Controller។ ដូច្នេះ URL របស់វាគឺ <code>api/StudentApi</code>។ ការស្នងពី <code>ControllerBase</code> គឺជាស្តង់ដារសម្រាប់ Web API (ដោយមិនត្រូវការ View ដូច Controller ធម្មតាឡើយ)។
+        <div class="lab-box">
+            <h4>
+                <span><i class="fa-solid fa-lightbulb"></i> ការយល់ដឹងពី return View(students)</span>
+                <span class="bloom-badge bloom-l2">2. Understand</span>
+            </h4>
+            <p>
+                កូដ <code>return View(students);</code> នឹងស្វែងរកឯកសារ View ដែលមានទីតាំងនៅ <code>Views/Student/Index.cshtml</code> ដោយស្វ័យប្រវត្តិ ព្រមទាំងភ្ជាប់បញ្ជី `students` ទៅជាមួយ ដើម្បីឱ្យ Razor Engine ធ្វើការ Render ជា HTML។
             </p>
         </div>
     </div>
@@ -434,7 +529,7 @@
     </div>
 </div>
 
-<!-- PAGE 6: SECTION 7.3 (CONT.) - ASYNC GET METHOD -->
+<!-- PAGE 6: TRACK A - RAZOR VIEW .CSHTML (APPLY LEVEL) -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
@@ -442,40 +537,55 @@
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
     <div class="page-content">
-        <div class="sub-heading" style="width: 100%; margin-top:0;">ការសរសេរ Method ទាញទិន្នន័យ (Async / Await)</div>
-        <div class="text-block">
-            ការសរសេរកូដអសមកាល (Asynchronous) មានន័យថា Server នឹងមិនរង់ចាំ (Block) ការឆ្លើយតបពី SQL Server ឡើយ។ ក្នុងអំឡុងពេល Database កំពុងស្វែងរកទិន្នន័យ CPU របស់ Server អាចបង្វែរទៅទទួលសំណើពី User ផ្សេងទៀតបាន ដែលធ្វើឱ្យប្រព័ន្ធដើរលឿនខ្លាំង។
+        <div class="sub-heading" style="margin-top:0;">
+            <span>២. ការបង្កើត Razor View (Views/Student/Index.cshtml)</span>
+            <span class="bloom-badge bloom-l3">Razor Syntax</span>
         </div>
-        
-        <div class="code-window" style="margin-top: 10px;">
+
+        <div class="text-block">
+            នៅក្នុងឯកសារ Razor View <b><code>.cshtml</code></b> យើងប្រើប្រាស់និមិត្តសញ្ញា <b><code>@</code></b> ដើម្បីសរសេរកូដ C# លាយជាមួយ HTML។ នេះហៅថា **Server-Side Rendering (SSR)** ព្រោះកូដ C# ទាំងអស់ត្រូវបានដំណើរការលើ Server រួចរាល់ មុននឹងផ្ញើមកកាន់ Browser។
+        </div>
+
+        <div class="code-window">
             <div class="code-header">
                 <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
-                <div class="code-title">Controllers/StudentApiController.cs (បន្ត)</div>
+                <div class="code-title">Views/Student/Index.cshtml</div>
             </div>
-<pre>        <span style="color:#5C6370;">// ទទួលសំណើប្រភេទ GET (គ្មាន Parameter)</span>
-        [HttpGet]
-        <span style="color:#5C6370;">// ប្រើ async Task និងរុំលទ្ធផលក្នុង &lt;IActionResult&gt;</span>
-        <span style="color:#C678DD;">public async</span> Task&lt;IActionResult&gt; <span style="color:#61AFEF;">GetStudents</span>()
+<pre><span style="color:#5C6370;">@* ១. ប្រកាសប្រភេទ Model ដែលត្រូវទទួលពី Controller *@</span>
+<span style="color:#C678DD;">@model</span> IEnumerable&lt;SchoolApp.Models.Student&gt;
+
+<span style="color:#E06C75;">&lt;h2&gt;</span>បញ្ជីរាយនាមនិស្សិត (Traditional Razor View)<span style="color:#E06C75;">&lt;/h2&gt;</span>
+
+<span style="color:#E06C75;">&lt;table <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"table table-bordered"</span>&gt;</span>
+    <span style="color:#E06C75;">&lt;thead&gt;</span>
+        <span style="color:#E06C75;">&lt;tr&gt;</span>
+            <span style="color:#E06C75;">&lt;th&gt;</span>អត្តលេខ (ID)<span style="color:#E06C75;">&lt;/th&gt;</span>
+            <span style="color:#E06C75;">&lt;th&gt;</span>ឈ្មោះពេញ (Full Name)<span style="color:#E06C75;">&lt;/th&gt;</span>
+            <span style="color:#E06C75;">&lt;th&gt;</span>ភេទ (Gender)<span style="color:#E06C75;">&lt;/th&gt;</span>
+            <span style="color:#E06C75;">&lt;th&gt;</span>មធ្យមភាគ (GPA)<span style="color:#E06C75;">&lt;/th&gt;</span>
+        <span style="color:#E06C75;">&lt;/tr&gt;</span>
+    <span style="color:#E06C75;">&lt;/thead&gt;</span>
+    <span style="color:#E06C75;">&lt;tbody&gt;</span>
+        <span style="color:#5C6370;">@* ២. ប្រើប្រាស់ C# Loop រៀបចំជួរតារាងលើ Server *@</span>
+        <span style="color:#C678DD;">@foreach</span> (var item in Model)
         {
-            <span style="color:#5C6370;">// ១. ប្រើ await ដើម្បីរង់ចាំលទ្ធផលពី Database យ៉ាងមានប្រសិទ្ធភាព</span>
-            <span style="color:#5C6370;">// (តម្រូវឱ្យ using Microsoft.EntityFrameworkCore;)</span>
-            <span style="color:#C678DD;">var</span> studentsList = <span style="color:#C678DD;">await</span> _context.Students.ToListAsync();
-
-            <span style="color:#5C6370;">// ២. ឆែកមើលថាតើមានទិន្នន័យឬទេ</span>
-            <span style="color:#C678DD;">if</span> (studentsList == <span style="color:#D19A66;">null</span> || studentsList.Count == <span style="color:#D19A66;">0</span>)
-            {
-                <span style="color:#C678DD;">return</span> NotFound(<span style="color:#98C379;">"មិនមានទិន្នន័យសិស្សនៅក្នុងប្រព័ន្ធឡើយ។"</span>); <span style="color:#5C6370;">// Status 404</span>
-            }
-
-            <span style="color:#5C6370;">// ៣. បញ្ចេញទិន្នន័យជា JSON ភ្ជាប់ជាមួយ Status 200 OK</span>
-            <span style="color:#C678DD;">return</span> Ok(studentsList);
-        }</pre>
+            <span style="color:#E06C75;">&lt;tr&gt;</span>
+                <span style="color:#E06C75;">&lt;td&gt;</span><span style="color:#56B6C2;">@item.Id</span><span style="color:#E06C75;">&lt;/td&gt;</span>
+                <span style="color:#E06C75;">&lt;td&gt;</span><span style="color:#56B6C2;">@item.FullName</span><span style="color:#E06C75;">&lt;/td&gt;</span>
+                <span style="color:#E06C75;">&lt;td&gt;</span><span style="color:#56B6C2;">@item.Gender</span><span style="color:#E06C75;">&lt;/td&gt;</span>
+                <span style="color:#E06C75;">&lt;td&gt;</span><span style="color:#56B6C2;">@item.GPA.ToString("0.00")</span><span style="color:#E06C75;">&lt;/td&gt;</span>
+            <span style="color:#E06C75;">&lt;/tr&gt;</span>
+        }
+    <span style="color:#E06C75;">&lt;/tbody&gt;</span>
+<span style="color:#E06C75;">&lt;/table&gt;</span></pre>
         </div>
 
-        <div class="graphic-box" style="margin-top:15px; padding: 15px; text-align: center;">
-            <div style="font-family:'Suwannaphum',sans-serif; color:var(--text-main); font-size:11pt; margin-bottom:10px; font-weight:bold;">ចំណាំអំពី Naming Convention (CamelCase) ក្នុង JSON</div>
-            <p style="font-size: 9.5pt; color: var(--text-muted); line-height: 1.6; text-align: justify; margin: 0;">
-                នៅក្នុង C# Models Properties ជាធម្មតាត្រូវបានសរសេរជាអក្សរធំដើម ឧ. <code>FullName</code> (PascalCase)។ ប៉ុន្តែនៅពេលដែល ASP.NET ធ្វើការបញ្ចេញ (Serialize) វាទៅជា JSON វានឹងប្តូរវាទៅជាទម្រង់ <b>camelCase</b> ដោយស្វ័យប្រវត្ត។ ហេតុនេះហើយ ពេលចេញទៅដល់ Frontend វានឹងក្លាយជា <code>fullName</code> (អក្សរ f តូច) វិញ។
+        <div class="graphic-box" style="border-color: var(--secondary);">
+            <div style="font-weight:bold; color:var(--secondary); font-size:10pt; margin-bottom:5px;">
+                <i class="fa-solid fa-circle-info"></i> ចំណុចសំខាន់នៃ Razor View (SSR):
+            </div>
+            <p style="font-size:9pt; line-height:1.5; color:var(--text-main); margin:0;">
+                ពេលអ្នកប្រើប្រាស់ (User) ចុច Refresh ទំព័រ <code>/Student/Index</code> Web Server នឹងដំណើរការកូដ <code>@foreach</code> ខាងលើដើម្បីបង្កើតជា HTML String សុទ្ធ រួចទើបបាញ់មកឱ្យ Browser។ Browser មិនដឹងថាមានកូដ C# ឡើយ គឺឃើញតែ HTML សុទ្ធសាធ!
             </p>
         </div>
     </div>
@@ -485,7 +595,7 @@
     </div>
 </div>
 
-<!-- PAGE 7: SECTION 7.4 - SWAGGER UI -->
+<!-- PAGE 7: TRACK B - DECOUPLED WEB API CONTROLLER (APPLY LEVEL) -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
@@ -493,29 +603,61 @@
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
     <div class="page-content">
-        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-vial-circle-check"></i> ៧.៤ ការសាកល្បង API ដោយប្រើប្រាស់ Swagger UI</div>
-        <div class="text-block">
-            នៅក្នុងការងារវិជ្ជាជីវៈ មុននឹងយើងចាប់ផ្តើមសរសេរកូដ Frontend (HTML/JS) យើងត្រូវប្រាកដចិត្ត១០០% ថា Backend API របស់យើងដំណើរការត្រឹមត្រូវ និងបញ្ចេញទិន្នន័យ (JSON) មកពិតប្រាកដមែន។ 
+        <div class="section-title" style="margin-top:0;">
+            <div class="section-title-left"><i class="fa-solid fa-code-merge"></i> ៧.៤ Track B: Decoupled Web API Controller (Async/Await)</div>
+            <span class="bloom-badge bloom-l3">3. Apply</span>
         </div>
+        
         <div class="text-block">
-            ASP.NET Core មានភ្ជាប់មកស្រាប់ជាមួយនូវប្រព័ន្ធ <b>Swagger</b> ដែលជាចំណុចប្រទាក់ (Interface) ដ៏ស្រស់ស្អាតសម្រាប់ធ្វើតេស្ត API ដោយមិនចាំបាច់សរសេរកូដ Client ឡើយ។
+            ឥឡូវនេះ យើងមកសិក្សាស្ថាបត្យកម្មទី ២ គឺ <b>Decoupled Web API</b>។ មិនដូច Traditional Controller ឡើយ API Controller មិនត្រឡប់ View (`.cshtml`) ទេ ប៉ុន្តែវាត្រឡប់ទិន្នន័យជា **JSON Format** អមជាមួយ HTTP Status Code ដើម្បីឱ្យ Client (JS, React, Mobile App) យកទៅប្រៀបចំបង្ហាញខ្លួនឯង។
         </div>
 
-        <div class="lab-box" style="margin-top: 15px; border-color: var(--border-dark); background: white; border-left: 5px solid var(--secondary);">
-            <h4 style="color: var(--secondary);"><i class="fa-solid fa-play"></i> របៀបប្រើប្រាស់ Swagger៖</h4>
-            <ol style="margin-top: 10px; padding-left: 20px; font-size: 10pt; line-height: 1.8;">
-                <li>សូមចុច Run គម្រោងរបស់អ្នក (<code>dotnet run</code> ក្នុង Terminal)។</li>
-                <li>បើក Browser រួចវាយអាសយដ្ឋាន ដែលបញ្ចប់ដោយពាក្យ swagger។ <br><span style="color:var(--accent); font-weight:bold;">ឧទាហរណ៍៖ https://localhost:7123/swagger</span></li>
-                <li>អ្នកនឹងឃើញផ្ទាំងពណ៌បៃតងលោតឡើង។ ស្វែងរកឈ្មោះ <b>StudentApi</b> រួចចុចពង្រីកលើប្រអប់ពាក្យ <b>GET</b>។</li>
-                <li>ចុចប៊ូតុង <b style="background:var(--bg-workspace); padding: 2px 6px; border-radius:4px;">Try it out</b> ពណ៌ស រួចចុចប៊ូតុង <b>Execute</b> ពណ៌ខៀវធំ។</li>
-                <li>អូសចុះក្រោមទៅមើលផ្នែក <b>Server Response</b>។ ប្រសិនបើជោគជ័យ អ្នកនឹងឃើញ <b>Code 200</b> ព្រមទាំងទិន្នន័យ JSON របស់សិស្សបង្ហាញយ៉ាងច្បាស់នៅទីនោះ។</li>
-            </ol>
+        <div class="code-window">
+            <div class="code-header">
+                <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+                <div class="code-title">Controllers/StudentApiController.cs</div>
+            </div>
+<pre><span style="color:#C678DD;">using</span> Microsoft.AspNetCore.Mvc;
+<span style="color:#C678DD;">using</span> Microsoft.EntityFrameworkCore;
+<span style="color:#C678DD;">using</span> SchoolApp.Data;
+
+<span style="color:#C678DD;">namespace</span> SchoolApp.Controllers
+{
+    [Route(<span style="color:#98C379;">"api/[controller]"</span>)] <span style="color:#5C6370;">// Endpoint: api/StudentApi</span>
+    [ApiController]               <span style="color:#5C6370;">// បញ្ជាក់ថាជា Web API Controller</span>
+    <span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">StudentApiController</span> : ControllerBase <span style="color:#5C6370;">// មិនត្រូវការ View Support ឡើយ</span>
+    {
+        <span style="color:#C678DD;">private readonly</span> SchoolDbContext _context;
+
+        <span style="color:#C678DD;">public</span> <span style="color:#61AFEF;">StudentApiController</span>(SchoolDbContext context)
+        {
+            _context = context;
+        }
+
+        [HttpGet] <span style="color:#5C6370;">// HTTP GET Request</span>
+        <span style="color:#C678DD;">public async</span> Task&lt;IActionResult&gt; <span style="color:#61AFEF;">GetStudents</span>()
+        {
+            <span style="color:#C678DD;">var</span> students = <span style="color:#C678DD;">await</span> _context.Students.ToListAsync();
+
+            <span style="color:#C678DD;">if</span> (students == <span style="color:#D19A66;">null</span> || students.Count == <span style="color:#D19A66;">0</span>)
+            {
+                <span style="color:#C678DD;">return</span> NotFound(<span style="color:#98C379;">"រកមិនឃើញទិន្នន័យសិស្សឡើយ!"</span>); <span style="color:#5C6370;">// Status Code 404</span>
+            }
+
+            <span style="color:#C678DD;">return</span> Ok(students); <span style="color:#5C6370;">// Status Code 200 + JSON Data</span>
+        }
+    }
+}</pre>
         </div>
 
-        <div style="background: #F1F5F9; border: 1px solid var(--border-dark); padding: 15px; border-radius: 8px; margin-top: 15px; text-align: center;">
-            <i class="fa-solid fa-check-circle" style="color: var(--success); font-size: 24px; margin-bottom: 10px;"></i>
-            <p style="font-size: 10pt; color: var(--text-main); margin: 0; font-weight: bold;">
-                ប្រសិនបើ Swagger បង្ហាញទិន្នន័យជោគជ័យ មានន័យថា Backend របស់អ្នកចប់សព្វគ្រប់១០០%។ ជំហានបន្ទាប់គឺការរៀបចំ Frontend តែម្តង!
+        <div class="eval-box">
+            <h4>
+                <span><i class="fa-solid fa-bolt"></i> ការប្រៀបធៀប Output៖ View Result ទល់នឹង JSON Result</span>
+                <span class="bloom-badge bloom-l4">4. Analyze</span>
+            </h4>
+            <p>
+                • Traditional Controller ត្រឡប់៖ <code>View(students)</code> &rarr; ផលិតចេញជា HTML Page ធំ។ <br>
+                • Web API Controller ត្រឡប់៖ <code>Ok(students)</code> &rarr; ផលិតចេញជាអត្ថបទ JSON ស្រាល [ {"id":1, "fullName":"Lim"} ] ងាយស្រួលទាញយកតាមបណ្តាញ Internet!
             </p>
         </div>
     </div>
@@ -525,7 +667,7 @@
     </div>
 </div>
 
-<!-- PAGE 8: SECTION 7.5 - CORS POLICY DEEP DIVE -->
+<!-- PAGE 8: SECTION 7.5 - CORS POLICY & SWAGGER (EVALUATE LEVEL) -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
@@ -533,18 +675,21 @@
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
     <div class="page-content">
-        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-shield-halved"></i> ៧.៥ ការដោះស្រាយបញ្ហាសុវត្ថិភាព CORS Policy</div>
-        <div class="text-block">
-            មុននឹងឈានទៅសរសេរកូដ Frontend យើងត្រូវដោះស្រាយរបាំងសុវត្ថិភាពមួយសិន។ Web Browser មានច្បាប់មួយហៅថា <b>Same-Origin Policy (SOP)</b> ដែលហាមឃាត់មិនឱ្យ Website មួយ (ឧ. រត់លើ Live Server <code>http://127.0.0.1:5500</code>) លួចហៅទៅយកទិន្នន័យពី Server មួយផ្សេងទៀត (ឧ. <code>https://localhost:7123</code>) ឡើយ។
+        <div class="section-title" style="margin-top:0;">
+            <div class="section-title-left"><i class="fa-solid fa-shield-halved"></i> ៧.៥ ការដោះស្រាយបញ្ហាសុវត្ថិភាព CORS Policy</div>
+            <span class="bloom-badge bloom-l5">5. Evaluate</span>
         </div>
         
         <div class="text-block">
-            ប្រសិនបើយើងមិនដោះស្រាយទេ ពេលសរសេរកូដ JS ទាញទិន្នន័យ វានឹងលោត Error ពណ៌ក្រហមពាក់ព័ន្ធនឹងពាក្យ <b>"CORS policy: No 'Access-Control-Allow-Origin' header is present"</b> នៅក្នុង Console របស់ Browser ជាមិនខាន។ ដំណោះស្រាយគឺយើងត្រូវកំណត់ <b>CORS (Cross-Origin Resource Sharing)</b> នៅក្នុងគម្រោង Backend។
+            នៅក្នុង Traditional MVC យើងមិនជួបបញ្ហា <b>CORS (Cross-Origin Resource Sharing)</b> ឡើយ ព្រោះ HTML និង Controller ស្ថិតនៅលើ Port តែមួយ។ ប៉ុន្តែក្នុង <b>Decoupled Web API</b> ដោយសារ Frontend HTML/JS (ឧ. រត់លើ Live Server Port 5500) ហៅទៅ API (រត់លើ Port 7123) Browser នឹងរារាំងទិន្នន័យតាមច្បាប់ **Same-Origin Policy (SOP)**។
         </div>
 
-        <div class="sub-heading">ការកំណត់ CORS នៅក្នុងឯកសារ Program.cs (Backend)</div>
-        
-        <div class="code-window" style="margin-top: 10px;">
+        <div class="sub-heading">
+            <span>ការកំណត់ CORS នៅក្នុង Program.cs (Backend)</span>
+            <span class="bloom-badge bloom-l3">3. Apply</span>
+        </div>
+
+        <div class="code-window">
             <div class="code-header">
                 <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
                 <div class="code-title">Program.cs</div>
@@ -556,25 +701,29 @@ builder.Services.AddCors(options =&gt;
 {
     options.AddPolicy(<span style="color:#98C379;">"AllowAll"</span>, policy =&gt;
     {
-        policy.AllowAnyOrigin()  <span style="color:#5C6370;">// អនុញ្ញាតពីគ្រប់ Domain (Port)</span>
-              .AllowAnyHeader()  <span style="color:#5C6370;">// អនុញ្ញាតរាល់ Headers ទាំងអស់</span>
+        policy.AllowAnyOrigin()  <span style="color:#5C6370;">// អនុញ្ញាតគ្រប់ Domain / Port</span>
+              .AllowAnyHeader()  <span style="color:#5C6370;">// អនុញ្ញាតរាល់ Headers</span>
               .AllowAnyMethod(); <span style="color:#5C6370;">// អនុញ្ញាត GET, POST, PUT, DELETE</span>
     });
 });
 
-<span style="color:#5C6370;">// ... កូដផ្សេងៗដូចជា AddDbContext និង AddControllers ...</span>
 <span style="color:#C678DD;">var</span> app = builder.Build();
 
-<span style="color:#5C6370;">// ២. ដាក់ឱ្យដំណើរការ CORS Policy (ចំណាំ៖ ត្រូវតែសរសេរនៅខាងលើ UseAuthorization)</span>
+<span style="color:#5C6370;">// ២. ដាក់ឱ្យដំណើរការ CORS (ត្រូវតែនៅពីលើ UseAuthorization)</span>
 app.UseCors(<span style="color:#98C379;">"AllowAll"</span>);
-
 app.UseAuthorization();
 app.MapControllers();
 app.Run();</pre>
         </div>
 
-        <div class="text-block" style="margin-top: 15px; color: var(--danger); font-size: 9.5pt; font-weight: bold;">
-            * ក្រោយពីកែប្រែ Program.cs រួច សូមកុំភ្លេច Restart Server (បិទ Terminal រួច <code>dotnet run</code> ឡើងវិញ) ដើម្បីឱ្យការកំណត់ថ្មីមានប្រសិទ្ធភាព។
+        <div class="lab-box">
+            <h4>
+                <span><i class="fa-solid fa-vial-circle-check"></i> ធ្វើតេស្ត API ជាមួយ Swagger UI មុនសរសេរ Frontend</span>
+                <span class="bloom-badge bloom-l3">Testing</span>
+            </h4>
+            <p>
+                ដើម្បីប្រាកដថា Web API ដំណើរការត្រឹមត្រូវ សូមចូលទៅកាន់ <code>https://localhost:7123/swagger</code> រួចចុច <b>GET &rarr; Try it out &rarr; Execute</b>។ ប្រសិនបើទទួលបាន **Status 200 OK** និងបង្ហាញ JSON ទើបយើងចាប់ផ្តើមសរសេរ Frontend JS Fetch!
+            </p>
         </div>
     </div>
     <div class="global-footer">
@@ -583,7 +732,7 @@ app.Run();</pre>
     </div>
 </div>
 
-<!-- PAGE 9: SECTION 7.6 - HTML UI FOR FRONTEND -->
+<!-- PAGE 9: TRACK B FRONTEND - JS FETCH API (APPLY LEVEL) -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
@@ -591,48 +740,63 @@ app.Run();</pre>
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
     <div class="page-content">
-        <div class="section-title" style="margin-top:0;"><i class="fa-brands fa-html5"></i> ៧.៦ ការរៀបចំទម្រង់ UI (View) លើ Frontend</div>
-        <div class="text-block">
-            ពេលនេះ Backend របស់យើងបានត្រៀមខ្លួនរួចរាល់ទាំងស្រុងហើយ។ យើងប្តូរគោលដៅមកធ្វើការលើ <b>Frontend (Web Client)</b> វិញម្តង។ សូមបង្កើតឯកសារថ្មីមួយឈ្មោះថា <code>index.html</code> (អ្នកអាចបង្កើតវានៅក្នុង Folder ថ្មីមួយដាច់ដោយឡែកពីគម្រោង C# ព្រោះវាជាគម្រោងផ្សេងគ្នា)។
+        <div class="section-title" style="margin-top:0;">
+            <div class="section-title-left"><i class="fa-brands fa-js"></i> ៧.៦ Track B Frontend: HTML & JS Fetch API Integration</div>
+            <span class="bloom-badge bloom-l3">3. Apply</span>
         </div>
         
         <div class="text-block">
-            គោលបំណងរបស់យើងគឺបង្កើតតារាង (Table) មួយ និងទុកចន្លោះ <code>&lt;tbody&gt;</code> ឱ្យនៅទទេ ដើម្បីត្រៀមឱ្យ JavaScript បាញ់ទិន្នន័យបញ្ចូលមកពេលក្រោយ (DOM Manipulation)។
+            ដើម្បីបង្ហាញទិន្នន័យពី Web API ទៅកាន់អ្នកប្រើប្រាស់ យើងបង្កើតឯកសារ <b><code>index.html</code></b> ឯករាជ្យមួយ ហើយប្រើប្រាស់ <b>JavaScript Fetch API (`async / await`)</b> ដើម្បីទាញ JSON យកមកបង្កើតជាតារាង HTML ដោយមិនបាច់ Refresh វេបសាយឡើយ (Client-Side Rendering)។
         </div>
 
-        <div class="code-window" style="margin-top: 10px;">
+        <div class="code-window">
             <div class="code-header">
                 <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
-                <div class="code-title">index.html (រចនាសម្ព័ន្ធតារាង)</div>
+                <div class="code-title">index.html (Decoupled Frontend UI)</div>
             </div>
 <pre><span style="color:#C678DD;">&lt;!DOCTYPE html&gt;</span>
 <span style="color:#E06C75;">&lt;html <span style="color:#D19A66;">lang</span>=<span style="color:#98C379;">"en"</span>&gt;</span>
 <span style="color:#E06C75;">&lt;head&gt;</span>
     <span style="color:#E06C75;">&lt;meta <span style="color:#D19A66;">charset</span>=<span style="color:#98C379;">"UTF-8"</span>&gt;</span>
-    <span style="color:#E06C75;">&lt;title&gt;</span>បញ្ជីរាយនាមនិស្សិត<span style="color:#E06C75;">&lt;/title&gt;</span>
-    <span style="color:#5C6370;">&lt;!-- ប្រើប្រាស់ CSS ដាច់ដោយឡែក ឬ Bootstrap ក៏បាន --&gt;</span>
-    <span style="color:#E06C75;">&lt;style&gt;</span>
-        <span style="color:#E5C07B;">table</span> { <span style="color:#D19A66;">width</span>: <span style="color:#D19A66;">100%</span>; <span style="color:#D19A66;">border-collapse</span>: <span style="color:#D19A66;">collapse</span>; <span style="color:#D19A66;">margin-top</span>: <span style="color:#D19A66;">20px</span>; }
-        <span style="color:#E5C07B;">th</span>, <span style="color:#E5C07B;">td</span> { <span style="color:#D19A66;">border</span>: <span style="color:#D19A66;">1px solid #ccc</span>; <span style="color:#D19A66;">padding</span>: <span style="color:#D19A66;">10px</span>; <span style="color:#D19A66;">text-align</span>: <span style="color:#D19A66;">left</span>; }
-        <span style="color:#E5C07B;">th</span> { <span style="color:#D19A66;">background-color</span>: <span style="color:#D19A66;">#0078D4</span>; <span style="color:#D19A66;">color</span>: <span style="color:#D19A66;">white</span>; }
-    <span style="color:#E06C75;">&lt;/style&gt;</span>
+    <span style="color:#E06C75;">&lt;title&gt;</span>Decoupled Student UI<span style="color:#E06C75;">&lt;/title&gt;</span>
 <span style="color:#E06C75;">&lt;/head&gt;</span>
 <span style="color:#E06C75;">&lt;body&gt;</span>
-    <span style="color:#E06C75;">&lt;h2&gt;</span>ប្រព័ន្ធគ្រប់គ្រងនិស្សិត<span style="color:#E06C75;">&lt;/h2&gt;</span>
+    <span style="color:#E06C75;">&lt;h2&gt;</span>បញ្ជីរាយនាមនិស្សិត (Decoupled JS Fetch UI)<span style="color:#E06C75;">&lt;/h2&gt;</span>
     <span style="color:#E06C75;">&lt;button <span style="color:#D19A66;">id</span>=<span style="color:#98C379;">"btnLoad"</span>&gt;</span>ទាញយកទិន្នន័យ (Fetch API)<span style="color:#E06C75;">&lt;/button&gt;</span>
 
-    <span style="color:#E06C75;">&lt;table <span style="color:#D19A66;">id</span>=<span style="color:#98C379;">"studentTable"</span>&gt;</span>
+    <span style="color:#E06C75;">&lt;table <span style="color:#D19A66;">border</span>=<span style="color:#98C379;">"1"</span> <span style="color:#D19A66;">style</span>=<span style="color:#98C379;">"margin-top:15px; width:100%;"</span>&gt;</span>
         <span style="color:#E06C75;">&lt;thead&gt;</span>
-            <span style="color:#E06C75;">&lt;tr&gt;</span>
-                <span style="color:#E06C75;">&lt;th&gt;</span>អត្តលេខ (ID)<span style="color:#E06C75;">&lt;/th&gt;</span>
-                <span style="color:#E06C75;">&lt;th&gt;</span>ឈ្មោះពេញ (Name)<span style="color:#E06C75;">&lt;/th&gt;</span>
-            <span style="color:#E06C75;">&lt;/tr&gt;</span>
+            <span style="color:#E06C75;">&lt;tr&gt;&lt;th&gt;</span>ID<span style="color:#E06C75;">&lt;/th&gt;&lt;th&gt;</span>ឈ្មោះពេញ<span style="color:#E06C75;">&lt;/th&gt;&lt;th&gt;</span>ភេទ<span style="color:#E06C75;">&lt;/th&gt;&lt;th&gt;</span>GPA<span style="color:#E06C75;">&lt;/th&gt;&lt;/tr&gt;</span>
         <span style="color:#E06C75;">&lt;/thead&gt;</span>
-        <span style="color:#5C6370;">&lt;!-- ទុក tbody ឱ្យនៅទទេ ដើម្បីឱ្យ JavaScript យកទិន្នន័យមកបាញ់បញ្ចូលទីនេះ --&gt;</span>
-        <span style="color:#E06C75;">&lt;tbody <span style="color:#D19A66;">id</span>=<span style="color:#98C379;">"tableBody"</span>&gt;</span>
-            <span style="color:#5C6370;">&lt;!-- ទិន្នន័យនឹងលេចចេញនៅទីនេះ --&gt;</span>
-        <span style="color:#E06C75;">&lt;/tbody&gt;</span>
+        <span style="color:#E06C75;">&lt;tbody <span style="color:#D19A66;">id</span>=<span style="color:#98C379;">"tableBody"</span>&gt;</span><span style="color:#5C6370;">&lt;!-- ទុកឱ្យទទេ រង់ចាំ JS បាញ់បញ្ចូល --&gt;</span><span style="color:#E06C75;">&lt;/tbody&gt;</span>
     <span style="color:#E06C75;">&lt;/table&gt;</span>
+
+    <span style="color:#E06C75;">&lt;script&gt;</span>
+        <span style="color:#C678DD;">const</span> apiUrl = <span style="color:#98C379;">'https://localhost:7123/api/StudentApi'</span>;
+
+        document.getElementById(<span style="color:#98C379;">'btnLoad'</span>).addEventListener(<span style="color:#98C379;">'click'</span>, <span style="color:#C678DD;">async</span> () =&gt; {
+            <span style="color:#C678DD;">try</span> {
+                <span style="color:#5C6370;">// ហៅ API តាមបែបអសមកាល</span>
+                <span style="color:#C678DD;">const</span> response = <span style="color:#C678DD;">await</span> fetch(apiUrl);
+                <span style="color:#C678DD;">const</span> students = <span style="color:#C678DD;">await</span> response.json();
+
+                <span style="color:#C678DD;">const</span> tbody = document.getElementById(<span style="color:#98C379;">'tableBody'</span>);
+                tbody.innerHTML = <span style="color:#98C379;">''</span>; <span style="color:#5C6370;">// សំអាតទិន្នន័យចាស់</span>
+
+                students.forEach(s =&gt; {
+                    tbody.innerHTML += <span style="color:#98C379;">`
+                        &lt;tr&gt;
+                            &lt;td&gt;${s.id}&lt;/td&gt;
+                            &lt;td&gt;${s.fullName}&lt;/td&gt;
+                            &lt;td&gt;${s.gender}&lt;/td&gt;
+                            &lt;td&gt;${s.gpa}&lt;/td&gt;
+                        &lt;/tr&gt;`</span>;
+                });
+            } <span style="color:#C678DD;">catch</span> (err) {
+                console.error(<span style="color:#98C379;">'CORS ឬ Network Error:'</span>, err);
+            }
+        });
+    <span style="color:#E06C75;">&lt;/script&gt;</span>
 <span style="color:#E06C75;">&lt;/body&gt;</span>
 <span style="color:#E06C75;">&lt;/html&gt;</span></pre>
         </div>
@@ -643,7 +807,7 @@ app.Run();</pre>
     </div>
 </div>
 
-<!-- PAGE 10: SECTION 7.7 - JS FETCH API ASYNC AWAIT -->
+<!-- PAGE 10: DEEP COMPARISON & ARCHITECTURE MATRIX -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
@@ -651,60 +815,68 @@ app.Run();</pre>
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
     <div class="page-content">
-        <div class="section-title" style="margin-top:0;"><i class="fa-brands fa-js"></i> ៧.៧ ការប្រើប្រាស់ JS Fetch (Async / Await)</div>
-        <div class="text-block">
-            បច្ចេកវិទ្យាដែលយើងប្រើសម្រាប់ទាក់ទងជាមួយ Backend គឺមុខងារ <b><code>fetch()</code></b> របស់ JavaScript។ នៅក្នុងកម្រិតវិជ្ជាជីវៈ យើងប្រើប្រាស់យន្តការ <b><code>async / await</code></b> ជំនួសឱ្យ <code>.then()</code> ដើម្បីធ្វើឱ្យកូដមើលទៅស្អាត ងាយយល់ និងងាយស្រួលគ្រប់គ្រង Error តាមរយៈ `try...catch`។
+        <div class="section-title" style="margin-top:0;">
+            <div class="section-title-left"><i class="fa-solid fa-diagram-project"></i> ៧.៧ លំហូរទិន្នន័យស៊ីជម្រៅ (Data Flow Matrix)</div>
+            <span class="bloom-badge bloom-l4">4. Analyze</span>
         </div>
         
         <div class="text-block">
-            សូមសរសេរកូដ <code>&lt;script&gt;</code> នេះនៅខាងក្រោមតារាងក្នុងឯកសារ <code>index.html</code> ដដែល (មុនបិទ <code>&lt;/body&gt;</code>)។
+            ដើម្បីឱ្យកាន់តែច្បាស់ពីរបៀបដែលស្ថាបត្យកម្មទាំងពីរដំណើរការ ខាងក្រោមនេះជាការប្រៀបធៀបលំហូរការងារ (Data Flow) ចាប់ពីអ្នកប្រើប្រាស់ ចុច Request រហូតដល់ទិន្នន័យបង្ហាញលើអេក្រង់៖
         </div>
 
-        <div class="code-window" style="margin-top: 10px;">
-            <div class="code-header">
-                <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
-                <div class="code-title">index.html (ផ្នែក JavaScript)</div>
+        <div class="graphic-box" style="padding:12px; border-color:var(--secondary);">
+            <div style="font-weight:bold; color:var(--secondary); font-size:10pt; margin-bottom:8px;">
+                <i class="fa-solid fa-server"></i> លំហូរការងារ Traditional MVC (Server-Side Rendering)
             </div>
-<pre><span style="color:#E06C75;">&lt;script&gt;</span>
-    <span style="color:#5C6370;">// កំណត់ URL របស់ Backend API របស់អ្នក (ដូរ Port ឱ្យត្រូវនឹងគម្រោងអ្នក)</span>
-    <span style="color:#C678DD;">const</span> apiUrl = <span style="color:#98C379;">'https://localhost:7123/api/StudentApi'</span>;
-
-    <span style="color:#5C6370;">// ចាប់យកប៊ូតុង និងកន្លែងត្រូវបញ្ចេញទិន្នន័យ (tbody)</span>
-    <span style="color:#C678DD;">const</span> btnLoad = <span style="color:#E5C07B;">document</span>.<span style="color:#61AFEF;">getElementById</span>(<span style="color:#98C379;">'btnLoad'</span>);
-    <span style="color:#C678DD;">const</span> tableBody = <span style="color:#E5C07B;">document</span>.<span style="color:#61AFEF;">getElementById</span>(<span style="color:#98C379;">'tableBody'</span>);
-
-    <span style="color:#5C6370;">// ភ្ជាប់ការចុចប៊ូតុងទៅនឹងអនុគមន៍អសមកាល (async function)</span>
-    btnLoad.<span style="color:#61AFEF;">addEventListener</span>(<span style="color:#98C379;">'click'</span>, <span style="color:#C678DD;">async function</span>() {
-        <span style="color:#C678DD;">try</span> {
-            <span style="color:#5C6370;">// ១. ហៅទៅកាន់ API ហើយ "await" រង់ចាំលទ្ធផលត្រឡប់មកវិញសិន</span>
-            <span style="color:#C678DD;">const</span> response = <span style="color:#C678DD;">await</span> <span style="color:#61AFEF;">fetch</span>(apiUrl);
-            
-            <span style="color:#5C6370;">// ២. បំប្លែងទិន្នន័យអត្ថបទទៅជា JS Array Object (រង់ចាំការបំប្លែង)</span>
-            <span style="color:#C678DD;">const</span> data = <span style="color:#C678DD;">await</span> response.<span style="color:#61AFEF;">json</span>();
-
-            <span style="color:#5C6370;">// ៣. លុបទិន្នន័យចាស់ចោលសិន មុននឹងបញ្ចាំងថ្មី (ជៀសវាងលោតជាន់គ្នា)</span>
-            tableBody.<span style="color:#E06C75;">innerHTML</span> = <span style="color:#98C379;">''</span>;
-            
-            <span style="color:#5C6370;">// ៤. ដំណើរការ Loop លើទិន្នន័យដែលបានមក ដើម្បីបង្កើត HTML Row ថ្មី</span>
-            data.<span style="color:#61AFEF;">forEach</span>(student =&gt; {
-                <span style="color:#C678DD;">const</span> row = <span style="color:#98C379;">`
-                    &lt;tr&gt;
-                        &lt;td&gt;</span><span style="color:#56B6C2;">${</span>student.id<span style="color:#56B6C2;">}</span><span style="color:#98C379;">&lt;/td&gt;
-                        &lt;td&gt;</span><span style="color:#56B6C2;">${</span>student.fullName<span style="color:#56B6C2;">}</span><span style="color:#98C379;">&lt;/td&gt;
-                    &lt;/tr&gt;
-                `</span>;
-                <span style="color:#5C6370;">// បញ្ចូលជួរឈរ (row) ទៅក្នុងតារាង html ផ្ទាល់ (DOM Manipulation)</span>
-                tableBody.<span style="color:#E06C75;">innerHTML</span> += row;
-            });
-
-        } <span style="color:#C678DD;">catch</span> (error) {
-            <span style="color:#5C6370;">// ៥. ចាប់កំហុស (ឧ. Server បិទ ឬជាប់បញ្ហា CORS)</span>
-            <span style="color:#E5C07B;">console</span>.<span style="color:#61AFEF;">error</span>(<span style="color:#98C379;">'Error fetching data:'</span>, error);
-            <span style="color:#61AFEF;">alert</span>(<span style="color:#98C379;">"មិនអាចទាញទិន្នន័យបានទេ សូមពិនិត្យមើល Console!"</span>);
-        }
-    });
-<span style="color:#E06C75;">&lt;/script&gt;</span></pre>
+            <div style="font-size:8.5pt; line-height:1.6; color:var(--text-main);">
+                [1. Browser Request] &rarr; [2. StudentController.cs] &rarr; [3. SQL Query via EF Core] &rarr; [4. Returns Model Object] &rarr; [5. Index.cshtml Render HTML] &rarr; [6. Send Full HTML Back to Browser]
+            </div>
         </div>
+
+        <div class="graphic-box" style="padding:12px; border-color:var(--accent); margin-top:10px;">
+            <div style="font-weight:bold; color:var(--accent); font-size:10pt; margin-bottom:8px;">
+                <i class="fa-solid fa-network-wired"></i> លំហូរការងារ Decoupled Web API (Client-Side Rendering)
+            </div>
+            <div style="font-size:8.5pt; line-height:1.6; color:var(--text-main);">
+                [1. JS fetch() Request] &rarr; [2. StudentApiController.cs] &rarr; [3. SQL Query via EF Core] &rarr; [4. Returns Raw JSON] &rarr; [5. Browser Receives JSON] &rarr; [6. JS DOM Manipulation Updates Table]
+            </div>
+        </div>
+
+        <div class="sub-heading" style="margin-top:15px;">
+            <span>តารางប្រៀបធៀបលក្ខណៈបច្ចេកទេស៖</span>
+        </div>
+
+        <table class="standard-table">
+            <thead>
+                <tr>
+                    <th>លក្ខណៈ</th>
+                    <th>Traditional MVC (SSR)</th>
+                    <th>Decoupled Web API (CSR)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><b>Controller Base Class</b></td>
+                    <td><code>Microsoft.AspNetCore.Mvc.Controller</code></td>
+                    <td><code>Microsoft.AspNetCore.Mvc.ControllerBase</code></td>
+                </tr>
+                <tr>
+                    <td><b>Attribute សំខាន់</b></td>
+                    <td>មិនចាំបាច់មាន Attribute ពិសេសឡើយ</td>
+                    <td><code>[ApiController]</code> និង <code>[Route]</code></td>
+                </tr>
+                <tr>
+                    <td><b>Return Type</b></td>
+                    <td><code>IActionResult</code> / <code>ViewResult</code></td>
+                    <td><code>IActionResult</code> / <code>ActionResult&lt;T&gt;</code></td>
+                </tr>
+                <tr>
+                    <td><b>ចំណុចខុសគ្នានៃ Naming</b></td>
+                    <td>C# Property Name (PascalCase: `FullName`)</td>
+                    <td>JSON Output ផ្លាស់ប្តូរជា (camelCase: `fullName`)</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
     <div class="global-footer">
         <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
@@ -712,7 +884,7 @@ app.Run();</pre>
     </div>
 </div>
 
-<!-- PAGE 11: DEBUGGING & DEV TOOLS -->
+<!-- PAGE 11: DEBUGGING & TROUBLESHOOTING BOTH PARADIGMS -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
@@ -720,35 +892,46 @@ app.Run();</pre>
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
     <div class="page-content">
-        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-bug"></i> គន្លឹះដោះស្រាយបញ្ហា (Debugging & Browser Tools)</div>
+        <div class="section-title" style="margin-top:0;">
+            <div class="section-title-left"><i class="fa-solid fa-bug"></i> គន្លឹះដោះស្រាយបញ្ហាកូដ (Debugging Both Paradigms)</div>
+            <span class="bloom-badge bloom-l4">4. Analyze</span>
+        </div>
+        
         <div class="text-block">
-            ក្នុងការអភិវឌ្ឍប្រព័ន្ធដែលភ្ជាប់ជាមួយ API វាមិនមែនជោគជ័យគ្រប់ពេលនោះទេ។ ការចេះប្រើប្រាស់ឧបករណ៍របស់ Web Browser (Developer Tools) គឺជាជំនាញចាំបាច់បំផុតសម្រាប់អ្នកសរសេរកម្មវិធី។ 
+            ក្នុងការអភិវឌ្ឍន៍ជាក់ស្តែង កំហុសដែលកើតឡើងលើ Traditional MVC និង Decoupled Web API មានលក្ខណៈខុសគ្នាទាំងស្រុង៖
         </div>
 
-        <div class="lab-box" style="margin-top: 15px; border-color: var(--border-dark); background: white; border-left: 5px solid var(--secondary);">
-            <h4 style="color: var(--secondary);"><i class="fa-solid fa-wrench"></i> របៀបប្រើប្រាស់ Inspect Element (F12) លើ Chrome៖</h4>
-            <ol style="margin-top: 10px; padding-left: 20px; font-size: 10pt; line-height: 1.8;">
-                <li>នៅលើទំព័រ Web របស់អ្នក សូមចុចគ្រាប់ចុច <code>F12</code> ឬចុចស្តាំយកពាក្យ <b>Inspect</b>។</li>
-                <li><b>ចូលទៅកាន់ថេប Console៖</b>
-                    <ul style="list-style-type: circle; padding-left: 20px; margin-top: 5px; color: var(--danger); font-weight: bold;">
-                        <li>ប្រសិនបើមានបញ្ហាដូចជា Error កូដ JavaScript សរសេរខុស ឬបញ្ហា CORS វានឹងបង្ហាញអក្សរពណ៌ក្រហមនៅទីនេះ។</li>
-                        <li>អ្នកក៏អាចប្រើ <code>console.log(data)</code> ក្នុងកូដ JS របស់អ្នក ដើម្បីបញ្ចាំងមើលទិន្នន័យ JSON នៅក្នុងថេបនេះផងដែរ។</li>
-                    </ul>
-                </li>
-                <li style="margin-top: 8px;"><b>ចូលទៅកាន់ថេប Network៖</b>
-                    <ul style="list-style-type: circle; padding-left: 20px; margin-top: 5px; color: var(--success); font-weight: bold;">
-                        <li>ថេបនេះសម្រាប់តាមដានរាល់សំណើ HTTP (API Requests) ដែលបានបាញ់ចេញទៅ Server។</li>
-                        <li>ពេលអ្នកចុចប៊ូតុង "ទាញយកទិន្នន័យ" អ្នកនឹងឃើញឈ្មោះ API របស់អ្នកលេចឡើងទីនេះ។ ចុចលើវា រួចរើសថេប <b>Response</b> ដើម្បីមើលថាតើ Backend ពិតជាបានឆ្លើយតបលទ្ធផល JSON ត្រឡប់មកវិញឬទេ។</li>
-                    </ul>
-                </li>
-            </ol>
+        <div class="two-column" style="gap:12px;">
+            <div class="lab-box" style="background:#FFF5F5; border-color:#FEB2B2; border-left:5px solid var(--danger);">
+                <h4 style="color:#C53030;">
+                    <span><i class="fa-solid fa-triangle-exclamation"></i> 1. Bugs លើ Traditional MVC</span>
+                </h4>
+                <ul style="font-size:8.5pt; line-height:1.5; padding-left:15px; margin-top:5px; color:#742A2A;">
+                    <li><b>NullReferenceException:</b> កើតឡើងពេលបោះ Model ទៅ View តែ Model គ្មានទិន្នន័យ (Null)។ <br><i>ដំណោះស្រាយ៖</i> ឆែកមើល <code>@if(Model != null)</code> ក្នុង Razor View។</li>
+                    <li><b>InvalidOperationException:</b> Model Type ក្នុង `.cshtml` (ឧ. `Student`) មិនត្រូវគ្នានឹង Controller (`List<Student>`)។</li>
+                </ul>
+            </div>
+
+            <div class="lab-box" style="background:#EFF6FF; border-color:#BFDBFE; border-left:5px solid var(--secondary);">
+                <h4 style="color:#1E40AF;">
+                    <span><i class="fa-solid fa-triangle-exclamation"></i> 2. Bugs លើ Web API & Fetch</span>
+                </h4>
+                <ul style="font-size:8.5pt; line-height:1.5; padding-left:15px; margin-top:5px; color:#1E3A8A;">
+                    <li><b>CORS Error:</b> លោតអក្សរក្រហមក្នុង Console "No Access-Control-Allow-Origin"。 <br><i>ដំណោះស្រាយ៖</i> ឆែកកូដ <code>app.UseCors()</code> ក្នុង Program.cs។</li>
+                    <li><b>Undefined Fields:</b> តារាងចេញពាក្យ undefined មកពីសរសេរ <code>s.FullName</code> (PascalCase) ជំនួសឱ្យ <code>s.fullName</code> (camelCase)។</li>
+                </ul>
+            </div>
         </div>
 
-        <div class="graphic-box" style="margin-top:15px; padding: 15px; text-align: center; border-color: var(--warning);">
-            <div style="font-family:'Suwannaphum',sans-serif; color:var(--text-main); font-size:11pt; margin-bottom:10px; font-weight:bold;">ចំណាំអំពី Naming Convention (CamelCase) ម្តងទៀត</div>
-            <p style="font-size: 9.5pt; color: var(--text-muted); line-height: 1.6; text-align: justify; margin: 0;">
-                សូមចងចាំជានិច្ចថា នៅក្នុង JavaScript អ្នកត្រូវសរសេរហៅ <code>student.fullName</code> (អក្សរ f តូច) ទោះបីជានៅក្នុងកូដ C# អ្នកសរសេរវាជា <code>FullName</code> (អក្សរធំ) ក៏ដោយ។ ប្រសិនបើអ្នកសរសេរអក្សរធំក្នុង JS វានឹងចេញពាក្យថា <code>undefined</code> នៅក្នុងតារាង HTML។ នេះជាកំហុសដែលអ្នករៀនថ្មីៗជួបប្រទះញឹកញាប់បំផុត!
-            </p>
+        <div class="code-window" style="margin-top:10px;">
+            <div class="code-header">
+                <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+                <div class="code-title">របៀបតេស្តមើល Console Log ក្នុង JavaScript</div>
+            </div>
+<pre><span style="color:#5C6370;">// ប្រើ console.log ដើម្បីពិនិត្យមើលទម្រង់ JSON ជាក់ស្តែងដែលបានមកពី API</span>
+<span style="color:#C678DD;">const</span> response = <span style="color:#C678DD;">await</span> fetch(apiUrl);
+<span style="color:#C678DD;">const</span> data = <span style="color:#C678DD;">await</span> response.json();
+console.log(<span style="color:#98C379;">"Data from API:"</span>, data); <span style="color:#5C6370;">// បើកមើលក្នុង F12 Console របស់ Browser</span></pre>
         </div>
     </div>
     <div class="global-footer">
@@ -757,7 +940,7 @@ app.Run();</pre>
     </div>
 </div>
 
-<!-- PAGE 12: GLOSSARY -->
+<!-- PAGE 12: GLOSSARY (REMEMBER LEVEL) -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
@@ -765,8 +948,11 @@ app.Run();</pre>
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
     <div class="page-content">
-        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-book-bookmark"></i> ពន្យល់ពាក្យគន្លឹះ (Glossary)</div>
-        <div class="text-block">ពាក្យបច្ចេកទេស និងការពន្យល់ន័យជាភាសាខ្មែរសម្រាប់ជំពូកទី ៧ នេះ៖</div>
+        <div class="section-title" style="margin-top:0;">
+            <div class="section-title-left"><i class="fa-solid fa-book-bookmark"></i> ពន្យល់ពាក្យគន្លឹះ (Glossary)</div>
+            <span class="bloom-badge bloom-l1">1. Remember</span>
+        </div>
+        <div class="text-block">ពាក្យបច្ចេកទេស និងការពន្យល់ន័យជាភាសាខ្មែរសម្រាប់ស្ថាបត្យកម្មទាំងពីរ៖</div>
         
         <table class="standard-table">
             <thead>
@@ -777,36 +963,28 @@ app.Run();</pre>
             </thead>
             <tbody>
                 <tr>
+                    <td><b>Server-Side Rendering (SSR)</b></td>
+                    <td>បច្ចេកទេសដែល Web Server (ASP.NET) ជាអ្នកបកប្រែកូដ C# និង HTML ឱ្យរៀបរយសិន ទើបផ្ញើ HTML ទាំងផ្ទាំងមកឱ្យ Browser បង្ហាញ។</td>
+                </tr>
+                <tr>
+                    <td><b>Client-Side Rendering (CSR)</b></td>
+                    <td>បច្ចេកទេសដែល Browser ទាញយកតែទិន្នន័យអត្ថបទ JSON រួចប្រើប្រាស់ JavaScript ដើម្បបង្កើត និងបិទភ្ជាប់ HTML ដោយខ្លួនឯង។</td>
+                </tr>
+                <tr>
+                    <td><b>Razor View (.cshtml)</b></td>
+                    <td>ឯកសារ View ពិសេសរបស់ ASP.NET ដើរតួក្នុង Traditional MVC ដែលអនុញ្ញាតឱ្យសរសេរកូដ C# លាយជាមួយ HTML តាមរយៈនិមិត្តសញ្ញា <code>@</code>។</td>
+                </tr>
+                <tr>
                     <td><b>JSON</b><br><span style="font-size: 8pt; font-weight:normal;">(JavaScript Object Notation)</span></td>
-                    <td>ទម្រង់ផ្ទុកទិន្នន័យអត្ថបទដែលពេញនិយមបំផុត ស្រាល និងងាយយល់ ប្រើសម្រាប់ផ្លាស់ប្តូរទិន្នន័យរវាង Frontend និង Backend API។</td>
-                </tr>
-                <tr>
-                    <td><b>Endpoint (URL)</b></td>
-                    <td>អាសយដ្ឋានជាក់លាក់មួយរបស់ Web API ដែលអនុញ្ញាតឱ្យកម្មវិធីផ្សេងហៅ (Request) ដើម្បីដំណើរការ ឬទាញយកទិន្នន័យ (ឧ. <code>/api/students</code>)។</td>
-                </tr>
-                <tr>
-                    <td><b>[HttpGet]</b></td>
-                    <td>Attribute នៅក្នុង ASP.NET Core ដែលកំណត់ឱ្យ Method នោះរង់ចាំទទួលតែសំណើដែលមានបំណងអាន (Read) ទិន្នន័យប៉ុណ្ណោះ។</td>
+                    <td>ទម្រង់ផ្ទុកទិន្នន័យអត្ថបទដែលស្រាល និងងាយយល់ ប្រើសម្រាប់ផ្លាស់ប្តូរទិន្នន័យរវាង Web API និង Frontend Clients។</td>
                 </tr>
                 <tr>
                     <td><b>Fetch API</b></td>
-                    <td>មុខងារមានស្រាប់នៅក្នុង JavaScript ទំនើប ប្រើសម្រាប់ភ្ជាប់ (Request) ទៅកាន់ប្រភពខាងក្រៅ (Backend API) តាមបែបអសមកាល (Asynchronous)។</td>
-                </tr>
-                <tr>
-                    <td><b>DOM Manipulation</b></td>
-                    <td>ការប្រើប្រាស់ JavaScript ដើម្បីកែប្រែ បន្ថែម ឬលុប Elements (ដូចជា <code>&lt;tr&gt;</code>) នៅក្នុងឯកសារ HTML ជាក់ស្តែងដោយមិនបាច់ Refresh វេបសាយ។</td>
-                </tr>
-                <tr>
-                    <td><b>Async / Await</b></td>
-                    <td>យន្តការរបស់សរសេរកូដទំនើប (ទាំងក្នុង C# និង JS) ដែលអនុញ្ញាតឱ្យកម្មវិធី "រង់ចាំ" កិច្ចការណាមួយ (ឧ. ទាញទិន្នន័យពី DB) ដោយមិនធ្វើឱ្យប្រព័ន្ធទាំងមូលគាំង។</td>
+                    <td>មុខងារអសមកាល (Async) មានស្រាប់ក្នុង JavaScript សម្រាប់ហៅទៅកាន់ Web API ដើម្បីទាញ ឬបញ្ជូនទិន្នន័យដោយមិនបាច់ Refresh Page។</td>
                 </tr>
                 <tr>
                     <td><b>CORS</b><br><span style="font-size: 8pt; font-weight:normal;">(Cross-Origin Resource Sharing)</span></td>
-                    <td>គោលការណ៍សុវត្ថិភាពរបស់ Browser ដែលរារាំងមិនឱ្យ Web Page មួយ (ឧ. រត់លើ Port 5500) ទាញទិន្នន័យពី API (រត់លើ Port 7123) លុះត្រាតែមានការអនុញ្ញាត។</td>
-                </tr>
-                <tr>
-                    <td><b>Swagger UI</b></td>
-                    <td>ប្រព័ន្ធសម្រាប់ធ្វើតេស្ត API ដោយផ្ទាល់ដោយមិនចាំបាច់សរសេរកូដ Frontend ដែលភ្ជាប់មកស្រាប់ជាមួយគម្រោង .NET Core Web API។</td>
+                    <td>គោលការណ៍សុវត្ថិភាពរបស់ Browser ដែលរារាំងការហៅទាញទិន្នន័យឆ្លង Origin (Domain ឬ Port) ខុសគ្នា លុះត្រាតែ Backend បើកសិទ្ធិ។</td>
                 </tr>
             </tbody>
         </table>
@@ -825,19 +1003,24 @@ app.Run();</pre>
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
     <div class="page-content">
-        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-list-check"></i> សេចក្តីសង្ខេបជំពូកទី ៧ (Summary)</div>
+        <div class="section-title" style="margin-top:0;">
+            <div class="section-title-left"><i class="fa-solid fa-list-check"></i> សេចក្តីសង្ខេបជំពូកទី ៧ (Summary)</div>
+            <span class="bloom-badge bloom-l2">2. Understand</span>
+        </div>
         <ul class="obj-list" style="margin-top:10px;">
-            <li><b class="highlight">ដំណើរការពេញលេញនៃការបញ្ចេញទិន្នន័យ៖</b> ចាប់ផ្តើមពី SQL Server &rarr; EF Core ទាញចូល C# Model &rarr; Controller បំប្លែងបញ្ចេញជា JSON &rarr; JavaScript ទាញយក និងបង្ហាញលើ HTML Table។</li>
-            <li><b class="highlight">តួនាទីរបស់ Controller៖</b> ជាច្រកទ្វារទទួលសំណើ (Endpoint)។ ដោយការប្រើប្រាស់ <code>[HttpGet]</code> និងការសរសេរកូដ <code>async Task</code> Controller អាចទាញយកទិន្នន័យពី Database រួច Return ជាលទ្ធផល <code>Ok()</code> យ៉ាងមានប្រសិទ្ធភាពខ្ពស់។</li>
-            <li><b class="highlight">អំណាចរបស់ Fetch API៖</b> ការប្រើប្រាស់ <code>await fetch()</code> ធ្វើឱ្យ Web Page ទំនើបមានជីវិត (Dynamic) ដោយអាចអាប់ដេតទិន្នន័យលើអេក្រង់ ដោយមិនតម្រូវឱ្យអ្នកប្រើប្រាស់ចុច Refresh ទំព័រ (Page Reload) នោះទេ។ នេះហៅថា Single Page Application (SPA)។</li>
-            <li><b class="highlight">ជញ្ជាំង CORS៖</b> ត្រូវចងចាំជានិច្ចក្នុងការកំណត់ <code>builder.Services.AddCors(...)</code> នៅក្នុងឯកសារ <code>Program.cs</code> របស់គម្រោង Backend រាល់ពេលដែលអ្នកចង់ឱ្យ Frontend Web អាចតភ្ជាប់ទាញទិន្នន័យបាន ព្រោះវាស្ថិតនៅលើ Domain (Port) ផ្សេងគ្នា។</li>
+            <li><b class="highlight">ជម្រើសនៃស្ថាបត្យកម្ម៖</b> ASP.NET Core អនុញ្ញាតឱ្យយើងអភិវឌ្ឍន៍ប្រព័ន្ធតាមបែប <b>Traditional MVC (SSR)</b> ឬ <b>Decoupled Web API (CSR)</b> ឬប្រើប្រាស់ទាំងពីររួមគ្នាក្នុង Project តែមួយដោយចែករំលែក Data Access Layer (EF Core)។</li>
+            <li><b class="highlight">Traditional MVC:</b> សាកសមបំផុតសម្រាប់ប្រព័ន្ធ Website ធម្មតា, Admin Portals, និងប្រព័ន្ធដែលតម្រូវឱ្យមាន SEO ខ្ពស់ ដោយសារ Server ជាអ្នកប្រគល់ HTML រួចរាល់។</li>
+            <li><b class="highlight">Decoupled Web API:</b> សាកសមបំផុតសម្រាប់ប្រព័ន្ធ Single Page Applications (SPA), ប្រព័ន្ធដែលមាន Mobile App (iOS/Android), ឬប្រព័ន្ធដែលតម្រូវឱ្យ UI រស់រវើក និងលឿនដោយមិនបាច់ Refresh Page។</li>
+            <li><b class="highlight">ការរៀបចំ CORS & Async:</b> ក្នុងការបង្កើត Web API ត្រូវតែប្រកាស CORS Policy ក្នុង <code>Program.cs</code> ជានិច្ច និងប្រើប្រាស់ <code>async/await (ToListAsync)</code> ដើម្បីធានាថា Server ដើរលឿន និងស្ទុះ (High Concurrency)។</li>
         </ul>
 
-        <div class="section-title" style="margin-top:20px;"><i class="fa-solid fa-book"></i> ឯកសារយោង (References)</div>
+        <div class="section-title" style="margin-top:20px;">
+            <div class="section-title-left"><i class="fa-solid fa-book"></i> ឯកសារយោង (References)</div>
+        </div>
         <ul class="obj-list" style="margin-top:10px;">
+            <li><b>Microsoft Learn (ASP.NET Core MVC):</b> <span style="color:var(--secondary);">https://learn.microsoft.com/en-us/aspnet/core/mvc/overview</span></li>
             <li><b>Microsoft Learn (Create Web APIs):</b> <span style="color:var(--secondary);">https://learn.microsoft.com/en-us/aspnet/core/tutorials/first-web-api</span></li>
             <li><b>Mozilla Developer Network (Fetch API):</b> <span style="color:var(--secondary);">https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API</span></li>
-            <li><b>Microsoft Learn (Enable CORS):</b> <span style="color:var(--secondary);">https://learn.microsoft.com/en-us/aspnet/core/security/cors</span></li>
             <li><b>សៀវភៅគោល៖</b> Freeman, A. (2024). <i>Pro ASP.NET Core 8</i>. Apress.</li>
         </ul>
     </div>
@@ -847,7 +1030,7 @@ app.Run();</pre>
     </div>
 </div>
 
-<!-- PAGE 14: REVIEW QUESTIONS T/F -->
+<!-- PAGE 14: REVIEW QUESTIONS T/F (BLOOM L1-L2) -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
@@ -855,22 +1038,27 @@ app.Run();</pre>
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
     <div class="page-content">
-        <div class="section-title" style="background:var(--accent); color:white; justify-content:center; border-radius:8px; border-left:none; margin-top:0; padding: 8px 0;"><i class="fa-solid fa-pen-to-square"></i> សំណួររំលឹកមេរៀន (Review Questions)</div>
+        <div class="section-title" style="background:var(--accent); color:white; justify-content:center; border-radius:8px; border-left:none; margin-top:0; padding: 8px 0;">
+            <span><i class="fa-solid fa-pen-to-square"></i> សំណួររំលឹកមេរៀន (Assessment Questions)</span>
+        </div>
         
-        <div class="sub-heading" style="width: 100%;">១. សំណួរ ខុស/ត្រូវ (True/False)</div>
-        <p style="font-size:10pt; margin-bottom:12px;"><b>សេចក្តីណែនាំ៖</b> សូមគូសសញ្ញា (ត្រូវ) ប្រសិនបើប្រយោគខាងក្រោមត្រឹមត្រូវ ឬសញ្ញា (ខុស) ប្រសិនបើខុស។</p>
+        <div class="sub-heading" style="width: 100%;">
+            <span>១. សំណួរ ខុស/ត្រូវ (True/False)</span>
+            <span class="bloom-badge bloom-l1">1. Remember / 2. Understand</span>
+        </div>
+        <p style="font-size:10pt; margin-bottom:10px;"><b>សេចក្តីណែនាំ៖</b> សូមគូសសញ្ញា (ត្រូវ) ប្រសិនបើប្រយោគខាងក្រោមត្រឹមត្រូវ ឬសញ្ញា (ខុស) ប្រសិនបើខុស។</p>
         
-        <ol class="q-list" style="font-size:10.5pt; line-height:1.6;">
-            <li>Traditional MVC គឺជាទម្រង់ដែល Backend គ្រាន់តែបញ្ចេញទិន្នន័យជា JSON ប៉ុណ្ណោះ ចំណែក Frontend ជាអ្នករៀបចំ HTML ខ្លួនឯង។</li>
-            <li>HTTP GET Method ត្រូវបានប្រើប្រាស់ជាចម្បងដើម្បីអាន ឬទាញយកទិន្នន័យពីប្រព័ន្ធ Database តាមរយៈ API។</li>
-            <li>ការប្រើប្រាស់ <code>await _context.Students.ToListAsync()</code> ជួយឱ្យ Server មិនគាំងពេលរង់ចាំទិន្នន័យពី SQL Server។</li>
-            <li>មុខងារ <code>fetch()</code> នៅក្នុង JavaScript នឹងតម្រូវឱ្យទំព័រ Web Refresh (Reload) ខ្លួនឯងរាល់ពេលដែលវាទាញទិន្នន័យ។</li>
-            <li>ការប្រើ <code>return Ok(studentsList);</code> ក្នុង C# នឹងបញ្ចេញលទ្ធផលអមជាមួយ HTTP Status Code 200 (ជោគជ័យ) ព្រមទាំងទិន្នន័យ JSON ។</li>
-            <li>CORS Error ច្រើនតែកើតឡើងនៅពេលដែល Frontend (Web Page) និង Backend API ស្ថិតនៅលើ Port ឬ Domain ខុសគ្នា។</li>
-            <li>Swagger គឺជាកម្មវិធីកម្ចាត់មេរោគដែលភ្ជាប់មកជាមួយ .NET Core ដើម្បីការពារកុំឱ្យ Hacker លួចចូល Database។</li>
-            <li>នៅក្នុង JavaScript (DOM) យើងអាចប្រើប្រាស់ <code>tableBody.innerHTML += row</code> ដើម្បីបន្ថែមជួរឈរថ្មីចូលក្នុងតារាង។</li>
-            <li>ទម្រង់ Naming Convention របស់ JSON ដែលបញ្ចេញពី .NET ជាធម្មតានឹងប្តូរអក្សរធំនៅដើម (PascalCase) ទៅជាអក្សរតូច (camelCase) ដោយស្វ័យប្រវត្ត។</li>
-            <li>កូដ <code>await response.json()</code> មានតួនាទីបំប្លែងទិន្នន័យអត្ថបទ JSON ពី Server ឱ្យក្លាយជា Array/Object របស់ JavaScript។</li>
+        <ol class="q-list">
+            <li>Traditional MVC គឺជាទម្រង់ដែល Server ជាអ្នក Render HTML រួចទើបផ្ញើមកកាន់ Browser (Server-Side Rendering)។</li>
+            <li>នៅក្នុង Decoupled Web API កូដ Controller តែងតែ Return ជា `View()` ភ្ជាប់ជាមួយ `.cshtml` ជានិច្ច។</li>
+            <li>និមិត្តសញ្ញា `@` នៅក្នុង Razor View ត្រូវបានប្រើប្រាស់ដើម្បីសរសេរកូដ C# នៅលើទំព័រ HTML។</li>
+            <li>សំណើ HTTP GET ត្រូវបានប្រើប្រាស់ជាចម្បងដើម្បីអាន ឬទាញយកទិន្នន័យពីប្រព័ន្ធ Database។</li>
+            <li>CORS Error ច្រើនតែកើតឡើងលើ Traditional MVC ព្រោះ View និង Controller ស្ថិតនៅលើ Port ខុសគ្នា។</li>
+            <li>កូដ `return Ok(students);` ក្នុង Web API នឹងបញ្ចេញលទ្ធផលជាទម្រង់ JSON ភ្ជាប់ជាមួយ Status Code 200។</li>
+            <li>ការសរសេរកូដ `await _context.Students.ToListAsync()` ជួយការពារមិនឱ្យ Server គាំង (Blocked) ពេលទាញទិន្នន័យច្រើន។</li>
+            <li>Property Name របស់ C# (PascalCase) នឹងត្រូវប្តូរទៅជា (camelCase) ដោយស្វ័យប្រវត្តិពេលបញ្ចេញជា JSON។</li>
+            <li>មុខងារ `fetch()` របស់ JavaScript នឹងធ្វើឱ្យទំព័រ Web Refresh ខ្លួនឯងរាល់ពេលទាញទិន្នន័យ។</li>
+            <li>យើងអាចប្រើប្រាស់ `SchoolDbContext` តែមួយ សម្រាប់ផ្គត់ផ្គង់ទាំង Traditional Controller និង API Controller បាន។</li>
         </ol>
     </div>
     <div class="global-footer">
@@ -879,7 +1067,7 @@ app.Run();</pre>
     </div>
 </div>
 
-<!-- PAGE 15: REVIEW QUESTIONS MCQ -->
+<!-- PAGE 15: REVIEW QUESTIONS MCQ (BLOOM L2-L3) -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
@@ -887,88 +1075,91 @@ app.Run();</pre>
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
     <div class="page-content">
-        <div class="sub-heading" style="width: 100%; margin-top:0;">២. សំណួរ ពហុជ្រើសរើស (MCQs)</div>
-        <p style="font-size:10pt; margin-bottom:12px;"><b>សេចក្តីណែនាំ៖</b> សូមជ្រើសរើសចម្លើយដែលត្រឹមត្រូវបំផុតតែមួយគត់។</p>
+        <div class="sub-heading" style="width: 100%; margin-top:0;">
+            <span>២. សំណួរ ពហុជ្រើសរើស (MCQs)</span>
+            <span class="bloom-badge bloom-l3">3. Apply / 2. Understand</span>
+        </div>
+        <p style="font-size:10pt; margin-bottom:10px;"><b>សេចក្តីណែនាំ៖</b> សូមជ្រើសរើសចម្លើយដែលត្រឹមត្រូវបំផុតតែមួយគត់។</p>
         
         <ol class="q-list" style="font-size:9.5pt; line-height:1.45;">
-            <li>តើអក្សរ "R" នៅក្នុងប្រតិបត្តិការ CRUD តំណាងឱ្យអ្វី ហើយប្រើប្រាស់ HTTP Method មួយណា?
+            <li>តើ Class មួយណាដែល Traditional Controller ត្រូវ Inherit ដើម្បទទួលបាន View Support?
                 <ul class="mcq-opts">
-                    <li>A. Remove / DELETE</li>
-                    <li>B. Read / GET</li>
-                    <li>C. Replace / PUT</li>
-                    <li>D. Retrieve / POST</li>
+                    <li>A. ControllerBase</li>
+                    <li>B. Controller</li>
+                    <li>C. ApiController</li>
+                    <li>D. DbContext</li>
                 </ul>
             </li>
-            <li>នៅក្នុង ASP.NET Controller ប្រសិនបើមិនមានទិន្នន័យនៅក្នុងបញ្ជីសិស្សទេ តើអ្នកគួរបញ្ចេញ (Return) អ្វីដើម្បីបញ្ជាក់ថា "រកមិនឃើញ"?
+            <li>តើប្រភេទ Return Type មួយណាដែលសាកសមបំផុតសម្រាប់ Web API Controller?
                 <ul class="mcq-opts">
-                    <li>A. return Ok("Empty");</li>
-                    <li>B. return null;</li>
-                    <li>C. return NotFound();</li>
-                    <li>D. return BadRequest();</li>
+                    <li>A. ViewResult</li>
+                    <li>B. IActionResult</li>
+                    <li>C. RazorPage</li>
+                    <li>D. HtmlString</li>
                 </ul>
             </li>
-            <li>តើ JSON តំណាងឱ្យពាក្យពេញអ្វី?
+            <li>តើកូដអ្វីដែលប្រើប្រាស់ដើម្បីទាញយកទិន្នន័យពី API តាមបែបអសមកាលក្នុង JavaScript?
                 <ul class="mcq-opts">
-                    <li>A. Java Standard Object Network</li>
-                    <li>B. JavaScript Object Notation</li>
-                    <li>C. Java System Oriented Node</li>
-                    <li>D. JavaScript Oriented Name</li>
+                    <li>A. await fetch(url)</li>
+                    <li>B. Response.Redirect()</li>
+                    <li>C. RenderBody()</li>
+                    <li>D. Console.WriteLine()</li>
                 </ul>
             </li>
-            <li>តើកូដ <code>app.UseCors("AllowAll")</code> នៅក្នុង <code>Program.cs</code> មានតួនាទីអ្វី?
+            <li>តើ attribute អ្វីដែលតម្រូវឱ្យដាក់នៅលើ API Controller ដើម្បីបញ្ជាក់ថាជា Web API?
                 <ul class="mcq-opts">
-                    <li>A. អនុញ្ញាតឱ្យសិស្ស Login ចូលប្រព័ន្ធ</li>
-                    <li>B. ភ្ជាប់កម្មវិធីទៅកាន់ SQL Server</li>
-                    <li>C. បើកសិទ្ធិឱ្យ Web (Frontend) ផ្សេងអាចហៅ API នេះបានឆ្លង Domain</li>
-                    <li>D. បង្កើតតារាង Database ថ្មី</li>
+                    <li>A. [RazorView]</li>
+                    <li>B. [ApiController]</li>
+                    <li>C. [DatabaseGenerated]</li>
+                    <li>D. [ServerSide]</li>
                 </ul>
             </li>
-            <li>នៅក្នុង JavaScript តើការសរសេរ <code>async function()</code> មានតួនាទីអ្វី?
+            <li>តើ HTTP Status Code មួយណាបញ្ជាក់ថា "ការទាញទិន្នន័យទទួលបានជោគជ័យ"?
                 <ul class="mcq-opts">
-                    <li>A. ធ្វើឱ្យអនុគមន៍នោះដើរលឿនជាងមុន ១០ ដង</li>
-                    <li>B. អនុញ្ញាតឱ្យយើងប្រើប្រាស់ពាក្យ `await` នៅខាងក្នុងដើម្បីរង់ចាំការទាញទិន្នន័យ</li>
-                    <li>C. ប្តូរពណ៌តារាងទៅជាពណ៌ខៀវ</li>
-                    <li>D. បង្ហាញពាក្យ Loading លើអេក្រង់</li>
+                    <li>A. 404 Not Found</li>
+                    <li>B. 500 Internal Error</li>
+                    <li>C. 200 OK</li>
+                    <li>D. 400 Bad Request</li>
                 </ul>
             </li>
-            <li>តើ Swagger ដែលភ្ជាប់មកជាមួយ .NET Core Web API មានតួនាទីចម្បងសម្រាប់ធ្វើអ្វី?
+            <li>តើចំណុចខ្លាំងចម្បងនៃ Traditional MVC (Razor Views) គឺអ្វី?
                 <ul class="mcq-opts">
-                    <li>A. រចនាផ្ទៃមុខ HTML ឱ្យស្អាត</li>
-                    <li>B. គ្រប់គ្រង Database (ជំនួស SSMS)</li>
-                    <li>C. ធ្វើតេស្តសាកល្បង API និងបង្ហាញឯកសារ (Documentation) របស់ API</li>
-                    <li>D. ការពារកុំឱ្យ Hacker លួចចូល</li>
+                    <li>A. មិនបាច់ប្រើប្រាស់ Database</li>
+                    <li>B. ល្អខ្លាំងសម្រាប់ Search Engine Optimization (SEO)</li>
+                    <li>C. អាចយកទៅរត់លើ Mobile App ដោយផ្ទាល់</li>
+                    <li>D. គ្មានការ Refresh Page ឡើយ</li>
                 </ul>
             </li>
-            <li>តើ Method មួយណាដែលប្រើសម្រាប់ដំណើរការជុំ (Loop) ទៅលើទិន្នន័យ JSON Array នៅក្នុង JavaScript?
+            <li>តើកូដ `app.UseCors("AllowAll")` ត្រូវសរសេរក្នុងឯកសារមួយណា?
                 <ul class="mcq-opts">
-                    <li>A. .forEach()</li>
-                    <li>B. .ifElse()</li>
-                    <li>C. .switch()</li>
-                    <li>D. .length()</li>
+                    <li>A. Index.cshtml</li>
+                    <li>B. Student.cs</li>
+                    <li>C. Program.cs</li>
+                    <li>D. appsettings.json</li>
                 </ul>
             </li>
-            <li>ប្រសិនបើ Property ក្នុង C# Model មានឈ្មោះ <code>StudentName</code> តើពេលវាចេញជា JSON វានឹងប្តូរទៅជាអ្វីតាមលំនាំដើម?
+            <li>ប្រសិនបើ C# Property មានឈ្មោះ `FullName` តើក្នុង JSON វានឹងបង្ហាញជាអ្វី?
                 <ul class="mcq-opts">
-                    <li>A. student_name</li>
-                    <li>B. STUDENTNAME</li>
-                    <li>C. StudentName</li>
-                    <li>D. studentName</li>
+                    <li>A. FullName</li>
+                    <li>B. full_name</li>
+                    <li>C. fullName</li>
+                    <li>D. FULLNAME</li>
                 </ul>
             </li>
-            <li>តើថេប (Tab) មួយណានៅក្នុង Browser Developer Tools (F12) ដែលប្រើសម្រាប់មើល Error របស់ JavaScript និង CORS?
+            <li>តើថេប (Tab) មួយណាក្នុង Developer Tools (F12) សម្រាប់មើល HTTP Response ពី API?
                 <ul class="mcq-opts">
                     <li>A. Elements</li>
                     <li>B. Network</li>
-                    <li>C. Console</li>
-                    <li>D. Application</li>
+                    <li>C. Application</li>
+                    <li>D. Security</li>
                 </ul>
             </li>
-            <li>តើកូដអ្វីនៅក្នុង C# ដែលប្រាប់ EF Core ឱ្យទៅទាញយកទិន្នន័យសិស្សទាំងអស់ពី SQL Server តាមបែប Asynchronous?
+            <li>តើ Extension មួយណាដែលអនុញ្ញាតឱ្យយើង Render ឯកសារ `index.html` លើ Port 5500 ក្នុង VS Code?
                 <ul class="mcq-opts">
-                    <li>A. await _context.Students.AddAsync()</li>
-                    <li>B. await _context.Students.ToListAsync()</li>
-                    <li>C. _context.Students.SaveChanges()</li>
-                    <li>D. _context.Students.Remove()</li>
+                    <li>A. C# Dev Kit</li>
+                    <li>B. Live Server</li>
+                    <li>C. SQL Server Extension</li>
+                    <li>D. Swagger Studio</li>
                 </ul>
             </li>
         </ol>
@@ -979,7 +1170,7 @@ app.Run();</pre>
     </div>
 </div>
 
-<!-- PAGE 16: MATCHING & ESSAYS -->
+<!-- PAGE 16: MATCHING & ESSAYS (BLOOM L4-L5) -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
@@ -987,41 +1178,47 @@ app.Run();</pre>
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
     <div class="page-content">
-        <div class="sub-heading" style="width:100%; margin-top:0;">៣. សំណួរផ្គូផ្គង (Matching)</div>
-        <p style="font-size:10pt; margin-bottom:12px;"><b>សេចក្តីណែនាំ៖</b> សូមផ្គូផ្គងពាក្យនៅជួរឈរខាងឆ្វេង (១-១០) ទៅនឹងការពន្យល់នៅជួរឈរខាងស្តាំ (A-J) ឱ្យបានត្រឹមត្រូវ។</p>
+        <div class="sub-heading" style="width:100%; margin-top:0;">
+            <span>៣. សំណួរផ្គូផ្គង (Matching)</span>
+            <span class="bloom-badge bloom-l1">1. Remember / 2. Understand</span>
+        </div>
+        <p style="font-size:9.5pt; margin-bottom:10px;"><b>សេចក្តីណែនាំ៖</b> សូមផ្គូផ្គងពាក្យនៅជួរឈរខាងឆ្វេង (១-១០) ទៅនឹងការពន្យល់នៅជួរឈរខាងស្តាំ (A-J) ឱ្យបានត្រឹមត្រូវ។</p>
         
-        <div class="two-column" style="gap:15px; align-items:start; margin-bottom: 15px;">
-            <table class="standard-table" style="box-shadow:none; font-size: 8.5pt;">
-                <tr><td style="font-weight:bold;">១. Decoupled Web API</td></tr>
-                <tr><td style="font-weight:bold;">២. 200 OK</td></tr>
-                <tr><td style="font-weight:bold;">៣. Swagger UI</td></tr>
-                <tr><td style="font-weight:bold;">៤. JSON</td></tr>
-                <tr><td style="font-weight:bold;">៥. fetch('URL')</td></tr>
-                <tr><td style="font-weight:bold;">៦. await</td></tr>
-                <tr><td style="font-weight:bold;">៧. .innerHTML</td></tr>
-                <tr><td style="font-weight:bold;">៨. CORS</td></tr>
-                <tr><td style="font-weight:bold;">៩. Console Tab</td></tr>
-                <tr><td style="font-weight:bold;">១០. .ToListAsync()</td></tr>
+        <div class="two-column" style="gap:12px; align-items:start; margin-bottom: 10px;">
+            <table class="standard-table" style="font-size: 8.5pt;">
+                <tr><td style="font-weight:bold;">១. Server-Side Rendering</td></tr>
+                <tr><td style="font-weight:bold;">២. Razor View (.cshtml)</td></tr>
+                <tr><td style="font-weight:bold;">៣. Web API Controller</td></tr>
+                <tr><td style="font-weight:bold;">៤. JSON Format</td></tr>
+                <tr><td style="font-weight:bold;">៥. fetch() API</td></tr>
+                <tr><td style="font-weight:bold;">៦. CORS Policy</td></tr>
+                <tr><td style="font-weight:bold;">៧. 404 Not Found</td></tr>
+                <tr><td style="font-weight:bold;">៨. camelCase</td></tr>
+                <tr><td style="font-weight:bold;">៩. Swagger UI</td></tr>
+                <tr><td style="font-weight:bold;">១០. async / await</td></tr>
             </table>
-            <table class="standard-table" style="box-shadow:none; font-size: 8.5pt;">
-                <tr><td>A. ប្រព័ន្ធសម្រាប់ធ្វើតេស្ត API ផ្ទាល់ (ភ្ជាប់មកជាមួយ .NET)។</td></tr>
-                <tr><td>B. បច្ចេកទេសហៅទិន្នន័យអសមកាលពី Server ក្នុង JavaScript។</td></tr>
-                <tr><td>C. គោលការណ៍សុវត្ថិភាពទប់ស្កាត់ការហៅ API ឆ្លង Domain។</td></tr>
-                <tr><td>D. ពាក្យគន្លឹះសម្រាប់ "រង់ចាំ" លទ្ធផលទិន្នន័យដោយមិនបាច់គាំងប្រព័ន្ធ។</td></tr>
-                <tr><td>E. HTTP Status Code បញ្ជាក់ថាប្រតិបត្តិការទទួលជោគជ័យ។</td></tr>
-                <tr><td>F. បញ្ជាឱ្យ EF Core ទាញទិន្នន័យពី Database តាមបែបអសមកាល។</td></tr>
-                <tr><td>G. ស្ថាបត្យកម្មដែល Backend និង Frontend ជាគម្រោងផ្សេងគ្នាដាច់។</td></tr>
-                <tr><td>H. កន្លែងសម្រាប់មើលបញ្ហា (Errors) របស់កូដ JS ក្នុង Browser។</td></tr>
-                <tr><td>I. Property របស់ JS សម្រាប់កែប្រែទិន្នន័យក្នុង HTML Tags។</td></tr>
-                <tr><td>J. ទម្រង់អត្ថបទស្តង់ដារ ប្រើសម្រាប់ផ្លាស់ប្តូរទិន្នន័យរវាងប្រព័ន្ធ។</td></tr>
+            <table class="standard-table" style="font-size: 8.5pt;">
+                <tr><td>A. ទម្រង់ Naming អក្សរតូចដើមពាក្យ ប្រើប្រាស់ក្នុង JSON។</td></tr>
+                <tr><td>B. បច្ចេកទេសបង្កើត HTML សុទ្ធចេញពី Web Server។</td></tr>
+                <tr><td>C. ឯកសារ View សម្រាប់សរសេរ C# លាយ HTML។</td></tr>
+                <tr><td>D. ច្រកទ្វារ Controller ដែលបញ្ចេញតែ Raw Data។</td></tr>
+                <tr><td>E. HTTP Status Code ពេលរកមិនឃើញទិន្នន័យ។</td></tr>
+                <tr><td>F. ប្រព័ន្ធធ្វើតេស្ត Web API លើ Web Browser។</td></tr>
+                <tr><td>G. ទម្រង់អត្ថបទស្តង់ដារសម្រាប់ផ្លាស់ប្តូរទិន្នន័យ API។</td></tr>
+                <tr><td>H. មុខងារ JS សម្រាប់ទាញយកទិន្នន័យពី API។</td></tr>
+                <tr><td>I. យន្តការរំដោះ Thread កុំឱ្យ Server គាំង។</td></tr>
+                <tr><td>J. ច្បាប់ទប់ស្កាត់ការហៅ API ឆ្លង Domain/Port។</td></tr>
             </table>
         </div>
 
-        <div class="sub-heading" style="width:100%;">៤. សំណួរបកស្រាយ (Essay Questions)</div>
-        <ol class="q-list" style="font-size:9.5pt; line-height:1.5;">
-            <li>ចូរពន្យល់ពីភាពខុសគ្នាសំខាន់ៗរវាង Traditional MVC (Server-Side Rendering) និង Decoupled Web API (Client-Side Rendering)។</li>
-            <li>តើ CORS គឺជាអ្វី? ហេតុអ្វីបានជាយើងចាំបាច់ត្រូវដោះស្រាយបញ្ហាពាក់ព័ន្ធនឹងវា នៅពេលដែលយើងព្យាយាមតភ្ជាប់ Frontend Web ទៅកាន់ Backend API?</li>
-            <li>ហេតុអ្វីបានជាការសរសេរកូដអសមកាល (Async / Await និង ToListAsync) មានសារៈសំខាន់សម្រាប់ការអភិវឌ្ឍន៍ Web API ជាជាងការប្រើប្រាស់ ToList() ធម្មតា?</li>
+        <div class="sub-heading" style="width:100%;">
+            <span>៤. សំណួរបកស្រាយកម្រិតខ្ពស់ (Critical Thinking & Essay Questions)</span>
+            <span class="bloom-badge bloom-l4">4. Analyze / 5. Evaluate</span>
+        </div>
+        <ol class="q-list" style="font-size:9pt; line-height:1.5;">
+            <li><span class="bloom-badge bloom-l4">Analyze</span> ចូរពន្យល់ពីលំហូរការងារ (Data Flow) នៃ Traditional MVC និង Decoupled Web API ព្រមទាំងប្រៀបធៀបផលប៉ះពាល់លើ Server Load នៃស្ថាបត្យកម្មទាំងពីរនេះ។</li>
+            <li><span class="bloom-badge bloom-l5">Evaluate</span> ហេតុអ្វីបានជា Decoupled Web API ពេញនិយមខ្លាំងសម្រាប់ការអភិវឌ្ឍ Cross-Platform Applications (Web + Mobile App)? តើការប្រើប្រាស់ JSON មានអត្ថប្រយោជន៍អ្វីខ្លះធៀបនឹង HTML?</li>
+            <li><span class="bloom-badge bloom-l4">Analyze</span> ចូរវិភាគករណីសិក្សា៖ ប្រសិនបើអ្នកអភិវឌ្ឍន៍ភ្លេចបកស្រាយ CORS ក្នុង `Program.cs` តើ Traditional MVC អាចដើរបានឬទេ? ចុះ Decoupled Web API ដើរបានឬទេ? ព្រោះអ្វី?</li>
         </ol>
     </div>
     <div class="global-footer">
@@ -1030,7 +1227,7 @@ app.Run();</pre>
     </div>
 </div>
 
-<!-- PAGE 17: PRACTICAL EXERCISES INTRO -->
+<!-- PAGE 17: PRACTICAL EXERCISES INTRO - DUAL TRACK (BLOOM L6 - CREATE) -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
@@ -1038,29 +1235,36 @@ app.Run();</pre>
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
     <div class="page-content">
-        <div class="sub-heading" style="width: 100%; margin-top:0; color:var(--success); font-size:14pt;"><i class="fa-solid fa-laptop-code"></i> ៧. លំហាត់អនុវត្តន៍ (Practical Exercises)</div>
-        <p style="font-size:10pt; margin-bottom:15px;">
-            <b>សេចក្តីណែនាំ៖</b> លំហាត់នេះតម្រូវឱ្យអ្នកតភ្ជាប់មុខងារអានទិន្នន័យ (Read - <b>R</b> ក្នុង CRUD) សម្រាប់ **ប្រព័ន្ធគ្រប់គ្រងទំនិញ (E-Commerce Product Catalog)** តាមស្ថាបត្យកម្ម Decoupled MVC។ យើងនឹងកសាង API សម្រាប់ Product រួចសរសេរកូដ Frontend បញ្ចាំងវាលើ Web Page។
+        <div class="sub-heading" style="width: 100%; margin-top:0; color:var(--success); font-size:12.5pt;">
+            <span><i class="fa-solid fa-laptop-code"></i> ៧. លំហាត់អនុវត្តន៍ឌុយអាល់ (Dual-Track Practical Exercises)</span>
+            <span class="bloom-badge bloom-l6">6. Create</span>
+        </div>
+        <p style="font-size:9.5pt; margin-bottom:12px;">
+            <b>គោលបំណង៖</b> និស្សិតត្រូវអភិវឌ្ឍន៍ **ប្រព័ន្ធគ្រប់គ្រងទំនិញ (Product Catalog)** ដោយប្រើប្រាស់ស្ថាបត្យកម្មទាំងពីរស្របគ្នាក្នុង Project តែមួយ ផ្អែកលើ Entity <code>Product (Id, Name, Price, Stock)</code>៖
         </p>
 
-        <div class="section-title" style="color:var(--accent); border-color:var(--accent); font-size:11.5pt; margin-bottom: 5px;">
-            <i class="fa-solid fa-server"></i> ផ្នែកទី ១៖ រៀបចំ Backend GET API (C# & EF Core)
+        <div class="section-title" style="color:var(--secondary); border-color:var(--secondary); font-size:10.5pt; margin-bottom: 5px;">
+            <div class="section-title-left"><i class="fa-solid fa-window-restore"></i> ភាគទី ១ (Part 1): អភិវឌ្ឍន៍តាមបែប Traditional MVC (SSR)</div>
+            <span class="bloom-badge bloom-l3">Track A</span>
         </div>
         
-        <ul class="obj-list" style="margin-top:0; margin-bottom:15px;">
-            <li><b>ជំហានទី ១ (អនុញ្ញាត CORS)៖</b> នៅក្នុងឯកសារ <code>Program.cs</code> សូមសរសេរកូដ <code>builder.Services.AddCors(...)</code> ព្រមទាំង <code>app.UseCors("AllowAll")</code> ដើម្បីបើកសិទ្ធិឱ្យ Web អាចហៅ API ឆ្លង Domain។</li>
-            <li><b>ជំហានទី ២ (បង្កើត Async Controller)៖</b> បង្កើតឯកសារ <code>ProductApiController.cs</code>។ Inject <code>AppDbContext</code>។ រួចបង្កើត Method <code>[HttpGet] GetProducts()</code> ដោយប្រើក្បួនអសមកាល (<code>await _context.Products.ToListAsync()</code>) ដើម្បីទាញយកបញ្ជីទំនិញ (Id, Name, Price) និងបញ្ចេញវាជា JSON តាមរយៈ <code>Ok()</code>។ ធ្វើតេស្តវាជាមួយ <b>Swagger</b> ជាមុនសិន។</li>
+        <ul class="obj-list" style="margin-top:0; margin-bottom:12px;">
+            <li><b>កិច្ចការទី ១៖</b> បង្កើត <code>ProductController.cs</code> ដែលតម្រូវឱ្យស្នងពី <code>Controller</code>។</li>
+            <li><b>កិច្ចការទី ២៖</b> សរសេរ Method <code>Index()</code> ទាញយកបញ្ជីទំនិញពី SQL Database រួច Return ជា <code>View(products)</code>។</li>
+            <li><b>កិច្ចការទី ៣៖</b> បង្កើត Razor View <code>Views/Product/Index.cshtml</code> ដោយប្រើប្រាស់ <code>@model IEnumerable<Product></code> និង <code>@foreach</code> ដើម្បីបង្ហាញតារាងទំនិញលើ Server។</li>
         </ul>
 
-        <div class="section-title" style="color:var(--warning); border-color:var(--warning); font-size:11.5pt; margin-bottom: 5px; margin-top: 15px;">
-            <i class="fa-brands fa-html5"></i> ផ្នែកទី ២៖ រៀបចំ Frontend Web UI (HTML & JS)
+        <div class="section-title" style="color:var(--accent); border-color:var(--accent); font-size:10.5pt; margin-bottom: 5px; margin-top: 10px;">
+            <div class="section-title-left"><i class="fa-solid fa-network-wired"></i> ភាគទី ២ (Part 2): អភិវឌ្ឍន៍តាមបែប Decoupled Web API (CSR)</div>
+            <span class="bloom-badge bloom-l6">Track B</span>
         </div>
 
-        <ul class="obj-list" style="margin-top:0;">
-            <li><b>ជំហានទី ៣ (HTML View)៖</b> បង្កើតគម្រោងថ្មី (ឧ. Folder ផ្សេង) រួចបង្កើតឯកសារ <code>products.html</code>។ រៀបចំតារាង <code>&lt;table&gt;</code> ដែលមានក្បាល (ID, ឈ្មោះទំនិញ, តម្លៃ) និងទុក <code>&lt;tbody id="productBox"&gt;</code> ឱ្យនៅទទេសម្រាប់ទទួលទិន្នន័យពី API។</li>
-            <li><b>ជំហានទី ៤ (JavaScript Async Fetch)៖</b> ប្រើមុខងារ <code>async function</code> និង <code>await fetch()</code> ដើម្បីហៅទៅកាន់ URL របស់ Product API ខាងលើ។ បំប្លែងលទ្ធផលជា JSON រួចប្រើក្បួន <code>.forEach()</code> ដើម្បីបង្កើត <code>&lt;tr&gt;</code> សម្រាប់ទំនិញនីមួយៗ ហើយ Append បញ្ចូលទៅក្នុងតារាង <code>productBox.innerHTML</code>។</li>
+        <ul class="obj-list" style="margin-top:0; margin-bottom:12px;">
+            <li><b>កិច្ចការទី ៤៖</b> បង្កើត <code>ProductApiController.cs</code> ភ្ជាប់ Attribute <code>[ApiController]</code> និង <code>[Route("api/[controller]")]</code>។</li>
+            <li><b>កិច្ចការទី ៥៖</b> សរសេរ Method <code>GetProducts()</code> តាមបែប Async (<code>await ToListAsync()</code>) និង Return ជា <code>Ok(products)</code>។</li>
+            <li><b>កិច្ចការទី ៦៖</b> កំណត់ CORS Policy ក្នុង <code>Program.cs</code> ឱ្យអនុញ្ញាត `AllowAll` សម្រាប់ការតភ្ជាប់។</li>
+            <li><b>កិច្ចការទី ៧៖</b> បង្កើត <code>products.html</code> ដាច់ដោយឡែក រួចសរសេរ JavaScript `fetch()` ដើម្បីទាញ JSON បង្ហាញលើ Table ដោយមិន Refresh Page ព្រមទាំងបន្ថែម Loading State!</li>
         </ul>
-
     </div>
     <div class="global-footer">
         <div class="footer-left"><span>សាស្ត្រាចារ្យ៖ សឿង លីម (Soeurng LIM)</span></div>
@@ -1076,40 +1280,42 @@ app.Run();</pre>
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
     <div class="page-content">
-        <div class="section-title" style="background:var(--success); color:white; justify-content:center; border-radius:8px; border:none; margin: 0; padding: 8px 0;"><i class="fa-solid fa-key" style="color:white; background:transparent;"></i> អត្រាកំណែ (Answer Keys)</div>
+        <div class="section-title" style="background:var(--success); color:white; justify-content:center; border-radius:8px; border:none; margin: 0; padding: 6px 0;">
+            <span><i class="fa-solid fa-key" style="color:white; background:transparent;"></i> អត្រាកំណែ (Answer Keys)</span>
+        </div>
             
-        <div class="two-column" style="gap:15px; align-items:start; margin-top: 15px;">
+        <div class="two-column" style="gap:12px; align-items:start; margin-top: 12px;">
             <div>
-                <div class="sub-heading" style="margin-top: 0; font-size:10.5pt; color:var(--success); border-bottom: none;">១. ចម្លើយ ខុស/ត្រូវ</div>
+                <div class="sub-heading" style="margin-top: 0; font-size:10pt; color:var(--success); border-bottom: none;">១. ចម្លើយ ខុស/ត្រូវ</div>
                 <table class="ans-table">
                     <tr><th>១</th><th>២</th><th>៣</th><th>៤</th><th>៥</th></tr>
-                    <tr><td>ខុស</td><td>ត្រូវ</td><td>ត្រូវ</td><td>ខុស</td><td>ត្រូវ</td></tr>
+                    <tr><td>ត្រូវ</td><td>ខុស</td><td>ត្រូវ</td><td>ត្រូវ</td><td>ខុស</td></tr>
                     <tr><th>៦</th><th>៧</th><th>៨</th><th>៩</th><th>១០</th></tr>
-                    <tr><td>ត្រូវ</td><td>ខុស</td><td>ត្រូវ</td><td>ត្រូវ</td><td>ត្រូវ</td></tr>
+                    <tr><td>ត្រូវ</td><td>ត្រូវ</td><td>ត្រូវ</td><td>ខុស</td><td>ត្រូវ</td></tr>
                 </table>
             </div>
             <div>
-                <div class="sub-heading" style="margin-top: 0; font-size:10.5pt; color:var(--success); border-bottom: none;">២. ចម្លើយ ពហុជ្រើសរើស</div>
+                <div class="sub-heading" style="margin-top: 0; font-size:10pt; color:var(--success); border-bottom: none;">២. ចម្លើយ ពហុជ្រើសរើស</div>
                 <table class="ans-table">
                     <tr><th>១</th><th>២</th><th>៣</th><th>៤</th><th>៥</th></tr>
-                    <tr><td>B</td><td>C</td><td>B</td><td>C</td><td>B</td></tr>
+                    <tr><td>B</td><td>B</td><td>A</td><td>B</td><td>C</td></tr>
                     <tr><th>៦</th><th>៧</th><th>៨</th><th>៩</th><th>១០</th></tr>
-                    <tr><td>C</td><td>A</td><td>D</td><td>C</td><td>B</td></tr>
+                    <tr><td>B</td><td>C</td><td>C</td><td>B</td><td>B</td></tr>
                 </table>
             </div>
         </div>
         
-        <div class="sub-heading" style="margin-top:15px; font-size:10.5pt; color:var(--success); border-bottom: none;">៣. ចម្លើយ ផ្គូផ្គង (Matching Keys)</div>
-        <table class="ans-table" style="margin-bottom: 15px;">
+        <div class="sub-heading" style="margin-top:10px; font-size:10pt; color:var(--success); border-bottom: none;">៣. ចម្លើយ ផ្គូផ្គង (Matching Keys)</div>
+        <table class="ans-table" style="margin-bottom: 10px;">
             <tr><th>១</th><th>២</th><th>៣</th><th>៤</th><th>៥</th><th>៦</th><th>៧</th><th>៨</th><th>៩</th><th>១0</th></tr>
-            <tr><td>G</td><td>E</td><td>A</td><td>J</td><td>B</td><td>D</td><td>I</td><td>C</td><td>H</td><td>F</td></tr>
+            <tr><td>B</td><td>C</td><td>D</td><td>G</td><td>H</td><td>J</td><td>E</td><td>A</td><td>F</td><td>I</td></tr>
         </table>
 
-        <div class="sub-heading" style="margin-top:10px; font-size:10.5pt; color:var(--success); border-bottom: none;">៤. ចម្លើយ សំណួរបកស្រាយ (សង្ខេប)</div>
-        <ul style="font-size:9pt; line-height:1.5; padding-left:20px; text-align:justify;">
-            <li style="margin-bottom:4px;"><b>១. ស្ថាបត្យកម្ម៖</b> Traditional MVC គឺទាំង Model, View (HTML), Controller ស្ថិតក្នុង Project តែមួយ ដែល Server ត្រូវ Render HTML រួចទើបបញ្ជូនទៅ Browser (ធ្វើឱ្យ Web ដើរយឺត ត្រូវ Refresh រហូត)។ ចំណែក Decoupled Web API គឺ Backend (Model+Controller) គ្រាន់តែបញ្ចេញទិន្នន័យ (JSON) រីឯ Frontend (HTML+JS) ឯករាជ្យ ទាញយកទិន្នន័យមកបិទភ្ជាប់លើ UI ដោយមិនបាច់ Refresh វេបសាយឡើយ។</li>
-            <li style="margin-bottom:4px;"><b>២. CORS Policy៖</b> CORS គឺជាប្រព័ន្ធសុវត្ថិភាព Browser (Same-Origin Policy) ដែលការពារមិនឱ្យមានការហៅទិន្នន័យឆ្លងពី Website មួយទៅ Domain ឬ Port មួយផ្សេងទៀត។ ដោយសារគម្រោងយើងញែកជាពីរ (Live Server Frontend និង API Backend) ពួកវាស្ថិតលើ Port ខុសគ្នា ដូច្នេះយើងត្រូវកែប្រែក្នុង <code>Program.cs</code> (AddCors) ដើម្បីអនុញ្ញាតឱ្យ Frontend អាចទាញយកទិន្នន័យបាន។</li>
-            <li style="margin-bottom:0;"><b>៣. Async/Await ក្នុង C#៖</b> ការប្រើ `.ToList()` ធម្មតានឹងធ្វើឱ្យ Server Block (រង់ចាំ Database ឆ្លើយតបមុននឹងទទួល Request ផ្សេង)។ ការប្រើ `await ...ToListAsync()` ជួយរំដោះ CPU របស់ Server ឱ្យទៅធ្វើការផ្សេងពេល Database កំពុង Query ដែលធ្វើឱ្យប្រព័ន្ធ API អាចទទួល User ប្រើប្រាស់រាប់ពាន់នាក់ក្នុងពេលតែមួយ (High Concurrency & Performance)។</li>
+        <div class="sub-heading" style="margin-top:8px; font-size:10pt; color:var(--success); border-bottom: none;">៤. ចម្លើយ សំណួរបកស្រាយ (សង្ខេប)</div>
+        <ul style="font-size:8.5pt; line-height:1.45; padding-left:18px; text-align:justify;">
+            <li style="margin-bottom:3px;"><b>១. Data Flow & Server Load:</b> Traditional MVC បង្កើត HTML លើ Server ធ្វើឱ្យ Server ត្រូវប្រកួតប្រជែង CPU ក្នុងការ Render HTML រាល់ Request។ រីឯ Web API ផ្ញើតែអត្ថបទ JSON ស្រាល ធ្វើឱ្យ Server រំដោះ Load បានច្រើន ដោយបង្វែរកិច្ចការ Render ទៅឱ្យ Browser វិញ។</li>
+            <li style="margin-bottom:3px;"><b>២. Cross-Platform & JSON:</b> JSON គឺជាទម្រង់ទិន្នន័យកណ្តាល (Language-Agnostic) ដែលអាចអានបានដោយ C#, JavaScript, Swift (iOS), Kotlin (Android), និង Python។ ហេតុនេះ Web API មួយ អាចផ្គត់ផ្គង់បានទាំង Web និង Mobile Apps។</li>
+            <li style="margin-bottom:0;"><b>៣. CORS Behavior:</b> Traditional MVC ដើរបានធម្មតាព្រោះ Request ធ្វើឡើងក្នុង Origin តែមួយ (Server-to-Server)។ រីឯ Decoupled Web API នឹងត្រូវ Browser ប្លុក (Block) ភ្លាមៗ ព្រោះ Frontend JS ហៅទិន្នន័យឆ្លង Port (Cross-Origin)។</li>
         </ul>
     </div>
     <div class="global-footer">
@@ -1118,7 +1324,7 @@ app.Run();</pre>
     </div>
 </div>
 
-<!-- PAGE 19: SOLUTION - EXERCISES STEP 1 & 2 -->
+<!-- PAGE 19: SOLUTION - TRACK A TRADITIONAL MVC -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
@@ -1126,39 +1332,88 @@ app.Run();</pre>
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
     <div class="page-content">
-        <div class="sub-heading" style="width: 100%; margin-top:0; color:var(--accent);"><i class="fa-solid fa-circle-check"></i> ដំណោះស្រាយ៖ ការរៀបចំ Backend Web API</div>
+        <div class="sub-heading" style="width: 100%; margin-top:0; color:var(--secondary);">
+            <span><i class="fa-solid fa-circle-check"></i> ដំណោះស្រាយ Track A: Traditional MVC Implementation</span>
+            <span class="bloom-badge bloom-l3">Track A Solution</span>
+        </div>
         
-        <div style="font-size:9.5pt; font-weight:bold; color:var(--text-main); margin-bottom:4px; margin-top:10px;"><span style="color:var(--accent);">១️⃣ ជំហានទី ១៖ </span>ការអនុញ្ញាត CORS ក្នុង Program.cs</div>
-        <div class="code-window" style="margin:2px 0 15px 0; font-size:8pt;">
-            <div class="code-header" style="padding: 4px 10px;">
-                <div class="mac-dots"><div class="dot dot-r" style="width:8px; height:8px;"></div><div class="dot dot-y" style="width:8px; height:8px;"></div><div class="dot dot-g" style="width:8px; height:8px;"></div></div>
-                <div class="code-title" style="font-size: 7.5pt;">Program.cs</div>
+        <div style="font-size:9pt; font-weight:bold; color:var(--text-main); margin-bottom:2px;"><span style="color:var(--secondary);">១. </span>Controllers/ProductController.cs (Traditional MVC)</div>
+        <div class="code-window" style="margin:2px 0 10px 0; font-size:7.5pt;">
+            <div class="code-header" style="padding: 3px 8px;">
+                <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+                <div class="code-title">ProductController.cs</div>
             </div>
-<pre style="padding: 8px;"><span style="color:#C678DD;">var</span> builder = WebApplication.CreateBuilder(args);
+<pre style="padding: 6px;"><span style="color:#C678DD;">using</span> Microsoft.AspNetCore.Mvc;
+<span style="color:#C678DD;">using</span> Microsoft.EntityFrameworkCore;
+<span style="color:#C678DD;">using</span> SchoolApp.Data;
 
-<span style="color:#5C6370;">// បន្ថែមការកំណត់ CORS ឱ្យហៅឆ្លង Domain សម្រាប់ការអភិវឌ្ឍន៍</span>
-builder.Services.AddCors(options =&gt;
+<span style="color:#C678DD;">namespace</span> SchoolApp.Controllers
 {
-    options.AddPolicy(<span style="color:#98C379;">"AllowAll"</span>, policy =&gt;
+    <span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">ProductController</span> : Controller
     {
-        policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
-    });
-});
+        <span style="color:#C678DD;">private readonly</span> SchoolDbContext _context;
+        <span style="color:#C678DD;">public</span> <span style="color:#61AFEF;">ProductController</span>(SchoolDbContext context) { _context = context; }
 
-<span style="color:#5C6370;">// ... កូដ AddDbContext និង AddControllers ...</span>
-<span style="color:#C678DD;">var</span> app = builder.Build();
-
-<span style="color:#5C6370;">// ប្រើប្រាស់ Policy (កូដនេះត្រូវតែនៅពីលើ app.UseAuthorization())</span>
-app.UseCors(<span style="color:#98C379;">"AllowAll"</span>);</pre>
+        <span style="color:#C678DD;">public async</span> Task&lt;IActionResult&gt; <span style="color:#61AFEF;">Index</span>()
+        {
+            <span style="color:#C678DD;">var</span> products = <span style="color:#C678DD;">await</span> _context.Products.ToListAsync();
+            <span style="color:#C678DD;">return</span> View(products); <span style="color:#5C6370;">// បោះ Model ទៅ Razor View</span>
+        }
+    }
+}</pre>
         </div>
 
-        <div style="font-size:9.5pt; font-weight:bold; color:var(--text-main); margin-bottom:4px;"><span style="color:var(--accent);">២️⃣ ជំហានទី ២៖ </span>បង្កើត Asynchronous Controller សម្រាប់ Product</div>
-        <div class="code-window" style="margin:2px 0 15px 0; font-size:8pt;">
-            <div class="code-header" style="padding: 4px 10px;">
-                <div class="mac-dots"><div class="dot dot-r" style="width:8px; height:8px;"></div><div class="dot dot-y" style="width:8px; height:8px;"></div><div class="dot dot-g" style="width:8px; height:8px;"></div></div>
-                <div class="code-title" style="font-size: 7.5pt;">Controllers/ProductApiController.cs</div>
+        <div style="font-size:9pt; font-weight:bold; color:var(--text-main); margin-bottom:2px;"><span style="color:var(--secondary);">២. </span>Views/Product/Index.cshtml (Razor View)</div>
+        <div class="code-window" style="margin:2px 0 10px 0; font-size:7.5pt;">
+            <div class="code-header" style="padding: 3px 8px;">
+                <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+                <div class="code-title">Index.cshtml</div>
             </div>
-<pre style="padding: 8px;"><span style="color:#C678DD;">using</span> Microsoft.AspNetCore.Mvc;
+<pre style="padding: 6px;"><span style="color:#C678DD;">@model</span> IEnumerable&lt;SchoolApp.Models.Product&gt;
+
+<span style="color:#E06C75;">&lt;h2&gt;</span>បញ្ជីទំនិញ (Traditional Razor View)<span style="color:#E06C75;">&lt;/h2&gt;</span>
+<span style="color:#E06C75;">&lt;table <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"table"</span>&gt;</span>
+    <span style="color:#E06C75;">&lt;thead&gt;</span>
+        <span style="color:#E06C75;">&lt;tr&gt;&lt;th&gt;</span>ID<span style="color:#E06C75;">&lt;/th&gt;&lt;th&gt;</span>ឈ្មោះទំនិញ<span style="color:#E06C75;">&lt;/th&gt;&lt;th&gt;</span>តម្លៃ<span style="color:#E06C75;">&lt;/th&gt;&lt;/tr&gt;</span>
+    <span style="color:#E06C75;">&lt;/thead&gt;</span>
+    <span style="color:#E06C75;">&lt;tbody&gt;</span>
+        <span style="color:#C678DD;">@foreach</span>(var item in Model) {
+            <span style="color:#E06C75;">&lt;tr&gt;</span>
+                <span style="color:#E06C75;">&lt;td&gt;</span><span style="color:#56B6C2;">@item.Id</span><span style="color:#E06C75;">&lt;/td&gt;</span>
+                <span style="color:#E06C75;">&lt;td&gt;</span><span style="color:#56B6C2;">@item.Name</span><span style="color:#E06C75;">&lt;/td&gt;</span>
+                <span style="color:#E06C75;">&lt;td&gt;</span>$<span style="color:#56B6C2;">@item.Price</span><span style="color:#E06C75;">&lt;/td&gt;</span>
+            <span style="color:#E06C75;">&lt;/tr&gt;</span>
+        }
+    <span style="color:#E06C75;">&lt;/tbody&gt;</span>
+<span style="color:#E06C75;">&lt;/table&gt;</span></pre>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ៖ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ១៩ / ២៤</div>
+    </div>
+</div>
+
+<!-- PAGE 20: SOLUTION - TRACK B BACKEND API -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៧</h1><p>ASP.NET CORE & SQL SERVER</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-heading" style="width: 100%; margin-top:0; color:var(--accent);">
+            <span><i class="fa-solid fa-circle-check"></i> ដំណោះស្រាយ Track B: Web API Backend Implementation</span>
+            <span class="bloom-badge bloom-l3">Track B Backend</span>
+        </div>
+
+        <div style="font-size:9pt; font-weight:bold; color:var(--text-main); margin-bottom:2px;"><span style="color:var(--accent);">១. </span>Controllers/ProductApiController.cs</div>
+        <div class="code-window" style="margin:2px 0 10px 0; font-size:7.5pt;">
+            <div class="code-header" style="padding: 3px 8px;">
+                <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+                <div class="code-title">ProductApiController.cs</div>
+            </div>
+<pre style="padding: 6px;"><span style="color:#C678DD;">using</span> Microsoft.AspNetCore.Mvc;
 <span style="color:#C678DD;">using</span> Microsoft.EntityFrameworkCore;
 <span style="color:#C678DD;">using</span> SchoolApp.Data;
 
@@ -1168,88 +1423,34 @@ app.UseCors(<span style="color:#98C379;">"AllowAll"</span>);</pre>
     [ApiController]
     <span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">ProductApiController</span> : ControllerBase
     {
-        <span style="color:#C678DD;">private readonly</span> AppDbContext _context;
-
-        <span style="color:#C678DD;">public</span> <span style="color:#61AFEF;">ProductApiController</span>(AppDbContext context) { _context = context; }
+        <span style="color:#C678DD;">private readonly</span> SchoolDbContext _context;
+        <span style="color:#C678DD;">public</span> <span style="color:#61AFEF;">ProductApiController</span>(SchoolDbContext context) { _context = context; }
 
         [HttpGet]
-        <span style="color:#5C6370;">// ការប្រើប្រាស់ក្បួន Async ដើម្បីប្រសិទ្ធភាពខ្ពស់</span>
         <span style="color:#C678DD;">public async</span> Task&lt;IActionResult&gt; <span style="color:#61AFEF;">GetProducts</span>()
         {
-            <span style="color:#5C6370;">// ទាញទិន្នន័យទំនិញទាំងអស់ចេញពី Database (ដោយមិនគាំង Server)</span>
             <span style="color:#C678DD;">var</span> products = <span style="color:#C678DD;">await</span> _context.Products.ToListAsync();
-            
-            <span style="color:#5C6370;">// បញ្ចេញជា JSON Status 200 OK</span>
-            <span style="color:#C678DD;">return</span> Ok(products);
+            <span style="color:#C678DD;">return</span> Ok(products); <span style="color:#5C6370;">// បញ្ចេញជា JSON</span>
         }
     }
 }</pre>
         </div>
-    </div>
-    <div class="global-footer">
-        <div class="footer-left"><span>សាស្ត្រាចារ្យ៖ សឿង លីម (Soeurng LIM)</span></div>
-        <div class="footer-right">ទំព័រ ១៩ / ២៤</div>
-    </div>
-</div>
 
-<!-- PAGE 20: SOLUTION - EXERCISES STEP 3 -->
-<div class="a4-page">
-    <div class="global-header">
-        <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
-        <div class="header-text"><h1>ឯកសារអាន (Handout) | ជំពូកទី ៧</h1><p>ASP.NET CORE & SQL SERVER</p></div>
-        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
-    </div>
-    <div class="page-content">
-        <div class="sub-heading" style="width: 100%; margin-top:0; color:var(--warning);"><i class="fa-solid fa-circle-check"></i> ដំណោះស្រាយ៖ ការរៀបចំ Frontend Web UI (View)</div>
-
-        <div class="text-block" style="font-size: 9.5pt;">
-            *មុននឹងចាប់ផ្តើមសរសេរកូដ HTML សូមចូលទៅកាន់ Browser (ឧ. <code>https://localhost:7123/swagger</code>) ដើម្បីធ្វើតេស្តលទ្ធផល API និងធានាថាវាចេញ JSON ជោគជ័យ។
-        </div>
-
-        <div style="font-size:9.5pt; font-weight:bold; color:var(--text-main); margin-bottom:4px; margin-top:5px;"><span style="color:var(--warning);">៣️⃣ ជំហានទី ៣៖ </span>កសាងឯកសារ HTML (View) ក្នុង Folder ដាច់ដោយឡែក</div>
-        <div class="code-window" style="margin:2px 0 10px 0; font-size:8pt;">
-            <div class="code-header" style="padding: 4px 10px;">
-                <div class="mac-dots"><div class="dot dot-r" style="width:8px; height:8px;"></div><div class="dot dot-y" style="width:8px; height:8px;"></div><div class="dot dot-g" style="width:8px; height:8px;"></div></div>
-                <div class="code-title" style="font-size: 7.5pt;">products.html</div>
+        <div style="font-size:9pt; font-weight:bold; color:var(--text-main); margin-bottom:2px;"><span style="color:var(--accent);">២. </span>Program.cs (CORS Configuration)</div>
+        <div class="code-window" style="margin:2px 0 10px 0; font-size:7.5pt;">
+            <div class="code-header" style="padding: 3px 8px;">
+                <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+                <div class="code-title">Program.cs</div>
             </div>
-<pre style="padding: 8px;"><span style="color:#C678DD;">&lt;!DOCTYPE html&gt;</span>
-<span style="color:#E06C75;">&lt;html <span style="color:#D19A66;">lang</span>=<span style="color:#98C379;">"en"</span>&gt;</span>
-<span style="color:#E06C75;">&lt;head&gt;</span>
-    <span style="color:#E06C75;">&lt;meta <span style="color:#D19A66;">charset</span>=<span style="color:#98C379;">"UTF-8"</span>&gt;</span>
-    <span style="color:#E06C75;">&lt;title&gt;</span>បញ្ជីទំនិញ<span style="color:#E06C75;">&lt;/title&gt;</span>
-    <span style="color:#5C6370;">&lt;!-- ប្រើ CSS តិចតួចដើម្បីឱ្យតារាងមានសោភ័ណភាព --&gt;</span>
-    <span style="color:#E06C75;">&lt;style&gt;</span>
-        <span style="color:#E5C07B;">body</span> { <span style="color:#D19A66;">font-family</span>: <span style="color:#D19A66;">Arial, sans-serif</span>; <span style="color:#D19A66;">padding</span>: <span style="color:#D19A66;">20px</span>; }
-        <span style="color:#E5C07B;">table</span> { <span style="color:#D19A66;">width</span>: <span style="color:#D19A66;">80%</span>; <span style="color:#D19A66;">border-collapse</span>: <span style="color:#D19A66;">collapse</span>; <span style="color:#D19A66;">margin-top</span>: <span style="color:#D19A66;">20px</span>; }
-        <span style="color:#E5C07B;">th</span>, <span style="color:#E5C07B;">td</span> { <span style="color:#D19A66;">border</span>: <span style="color:#D19A66;">1px solid #ddd</span>; <span style="color:#D19A66;">padding</span>: <span style="color:#D19A66;">12px</span>; <span style="color:#D19A66;">text-align</span>: <span style="color:#D19A66;">left</span>; }
-        <span style="color:#E5C07B;">th</span> { <span style="color:#D19A66;">background-color</span>: <span style="color:#D19A66;">#10B981</span>; <span style="color:#D19A66;">color</span>: <span style="color:#D19A66;">white</span>; }
-        <span style="color:#E5C07B;">button</span> { <span style="color:#D19A66;">padding</span>: <span style="color:#D19A66;">10px 20px</span>; <span style="color:#D19A66;">background</span>: <span style="color:#D19A66;">#0078D4</span>; <span style="color:#D19A66;">color</span>: <span style="color:#D19A66;">white</span>; <span style="color:#D19A66;">cursor</span>: <span style="color:#D19A66;">pointer</span>; }
-    <span style="color:#E06C75;">&lt;/style&gt;</span>
-<span style="color:#E06C75;">&lt;/head&gt;</span>
-<span style="color:#E06C75;">&lt;body&gt;</span>
+<pre style="padding: 6px;">builder.Services.AddCors(options =&gt; {
+    options.AddPolicy(<span style="color:#98C379;">"AllowAll"</span>, p =&gt; p.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+});
 
-    <span style="color:#E06C75;">&lt;h2&gt;</span>បញ្ជីរាយនាមទំនិញក្នុងស្តុក<span style="color:#E06C75;">&lt;/h2&gt;</span>
-    <span style="color:#E06C75;">&lt;button <span style="color:#D19A66;">id</span>=<span style="color:#98C379;">"btnFetchData"</span>&gt;</span>បង្ហាញទំនិញទាំងអស់<span style="color:#E06C75;">&lt;/button&gt;</span>
-
-    <span style="color:#E06C75;">&lt;table&gt;</span>
-        <span style="color:#E06C75;">&lt;thead&gt;</span>
-            <span style="color:#E06C75;">&lt;tr&gt;</span>
-                <span style="color:#E06C75;">&lt;th&gt;</span>ID<span style="color:#E06C75;">&lt;/th&gt;</span>
-                <span style="color:#E06C75;">&lt;th&gt;</span>ឈ្មោះទំនិញ (Product Name)<span style="color:#E06C75;">&lt;/th&gt;</span>
-                <span style="color:#E06C75;">&lt;th&gt;</span>តម្លៃ (Price)<span style="color:#E06C75;">&lt;/th&gt;</span>
-            <span style="color:#E06C75;">&lt;/tr&gt;</span>
-        <span style="color:#E06C75;">&lt;/thead&gt;</span>
-        <span style="color:#5C6370;">&lt;!-- ទីតាំងសំខាន់! ទុកឱ្យទទេរង់ចាំ JS ធ្វើការ --&gt;</span>
-        <span style="color:#E06C75;">&lt;tbody <span style="color:#D19A66;">id</span>=<span style="color:#98C379;">"productBox"</span>&gt;</span>
-        <span style="color:#E06C75;">&lt;/tbody&gt;</span>
-    <span style="color:#E06C75;">&lt;/table&gt;</span>
-
-    <span style="color:#5C6370;">&lt;!-- (កូដ JS នឹងនៅខាងក្រោមនេះ - សូមមើលទំព័របន្ទាប់) --&gt;</span>
-
-<span style="color:#E06C75;">&lt;/body&gt;</span>
-<span style="color:#E06C75;">&lt;/html&gt;</span></pre>
+<span style="color:#C678DD;">var</span> app = builder.Build();
+app.UseCors(<span style="color:#98C379;">"AllowAll"</span>); <span style="color:#5C6370;">// បើក CORS</span>
+app.UseAuthorization();
+app.MapControllers();</pre>
         </div>
-
     </div>
     <div class="global-footer">
         <div class="footer-left"><span>សាស្ត្រាចារ្យ៖ សឿង លីម (Soeurng LIM)</span></div>
@@ -1257,7 +1458,7 @@ app.UseCors(<span style="color:#98C379;">"AllowAll"</span>);</pre>
     </div>
 </div>
 
-<!-- PAGE 21: SOLUTION - EXERCISES STEP 4 (JS FETCH) -->
+<!-- PAGE 21: SOLUTION - TRACK B FRONTEND HTML/JS -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
@@ -1265,52 +1466,48 @@ app.UseCors(<span style="color:#98C379;">"AllowAll"</span>);</pre>
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
     <div class="page-content">
-        <div class="sub-heading" style="width: 100%; margin-top:0; color:var(--warning);"><i class="fa-solid fa-circle-check"></i> ដំណោះស្រាយ៖ ការប្រើប្រាស់ JavaScript Fetch</div>
-        
-        <div class="text-block" style="font-size: 9.5pt;">
-            បន្តពីឯកសារ HTML ខាងលើ សូមសរសេរកូដ <code>&lt;script&gt;</code> នេះមុនបិទ <code>&lt;/body&gt;</code>។ យើងនឹងប្រើប្រាស់ទម្រង់ <b><code>async / await</code></b> ដែលជាការអនុវត្តកូដបែបវិជ្ជាជីវៈទំនើប។
+        <div class="sub-heading" style="width: 100%; margin-top:0; color:var(--warning);">
+            <span><i class="fa-solid fa-circle-check"></i> ដំណោះស្រាយ Track B: Frontend UI (products.html)</span>
+            <span class="bloom-badge bloom-l3">Track B Frontend</span>
         </div>
 
-        <div style="font-size:9.5pt; font-weight:bold; color:var(--warning); margin-bottom:4px; margin-top:10px;"><span style="color:var(--warning);">៤️⃣ ជំហានទី ៤៖ </span>កសាង DOM Manipulation</div>
-        <div class="code-window" style="margin:2px 0 15px 0; font-size:8pt;">
-            <div class="code-header" style="padding: 4px 10px;">
-                <div class="mac-dots"><div class="dot dot-r" style="width:8px; height:8px;"></div><div class="dot dot-y" style="width:8px; height:8px;"></div><div class="dot dot-g" style="width:8px; height:8px;"></div></div>
-                <div class="code-title" style="font-size: 7.5pt;">products.html (script)</div>
+        <div class="code-window" style="margin:2px 0 10px 0; font-size:7.5pt;">
+            <div class="code-header" style="padding: 3px 8px;">
+                <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+                <div class="code-title">products.html</div>
             </div>
-<pre style="padding: 8px;"><span style="color:#E06C75;">&lt;script&gt;</span>
-    <span style="color:#C678DD;">const</span> btnFetchData = <span style="color:#E5C07B;">document</span>.<span style="color:#61AFEF;">getElementById</span>(<span style="color:#98C379;">'btnFetchData'</span>);
-    <span style="color:#C678DD;">const</span> productBox = <span style="color:#E5C07B;">document</span>.<span style="color:#61AFEF;">getElementById</span>(<span style="color:#98C379;">'productBox'</span>);
+<pre style="padding: 6px;"><span style="color:#C678DD;">&lt;!DOCTYPE html&gt;</span>
+<span style="color:#E06C75;">&lt;html&gt;</span>
+<span style="color:#E06C75;">&lt;head&gt;&lt;title&gt;</span>Product API Client<span style="color:#E06C75;">&lt;/title&gt;&lt;/head&gt;</span>
+<span style="color:#E06C75;">&lt;body&gt;</span>
+    <span style="color:#E06C75;">&lt;h2&gt;</span>បញ្ជីទំនិញ (Decoupled JS Fetch UI)<span style="color:#E06C75;">&lt;/h2&gt;</span>
+    <span style="color:#E06C75;">&lt;button <span style="color:#D19A66;">id</span>=<span style="color:#98C379;">"btnFetch"</span>&gt;</span>ទាញយកទិន្នន័យ API<span style="color:#E06C75;">&lt;/button&gt;</span>
 
-    <span style="color:#5C6370;">// ប្រើ async សម្រាប់អនុញ្ញាតការរង់ចាំដោយមិនគាំង Browser</span>
-    btnFetchData.<span style="color:#61AFEF;">addEventListener</span>(<span style="color:#98C379;">'click'</span>, <span style="color:#C678DD;">async function</span>() {
-        <span style="color:#C678DD;">try</span> {
-            <span style="color:#5C6370;">// ប្រើ await ដើម្បីហៅ និងរង់ចាំការឆ្លើយតបពី API </span>
-            <span style="color:#C678DD;">const</span> res = <span style="color:#C678DD;">await</span> <span style="color:#61AFEF;">fetch</span>(<span style="color:#98C379;">'https://localhost:7123/api/ProductApi'</span>);
-            
-            <span style="color:#5C6370;">// បំប្លែងទិន្នន័យទៅជា JSON (ត្រូវរង់ចាំដែរ)</span>
-            <span style="color:#C678DD;">const</span> data = <span style="color:#C678DD;">await</span> res.<span style="color:#61AFEF;">json</span>();
-                
-            <span style="color:#5C6370;">// ជម្រះទិន្នន័យចាស់ចេញ មុនបញ្ចាំងថ្មី</span>
-            productBox.<span style="color:#E06C75;">innerHTML</span> = <span style="color:#98C379;">''</span>;
+    <span style="color:#E06C75;">&lt;table <span style="color:#D19A66;">border</span>=<span style="color:#98C379;">"1"</span> <span style="color:#D19A66;">style</span>=<span style="color:#98C379;">"width:100%; margin-top:10px;"</span>&gt;</span>
+        <span style="color:#E06C75;">&lt;thead&gt;&lt;tr&gt;&lt;th&gt;</span>ID<span style="color:#E06C75;">&lt;/th&gt;&lt;th&gt;</span>ឈ្មោះទំនិញ<span style="color:#E06C75;">&lt;/th&gt;&lt;th&gt;</span>តម្លៃ<span style="color:#E06C75;">&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;</span>
+        <span style="color:#E06C75;">&lt;tbody <span style="color:#D19A66;">id</span>=<span style="color:#98C379;">"productGrid"</span>&gt;&lt;/tbody&gt;</span>
+    <span style="color:#E06C75;">&lt;/table&gt;</span>
 
-            <span style="color:#5C6370;">// បង្វិលជុំយកទិន្នន័យមកបង្កើតជា HTML &lt;tr&gt; (ចំណាំ៖ camelCase)</span>
-            data.<span style="color:#61AFEF;">forEach</span>(item =&gt; {
-                <span style="color:#C678DD;">let</span> row = <span style="color:#98C379;">`
-                    &lt;tr&gt;
-                        &lt;td&gt;</span><span style="color:#56B6C2;">${</span>item.id<span style="color:#56B6C2;">}</span><span style="color:#98C379;">&lt;/td&gt;
-                        &lt;td&gt;</span><span style="color:#56B6C2;">${</span>item.name<span style="color:#56B6C2;">}</span><span style="color:#98C379;">&lt;/td&gt;
-                        &lt;td style="color:red; font-weight:bold;"&gt;$ </span><span style="color:#56B6C2;">${</span>item.price<span style="color:#56B6C2;">}</span><span style="color:#98C379;">&lt;/td&gt;
-                    &lt;/tr&gt;
-                `</span>;
-                <span style="color:#5C6370;">// បញ្ចូលជួរឈរនេះទៅក្នុង tbody នៃតារាង</span>
-                productBox.<span style="color:#E06C75;">innerHTML</span> += row; 
-            });
+    <span style="color:#E06C75;">&lt;script&gt;</span>
+        <span style="color:#C678DD;">const</span> btn = document.getElementById(<span style="color:#98C379;">'btnFetch'</span>);
+        <span style="color:#C678DD;">const</span> grid = document.getElementById(<span style="color:#98C379;">'productGrid'</span>);
 
-        } <span style="color:#C678DD;">catch</span>(err) {
-            <span style="color:#E5C07B;">console</span>.<span style="color:#61AFEF;">error</span>(<span style="color:#98C379;">'មានបញ្ហាក្នុងការទាញទិន្នន័យ:'</span>, err);
-        }
-    });
-<span style="color:#E06C75;">&lt;/script&gt;</span></pre>
+        btn.addEventListener(<span style="color:#98C379;">'click'</span>, <span style="color:#C678DD;">async</span> () =&gt; {
+            grid.innerHTML = <span style="color:#98C379;">'&lt;tr&gt;&lt;td colspan="3"&gt;កំពុងដំណើរការ (Loading)...&lt;/td&gt;&lt;/tr&gt;'</span>;
+            <span style="color:#C678DD;">try</span> {
+                <span style="color:#C678DD;">const</span> res = <span style="color:#C678DD;">await</span> fetch(<span style="color:#98C379;">'https://localhost:7123/api/ProductApi'</span>);
+                <span style="color:#C678DD;">const</span> data = <span style="color:#C678DD;">await</span> res.json();
+                grid.innerHTML = <span style="color:#98C379;">''</span>;
+                data.forEach(p =&gt; {
+                    grid.innerHTML += <span style="color:#98C379;">`&lt;tr&gt;&lt;td&gt;${p.id}&lt;/td&gt;&lt;td&gt;${p.name}&lt;/td&gt;&lt;td&gt;$${p.price}&lt;/td&gt;&lt;/tr&gt;`</span>;
+                });
+            } <span style="color:#C678DD;">catch</span> (err) {
+                grid.innerHTML = <span style="color:#98C379;">'&lt;tr&gt;&lt;td colspan="3" style="color:red"&gt;CORS Error ឬ API មិនទាន់ Run!&lt;/td&gt;&lt;/tr&gt;'</span>;
+            }
+        });
+    <span style="color:#E06C75;">&lt;/script&gt;</span>
+<span style="color:#E06C75;">&lt;/body&gt;</span>
+<span style="color:#E06C75;">&lt;/html&gt;</span></pre>
         </div>
     </div>
     <div class="global-footer">
@@ -1319,7 +1516,7 @@ app.UseCors(<span style="color:#98C379;">"AllowAll"</span>);</pre>
     </div>
 </div>
 
-<!-- PAGE 22: (OPTIONAL EXCELLENCE) LOADING STATE -->
+<!-- PAGE 22: ENTERPRISE ADVANCED FETCH & ERROR HANDLING -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
@@ -1327,47 +1524,49 @@ app.UseCors(<span style="color:#98C379;">"AllowAll"</span>);</pre>
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
     <div class="page-content">
-        <div class="sub-heading" style="width: 100%; margin-top:0; color:var(--success);"><i class="fa-solid fa-star"></i> ចំណេះដឹងបន្ថែម (Bonus Workflow)៖ ការបង្ហាញ Loading... រង់ចាំ API</div>
+        <div class="sub-heading" style="width: 100%; margin-top:0; color:var(--purple);">
+            <span><i class="fa-solid fa-star"></i> Enterprise Level: ការបន្ថែម Error Status Handling</span>
+            <span class="bloom-badge bloom-l6">6. Create</span>
+        </div>
         
-        <div class="text-block" style="font-size: 9.5pt;">
-            ការហៅទិន្នន័យតាមរយៈអ៊ីនធឺណិតមិនលឿនដូចការអានពី Hard Disk កុំព្យូទ័រផ្ទាល់ទេ។ ជាញឹកញាប់ វាអាចចំណាយពេលពី ១ ទៅ ២ វិនាទី (Latency)។ ដើម្បីធ្វើឱ្យកម្មវិធីរបស់អ្នកកាន់តែមានលក្ខណៈអាជីព (Professional UX) យើងគួរតែបង្ហាញពាក្យថា <b>"កំពុងទាញយកទិន្នន័យ (Loading...)"</b> ពេលដែលកំពុង Fetch និងលុបវាចេញវិញពេលការងារត្រូវបានបញ្ចប់។
+        <div class="text-block">
+            ក្នុងការសរសេរកូដកម្រិតអាជីព យើងមិនត្រូវសន្មត់ថា <code>fetch()</code> នឹងជោគជ័យជានិច្ចនោះទេ។ យើងត្រូវពិនិត្យមើល <code>response.ok</code> និងដោះស្រាយតាម HTTP Status Codes (404, 500)៖
         </div>
 
-        <div style="font-size:9.5pt; font-weight:bold; color:var(--success); margin-bottom:4px; margin-top:10px;">ឧទាហរណ៍នៃការប្រើប្រាស់ block <code>try/catch/finally</code> នៅក្នុង JS៖</div>
-        <div class="code-window" style="margin:2px 0 15px 0; font-size:8pt;">
-            <div class="code-header" style="padding: 4px 10px;">
-                <div class="mac-dots"><div class="dot dot-r" style="width:8px; height:8px;"></div><div class="dot dot-y" style="width:8px; height:8px;"></div><div class="dot dot-g" style="width:8px; height:8px;"></div></div>
-                <div class="code-title" style="font-size: 7.5pt;">products.html (កែប្រែ JS បន្តិច)</div>
+        <div class="code-window" style="margin:2px 0 10px 0; font-size:7.5pt;">
+            <div class="code-header" style="padding: 3px 8px;">
+                <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+                <div class="code-title">Advanced Fetch Logic</div>
             </div>
-<pre style="padding: 8px;"><span style="color:#E06C75;">&lt;script&gt;</span>
-    btnFetchData.<span style="color:#61AFEF;">addEventListener</span>(<span style="color:#98C379;">'click'</span>, <span style="color:#C678DD;">async function</span>() {
-        
-        <span style="color:#5C6370;">// បង្ហាញ Loading មុនពេលចាប់ផ្តើមហៅ API</span>
-        productBox.<span style="color:#E06C75;">innerHTML</span> = <span style="color:#98C379;">'&lt;tr&gt;&lt;td colspan="3" style="text-align:center"&gt;កំពុងដំណើរការ (Loading)...&lt;/td&gt;&lt;/tr&gt;'</span>;
-        btnFetchData.<span style="color:#E06C75;">disabled</span> = <span style="color:#D19A66;">true</span>; <span style="color:#5C6370;">// បិទប៊ូតុងកុំឱ្យ User ចុចផ្ទួនៗ</span>
+<pre style="padding: 6px;"><span style="color:#C678DD;">async function</span> loadProductsAdvanced() {
+    <span style="color:#C678DD;">try</span> {
+        <span style="color:#C678DD;">const</span> res = <span style="color:#C678DD;">await</span> fetch(<span style="color:#98C379;">'https://localhost:7123/api/ProductApi'</span>);
 
-        <span style="color:#C678DD;">try</span> {
-            <span style="color:#C678DD;">const</span> res = <span style="color:#C678DD;">await</span> <span style="color:#61AFEF;">fetch</span>(<span style="color:#98C379;">'https://localhost:7123/api/ProductApi'</span>);
-            <span style="color:#C678DD;">const</span> data = <span style="color:#C678DD;">await</span> res.<span style="color:#61AFEF;">json</span>();
-                
-            productBox.<span style="color:#E06C75;">innerHTML</span> = <span style="color:#98C379;">''</span>; <span style="color:#5C6370;">// លុបអក្សរ Loading ចេញ ពេលទិន្នន័យមកដល់</span>
-
-            data.<span style="color:#61AFEF;">forEach</span>(item =&gt; {
-                productBox.<span style="color:#E06C75;">innerHTML</span> += <span style="color:#98C379;">`&lt;tr&gt;&lt;td&gt;</span><span style="color:#56B6C2;">${</span>item.id<span style="color:#56B6C2;">}</span><span style="color:#98C379;">&lt;/td&gt;&lt;td&gt;</span><span style="color:#56B6C2;">${</span>item.name<span style="color:#56B6C2;">}</span><span style="color:#98C379;">&lt;/td&gt;&lt;td&gt;</span><span style="color:#56B6C2;">${</span>item.price<span style="color:#56B6C2;">}</span><span style="color:#98C379;">&lt;/td&gt;&lt;/tr&gt;`</span>;
-            });
-
-        } <span style="color:#C678DD;">catch</span> (err) {
-            <span style="color:#5C6370;">// បើមានបញ្ហា(Error) បង្ហាញពាក្យនេះជំនួសវិញ</span>
-            productBox.<span style="color:#E06C75;">innerHTML</span> = <span style="color:#98C379;">'&lt;tr&gt;&lt;td colspan="3" style="color:red; text-align:center"&gt;បរាជ័យក្នុងការតភ្ជាប់ API ផ្ទៀងផ្ទាត់ CORS ឬ Server!&lt;/td&gt;&lt;/tr&gt;'</span>;
-            <span style="color:#E5C07B;">console</span>.<span style="color:#61AFEF;">error</span>(err);
-        } <span style="color:#C678DD;">finally</span> {
-            <span style="color:#5C6370;">// Block នេះនឹងរត់ជានិច្ច មិនថាជោគជ័យឬបរាជ័យ</span>
-            btnFetchData.<span style="color:#E06C75;">disabled</span> = <span style="color:#D19A66;">false</span>; <span style="color:#5C6370;">// បើកប៊ូតុងឱ្យប្រើវិញ</span>
+        <span style="color:#5C6370;">// ឆែកមើល Status Code ប្រសិនបើមិនមែន 200-299</span>
+        <span style="color:#C678DD;">if</span> (!res.ok) {
+            <span style="color:#C678DD;">if</span> (res.status === <span style="color:#D19A66;">404</span>) <span style="color:#C678DD;">throw new</span> Error(<span style="color:#98C379;">"រកមិនឃើញ Endpoint ឬទិន្នន័យឡើយ (404)"</span>);
+            <span style="color:#C678DD;">if</span> (res.status === <span style="color:#D19A66;">500</span>) <span style="color:#C678DD;">throw new</span> Error(<span style="color:#98C379;">"កំហុសបច្ចេកទេសលើ Server (500)"</span>);
+            <span style="color:#C678DD;">throw new</span> Error(<span style="color:#98C379;">`HTTP Error: ${res.status}`</span>);
         }
-    });
-<span style="color:#E06C75;">&lt;/script&gt;</span></pre>
+
+        <span style="color:#C678DD;">const</span> data = <span style="color:#C678DD;">await</span> res.json();
+        console.log(<span style="color:#98C379;">"ទិន្នន័យទទួលបានជោគជ័យ:"</span>, data);
+
+    } <span style="color:#C678DD;">catch</span> (err) {
+        alert(err.message);
+    }
+}</pre>
         </div>
-        
+
+        <div class="eval-box">
+            <h4>
+                <span><i class="fa-solid fa-shield"></i> ហេតុអ្វីបានជាត្រូវប្រើ res.ok?</span>
+                <span class="bloom-badge bloom-l5">5. Evaluate</span>
+            </h4>
+            <p>
+                អនុគមន៍ <code>fetch()</code> របស់ JavaScript នឹងមិនលោតចូលប្លុក <code>catch</code> ឡើយ ទោះបីជា Server ត្រឡប់ Status Code **404 Not Found** ឬ **500 Internal Error** ក៏ដោយ! ហេតុនេះការប្រើ <code>if (!res.ok)</code> គឺជាកាតព្វកិច្ចដើម្បីចាប់កំហុស HTTP Status ឱ្យបានត្រឹមត្រូវ។
+            </p>
+        </div>
     </div>
     <div class="global-footer">
         <div class="footer-left"><span>សាស្ត្រាចារ្យ៖ សឿង លីម (Soeurng LIM)</span></div>
@@ -1375,7 +1574,7 @@ app.UseCors(<span style="color:#98C379;">"AllowAll"</span>);</pre>
     </div>
 </div>
 
-<!-- PAGE 23: VERIFICATION AND LIVE SERVER -->
+<!-- PAGE 23: VERIFICATION AND TESTING STRATEGY -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
@@ -1383,31 +1582,55 @@ app.UseCors(<span style="color:#98C379;">"AllowAll"</span>);</pre>
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
     <div class="page-content">
-        
-        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-desktop"></i> ការផ្ទៀងផ្ទាត់លទ្ធផល (Verification via Live Server)</div>
+        <div class="section-title" style="margin-top:0;">
+            <div class="section-title-left"><i class="fa-solid fa-vial"></i> ការផ្ទៀងផ្ទាត់ និងធ្វើតេស្តប្រព័ន្ធ (Execution Checklist)</div>
+            <span class="bloom-badge bloom-l4">4. Analyze</span>
+        </div>
         
         <div class="text-block">
-            ដើម្បីធានាថាកូដ Frontend របស់អ្នកដំណើរការបានល្អ អ្នកត្រូវដំណើរការ HTML តាមរយៈ Web Server (មិនមែនត្រាន់តែ Double Click បើកឯកសារធម្មតាទេ)។ 
+            មុននឹងប្រគល់គម្រោងទៅកាន់អ្នកប្រើប្រាស់ សូមអនុវត្តតាម Checklist ខាងក្រោមដើម្បីផ្ទៀងផ្ទាត់ស្ថាបត្យកម្មទាំងពីរ៖
         </div>
 
-        <div class="lab-box" style="margin-top: 15px; border-color: var(--border-dark); background: white; border-left: 5px solid var(--success);">
-            <h4 style="color: var(--success);"><i class="fa-solid fa-satellite-dish"></i> របៀបប្រើប្រាស់ Live Server ក្នុង VS Code៖</h4>
-            <ol style="margin-top: 10px; padding-left: 20px; font-size: 10.5pt; line-height: 1.8;">
-                <li>សូមប្រាកដថាអ្នកបានដំឡើង <b>Extension</b> ដែលមានឈ្មោះថា <b>Live Server</b> (បង្កើតដោយ Ritwick Dey) នៅក្នុងកម្មវិធី Visual Studio Code។</li>
-                <li>បើកឯកសារ <code>products.html</code> របស់អ្នក។</li>
-                <li>ចុច Mouse ស្តាំ នៅលើផ្ទៃកូដ HTML រួចជ្រើសរើសពាក្យ <b>"Open with Live Server"</b> ឬចុចប៊ូតុង <b>Go Live</b> នៅជ្រុងខាងស្តាំផ្នែកខាងក្រោមនៃ VS Code។</li>
-                <li>Browser នឹងបើកទំព័រ <code>http://127.0.0.1:5500/products.html</code> ដោយស្វ័យប្រវត្ត។</li>
-                <li>សូមចុចប៊ូតុង <b>"បង្ហាញទំនិញទាំងអស់"</b>។ ប្រសិនបើកូដត្រឹមត្រូវទាំង C# និង JS អ្នកនឹងឃើញទិន្នន័យទំនិញលោតចេញមកក្នុងតារាងយ៉ាងស្រស់ស្អាត!</li>
-            </ol>
-        </div>
+        <table class="standard-table">
+            <thead>
+                <tr>
+                    <th style="width:10%;">ល.រ</th>
+                    <th>ជំហានផ្ទៀងផ្ទាត់ (Verification Steps)</th>
+                    <th style="width:25%;">លទ្ធផលរំពឹងទុក</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="text-align:center;">១</td>
+                    <td>Run ASP.NET Project និងចូលទៅ <code>/Product/Index</code></td>
+                    <td>បង្ហាញតារាងទំនិញ (Razor View SSR)</td>
+                </tr>
+                <tr>
+                    <td style="text-align:center;">២</td>
+                    <td>ចូលទៅ <code>/swagger</code> រួចតេស្ត <code>/api/ProductApi</code></td>
+                    <td>បង្ហាញ Status 200 + JSON Array</td>
+                </tr>
+                <tr>
+                    <td style="text-align:center;">៣</td>
+                    <td>បើក <code>products.html</code> តាម Live Server រួចចុច Fetch</td>
+                    <td>ទិន្នន័យលោតចូលតារាងដោយគ្មាន Refresh</td>
+                </tr>
+                <tr>
+                    <td style="text-align:center;">៤</td>
+                    <td>បិទ Web API Server រួចចុច Fetch លើ <code>products.html</code></td>
+                    <td>បង្ហាញសារ Error ពណ៌ក្រហមច្បាស់លាស់</td>
+                </tr>
+            </tbody>
+        </table>
 
-        <div style="background: #FFFBEB; border: 1px solid var(--warning); padding: 15px; border-radius: 8px; margin-top: 20px; text-align: center;">
-            <i class="fa-solid fa-triangle-exclamation" style="color: var(--warning); font-size: 24px; margin-bottom: 10px;"></i>
-            <p style="font-size: 10pt; color: var(--text-main); margin: 0; font-weight: bold; line-height: 1.6;">
-                ចំណាំ៖ សូមប្រាកដថាគម្រោង Backend (ASP.NET API) កំពុងតែដំណើរការ (Run) ក្នុង Terminal ស្របពេលដែលអ្នកកំពុងចុចប៊ូតុងនៅលើ Frontend។ បើ Server API បិទ នោះ Frontend នឹងមិនអាចទាញទិន្នន័យបានឡើយ។
+        <div class="lab-box" style="margin-top:15px; border-left:5px solid var(--success);">
+            <h4>
+                <span style="color:var(--success);"><i class="fa-solid fa-circle-check"></i> សេចក្តីសន្និដ្ឋាននៃ Dual Architecture</span>
+            </h4>
+            <p>
+                ការចេះជំនាញទាំង **Traditional MVC (SSR)** និង **Decoupled Web API (CSR)** ធ្វើឱ្យអ្នកក្លាយជា **Full-Stack ASP.NET Core Developer** ដ៏មានសមត្ថភាពខ្ពស់ ដែលអាចបង្កើតបានទាំង Web Admin ធម្មតា និង Web App ទំនើបកម្រិត Enterprise!
             </p>
         </div>
-
     </div>
     <div class="global-footer">
         <div class="footer-left"><span>សាស្ត្រាចារ្យ៖ សឿង លីម (Soeurng LIM)</span></div>
@@ -1425,24 +1648,24 @@ app.UseCors(<span style="color:#98C379;">"AllowAll"</span>);</pre>
     <div class="page-content" style="justify-content: center; align-items: center;">
         
         <div style="text-align: center; max-width: 80%;">
-            <i class="fa-solid fa-code-pull-request" style="font-size: 60px; color: var(--accent); margin-bottom: 20px;"></i>
+            <i class="fa-solid fa-award" style="font-size: 60px; color: var(--accent); margin-bottom: 20px;"></i>
             <h2 style="font-family: 'Suwannaphum'; font-size: 22pt; color: var(--text-heading); margin-bottom: 15px; font-weight: 900;">អបអរសាទរ! លោកអ្នកបានបញ្ចប់ជំពូកទី ៧។</h2>
             
-            <p style="font-size: 11pt; color: var(--text-main); line-height: 1.8; margin-bottom: 25px;">
-                ពេលនេះអ្នកបានឃើញផ្ទាល់ភ្នែកហើយ នូវការភ្ជាប់ទំនាក់ទំនងរវាង <b>Database Backend</b> និង <b>Frontend UI</b>! ការយល់ដឹងពី <b>Decoupled Architecture</b> រួមជាមួយនឹងការប្រើប្រាស់កូដអសមកាល <b>(Async/Await)</b> និង <b>JavaScript Fetch API</b> គឺជាមូលដ្ឋានគ្រឹះដ៏សំខាន់បំផុត ក្នុងការអភិវឌ្ឍន៍ប្រព័ន្ធ Single Page Application (SPA) នាសម័យទំនើបនេះ។
+            <p style="font-size: 10.5pt; color: var(--text-main); line-height: 1.8; margin-bottom: 25px;">
+                ពេលនេះអ្នកបានស្ទាត់ជំនាញលើការកសាងប្រព័ន្ធតាមបែប <b>Traditional MVC (Razor Views)</b> និង <b>Decoupled Web API (JS Fetch)</b> រួចរាល់ហើយ! ការយល់ដឹងពីស្ថាបត្យកម្មទាំងពីរ គឺជាគ្រឹះដ៏រឹងមាំបំផុតសម្រាប់ការឈានទៅកាន់ការបង្កើតប្រព័ន្ធស្មុគស្មាញនៅជំពូកបន្ទាប់។
             </p>
             
             <div style="background: #F8FAFC; border: 1px solid var(--border-dark); padding: 20px; border-radius: 8px; text-align: left;">
                 <h4 style="font-family: 'Suwannaphum'; font-size: 12pt; color: var(--success); margin-bottom: 10px;"><i class="fa-solid fa-forward-step"></i> តើយើងនឹងរៀនអ្វីបន្តនៅជំពូកទី ៨ និង ៩?</h4>
-                <ul style="font-size: 10pt; line-height: 1.6; padding-left: 20px; color: var(--text-muted);">
-                    <li>មកទល់ពេលនេះ យើងគ្រាន់តែអាច "អាន" (Read) ទិន្នន័យបានប៉ុណ្ណោះ។</li>
-                    <li>នៅក្នុងជំពូកបន្ទាប់ យើងនឹងសិក្សាពី <b>POST API (Create)</b> ដើម្បីបញ្ជូនទិន្នន័យពីទម្រង់ HTML Form ចូលទៅរក្សាទុកក្នុង SQL Database វិញម្តង។</li>
-                    <li>ព្រមទាំងការធ្វើ <b>PUT API (Update)</b> និង <b>DELETE API (លុប)</b> ដើម្បីបញ្ចប់ប្រតិបត្តិការ CRUD ពេញលេញ។</li>
+                <ul style="font-size: 9.5pt; line-height: 1.6; padding-left: 20px; color: var(--text-muted);">
+                    <li>យើងបានរៀនអំពីប្រតិបត្តិការ **Read (GET)** រួចរាល់ហើយ។</li>
+                    <li>នៅក្នុងជំពូកទី ៨ យើងនឹងសិក្សាពី **Create (POST API & Form Submission)** ដើម្បីបញ្ជូនទិន្នន័យពី HTML Form ចូលទៅ SQL Server។</li>
+                    <li>និងជំពូកទី ៩ សិក្សាពី **Update (PUT)** និង **Delete (DELETE)** ដើម្បីបញ្ចប់វដ្ត CRUD ពេញលេញ!</li>
                 </ul>
             </div>
             
             <div style="margin-top: 40px; color: var(--text-muted); font-size: 10pt; font-family: var(--font-en-main); font-weight: 600;">
-                *** END OF CHAPTER 7 ***
+                *** END OF CHAPTER 7 (DUAL-TRACK EDITION) ***
             </div>
         </div>
         
