@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="km">
 <head>
@@ -32,6 +33,12 @@
             
             --border-light: #E2E8F0;
             --border-dark: #CBD5E1;
+            
+            /* VS Code Classic Palette */
+            --vscode-bg: #1E1E1E;
+            --vscode-header: #252526;
+            --vscode-border: #333333;
+            --vscode-text: #D4D4D4;
             
             /* Fonts */
             --font-kh-heading: 'Suwannaphum', serif;
@@ -164,16 +171,39 @@
         .graphic-box { background: var(--bg-light); border: 1px solid var(--border-light); border-radius: 8px; padding: 10px; margin: 8px 0; width: 100%; }
         .two-column { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 8px 0; align-items: start;}
 
-        /* Code & Boxes */
-        .code-window { background: var(--primary); border-radius: 8px; overflow: hidden; margin: 8px 0; border: 1px solid #334155; box-shadow: 0 4px 6px rgba(0,0,0,0.1);}
-        .code-header { background: #1E293B; padding: 6px 12px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #0F172A;}
+        /* VS CODE CLASSIC STYLE STYLING */
+        .code-window { 
+            background: var(--vscode-bg); 
+            border-radius: 8px; 
+            overflow: hidden; 
+            margin: 8px 0; 
+            border: 1px solid var(--vscode-border); 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .code-header { 
+            background: var(--vscode-header); 
+            padding: 6px 12px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            border-bottom: 1px solid var(--vscode-border);
+        }
         .mac-dots { display: flex; gap: 6px; }
         .dot { width: 9px; height: 9px; border-radius: 50%; }
         .dot-r { background: var(--danger); }
         .dot-y { background: var(--warning); }
         .dot-g { background: var(--success); }
-        .code-title { color: #94A3B8; font-family: var(--font-code); font-size: 8pt; font-weight: 500;}
-        pre { padding: 10px; color: #E2E8F0; font-family: var(--font-code); font-size: 8pt; line-height: 1.4; overflow-x: auto; margin: 0; tab-size: 4;}
+        .code-title { color: #CCCCCC; font-family: var(--font-code); font-size: 8pt; font-weight: 500;}
+        pre { 
+            padding: 10px; 
+            color: var(--vscode-text); 
+            font-family: var(--font-code); 
+            font-size: 8pt; 
+            line-height: 1.45; 
+            overflow-x: auto; 
+            margin: 0; 
+            tab-size: 4;
+        }
         code.inline-code { font-family: var(--font-code); background: #F1F5F9; color: var(--danger); padding: 2px 5px; border-radius: 4px; font-size: 8.5pt; font-weight: bold; border: 1px solid var(--border-light); }
         
         .lab-box { background: #FEFCE8; border-left: 5px solid #EAB308; padding: 10px; margin: 8px 0; border-radius: 4px; border: 1px solid #FEF08A; }
@@ -398,17 +428,17 @@
                 <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
                 <div class="code-title">Terminal / Command Prompt</div>
             </div>
-<pre><span style="color:#5C6370;"># ១. បណ្ណាល័យស្នូលរបស់ Entity Framework Core</span>
-<span style="color:#61AFEF;">dotnet add package</span> Microsoft.EntityFrameworkCore
+<pre><span style="color:#6A9955;"># ១. បណ្ណាល័យស្នូលរបស់ Entity Framework Core</span>
+<span style="color:#DCDCAA;">dotnet add package</span> Microsoft.EntityFrameworkCore
 
-<span style="color:#5C6370;"># ២. បណ្ណាល័យសម្រាប់អនុញ្ញាតឱ្យ EF Core ស្គាល់ Database SQL Server</span>
-<span style="color:#61AFEF;">dotnet add package</span> Microsoft.EntityFrameworkCore.SqlServer
+<span style="color:#6A9955;"># ២. បណ្ណាល័យសម្រាប់អនុញ្ញាតឱ្យ EF Core ស្គាល់ Database SQL Server</span>
+<span style="color:#DCDCAA;">dotnet add package</span> Microsoft.EntityFrameworkCore.SqlServer
 
-<span style="color:#5C6370;"># ៣. បណ្ណាល័យសម្រាប់ប្រើប្រាស់មុខងារ Migrations ពេល Design កូដ</span>
-<span style="color:#61AFEF;">dotnet add package</span> Microsoft.EntityFrameworkCore.Design
+<span style="color:#6A9955;"># ៣. បណ្ណាល័យសម្រាប់ប្រើប្រាស់មុខងារ Migrations ពេល Design កូដ</span>
+<span style="color:#DCDCAA;">dotnet add package</span> Microsoft.EntityFrameworkCore.Design
 
-<span style="color:#5C6370;"># ៤. បណ្ណាល័យឧបករណ៍ជំនួយក្នុងការបញ្ជា Database Command</span>
-<span style="color:#61AFEF;">dotnet add package</span> Microsoft.EntityFrameworkCore.Tools</pre>
+<span style="color:#6A9955;"># ៤. បណ្ណាល័យឧបករណ៍ជំនួយក្នុងការបញ្ជា Database Command</span>
+<span style="color:#DCDCAA;">dotnet add package</span> Microsoft.EntityFrameworkCore.Tools</pre>
         </div>
 
         <div class="sub-heading">
@@ -422,16 +452,16 @@
                 <div class="code-title">appsettings.json</div>
             </div>
 <pre>{
-  <span style="color:#E06C75;">"ConnectionStrings"</span>: {
-    <span style="color:#E06C75;">"DefaultConnection"</span>: <span style="color:#98C379;">"Server=.\\SQLEXPRESS;Database=SchoolDb;Trusted_Connection=True;TrustServerCertificate=True;"</span>
+  <span style="color:#9CDCFE;">"ConnectionStrings"</span>: {
+    <span style="color:#9CDCFE;">"DefaultConnection"</span>: <span style="color:#CE9178;">"Server=.\\SQLEXPRESS;Database=SchoolDb;Trusted_Connection=True;TrustServerCertificate=True;"</span>
   },
-  <span style="color:#E06C75;">"Logging"</span>: {
-    <span style="color:#E06C75;">"LogLevel"</span>: {
-      <span style="color:#E06C75;">"Default"</span>: <span style="color:#98C379;">"Information"</span>,
-      <span style="color:#E06C75;">"Microsoft.AspNetCore"</span>: <span style="color:#98C379;">"Warning"</span>
+  <span style="color:#9CDCFE;">"Logging"</span>: {
+    <span style="color:#9CDCFE;">"LogLevel"</span>: {
+      <span style="color:#9CDCFE;">"Default"</span>: <span style="color:#CE9178;">"Information"</span>,
+      <span style="color:#9CDCFE;">"Microsoft.AspNetCore"</span>: <span style="color:#CE9178;">"Warning"</span>
     }
   },
-  <span style="color:#E06C75;">"AllowedHosts"</span>: <span style="color:#98C379;">"*"</span>
+  <span style="color:#9CDCFE;">"AllowedHosts"</span>: <span style="color:#CE9178;">"*"</span>
 }</pre>
         </div>
 
@@ -445,18 +475,21 @@
                 <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
                 <div class="code-title">Data/SchoolDbContext.cs</div>
             </div>
-<pre><span style="color:#C678DD;">namespace</span> SchoolApp.Models {
-    <span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">Student</span> {
-        <span style="color:#C678DD;">public int</span> Id { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; }
-        <span style="color:#C678DD;">public string</span> FullName { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; } = <span style="color:#98C379;">""</span>;
-        <span style="color:#C678DD;">public string</span> Gender { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; } = <span style="color:#98C379;">""</span>;
-        <span style="color:#C678DD;">public double</span> GPA { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; }
+<pre><span style="color:#569CD6;">using</span> Microsoft.EntityFrameworkCore;
+
+<span style="color:#569CD6;">namespace</span> <span style="color:#4EC9B0;">SchoolApp.Models</span> {
+    <span style="color:#569CD6;">public class</span> <span style="color:#4EC9B0;">Student</span> {
+        <span style="color:#569CD6;">public int</span> <span style="color:#9CDCFE;">Id</span> { <span style="color:#569CD6;">get</span>; <span style="color:#569CD6;">set</span>; }
+        <span style="color:#569CD6;">public string</span> <span style="color:#9CDCFE;">FullName</span> { <span style="color:#569CD6;">get</span>; <span style="color:#569CD6;">set</span>; } = <span style="color:#CE9178;">""</span>;
+        <span style="color:#569CD6;">public string</span> <span style="color:#9CDCFE;">Gender</span> { <span style="color:#569CD6;">get</span>; <span style="color:#569CD6;">set</span>; } = <span style="color:#CE9178;">""</span>;
+        <span style="color:#569CD6;">public double</span> <span style="color:#9CDCFE;">GPA</span> { <span style="color:#569CD6;">get</span>; <span style="color:#569CD6;">set</span>; }
     }
 }
-<span style="color:#C678DD;">namespace</span> SchoolApp.Data {
-    <span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">SchoolDbContext</span> : DbContext {
-        <span style="color:#C678DD;">public</span> <span style="color:#61AFEF;">SchoolDbContext</span>(DbContextOptions&lt;SchoolDbContext&gt; options) : <span style="color:#C678DD;">base</span>(options) { }
-        <span style="color:#C678DD;">public</span> DbSet&lt;Student&gt; Students =&gt; Set&lt;Student&gt;();
+
+<span style="color:#569CD6;">namespace</span> <span style="color:#4EC9B0;">SchoolApp.Data</span> {
+    <span style="color:#569CD6;">public class</span> <span style="color:#4EC9B0;">SchoolDbContext</span> : <span style="color:#4EC9B0;">DbContext</span> {
+        <span style="color:#569CD6;">public</span> <span style="color:#DCDCAA;">SchoolDbContext</span>(<span style="color:#4EC9B0;">DbContextOptions</span>&lt;<span style="color:#4EC9B0;">SchoolDbContext</span>&gt; options) : <span style="color:#569CD6;">base</span>(options) { }
+        <span style="color:#569CD6;">public</span> <span style="color:#4EC9B0;">DbSet</span>&lt;<span style="color:#4EC9B0;">SchoolApp.Models.Student</span>&gt; <span style="color:#9CDCFE;">Students</span> =&gt; Set&lt;<span style="color:#4EC9B0;">SchoolApp.Models.Student</span>&gt;();
     }
 }</pre>
         </div>
@@ -489,35 +522,35 @@
                 <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
                 <div class="code-title">Program.cs (Complete Dual Configuration)</div>
             </div>
-<pre><span style="color:#C678DD;">using</span> Microsoft.EntityFrameworkCore;
-<span style="color:#C678DD;">using</span> SchoolApp.Data;
+<pre><span style="color:#569CD6;">using</span> Microsoft.EntityFrameworkCore;
+<span style="color:#569CD6;">using</span> SchoolApp.Data;
 
-<span style="color:#C678DD;">var</span> builder = WebApplication.CreateBuilder(args);
+<span style="color:#569CD6;">var</span> builder = WebApplication.CreateBuilder(args);
 
-<span style="color:#5C6370;">// ១. ចុះឈ្មោះ DbContext ជាមួយ SQL Server</span>
-builder.Services.AddDbContext&lt;SchoolDbContext&gt;(options =&gt;
-    options.UseSqlServer(builder.Configuration.GetConnectionString(<span style="color:#98C379;">"DefaultConnection"</span>)));
+<span style="color:#6A9955;">// ១. ចុះឈ្មោះ DbContext ជាមួយ SQL Server</span>
+builder.Services.AddDbContext&lt;<span style="color:#4EC9B0;">SchoolDbContext</span>&gt;(options =&gt;
+    options.UseSqlServer(builder.Configuration.GetConnectionString(<span style="color:#CE9178;">"DefaultConnection"</span>)));
 
-<span style="color:#5C6370;">// ២. ចុះឈ្មោះ MVC Services (សម្រាប់ Track A Traditional Razor Views)</span>
+<span style="color:#6A9955;">// ២. ចុះឈ្មោះ MVC Services (សម្រាប់ Track A Traditional Razor Views)</span>
 builder.Services.AddControllersWithViews();
 
-<span style="color:#5C6370;">// ៣. ចុះឈ្មោះ CORS Policy (សម្រាប់ Track B Decoupled Web API)</span>
+<span style="color:#6A9955;">// ៣. ចុះឈ្មោះ CORS Policy (សម្រាប់ Track B Decoupled Web API)</span>
 builder.Services.AddCors(options =&gt;
 {
-    options.AddPolicy(<span style="color:#98C379;">"AllowAll"</span>, policy =&gt;
+    options.AddPolicy(<span style="color:#CE9178;">"AllowAll"</span>, policy =&gt;
     {
         policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
     });
 });
 
-<span style="color:#5C6370;">// ៤. ចុះឈ្មោះ Swagger UI សម្រាប់ធ្វើតេស្ត Web API</span>
+<span style="color:#6A9955;">// ៤. ចុះឈ្មោះ Swagger UI សម្រាប់ធ្វើតេស្ត Web API</span>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-<span style="color:#C678DD;">var</span> app = builder.Build();
+<span style="color:#569CD6;">var</span> app = builder.Build();
 
-<span style="color:#5C6370;">// កំណត់ Middleware Pipeline</span>
-<span style="color:#C678DD;">if</span> (app.Environment.IsDevelopment())
+<span style="color:#6A9955;">// កំណត់ Middleware Pipeline</span>
+<span style="color:#C586C0;">if</span> (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
@@ -526,17 +559,17 @@ builder.Services.AddSwaggerGen();
 app.UseStaticFiles();
 app.UseRouting();
 
-<span style="color:#5C6370;">// បើកដំណើរការ CORS (ត្រូវតែដាក់បន្ទាប់ពី UseRouting)</span>
-app.UseCors(<span style="color:#98C379;">"AllowAll"</span>);
+<span style="color:#6A9955;">// បើកដំណើរការ CORS (ត្រូវតែដាក់បន្ទាប់ពី UseRouting)</span>
+app.UseCors(<span style="color:#CE9178;">"AllowAll"</span>);
 
 app.UseAuthorization();
 
-<span style="color:#5C6370;">// Route សម្រាប់ Traditional MVC Controller</span>
+<span style="color:#6A9955;">// Route សម្រាប់ Traditional MVC Controller</span>
 app.MapControllerRoute(
-    name: <span style="color:#98C379;">"default"</span>,
-    pattern: <span style="color:#98C379;">"{controller=Student}/{action=Index}/{id?}"</span>);
+    name: <span style="color:#CE9178;">"default"</span>,
+    pattern: <span style="color:#CE9178;">"{controller=Student}/{action=Index}/{id?}"</span>);
 
-<span style="color:#5C6370;">// Route សម្រាប់ API Controller [ApiController]</span>
+<span style="color:#6A9955;">// Route សម្រាប់ API Controller [ApiController]</span>
 app.MapControllers();
 
 app.Run();</pre>
@@ -581,54 +614,54 @@ app.Run();</pre>
                 <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
                 <div class="code-title">Views/Student/Index.cshtml</div>
             </div>
-<pre><span style="color:#C678DD;">@model</span> IEnumerable&lt;SchoolApp.Models.Student&gt;
-<span style="color:#C678DD;">@{</span> ViewData[<span style="color:#98C379;">"Title"</span>] = <span style="color:#98C379;">"បញ្ជីរាយនាមនិស្សិត"</span>; <span style="color:#C678DD;">}</span>
+<pre><span style="color:#569CD6;">@model</span> IEnumerable&lt;SchoolApp.Models.Student&gt;
+<span style="color:#569CD6;">@{</span> ViewData[<span style="color:#CE9178;">"Title"</span>] = <span style="color:#CE9178;">"បញ្ជីរាយនាមនិស្សិត"</span>; <span style="color:#569CD6;">}</span>
 
-<span style="color:#E06C75;">&lt;div <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"container mt-3"</span>&gt;</span>
-    <span style="color:#E06C75;">&lt;div <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"d-flex justify-content-between align-items-center mb-3"</span>&gt;</span>
-        <span style="color:#E06C75;">&lt;h3 <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"text-primary font-khmer fw-bold"</span>&gt;</span>
-            <span style="color:#E06C75;">&lt;i <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"fa-solid fa-graduation-cap me-2"</span>&gt;&lt;/i&gt;</span>បញ្ជីរាយនាមនិស្សិត (Traditional Razor View)
-        <span style="color:#E06C75;">&lt;/h3&gt;</span>
-        <span style="color:#E06C75;">&lt;span <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"badge bg-primary fs-6"</span>&gt;</span>សរុប: <span style="color:#56B6C2;">@Model.Count()</span> នាក់<span style="color:#E06C75;">&lt;/span&gt;</span>
-    <span style="color:#E06C75;">&lt;/div&gt;</span>
+<span style="color:#569CD6;">&lt;div</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"container mt-3"</span><span style="color:#569CD6;">&gt;</span>
+    <span style="color:#569CD6;">&lt;div</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"d-flex justify-content-between align-items-center mb-3"</span><span style="color:#569CD6;">&gt;</span>
+        <span style="color:#569CD6;">&lt;h3</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"text-primary font-khmer fw-bold"</span><span style="color:#569CD6;">&gt;</span>
+            <span style="color:#569CD6;">&lt;i</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"fa-solid fa-graduation-cap me-2"</span><span style="color:#569CD6;">&gt;&lt;/i&gt;</span>បញ្ជីរាយនាមនិស្សិត (Traditional Razor View)
+        <span style="color:#569CD6;">&lt;/h3&gt;</span>
+        <span style="color:#569CD6;">&lt;span</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"badge bg-primary fs-6"</span><span style="color:#569CD6;">&gt;</span>សរុប: <span style="color:#9CDCFE;">@Model.Count()</span> នាក់<span style="color:#569CD6;">&lt;/span&gt;</span>
+    <span style="color:#569CD6;">&lt;/div&gt;</span>
 
-    <span style="color:#E06C75;">&lt;div <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"card shadow-sm border-0 rounded-3 overflow-hidden"</span>&gt;</span>
-        <span style="color:#E06C75;">&lt;div <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"card-body p-0"</span>&gt;</span>
-            <span style="color:#E06C75;">&lt;table <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"table table-hover table-striped align-middle mb-0"</span>&gt;</span>
-                <span style="color:#E06C75;">&lt;thead <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"table-dark"</span>&gt;</span>
-                    <span style="color:#E06C75;">&lt;tr&gt;</span>
-                        <span style="color:#E06C75;">&lt;th <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"text-center"</span>&gt;</span>អត្តលេខ<span style="color:#E06C75;">&lt;/th&gt;</span>
-                        <span style="color:#E06C75;">&lt;th&gt;</span>ឈ្មោះពេញ (Full Name)<span style="color:#E06C75;">&lt;/th&gt;</span>
-                        <span style="color:#E06C75;">&lt;th&gt;</span>ភេទ<span style="color:#E06C75;">&lt;/th&gt;</span>
-                        <span style="color:#E06C75;">&lt;th <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"text-center"</span>&gt;</span>GPA<span style="color:#E06C75;">&lt;/th&gt;</span>
-                        <span style="color:#E06C75;">&lt;th <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"text-center"</span>&gt;</span>ស្ថានភាព<span style="color:#E06C75;">&lt;/th&gt;</span>
-                    <span style="color:#E06C75;">&lt;/tr&gt;</span>
-                <span style="color:#E06C75;">&lt;/thead&gt;</span>
-                <span style="color:#E06C75;">&lt;tbody&gt;</span>
-                    <span style="color:#C678DD;">@foreach</span> (var item in Model) {
-                        <span style="color:#E06C75;">&lt;tr&gt;</span>
-                            <span style="color:#E06C75;">&lt;td <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"text-center fw-bold"</span>&gt;</span>#<span style="color:#56B6C2;">@item.Id</span><span style="color:#E06C75;">&lt;/td&gt;</span>
-                            <span style="color:#E06C75;">&lt;td <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"fw-bold text-dark"</span>&gt;</span><span style="color:#56B6C2;">@item.FullName</span><span style="color:#E06C75;">&lt;/td&gt;</span>
-                            <span style="color:#E06C75;">&lt;td&gt;</span>
-                                <span style="color:#E06C75;">&lt;span <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"badge @(item.Gender == "Male" ? "bg-info" : "bg-warning") text-dark"</span>&gt;</span>
-                                    <span style="color:#56B6C2;">@item.Gender</span>
-                                <span style="color:#E06C75;">&lt;/span&gt;</span>
-                            <span style="color:#E06C75;">&lt;/td&gt;</span>
-                            <span style="color:#E06C75;">&lt;td <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"text-center fw-bold"</span>&gt;</span><span style="color:#56B6C2;">@item.GPA.ToString("0.00")</span><span style="color:#E06C75;">&lt;/td&gt;</span>
-                            <span style="color:#E06C75;">&lt;td <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"text-center"</span>&gt;</span>
-                                <span style="color:#C678DD;">@if</span> (item.GPA >= 3.0) {
-                                    <span style="color:#E06C75;">&lt;span <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"badge bg-success"</span>&gt;</span>ល្អប្រសើរ<span style="color:#E06C75;">&lt;/span&gt;</span>
-                                } <span style="color:#C678DD;">else</span> {
-                                    <span style="color:#E06C75;">&lt;span <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"badge bg-danger"</span>&gt;</span>ត្រូវប្រឹងប្រែង<span style="color:#E06C75;">&lt;/span&gt;</span>
+    <span style="color:#569CD6;">&lt;div</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"card shadow-sm border-0 rounded-3 overflow-hidden"</span><span style="color:#569CD6;">&gt;</span>
+        <span style="color:#569CD6;">&lt;div</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"card-body p-0"</span><span style="color:#569CD6;">&gt;</span>
+            <span style="color:#569CD6;">&lt;table</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"table table-hover table-striped align-middle mb-0"</span><span style="color:#569CD6;">&gt;</span>
+                <span style="color:#569CD6;">&lt;thead</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"table-dark"</span><span style="color:#569CD6;">&gt;</span>
+                    <span style="color:#569CD6;">&lt;tr&gt;</span>
+                        <span style="color:#569CD6;">&lt;th</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"text-center"</span><span style="color:#569CD6;">&gt;</span>អត្តលេខ<span style="color:#569CD6;">&lt;/th&gt;</span>
+                        <span style="color:#569CD6;">&lt;th&gt;</span>ឈ្មោះពេញ (Full Name)<span style="color:#569CD6;">&lt;/th&gt;</span>
+                        <span style="color:#569CD6;">&lt;th&gt;</span>ភេទ<span style="color:#569CD6;">&lt;/th&gt;</span>
+                        <span style="color:#569CD6;">&lt;th</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"text-center"</span><span style="color:#569CD6;">&gt;</span>GPA<span style="color:#569CD6;">&lt;/th&gt;</span>
+                        <span style="color:#569CD6;">&lt;th</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"text-center"</span><span style="color:#569CD6;">&gt;</span>ស្ថានភាព<span style="color:#569CD6;">&lt;/th&gt;</span>
+                    <span style="color:#569CD6;">&lt;/tr&gt;</span>
+                <span style="color:#569CD6;">&lt;/thead&gt;</span>
+                <span style="color:#569CD6;">&lt;tbody&gt;</span>
+                    <span style="color:#C586C0;">@foreach</span> (var item in Model) {
+                        <span style="color:#569CD6;">&lt;tr&gt;</span>
+                            <span style="color:#569CD6;">&lt;td</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"text-center fw-bold"</span><span style="color:#569CD6;">&gt;</span>#<span style="color:#9CDCFE;">@item.Id</span><span style="color:#569CD6;">&lt;/td&gt;</span>
+                            <span style="color:#569CD6;">&lt;td</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"fw-bold text-dark"</span><span style="color:#569CD6;">&gt;</span><span style="color:#9CDCFE;">@item.FullName</span><span style="color:#569CD6;">&lt;/td&gt;</span>
+                            <span style="color:#569CD6;">&lt;td&gt;</span>
+                                <span style="color:#569CD6;">&lt;span</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"badge @(item.Gender == "Male" ? "bg-info" : "bg-warning") text-dark"</span><span style="color:#569CD6;">&gt;</span>
+                                    <span style="color:#9CDCFE;">@item.Gender</span>
+                                <span style="color:#569CD6;">&lt;/span&gt;</span>
+                            <span style="color:#569CD6;">&lt;/td&gt;</span>
+                            <span style="color:#569CD6;">&lt;td</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"text-center fw-bold"</span><span style="color:#569CD6;">&gt;</span><span style="color:#9CDCFE;">@item.GPA.ToString("0.00")</span><span style="color:#569CD6;">&lt;/td&gt;</span>
+                            <span style="color:#569CD6;">&lt;td</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"text-center"</span><span style="color:#569CD6;">&gt;</span>
+                                <span style="color:#C586C0;">@if</span> (item.GPA >= 3.0) {
+                                    <span style="color:#569CD6;">&lt;span</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"badge bg-success"</span><span style="color:#569CD6;">&gt;</span>ល្អប្រសើរ<span style="color:#569CD6;">&lt;/span&gt;</span>
+                                } <span style="color:#C586C0;">else</span> {
+                                    <span style="color:#569CD6;">&lt;span</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"badge bg-danger"</span><span style="color:#569CD6;">&gt;</span>ត្រូវប្រឹងប្រែង<span style="color:#569CD6;">&lt;/span&gt;</span>
                                 }
-                            <span style="color:#E06C75;">&lt;/td&gt;</span>
-                        <span style="color:#E06C75;">&lt;/tr&gt;</span>
+                            <span style="color:#569CD6;">&lt;/td&gt;</span>
+                        <span style="color:#569CD6;">&lt;/tr&gt;</span>
                     }
-                <span style="color:#E06C75;">&lt;/tbody&gt;</span>
-            <span style="color:#E06C75;">&lt;/table&gt;</span>
-        <span style="color:#E06C75;">&lt;/div&gt;</span>
-    <span style="color:#E06C75;">&lt;/div&gt;</span>
-<span style="color:#E06C75;">&lt;/div&gt;</span></pre>
+                <span style="color:#569CD6;">&lt;/tbody&gt;</span>
+            <span style="color:#569CD6;">&lt;/table&gt;</span>
+        <span style="color:#569CD6;">&lt;/div&gt;</span>
+    <span style="color:#569CD6;">&lt;/div&gt;</span>
+<span style="color:#569CD6;">&lt;/div&gt;</span></pre>
         </div>
     </div>
     <div class="global-footer">
@@ -659,30 +692,30 @@ app.Run();</pre>
                 <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
                 <div class="code-title">Controllers/StudentApiController.cs</div>
             </div>
-<pre><span style="color:#C678DD;">using</span> Microsoft.AspNetCore.Mvc;
-<span style="color:#C678DD;">using</span> Microsoft.EntityFrameworkCore;
-<span style="color:#C678DD;">using</span> SchoolApp.Data;
+<pre><span style="color:#569CD6;">using</span> Microsoft.AspNetCore.Mvc;
+<span style="color:#569CD6;">using</span> Microsoft.EntityFrameworkCore;
+<span style="color:#569CD6;">using</span> SchoolApp.Data;
 
-<span style="color:#C678DD;">namespace</span> SchoolApp.Controllers
+<span style="color:#569CD6;">namespace</span> <span style="color:#4EC9B0;">SchoolApp.Controllers</span>
 {
-    [Route(<span style="color:#98C379;">"api/[controller]"</span>)] <span style="color:#5C6370;">// Endpoint: api/StudentApi</span>
-    [ApiController]               <span style="color:#5C6370;">// បញ្ជាក់ថាជា Web API Controller</span>
-    <span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">StudentApiController</span> : ControllerBase
+    [<span style="color:#4EC9B0;">Route</span>(<span style="color:#CE9178;">"api/[controller]"</span>)] <span style="color:#6A9955;">// Endpoint: api/StudentApi</span>
+    [<span style="color:#4EC9B0;">ApiController</span>]               <span style="color:#6A9955;">// បញ្ជាក់ថាជា Web API Controller</span>
+    <span style="color:#569CD6;">public class</span> <span style="color:#4EC9B0;">StudentApiController</span> : <span style="color:#4EC9B0;">ControllerBase</span>
     {
-        <span style="color:#C678DD;">private readonly</span> SchoolDbContext _context;
+        <span style="color:#569CD6;">private readonly</span> <span style="color:#4EC9B0;">SchoolDbContext</span> _context;
 
-        <span style="color:#C678DD;">public</span> <span style="color:#61AFEF;">StudentApiController</span>(SchoolDbContext context) { _context = context; }
+        <span style="color:#569CD6;">public</span> <span style="color:#DCDCAA;">StudentApiController</span>(<span style="color:#4EC9B0;">SchoolDbContext</span> context) { _context = context; }
 
-        [HttpGet] <span style="color:#5C6370;">// HTTP GET Request</span>
-        <span style="color:#C678DD;">public async</span> Task&lt;IActionResult&gt; <span style="color:#61AFEF;">GetStudents</span>()
+        [<span style="color:#4EC9B0;">HttpGet</span>] <span style="color:#6A9955;">// HTTP GET Request</span>
+        <span style="color:#569CD6;">public async</span> <span style="color:#4EC9B0;">Task</span>&lt;<span style="color:#4EC9B0;">IActionResult</span>&gt; <span style="color:#DCDCAA;">GetStudents</span>()
         {
-            <span style="color:#5C6370;">// ប្រើប្រាស់ await ជាមួយ ToListAsync() ដើម្បីទាញយកទិន្នន័យដោយមិនបិទជិត (Non-Blocking Thread)</span>
-            <span style="color:#C678DD;">var</span> students = <span style="color:#C678DD;">await</span> _context.Students.ToListAsync();
+            <span style="color:#6A9955;">// ប្រើប្រាស់ await ជាមួយ ToListAsync() ដើម្បីទាញយកទិន្នន័យដោយមិនបិទជិត (Non-Blocking Thread)</span>
+            <span style="color:#569CD6;">var</span> students = <span style="color:#569CD6;">await</span> _context.Students.ToListAsync();
 
-            <span style="color:#C678DD;">if</span> (students == <span style="color:#D19A66;">null</span> || students.Count == <span style="color:#D19A66;">0</span>)
-                <span style="color:#C678DD;">return</span> NotFound(<span style="color:#98C379;">"រកមិនឃើញទិន្នន័យសិស្សឡើយ!"</span>);
+            <span style="color:#C586C0;">if</span> (students == <span style="color:#569CD6;">null</span> || students.Count == <span style="color:#B5CEA8;">0</span>)
+                <span style="color:#C586C0;">return</span> NotFound(<span style="color:#CE9178;">"រកមិនឃើញទិន្នន័យសិស្សឡើយ!"</span>);
 
-            <span style="color:#C678DD;">return</span> Ok(students); <span style="color:#5C6370;">// Status Code 200 + JSON Data</span>
+            <span style="color:#C586C0;">return</span> Ok(students); <span style="color:#6A9955;">// Status Code 200 + JSON Data</span>
         }
     }
 }</pre>
@@ -734,23 +767,23 @@ app.Run();</pre>
                 <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
                 <div class="code-title">Program.cs</div>
             </div>
-<pre><span style="color:#C678DD;">var</span> builder = WebApplication.CreateBuilder(args);
+<pre><span style="color:#569CD6;">var</span> builder = WebApplication.CreateBuilder(args);
 
-<span style="color:#5C6370;">// ១. ចុះឈ្មោះសេវាកម្ម CORS ឱ្យស្គាល់គ្រប់ប្រភព (សម្រាប់ Development)</span>
+<span style="color:#6A9955;">// ១. ចុះឈ្មោះសេវាកម្ម CORS ឱ្យស្គាល់គ្រប់ប្រភព (សម្រាប់ Development)</span>
 builder.Services.AddCors(options =&gt;
 {
-    options.AddPolicy(<span style="color:#98C379;">"AllowAll"</span>, policy =&gt;
+    options.AddPolicy(<span style="color:#CE9178;">"AllowAll"</span>, policy =&gt;
     {
-        policy.AllowAnyOrigin()  <span style="color:#5C6370;">// អនុញ្ញាតគ្រប់ Domain / Port</span>
-              .AllowAnyHeader()  <span style="color:#5C6370;">// អនុញ្ញាតរាល់ Headers</span>
-              .AllowAnyMethod(); <span style="color:#5C6370;">// អនុញ្ញាត GET, POST, PUT, DELETE</span>
+        policy.AllowAnyOrigin()  <span style="color:#6A9955;">// អនុញ្ញាតគ្រប់ Domain / Port</span>
+              .AllowAnyHeader()  <span style="color:#6A9955;">// អនុញ្ញាតរាល់ Headers</span>
+              .AllowAnyMethod(); <span style="color:#6A9955;">// អនុញ្ញាត GET, POST, PUT, DELETE</span>
     });
 });
 
-<span style="color:#C678DD;">var</span> app = builder.Build();
+<span style="color:#569CD6;">var</span> app = builder.Build();
 
-<span style="color:#5C6370;">// ២. ដាក់ឱ្យដំណើរការ CORS (ត្រូវតែនៅពីលើ UseAuthorization)</span>
-app.UseCors(<span style="color:#98C379;">"AllowAll"</span>);
+<span style="color:#6A9955;">// ២. ដាក់ឱ្យដំណើរការ CORS (ត្រូវតែនៅពីលើ UseAuthorization)</span>
+app.UseCors(<span style="color:#CE9178;">"AllowAll"</span>);
 app.UseAuthorization();
 app.MapControllers();
 app.Run();</pre>
@@ -794,29 +827,29 @@ app.Run();</pre>
                 <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
                 <div class="code-title">index.html (JS Fetch API Integration)</div>
             </div>
-<pre><span style="color:#E06C75;">&lt;script&gt;</span>
-    <span style="color:#C678DD;">const</span> apiUrl = <span style="color:#98C379;">'https://localhost:7123/api/StudentApi'</span>;
-    <span style="color:#C678DD;">const</span> btn = document.getElementById(<span style="color:#98C379;">'btnLoad'</span>);
+<pre><span style="color:#569CD6;">&lt;script&gt;</span>
+    <span style="color:#569CD6;">const</span> apiUrl = <span style="color:#CE9178;">'https://localhost:7123/api/StudentApi'</span>;
+    <span style="color:#569CD6;">const</span> btn = document.getElementById(<span style="color:#CE9178;">'btnLoad'</span>);
 
-    <span style="color:#5C6370;">// ប្រកាស Event Handler ជា async function</span>
-    btn.addEventListener(<span style="color:#98C379;">'click'</span>, <span style="color:#C678DD;">async</span> () =&gt; {
-        <span style="color:#C678DD;">try</span> {
-            <span style="color:#5C6370;">// 1. await fetch() រង់ចាំរហូតដល់ HTTP Response បាញ់ត្រឡប់មកដល់</span>
-            <span style="color:#C678DD;">const</span> res = <span style="color:#C678DD;">await</span> fetch(apiUrl);
+    <span style="color:#6A9955;">// ប្រកាស Event Handler ជា async function</span>
+    btn.addEventListener(<span style="color:#CE9178;">'click'</span>, <span style="color:#569CD6;">async</span> () =&gt; {
+        <span style="color:#C586C0;">try</span> {
+            <span style="color:#6A9955;">// 1. await fetch() រង់ចាំរហូតដល់ HTTP Response បាញ់ត្រឡប់មកដល់</span>
+            <span style="color:#569CD6;">const</span> res = <span style="color:#569CD6;">await</span> fetch(apiUrl);
             
-            <span style="color:#C678DD;">if</span>(!res.ok) <span style="color:#C678DD;">throw new</span> Error(<span style="color:#98C379;">`HTTP Status: ${res.status}`</span>);
+            <span style="color:#C586C0;">if</span>(!res.ok) <span style="color:#C586C0;">throw new</span> Error(<span style="color:#CE9178;">`HTTP Status: ${res.status}`</span>);
 
-            <span style="color:#5C6370;">// 2. await res.json() រង់ចាំបំប្លែង Stream អត្ថបទទៅជា JS Object</span>
-            <span style="color:#C678DD;">const</span> students = <span style="color:#C678DD;">await</span> res.json();
+            <span style="color:#6A9955;">// 2. await res.json() រង់ចាំបំប្លែង Stream អត្ថបទទៅជា JS Object</span>
+            <span style="color:#569CD6;">const</span> students = <span style="color:#569CD6;">await</span> res.json();
 
-            <span style="color:#5C6370;">// 3. Render ទិន្នន័យចូល Table DOM</span>
+            <span style="color:#6A9955;">// 3. Render ទិន្នន័យចូល Table DOM</span>
             renderTable(students);
 
-        } <span style="color:#C678DD;">catch</span> (err) {
-            console.error(<span style="color:#98C379;">"Network ឬ CORS Error:"</span>, err);
+        } <span style="color:#C586C0;">catch</span> (err) {
+            console.error(<span style="color:#CE9178;">"Network ឬ CORS Error:"</span>, err);
         }
     });
-<span style="color:#E06C75;">&lt;/script&gt;</span></pre>
+<span style="color:#569CD6;">&lt;/script&gt;</span></pre>
         </div>
 
         <!-- SPECIAL ASYNC/AWAIT EXPLANATION BOX (JAVASCRIPT FRONTEND) -->
@@ -959,10 +992,10 @@ app.Run();</pre>
                 <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
                 <div class="code-title">របៀបតេស្តមើល Console Log ក្នុង JavaScript</div>
             </div>
-<pre><span style="color:#5C6370;">// ប្រើ console.log ដើម្បីពិនិត្យមើលទម្រង់ JSON ជាក់ស្តែងដែលបានមកពី API</span>
-<span style="color:#C678DD;">const</span> response = <span style="color:#C678DD;">await</span> fetch(apiUrl);
-<span style="color:#C678DD;">const</span> data = <span style="color:#C678DD;">await</span> response.json();
-console.log(<span style="color:#98C379;">"Data from API:"</span>, data); <span style="color:#5C6370;">// បើកមើលក្នុង F12 Console របស់ Browser</span></pre>
+<pre><span style="color:#6A9955;">// ប្រើ console.log ដើម្បីពិនិត្យមើលទម្រង់ JSON ជាក់ស្តែងដែលបានមកពី API</span>
+<span style="color:#569CD6;">const</span> response = <span style="color:#569CD6;">await</span> fetch(apiUrl);
+<span style="color:#569CD6;">const</span> data = <span style="color:#569CD6;">await</span> response.json();
+console.log(<span style="color:#CE9178;">"Data from API:"</span>, data); <span style="color:#6A9955;">// បើកមើលក្នុង F12 Console របស់ Browser</span></pre>
         </div>
     </div>
     <div class="global-footer">
@@ -1003,7 +1036,7 @@ console.log(<span style="color:#98C379;">"Data from API:"</span>, data); <span s
                 </tr>
                 <tr>
                     <td><b>Client-Side Rendering (CSR)</b></td>
-                    <td>បច្ចេកទេសដែល Browser ទាញយកតែទិន្នន័យអត្ថបទ JSON រួចប្រើប្រាស់ JavaScript ដើម្បបង្កើត និងបិទភ្ជាប់ HTML ដោយខ្លួនឯង។</td>
+                    <td>បច្ចេកទេសដែល Browser ទាញយកតែទិន្នន័យអត្ថបទ JSON រួចប្រើប្រាស់ JavaScript ដើម្បីបង្កើត និងបិទភ្ជាប់ HTML ដោយខ្លួនឯង។</td>
                 </tr>
                 <tr>
                     <td><b>Razor View (.cshtml)</b></td>
@@ -1118,7 +1151,7 @@ console.log(<span style="color:#98C379;">"Data from API:"</span>, data); <span s
         <p style="font-size:10pt; margin-bottom:10px;"><b>សេចក្តីណែនាំ៖</b> សូមជ្រើសរើសចម្លើយដែលត្រឹមត្រូវបំផុតតែមួយគត់។</p>
         
         <ol class="q-list" style="font-size:9.5pt; line-height:1.45;">
-            <li>តើ Class មួយណាដែល Traditional Controller ត្រូវ Inherit ដើម្បទទួលបាន View Support?
+            <li>តើ Class មួយណាដែល Traditional Controller ត្រូវ Inherit ដើម្បីទទួលបាន View Support?
                 <ul class="mcq-opts">
                     <li>A. ControllerBase</li>
                     <li>B. Controller</li>
@@ -1263,7 +1296,7 @@ console.log(<span style="color:#98C379;">"Data from API:"</span>, data); <span s
     </div>
 </div>
 
-<!-- PAGE 17: PRACTICAL EXERCISES INTRO -->
+<!-- PAGE 17: PRACTICAL EXERCISES INTRO & DETAILED STEPS -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
@@ -1275,31 +1308,50 @@ console.log(<span style="color:#98C379;">"Data from API:"</span>, data); <span s
             <span><i class="fa-solid fa-laptop-code"></i> ៧. លំហាត់អនុវត្តន៍ឌុយអាល់ (Dual-Track Practical Exercises)</span>
             <span class="bloom-badge bloom-l6">6. Create</span>
         </div>
-        <p style="font-size:9.5pt; margin-bottom:12px;">
-            <b>គោលបំណង៖</b> និស្សិតត្រូវអភិវឌ្ឍន៍ **ប្រព័ន្ធគ្រប់គ្រងទំនិញ (Product Catalog)** ដោយប្រើប្រាស់ស្ថាបត្យកម្មទាំងពីរស្របគ្នាក្នុង Project តែមួយ ផ្អែកលើ Entity <code>Product (Id, Name, Price, Stock)</code>៖
+        <p style="font-size:9.5pt; margin-bottom:10px;">
+            <b>គោលបំណង៖</b> និស្សិតត្រូវអភិវឌ្ឍន៍ **ប្រព័ន្ធគ្រប់គ្រងទំនិញ (Product Catalog System)** ដោយសរសេរកូដពេញលេញតាមដំណាក់កាល ផ្អែកលើ Entity Model <code>Product (Id, Name, Price, Stock, Category)</code>៖
         </p>
 
-        <div class="section-title" style="color:var(--secondary); border-color:var(--secondary); font-size:10.5pt; margin-bottom: 5px;">
-            <div class="section-title-left"><i class="fa-solid fa-window-restore"></i> ភាគទី ១ (Part 1): អភិវឌ្ឍន៍តាមបែប Traditional MVC (SSR)</div>
-            <span class="bloom-badge bloom-l3">Track A</span>
+        <div style="background:var(--bg-light); border:1px solid var(--border-dark); border-radius:6px; padding:10px; margin-bottom:10px;">
+            <div style="font-weight:bold; color:var(--accent); font-size:9.5pt; margin-bottom:4px;">
+                <i class="fa-solid fa-folder-tree"></i> រចនាសម្ព័ន្ធ File ដែលត្រូវបង្កើត (Exact Project File Structure):
+            </div>
+            <pre style="background:transparent; color:var(--text-main); font-size:8pt; padding:0;">
+SchoolApp/
+ ├── Models/
+ │    └── Product.cs                          <span style="color:var(--text-muted);">(Step 1: Entity Class)</span>
+ ├── Data/
+ │    └── SchoolDbContext.cs                  <span style="color:var(--text-muted);">(Step 2: Add DbSet&lt;Product&gt;)</span>
+ ├── Controllers/
+ │    ├── ProductController.cs                <span style="color:var(--text-muted);">(Step 3: Track A Controller)</span>
+ │    └── Api/
+ │         └── ProductApiController.cs       <span style="color:var(--text-muted);">(Step 5: Track B API Controller)</span>
+ ├── Views/
+ │    └── Product/
+ │         └── Index.cshtml                   <span style="color:var(--text-muted);">(Step 4: Track A Razor View)</span>
+ ├── wwwroot/
+ │    └── products.html                       <span style="color:var(--text-muted);">(Step 6: Track B JS Fetch Frontend)</span>
+ └── Program.cs                               <span style="color:var(--text-muted);">(Step 7: Dual-Track Pipeline Configuration)</span></pre>
         </div>
-        
-        <ul class="obj-list" style="margin-top:0; margin-bottom:12px;">
-            <li><b>កិច្ចការទី ១៖</b> បង្កើត <code>ProductController.cs</code> ដែលតម្រូវឱ្យស្នងពី <code>Controller</code>។</li>
-            <li><b>កិច្ចការទី ២៖</b> សរសេរ Method <code>Index()</code> ទាញយកបញ្ជីទំនិញពី SQL Database រួច Return ជា <code>View(products)</code>។</li>
-            <li><b>កិច្ចការទី ៣៖</b> បង្កើត Razor View <code>Views/Product/Index.cshtml</code> ដោយប្រើប្រាស់ <code>@model IEnumerable<Product></code> និង <code>@foreach</code> ដើម្បីបង្ហាញតារាងទំនិញលើ Server។</li>
+
+        <div class="section-title" style="color:var(--secondary); border-color:var(--secondary); font-size:10pt; margin-bottom: 4px;">
+            <div class="section-title-left"><i class="fa-solid fa-window-restore"></i> ភាគទី ១ (Part 1): Track A - Traditional MVC Setup</div>
+            <span class="bloom-badge bloom-l3">SSR Track</span>
+        </div>
+        <ul class="obj-list" style="margin-top:0; margin-bottom:8px; font-size:9pt;">
+            <li><b>ជំហានទី ១៖</b> បង្កើត Class <code>Models/Product.cs</code> មាន properties: <code>Id, Name, Price, Stock, Category</code>។</li>
+            <li><b>ជំហានទី ២៖</b> បន្ថែម <code>DbSet&lt;Product&gt; Products</code> ទៅក្នុង <code>Data/SchoolDbContext.cs</code>។</li>
+            <li><b>ជំហានទី ៣៖</b> បង្កើត <code>Controllers/ProductController.cs</code> ដែលស្នងពី <code>Controller</code> និងទាញយកទិន្នន័យតាម <code>await _context.Products.ToListAsync()</code>។</li>
+            <li><b>ជំហានទី ៤៖</b> បង្កើត <code>Views/Product/Index.cshtml</code> បង្ហាញតារាង Bootstrap 5 ភ្ជាប់ជាមួយ Badges និង Status Indicator។</li>
         </ul>
 
-        <div class="section-title" style="color:var(--accent); border-color:var(--accent); font-size:10.5pt; margin-bottom: 5px; margin-top: 10px;">
-            <div class="section-title-left"><i class="fa-solid fa-network-wired"></i> ភាគទី ២ (Part 2): អភិវឌ្ឍន៍តាមបែប Decoupled Web API (CSR)</div>
-            <span class="bloom-badge bloom-l6">Track B</span>
+        <div class="section-title" style="color:var(--accent); border-color:var(--accent); font-size:10pt; margin-bottom: 4px; margin-top: 6px;">
+            <div class="section-title-left"><i class="fa-solid fa-network-wired"></i> ភាគទី ២ (Part 2): Track B - Decoupled Web API & JS Fetch Setup</div>
+            <span class="bloom-badge bloom-l6">CSR Track</span>
         </div>
-
-        <ul class="obj-list" style="margin-top:0; margin-bottom:12px;">
-            <li><b>កិច្ចការទី ៤៖</b> បង្កើត <code>ProductApiController.cs</code> ភ្ជាប់ Attribute <code>[ApiController]</code> និង <code>[Route("api/[controller]")]</code>។</li>
-            <li><b>កិច្ចការទី ៥៖</b> សរសេរ Method <code>GetProducts()</code> តាមបែប Async (<code>await ToListAsync()</code>) និង Return ជា <code>Ok(products)</code>។</li>
-            <li><b>កិច្ចការទី ៦៖</b> កំណត់ CORS Policy ក្នុង <code>Program.cs</code> ឱ្យអនុញ្ញាត `AllowAll` សម្រាប់ការតភ្ជាប់។</li>
-            <li><b>កិច្ចការទី ៧៖</b> បង្កើត <code>products.html</code> ដាច់ដោយឡែក រួចសរសេរ JavaScript `async/await fetch()` ដើម្បីទាញ JSON បង្ហាញលើ Table ដោយមិន Refresh Page ព្រមទាំងបន្ថែម Loading State!</li>
+        <ul class="obj-list" style="margin-top:0; margin-bottom:4px; font-size:9pt;">
+            <li><b>ជំហានទី ៥៖</b> បង្កើត <code>Controllers/Api/ProductApiController.cs</code> ភ្ជាប់ <code>[ApiController]</code> និង Return JSON <code>Ok(products)</code>។</li>
+            <li><b>ជំហានទី ៦៖</b> បង្កើត <code>wwwroot/products.html</code> សរសេរ JS ប្រើប្រាស់ <code>async/await fetch()</code> ដើម្បី Render Dynamic UI ដោយគ្មាន Page Refresh។</li>
         </ul>
     </div>
     <div class="global-footer">
@@ -1360,7 +1412,7 @@ console.log(<span style="color:#98C379;">"Data from API:"</span>, data); <span s
     </div>
 </div>
 
-<!-- PAGE 19: SOLUTION - TRACK A TRADITIONAL MVC -->
+<!-- PAGE 19: SOLUTION - TRACK A FULL CODE -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
@@ -1369,59 +1421,88 @@ console.log(<span style="color:#98C379;">"Data from API:"</span>, data); <span s
     </div>
     <div class="page-content">
         <div class="sub-heading" style="width: 100%; margin-top:0; color:var(--secondary);">
-            <span><i class="fa-solid fa-circle-check"></i> ដំណោះស្រាយ Track A: Traditional MVC Implementation</span>
+            <span><i class="fa-solid fa-circle-check"></i> ដំណោះស្រាយ Track A: Model & Traditional MVC Controller (Full Code)</span>
             <span class="bloom-badge bloom-l3">Track A Solution</span>
         </div>
         
-        <div style="font-size:9pt; font-weight:bold; color:var(--text-main); margin-bottom:2px;"><span style="color:var(--secondary);">១. </span>Controllers/ProductController.cs (Traditional MVC)</div>
-        <div class="code-window" style="margin:2px 0 10px 0; font-size:7.5pt;">
-            <div class="code-header" style="padding: 3px 8px;">
+        <div style="font-size:8.5pt; font-weight:bold; color:var(--text-main); margin-bottom:2px;"><span style="color:var(--secondary);">១. </span>File: Models/Product.cs</div>
+        <div class="code-window" style="margin:2px 0 6px 0; font-size:7.5pt;">
+            <div class="code-header" style="padding: 2px 8px;">
                 <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
-                <div class="code-title">ProductController.cs</div>
+                <div class="code-title">Models/Product.cs</div>
             </div>
-<pre style="padding: 6px;"><span style="color:#C678DD;">using</span> Microsoft.AspNetCore.Mvc;
-<span style="color:#C678DD;">using</span> Microsoft.EntityFrameworkCore;
-<span style="color:#C678DD;">using</span> SchoolApp.Data;
-
-<span style="color:#C678DD;">namespace</span> SchoolApp.Controllers
+<pre style="padding: 4px 8px;"><span style="color:#569CD6;">namespace</span> <span style="color:#4EC9B0;">SchoolApp.Models</span>
 {
-    <span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">ProductController</span> : Controller
+    <span style="color:#569CD6;">public class</span> <span style="color:#4EC9B0;">Product</span>
     {
-        <span style="color:#C678DD;">private readonly</span> SchoolDbContext _context;
-        <span style="color:#C678DD;">public</span> <span style="color:#61AFEF;">ProductController</span>(SchoolDbContext context) { _context = context; }
+        <span style="color:#569CD6;">public int</span> <span style="color:#9CDCFE;">Id</span> { <span style="color:#569CD6;">get</span>; <span style="color:#569CD6;">set</span>; }
+        <span style="color:#569CD6;">public string</span> <span style="color:#9CDCFE;">Name</span> { <span style="color:#569CD6;">get</span>; <span style="color:#569CD6;">set</span>; } = <span style="color:#CE9178;">""</span>;
+        <span style="color:#569CD6;">public decimal</span> <span style="color:#9CDCFE;">Price</span> { <span style="color:#569CD6;">get</span>; <span style="color:#569CD6;">set</span>; }
+        <span style="color:#569CD6;">public int</span> <span style="color:#9CDCFE;">Stock</span> { <span style="color:#569CD6;">get</span>; <span style="color:#569CD6;">set</span>; }
+        <span style="color:#569CD6;">public string</span> <span style="color:#9CDCFE;">Category</span> { <span style="color:#569CD6;">get</span>; <span style="color:#569CD6;">set</span>; } = <span style="color:#CE9178;">""</span>;
+    }
+}</pre>
+        </div>
 
-        <span style="color:#C678DD;">public async</span> Task&lt;IActionResult&gt; <span style="color:#61AFEF;">Index</span>()
+        <div style="font-size:8.5pt; font-weight:bold; color:var(--text-main); margin-bottom:2px;"><span style="color:var(--secondary);">២. </span>File: Controllers/ProductController.cs (Traditional MVC)</div>
+        <div class="code-window" style="margin:2px 0 6px 0; font-size:7.5pt;">
+            <div class="code-header" style="padding: 2px 8px;">
+                <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+                <div class="code-title">Controllers/ProductController.cs</div>
+            </div>
+<pre style="padding: 4px 8px;"><span style="color:#569CD6;">using</span> Microsoft.AspNetCore.Mvc;
+<span style="color:#569CD6;">using</span> Microsoft.EntityFrameworkCore;
+<span style="color:#569CD6;">using</span> SchoolApp.Data;
+
+<span style="color:#569CD6;">namespace</span> <span style="color:#4EC9B0;">SchoolApp.Controllers</span>
+{
+    <span style="color:#569CD6;">public class</span> <span style="color:#4EC9B0;">ProductController</span> : <span style="color:#4EC9B0;">Controller</span>
+    {
+        <span style="color:#569CD6;">private readonly</span> <span style="color:#4EC9B0;">SchoolDbContext</span> _context;
+
+        <span style="color:#569CD6;">public</span> <span style="color:#DCDCAA;">ProductController</span>(<span style="color:#4EC9B0;">SchoolDbContext</span> context)
         {
-            <span style="color:#C678DD;">var</span> products = <span style="color:#C678DD;">await</span> _context.Products.ToListAsync();
-            <span style="color:#C678DD;">return</span> View(products); <span style="color:#5C6370;">// បោះ Model ទៅ Razor View</span>
+            _context = context;
+        }
+
+        <span style="color:#6A9955;">// GET: /Product/Index</span>
+        <span style="color:#569CD6;">public async</span> <span style="color:#4EC9B0;">Task</span>&lt;<span style="color:#4EC9B0;">IActionResult</span>&gt; <span style="color:#DCDCAA;">Index</span>()
+        {
+            <span style="color:#569CD6;">var</span> products = <span style="color:#569CD6;">await</span> _context.Products.ToListAsync();
+            <span style="color:#C586C0;">return</span> View(products); <span style="color:#6A9955;">// បោះ Model ទៅកាន់ Views/Product/Index.cshtml</span>
         }
     }
 }</pre>
         </div>
 
-        <div style="font-size:9pt; font-weight:bold; color:var(--text-main); margin-bottom:2px;"><span style="color:var(--secondary);">២. </span>Views/Product/Index.cshtml (Razor View)</div>
-        <div class="code-window" style="margin:2px 0 10px 0; font-size:7.5pt;">
-            <div class="code-header" style="padding: 3px 8px;">
+        <div style="font-size:8.5pt; font-weight:bold; color:var(--text-main); margin-bottom:2px;"><span style="color:var(--secondary);">៣. </span>File: Views/Product/Index.cshtml (Razor View SSR)</div>
+        <div class="code-window" style="margin:2px 0 0 0; font-size:7pt;">
+            <div class="code-header" style="padding: 2px 8px;">
                 <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
-                <div class="code-title">Index.cshtml</div>
+                <div class="code-title">Views/Product/Index.cshtml</div>
             </div>
-<pre style="padding: 6px;"><span style="color:#C678DD;">@model</span> IEnumerable&lt;SchoolApp.Models.Product&gt;
+<pre style="padding: 4px 8px;"><span style="color:#569CD6;">@model</span> IEnumerable&lt;SchoolApp.Models.Product&gt;
+<span style="color:#569CD6;">@{</span> ViewData[<span style="color:#CE9178;">"Title"</span>] = <span style="color:#CE9178;">"បញ្ជីទំនិញ - Traditional MVC"</span>; <span style="color:#569CD6;">}</span>
 
-<span style="color:#E06C75;">&lt;h2&gt;</span>បញ្ជីទំនិញ (Traditional Razor View)<span style="color:#E06C75;">&lt;/h2&gt;</span>
-<span style="color:#E06C75;">&lt;table <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"table"</span>&gt;</span>
-    <span style="color:#E06C75;">&lt;thead&gt;</span>
-        <span style="color:#E06C75;">&lt;tr&gt;&lt;th&gt;</span>ID<span style="color:#E06C75;">&lt;/th&gt;&lt;th&gt;</span>ឈ្មោះទំនិញ<span style="color:#E06C75;">&lt;/th&gt;&lt;th&gt;</span>តម្លៃ<span style="color:#E06C75;">&lt;/th&gt;&lt;/tr&gt;</span>
-    <span style="color:#E06C75;">&lt;/thead&gt;</span>
-    <span style="color:#E06C75;">&lt;tbody&gt;</span>
-        <span style="color:#C678DD;">@foreach</span>(var item in Model) {
-            <span style="color:#E06C75;">&lt;tr&gt;</span>
-                <span style="color:#E06C75;">&lt;td&gt;</span><span style="color:#56B6C2;">@item.Id</span><span style="color:#E06C75;">&lt;/td&gt;</span>
-                <span style="color:#E06C75;">&lt;td&gt;</span><span style="color:#56B6C2;">@item.Name</span><span style="color:#E06C75;">&lt;/td&gt;</span>
-                <span style="color:#E06C75;">&lt;td&gt;</span>$<span style="color:#56B6C2;">@item.Price</span><span style="color:#E06C75;">&lt;/td&gt;</span>
-            <span style="color:#E06C75;">&lt;/tr&gt;</span>
-        }
-    <span style="color:#E06C75;">&lt;/tbody&gt;</span>
-<span style="color:#E06C75;">&lt;/table&gt;</span></pre>
+<span style="color:#569CD6;">&lt;div</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"container mt-3"</span><span style="color:#569CD6;">&gt;</span>
+    <span style="color:#569CD6;">&lt;h3</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"text-primary fw-bold"</span><span style="color:#569CD6;">&gt;</span><span style="color:#569CD6;">&lt;i</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"fa-solid fa-box"</span><span style="color:#569CD6;">&gt;&lt;/i&gt;</span> បញ្ជីទំនិញ (Traditional Razor View)<span style="color:#569CD6;">&lt;/h3&gt;</span>
+    <span style="color:#569CD6;">&lt;table</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"table table-bordered table-striped mt-3"</span><span style="color:#569CD6;">&gt;</span>
+        <span style="color:#569CD6;">&lt;thead</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"table-dark"</span><span style="color:#569CD6;">&gt;</span>
+            <span style="color:#569CD6;">&lt;tr&gt;&lt;th&gt;</span>ID<span style="color:#569CD6;">&lt;/th&gt;&lt;th&gt;</span>ឈ្មោះទំនិញ<span style="color:#569CD6;">&lt;/th&gt;&lt;th&gt;</span>ប្រភេទ<span style="color:#569CD6;">&lt;/th&gt;&lt;th&gt;</span>តម្លៃ<span style="color:#569CD6;">&lt;/th&gt;&lt;th&gt;</span>ស្តុក<span style="color:#569CD6;">&lt;/th&gt;&lt;/tr&gt;</span>
+        <span style="color:#569CD6;">&lt;/thead&gt;</span>
+        <span style="color:#569CD6;">&lt;tbody&gt;</span>
+            <span style="color:#C586C0;">@foreach</span> (var item in Model) {
+                <span style="color:#569CD6;">&lt;tr&gt;</span>
+                    <span style="color:#569CD6;">&lt;td&gt;</span><span style="color:#9CDCFE;">@item.Id</span><span style="color:#569CD6;">&lt;/td&gt;</span>
+                    <span style="color:#569CD6;">&lt;td</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"fw-bold"</span><span style="color:#569CD6;">&gt;</span><span style="color:#9CDCFE;">@item.Name</span><span style="color:#569CD6;">&lt;/td&gt;</span>
+                    <span style="color:#569CD6;">&lt;td&gt;</span><span style="color:#9CDCFE;">@item.Category</span><span style="color:#569CD6;">&lt;/td&gt;</span>
+                    <span style="color:#569CD6;">&lt;td</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"text-success fw-bold"</span><span style="color:#569CD6;">&gt;</span>$<span style="color:#9CDCFE;">@item.Price.ToString("0.00")</span><span style="color:#569CD6;">&lt;/td&gt;</span>
+                    <span style="color:#569CD6;">&lt;td&gt;</span><span style="color:#569CD6;">&lt;span</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"badge @(item.Stock &gt; 0 ? "bg-success" : "bg-danger")"</span><span style="color:#569CD6;">&gt;</span><span style="color:#9CDCFE;">@item.Stock</span><span style="color:#569CD6;">&lt;/span&gt;&lt;/td&gt;</span>
+                <span style="color:#569CD6;">&lt;/tr&gt;</span>
+            }
+        <span style="color:#569CD6;">&lt;/tbody&gt;</span>
+    <span style="color:#569CD6;">&lt;/table&gt;</span>
+<span style="color:#569CD6;">&lt;/div&gt;</span></pre>
         </div>
     </div>
     <div class="global-footer">
@@ -1430,7 +1511,7 @@ console.log(<span style="color:#98C379;">"Data from API:"</span>, data); <span s
     </div>
 </div>
 
-<!-- PAGE 20: SOLUTION - TRACK B BACKEND API -->
+<!-- PAGE 20: SOLUTION - TRACK B BACKEND API FULL CODE -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
@@ -1438,54 +1519,70 @@ console.log(<span style="color:#98C379;">"Data from API:"</span>, data); <span s
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
     <div class="page-content">
-        <div class="sub-heading" style="width: 100%; margin-top:0; color:var(--accent);">
-            <span><i class="fa-solid fa-circle-check"></i> ដំណោះស្រាយ Track B: Web API Backend Implementation</span>
+        <div class="section-title" style="width: 100%; margin-top:0; color:var(--accent);">
+            <span><i class="fa-solid fa-circle-check"></i> ដំណោះស្រាយ Track B: Web API Controller (Full Code)</span>
             <span class="bloom-badge bloom-l3">Track B Backend</span>
         </div>
 
-        <div style="font-size:9pt; font-weight:bold; color:var(--text-main); margin-bottom:2px;"><span style="color:var(--accent);">១. </span>Controllers/ProductApiController.cs</div>
-        <div class="code-window" style="margin:2px 0 10px 0; font-size:7.5pt;">
-            <div class="code-header" style="padding: 3px 8px;">
+        <div style="font-size:8.5pt; font-weight:bold; color:var(--text-main); margin-bottom:2px;"><span style="color:var(--accent);">១. </span>File: Controllers/Api/ProductApiController.cs</div>
+        <div class="code-window" style="margin:2px 0 6px 0; font-size:7.5pt;">
+            <div class="code-header" style="padding: 2px 8px;">
                 <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
-                <div class="code-title">ProductApiController.cs</div>
+                <div class="code-title">Controllers/Api/ProductApiController.cs</div>
             </div>
-<pre style="padding: 6px;"><span style="color:#C678DD;">using</span> Microsoft.AspNetCore.Mvc;
-<span style="color:#C678DD;">using</span> Microsoft.EntityFrameworkCore;
-<span style="color:#C678DD;">using</span> SchoolApp.Data;
+<pre style="padding: 4px 8px;"><span style="color:#569CD6;">using</span> Microsoft.AspNetCore.Mvc;
+<span style="color:#569CD6;">using</span> Microsoft.EntityFrameworkCore;
+<span style="color:#569CD6;">using</span> SchoolApp.Data;
 
-<span style="color:#C678DD;">namespace</span> SchoolApp.Controllers
+<span style="color:#569CD6;">namespace</span> <span style="color:#4EC9B0;">SchoolApp.Controllers.Api</span>
 {
-    [Route(<span style="color:#98C379;">"api/[controller]"</span>)]
-    [ApiController]
-    <span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">ProductApiController</span> : ControllerBase
+    [<span style="color:#4EC9B0;">Route</span>(<span style="color:#CE9178;">"api/[controller]"</span>)]
+    [<span style="color:#4EC9B0;">ApiController</span>]
+    <span style="color:#569CD6;">public class</span> <span style="color:#4EC9B0;">ProductApiController</span> : <span style="color:#4EC9B0;">ControllerBase</span>
     {
-        <span style="color:#C678DD;">private readonly</span> SchoolDbContext _context;
-        <span style="color:#C678DD;">public</span> <span style="color:#61AFEF;">ProductApiController</span>(SchoolDbContext context) { _context = context; }
+        <span style="color:#569CD6;">private readonly</span> <span style="color:#4EC9B0;">SchoolDbContext</span> _context;
 
-        [HttpGet]
-        <span style="color:#C678DD;">public async</span> Task&lt;IActionResult&gt; <span style="color:#61AFEF;">GetProducts</span>()
+        <span style="color:#569CD6;">public</span> <span style="color:#DCDCAA;">ProductApiController</span>(<span style="color:#4EC9B0;">SchoolDbContext</span> context)
         {
-            <span style="color:#C678DD;">var</span> products = <span style="color:#C678DD;">await</span> _context.Products.ToListAsync();
-            <span style="color:#C678DD;">return</span> Ok(products); <span style="color:#5C6370;">// បញ្ចេញជា JSON</span>
+            _context = context;
+        }
+
+        <span style="color:#6A9955;">// GET: api/ProductApi</span>
+        [<span style="color:#4EC9B0;">HttpGet</span>]
+        <span style="color:#569CD6;">public async</span> <span style="color:#4EC9B0;">Task</span>&lt;<span style="color:#4EC9B0;">IActionResult</span>&gt; <span style="color:#DCDCAA;">GetProducts</span>()
+        {
+            <span style="color:#569CD6;">var</span> products = <span style="color:#569CD6;">await</span> _context.Products.ToListAsync();
+            <span style="color:#C586C0;">if</span> (products == <span style="color:#569CD6;">null</span> || products.Count == <span style="color:#B5CEA8;">0</span>)
+            {
+                <span style="color:#C586C0;">return</span> NotFound(<span style="color:#569CD6;">new</span> { message = <span style="color:#CE9178;">"ពុំទាន់មានទិន្នន័យទំនិញក្នុងប្រព័ន្ធឡើយ!"</span> });
+            }
+            <span style="color:#C586C0;">return</span> Ok(products); <span style="color:#6A9955;">// បញ្ចេញ Raw JSON Data (camelCase Format)</span>
         }
     }
 }</pre>
         </div>
 
-        <div style="font-size:9pt; font-weight:bold; color:var(--text-main); margin-bottom:2px;"><span style="color:var(--accent);">២. </span>Program.cs (CORS Configuration)</div>
-        <div class="code-window" style="margin:2px 0 10px 0; font-size:7.5pt;">
-            <div class="code-header" style="padding: 3px 8px;">
+        <div style="font-size:8.5pt; font-weight:bold; color:var(--text-main); margin-bottom:2px;"><span style="color:var(--accent);">២. </span>File: Program.cs (CORS Configuration Update)</div>
+        <div class="code-window" style="margin:2px 0 0 0; font-size:7.5pt;">
+            <div class="code-header" style="padding: 2px 8px;">
                 <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
-                <div class="code-title">Program.cs</div>
+                <div class="code-title">Program.cs (CORS Middleware Addition)</div>
             </div>
-<pre style="padding: 6px;">builder.Services.AddCors(options =&gt; {
-    options.AddPolicy(<span style="color:#98C379;">"AllowAll"</span>, p =&gt; p.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+<pre style="padding: 4px 8px;"><span style="color:#6A9955;">// បន្ថែមសេវាកម្ម CORS ក្នុង Program.cs ដើម្បអនុញ្ញាតឱ្យ Live Server (Port 5500) ហៅមកកាន់ API (Port 7123)</span>
+builder.Services.AddCors(options =&gt; {
+    options.AddPolicy(<span style="color:#CE9178;">"AllowAll"</span>, policy =&gt; {
+        policy.AllowAnyOrigin()
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
 });
 
-<span style="color:#C678DD;">var</span> app = builder.Build();
-app.UseCors(<span style="color:#98C379;">"AllowAll"</span>); <span style="color:#5C6370;">// បើក CORS</span>
+<span style="color:#569CD6;">var</span> app = builder.Build();
+
+app.UseCors(<span style="color:#CE9178;">"AllowAll"</span>); <span style="color:#6A9955;">// ត្រូវដាក់មុន UseAuthorization()</span>
 app.UseAuthorization();
-app.MapControllers();</pre>
+app.MapControllers();
+app.Run();</pre>
         </div>
     </div>
     <div class="global-footer">
@@ -1494,7 +1591,7 @@ app.MapControllers();</pre>
     </div>
 </div>
 
-<!-- PAGE 21: SOLUTION - TRACK B FRONTEND HTML/JS -->
+<!-- PAGE 21: SOLUTION - TRACK B FRONTEND HTML/JS FULL CODE -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
@@ -1503,47 +1600,69 @@ app.MapControllers();</pre>
     </div>
     <div class="page-content">
         <div class="sub-heading" style="width: 100%; margin-top:0; color:var(--warning);">
-            <span><i class="fa-solid fa-circle-check"></i> ដំណោះស្រាយ Track B: Frontend UI (products.html)</span>
+            <span><i class="fa-solid fa-circle-check"></i> ដំណោះស្រាយ Track B: Frontend JS Fetch UI (Full Code)</span>
             <span class="bloom-badge bloom-l3">Track B Frontend</span>
         </div>
 
-        <div class="code-window" style="margin:2px 0 10px 0; font-size:7.5pt;">
-            <div class="code-header" style="padding: 3px 8px;">
+        <div style="font-size:8.5pt; font-weight:bold; color:var(--text-main); margin-bottom:2px;"><span style="color:var(--warning);">១. </span>File: wwwroot/products.html</div>
+        <div class="code-window" style="margin:2px 0 0 0; font-size:7pt;">
+            <div class="code-header" style="padding: 2px 8px;">
                 <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
-                <div class="code-title">products.html</div>
+                <div class="code-title">wwwroot/products.html</div>
             </div>
-<pre style="padding: 6px;"><span style="color:#C678DD;">&lt;!DOCTYPE html&gt;</span>
-<span style="color:#E06C75;">&lt;html&gt;</span>
-<span style="color:#E06C75;">&lt;head&gt;&lt;title&gt;</span>Product API Client<span style="color:#E06C75;">&lt;/title&gt;&lt;/head&gt;</span>
-<span style="color:#E06C75;">&lt;body&gt;</span>
-    <span style="color:#E06C75;">&lt;h2&gt;</span>បញ្ជីទំនិញ (Decoupled JS Fetch UI)<span style="color:#E06C75;">&lt;/h2&gt;</span>
-    <span style="color:#E06C75;">&lt;button <span style="color:#D19A66;">id</span>=<span style="color:#98C379;">"btnFetch"</span>&gt;</span>ទាញយកទិន្នន័យ API<span style="color:#E06C75;">&lt;/button&gt;</span>
+<pre style="padding: 4px 8px;"><span style="color:#569CD6;">&lt;!DOCTYPE html&gt;</span>
+<span style="color:#569CD6;">&lt;html</span> <span style="color:#9CDCFE;">lang</span>=<span style="color:#CE9178;">"km"</span><span style="color:#569CD6;">&gt;</span>
+<span style="color:#569CD6;">&lt;head&gt;</span>
+    <span style="color:#569CD6;">&lt;meta</span> <span style="color:#9CDCFE;">charset</span>=<span style="color:#CE9178;">"UTF-8"</span><span style="color:#569CD6;">&gt;</span>
+    <span style="color:#569CD6;">&lt;title&gt;</span>Product Catalog - Decoupled JS Fetch API<span style="color:#569CD6;">&lt;/title&gt;</span>
+    <span style="color:#569CD6;">&lt;link</span> <span style="color:#9CDCFE;">rel</span>=<span style="color:#CE9178;">"stylesheet"</span> <span style="color:#9CDCFE;">href</span>=<span style="color:#CE9178;">"https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"</span><span style="color:#569CD6;">&gt;</span>
+<span style="color:#569CD6;">&lt;/head&gt;</span>
+<span style="color:#569CD6;">&lt;body</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"bg-light p-4"</span><span style="color:#569CD6;">&gt;</span>
+    <span style="color:#569CD6;">&lt;div</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"container card shadow p-4"</span><span style="color:#569CD6;">&gt;</span>
+        <span style="color:#569CD6;">&lt;h3</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"text-purple fw-bold mb-3"</span><span style="color:#569CD6;">&gt;</span>គ្រប់គ្រងទំនិញ (Decoupled Web API Client)<span style="color:#569CD6;">&lt;/h3&gt;</span>
+        <span style="color:#569CD6;">&lt;button</span> <span style="color:#9CDCFE;">id</span>=<span style="color:#CE9178;">"btnLoad"</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"btn btn-primary mb-3"</span><span style="color:#569CD6;">&gt;</span>ទាញយកទិន្នន័យ (Fetch API)<span style="color:#569CD6;">&lt;/button&gt;</span>
 
-    <span style="color:#E06C75;">&lt;table <span style="color:#D19A66;">border</span>=<span style="color:#98C379;">"1"</span> <span style="color:#D19A66;">style</span>=<span style="color:#98C379;">"width:100%; margin-top:10px;"</span>&gt;</span>
-        <span style="color:#E06C75;">&lt;thead&gt;&lt;tr&gt;&lt;th&gt;</span>ID<span style="color:#E06C75;">&lt;/th&gt;&lt;th&gt;</span>ឈ្មោះទំនិញ<span style="color:#E06C75;">&lt;/th&gt;&lt;th&gt;</span>តម្លៃ<span style="color:#E06C75;">&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;</span>
-        <span style="color:#E06C75;">&lt;tbody <span style="color:#D19A66;">id</span>=<span style="color:#98C379;">"productGrid"</span>&gt;&lt;/tbody&gt;</span>
-    <span style="color:#E06C75;">&lt;/table&gt;</span>
+        <span style="color:#569CD6;">&lt;table</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"table table-bordered align-middle"</span><span style="color:#569CD6;">&gt;</span>
+            <span style="color:#569CD6;">&lt;thead</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"table-dark"</span><span style="color:#569CD6;">&gt;</span>
+                <span style="color:#569CD6;">&lt;tr&gt;&lt;th&gt;</span>ID<span style="color:#569CD6;">&lt;/th&gt;&lt;th&gt;</span>ឈ្មោះទំនិញ<span style="color:#569CD6;">&lt;/th&gt;&lt;th&gt;</span>ប្រភេទ<span style="color:#569CD6;">&lt;/th&gt;&lt;th&gt;</span>តម្លៃ<span style="color:#569CD6;">&lt;/th&gt;&lt;th&gt;</span>ស្តុក<span style="color:#569CD6;">&lt;/th&gt;&lt;/tr&gt;</span>
+            <span style="color:#569CD6;">&lt;/thead&gt;</span>
+            <span style="color:#569CD6;">&lt;tbody</span> <span style="color:#9CDCFE;">id</span>=<span style="color:#CE9178;">"productGrid"</span><span style="color:#569CD6;">&gt;</span>
+                <span style="color:#569CD6;">&lt;tr&gt;&lt;td</span> <span style="color:#9CDCFE;">colspan</span>=<span style="color:#CE9178;">"5"</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"text-center text-muted"</span><span style="color:#569CD6;">&gt;</span>សូមចុចប៊ូតុងខាងលើដើម្បីទាញទិន្នន័យ<span style="color:#569CD6;">&lt;/td&gt;&lt;/tr&gt;</span>
+            <span style="color:#569CD6;">&lt;/tbody&gt;</span>
+        <span style="color:#569CD6;">&lt;/table&gt;</span>
+    <span style="color:#569CD6;">&lt;/div&gt;</span>
 
-    <span style="color:#E06C75;">&lt;script&gt;</span>
-        <span style="color:#C678DD;">const</span> btn = document.getElementById(<span style="color:#98C379;">'btnFetch'</span>);
-        <span style="color:#C678DD;">const</span> grid = document.getElementById(<span style="color:#98C379;">'productGrid'</span>);
+    <span style="color:#569CD6;">&lt;script&gt;</span>
+        <span style="color:#569CD6;">const</span> apiUrl = <span style="color:#CE9178;">'https://localhost:7123/api/ProductApi'</span>;
+        <span style="color:#569CD6;">const</span> btn = document.getElementById(<span style="color:#CE9178;">'btnLoad'</span>);
+        <span style="color:#569CD6;">const</span> grid = document.getElementById(<span style="color:#CE9178;">'productGrid'</span>);
 
-        btn.addEventListener(<span style="color:#98C379;">'click'</span>, <span style="color:#C678DD;">async</span> () =&gt; {
-            grid.innerHTML = <span style="color:#98C379;">'&lt;tr&gt;&lt;td colspan="3"&gt;កំពុងដំណើរការ (Loading)...&lt;/td&gt;&lt;/tr&gt;'</span>;
-            <span style="color:#C678DD;">try</span> {
-                <span style="color:#C678DD;">const</span> res = <span style="color:#C678DD;">await</span> fetch(<span style="color:#98C379;">'https://localhost:7123/api/ProductApi'</span>);
-                <span style="color:#C678DD;">const</span> data = <span style="color:#C678DD;">await</span> res.json();
-                grid.innerHTML = <span style="color:#98C379;">''</span>;
-                data.forEach(p =&gt; {
-                    grid.innerHTML += <span style="color:#98C379;">`&lt;tr&gt;&lt;td&gt;${p.id}&lt;/td&gt;&lt;td&gt;${p.name}&lt;/td&gt;&lt;td&gt;$${p.price}&lt;/td&gt;&lt;/tr&gt;`</span>;
+        btn.addEventListener(<span style="color:#CE9178;">'click'</span>, <span style="color:#569CD6;">async</span> () =&gt; {
+            grid.innerHTML = <span style="color:#CE9178;">'&lt;tr&gt;&lt;td colspan="5" class="text-center"&gt;កំពុងទាញទិន្នន័យ (Loading)...&lt;/td&gt;&lt;/tr&gt;'</span>;
+            <span style="color:#C586C0;">try</span> {
+                <span style="color:#569CD6;">const</span> res = <span style="color:#569CD6;">await</span> fetch(apiUrl);
+                <span style="color:#C586C0;">if</span> (!res.ok) <span style="color:#C586C0;">throw new</span> Error(<span style="color:#CE9178;">`HTTP Status: ${res.status}`</span>);
+
+                <span style="color:#569CD6;">const</span> products = <span style="color:#569CD6;">await</span> res.json();
+                grid.innerHTML = <span style="color:#CE9178;">''</span>; <span style="color:#6A9955;">// Clear UI</span>
+                
+                products.forEach(p =&gt; {
+                    grid.innerHTML += <span style="color:#CE9178;">`
+                        &lt;tr&gt;
+                            &lt;td&gt;${p.id}&lt;/td&gt;
+                            &lt;td class="fw-bold"&gt;${p.name}&lt;/td&gt;
+                            &lt;td&gt;${p.category}&lt;/td&gt;
+                            &lt;td class="text-success fw-bold"&gt;$${p.price.toFixed(2)}&lt;/td&gt;
+                            &lt;td&gt;&lt;span class="badge ${p.stock &gt; 0 ? 'bg-success' : 'bg-danger'}"&gt;${p.stock}&lt;/span&gt;&lt;/td&gt;
+                        &lt;/tr&gt;`</span>;
                 });
-            } <span style="color:#C678DD;">catch</span> (err) {
-                grid.innerHTML = <span style="color:#98C379;">'&lt;tr&gt;&lt;td colspan="3" style="color:red"&gt;CORS Error ឬ API មិនទាន់ Run!&lt;/td&gt;&lt;/tr&gt;'</span>;
+            } <span style="color:#C586C0;">catch</span> (err) {
+                grid.innerHTML = <span style="color:#CE9178;">`&lt;tr&gt;&lt;td colspan="5" class="text-center text-danger"&gt;កំហុស៖ ${err.message} (សូមពិនិត្យ CORS ឬ Web API Server)&lt;/td&gt;&lt;/tr&gt;`</span>;
             }
         });
-    <span style="color:#E06C75;">&lt;/script&gt;</span>
-<span style="color:#E06C75;">&lt;/body&gt;</span>
-<span style="color:#E06C75;">&lt;/html&gt;</span></pre>
+    <span style="color:#569CD6;">&lt;/script&gt;</span>
+<span style="color:#569CD6;">&lt;/body&gt;</span>
+<span style="color:#569CD6;">&lt;/html&gt;</span></pre>
         </div>
     </div>
     <div class="global-footer">
@@ -1560,8 +1679,8 @@ app.MapControllers();</pre>
         <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
     </div>
     <div class="page-content">
-        <div class="sub-heading" style="width: 100%; margin-top:0; color:var(--purple);">
-            <span><i class="fa-solid fa-star"></i> Enterprise Level: ការបន្ថែម Error Status Handling</span>
+        <div class="section-title" style="margin-top:0;">
+            <div class="section-title-left"><i class="fa-solid fa-star"></i> Enterprise Level: ការបន្ថែម Error Status Handling</div>
             <span class="bloom-badge bloom-l6">6. Create</span>
         </div>
         
@@ -1574,21 +1693,21 @@ app.MapControllers();</pre>
                 <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
                 <div class="code-title">Advanced Fetch Logic</div>
             </div>
-<pre style="padding: 6px;"><span style="color:#C678DD;">async function</span> loadProductsAdvanced() {
-    <span style="color:#C678DD;">try</span> {
-        <span style="color:#C678DD;">const</span> res = <span style="color:#C678DD;">await</span> fetch(<span style="color:#98C379;">'https://localhost:7123/api/ProductApi'</span>);
+<pre style="padding: 6px;"><span style="color:#569CD6;">async function</span> <span style="color:#DCDCAA;">loadProductsAdvanced</span>() {
+    <span style="color:#C586C0;">try</span> {
+        <span style="color:#569CD6;">const</span> res = <span style="color:#569CD6;">await</span> fetch(<span style="color:#CE9178;">'https://localhost:7123/api/ProductApi'</span>);
 
-        <span style="color:#5C6370;">// ឆែកមើល Status Code ប្រសិនបើមិនមែន 200-299</span>
-        <span style="color:#C678DD;">if</span> (!res.ok) {
-            <span style="color:#C678DD;">if</span> (res.status === <span style="color:#D19A66;">404</span>) <span style="color:#C678DD;">throw new</span> Error(<span style="color:#98C379;">"រកមិនឃើញ Endpoint ឬទិន្នន័យឡើយ (404)"</span>);
-            <span style="color:#C678DD;">if</span> (res.status === <span style="color:#D19A66;">500</span>) <span style="color:#C678DD;">throw new</span> Error(<span style="color:#98C379;">"កំហុសបច្ចេកទេសលើ Server (500)"</span>);
-            <span style="color:#C678DD;">throw new</span> Error(<span style="color:#98C379;">`HTTP Error: ${res.status}`</span>);
+        <span style="color:#6A9955;">// ឆែកមើល Status Code ប្រសិនបើមិនមែន 200-299</span>
+        <span style="color:#C586C0;">if</span> (!res.ok) {
+            <span style="color:#C586C0;">if</span> (res.status === <span style="color:#B5CEA8;">404</span>) <span style="color:#C586C0;">throw new</span> Error(<span style="color:#CE9178;">"រកមិនឃើញ Endpoint ឬទិន្នន័យឡើយ (404)"</span>);
+            <span style="color:#C586C0;">if</span> (res.status === <span style="color:#B5CEA8;">500</span>) <span style="color:#C586C0;">throw new</span> Error(<span style="color:#CE9178;">"កំហុសបច្ចេកទេសលើ Server (500)"</span>);
+            <span style="color:#C586C0;">throw new</span> Error(<span style="color:#CE9178;">`HTTP Error: ${res.status}`</span>);
         }
 
-        <span style="color:#C678DD;">const</span> data = <span style="color:#C678DD;">await</span> res.json();
-        console.log(<span style="color:#98C379;">"ទិន្នន័យទទួលបានជោគជ័យ:"</span>, data);
+        <span style="color:#569CD6;">const</span> data = <span style="color:#569CD6;">await</span> res.json();
+        console.log(<span style="color:#CE9178;">"ទិន្នន័យទទួលបានជោគជ័យ:"</span>, data);
 
-    } <span style="color:#C678DD;">catch</span> (err) {
+    } <span style="color:#C586C0;">catch</span> (err) {
         alert(err.message);
     }
 }</pre>
@@ -1714,3 +1833,4 @@ app.MapControllers();</pre>
 
 </body>
 </html>
+

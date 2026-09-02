@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="km">
 <head>
@@ -34,6 +35,12 @@
             
             --border-light: #E2E8F0;
             --border-dark: #CBD5E1;
+
+            /* VS Code Classic Palette */
+            --vscode-bg: #1E1E1E;
+            --vscode-header: #252526;
+            --vscode-border: #333333;
+            --vscode-text: #D4D4D4;
             
             --font-kh-heading: 'Suwannaphum', serif;
             --font-kh-body: 'Battambang', sans-serif;
@@ -152,15 +159,40 @@
         .graphic-box { background: var(--bg-light); border: 1px solid var(--border-light); border-radius: 8px; padding: 10px; margin: 8px 0; width: 100%; }
         .two-column { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 8px 0; align-items: start;}
 
-        .code-window { background: var(--primary); border-radius: 8px; overflow: hidden; margin: 8px 0; border: 1px solid #334155; box-shadow: 0 4px 6px rgba(0,0,0,0.1);}
-        .code-header { background: #1E293B; padding: 6px 12px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #0F172A;}
+        /* VS CODE CLASSIC STYLE STYLING */
+        .code-window { 
+            background: var(--vscode-bg); 
+            border-radius: 8px; 
+            overflow: hidden; 
+            margin: 8px 0; 
+            border: 1px solid var(--vscode-border); 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .code-header { 
+            background: var(--vscode-header); 
+            padding: 6px 12px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            border-bottom: 1px solid var(--vscode-border);
+        }
         .mac-dots { display: flex; gap: 6px; }
         .dot { width: 9px; height: 9px; border-radius: 50%; }
         .dot-r { background: var(--danger); }
         .dot-y { background: var(--warning); }
         .dot-g { background: var(--success); }
-        .code-title { color: #94A3B8; font-family: var(--font-code); font-size: 8pt; font-weight: 500;}
-        pre { padding: 10px; color: #E2E8F0; font-family: var(--font-code); font-size: 8pt; line-height: 1.4; overflow-x: auto; margin: 0; tab-size: 4;}
+        .code-title { color: #CCCCCC; font-family: var(--font-code); font-size: 8pt; font-weight: 500;}
+        pre { 
+            padding: 10px; 
+            color: var(--vscode-text); 
+            font-family: var(--font-code); 
+            font-size: 8pt; 
+            line-height: 1.45; 
+            overflow-x: auto; 
+            margin: 0; 
+            tab-size: 4;
+        }
+        code.inline-code { font-family: var(--font-code); background: #F1F5F9; color: var(--danger); padding: 2px 5px; border-radius: 4px; font-size: 8.5pt; font-weight: bold; border: 1px solid var(--border-light); }
 
         .lab-box { background: #FEFCE8; border-left: 5px solid #EAB308; padding: 10px; margin: 8px 0; border-radius: 4px; border: 1px solid #FEF08A; }
         .lab-box h4 { color: #854D0E; margin-bottom: 4px; font-family: var(--font-kh-heading); font-size: 10pt; display: flex; justify-content: space-between; align-items: center;}
@@ -454,24 +486,24 @@
                 <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
                 <div class="code-title">Models/Student.cs</div>
             </div>
-<pre><span style="color:#C678DD;">using</span> System.ComponentModel.DataAnnotations;
+<pre><span style="color:#569CD6;">using</span> System.ComponentModel.DataAnnotations;
 
-<span style="color:#C678DD;">namespace</span> SchoolApp.Models
+<span style="color:#569CD6;">namespace</span> <span style="color:#4EC9B0;">SchoolApp.Models</span>
 {
-    <span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">Student</span>
+    <span style="color:#569CD6;">public class</span> <span style="color:#4EC9B0;">Student</span>
     {
-        [Key] <span style="color:#5C6370;">// Primary Key (Auto Identity ក្នុង SQL Server)</span>
-        <span style="color:#C678DD;">public int</span> Id { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; }
+        [<span style="color:#4EC9B0;">Key</span>] <span style="color:#6A9955;">// Primary Key (Auto Identity ក្នុង SQL Server)</span>
+        <span style="color:#569CD6;">public int</span> <span style="color:#9CDCFE;">Id</span> { <span style="color:#569CD6;">get</span>; <span style="color:#569CD6;">set</span>; }
 
-        [Required(ErrorMessage = <span style="color:#98C379;">"សូមបញ្ចូលឈ្មោះពេញរបស់និស្សិត!"</span>)]
-        [StringLength(<span style="color:#D19A66;">100</span>, ErrorMessage = <span style="color:#98C379;">"ឈ្មោះមិនអាចលើសពី ១០០ អក្សរឡើយ!"</span>)]
-        <span style="color:#C678DD;">public string</span> FullName { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; } = <span style="color:#98C379;">""</span>;
+        [<span style="color:#4EC9B0;">Required</span>(ErrorMessage = <span style="color:#CE9178;">"សូមបញ្ចូលឈ្មោះពេញរបស់និស្សិត!"</span>)]
+        [<span style="color:#4EC9B0;">StringLength</span>(<span style="color:#B5CEA8;">100</span>, ErrorMessage = <span style="color:#CE9178;">"ឈ្មោះមិនអាចលើសពី ១០០ អក្សរឡើយ!"</span>)]
+        <span style="color:#569CD6;">public string</span> <span style="color:#9CDCFE;">FullName</span> { <span style="color:#569CD6;">get</span>; <span style="color:#569CD6;">set</span>; } = <span style="color:#CE9178;">""</span>;
 
-        [Required(ErrorMessage = <span style="color:#98C379;">"សូមជ្រើសរើសភេទ!"</span>)]
-        <span style="color:#C678DD;">public string</span> Gender { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; } = <span style="color:#98C379;">""</span>;
+        [<span style="color:#4EC9B0;">Required</span>(ErrorMessage = <span style="color:#CE9178;">"សូមជ្រើសរើសភេទ!"</span>)]
+        <span style="color:#569CD6;">public string</span> <span style="color:#9CDCFE;">Gender</span> { <span style="color:#569CD6;">get</span>; <span style="color:#569CD6;">set</span>; } = <span style="color:#CE9178;">""</span>;
 
-        [Range(<span style="color:#D19A66;">0.0</span>, <span style="color:#D19A66;">4.0</span>, ErrorMessage = <span style="color:#98C379;">"GPA ត្រូវតែស្ថិតនៅចន្លោះ ០.០ ដល់ ៤.០!"</span>)]
-        <span style="color:#C678DD;">public double</span> GPA { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; }
+        [<span style="color:#4EC9B0;">Range</span>(<span style="color:#B5CEA8;">0.0</span>, <span style="color:#B5CEA8;">4.0</span>, ErrorMessage = <span style="color:#CE9178;">"GPA ត្រូវតែស្ថិតនៅចន្លោះ ០.០ ដល់ ៤.០!"</span>)]
+        <span style="color:#569CD6;">public double</span> <span style="color:#9CDCFE;">GPA</span> { <span style="color:#569CD6;">get</span>; <span style="color:#569CD6;">set</span>; }
     }
 }</pre>
         </div>
@@ -513,44 +545,44 @@
         </div>
 
         <div class="code-window">
-            <div class="code-header" style="background:#064E3B;">
+            <div class="code-header" style="background:#252526;">
                 <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
-                <div class="code-title" style="color:#A7F3D0;">Controllers/StudentController.cs</div>
+                <div class="code-title" style="color:#CCCCCC;">Controllers/StudentController.cs</div>
             </div>
-<pre><span style="color:#C678DD;">using</span> Microsoft.AspNetCore.Mvc;
-<span style="color:#C678DD;">using</span> SchoolApp.Data;
-<span style="color:#C678DD;">using</span> SchoolApp.Models;
+<pre><span style="color:#569CD6;">using</span> Microsoft.AspNetCore.Mvc;
+<span style="color:#569CD6;">using</span> SchoolApp.Data;
+<span style="color:#569CD6;">using</span> SchoolApp.Models;
 
-<span style="color:#C678DD;">namespace</span> SchoolApp.Controllers
+<span style="color:#569CD6;">namespace</span> <span style="color:#4EC9B0;">SchoolApp.Controllers</span>
 {
-    <span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">StudentController</span> : Controller
+    <span style="color:#569CD6;">public class</span> <span style="color:#4EC9B0;">StudentController</span> : <span style="color:#4EC9B0;">Controller</span>
     {
-        <span style="color:#C678DD;">private readonly</span> SchoolDbContext _context;
-        <span style="color:#C678DD;">public</span> <span style="color:#61AFEF;">StudentController</span>(SchoolDbContext context) { _context = context; }
+        <span style="color:#569CD6;">private readonly</span> <span style="color:#4EC9B0;">SchoolDbContext</span> _context;
+        <span style="color:#569CD6;">public</span> <span style="color:#DCDCAA;">StudentController</span>(<span style="color:#4EC9B0;">SchoolDbContext</span> context) { _context = context; }
 
-        <span style="color:#5C6370;">// ១. GET: /Student/Create (បង្ហាញ Form ទទេ)</span>
-        [HttpGet]
-        <span style="color:#C678DD;">public</span> IActionResult <span style="color:#61AFEF;">Create</span>()
+        <span style="color:#6A9955;">// ១. GET: /Student/Create (បង្ហាញ Form ទទេ)</span>
+        [<span style="color:#4EC9B0;">HttpGet</span>]
+        <span style="color:#569CD6;">public</span> <span style="color:#4EC9B0;">IActionResult</span> <span style="color:#DCDCAA;">Create</span>()
         {
-            <span style="color:#C678DD;">return</span> View();
+            <span style="color:#C586C0;">return</span> View();
         }
 
-        <span style="color:#5C6370;">// ២. POST: /Student/Create (ទទួលទិន្នន័យមក Save)</span>
-        [HttpPost]
-        [ValidateAntiForgeryToken] <span style="color:#5C6370;">// ការពារការវាយប្រហារ CSRF</span>
-        <span style="color:#C678DD;">public async</span> Task&lt;IActionResult&gt; <span style="color:#61AFEF;">Create</span>(Student model)
+        <span style="color:#6A9955;">// ២. POST: /Student/Create (ទទួលទិន្នន័យមក Save)</span>
+        [<span style="color:#4EC9B0;">HttpPost</span>]
+        [<span style="color:#4EC9B0;">ValidateAntiForgeryToken</span>] <span style="color:#6A9955;">// ការពារការវាយប្រហារ CSRF</span>
+        <span style="color:#569CD6;">public async</span> <span style="color:#4EC9B0;">Task</span>&lt;<span style="color:#4EC9B0;">IActionResult</span>&gt; <span style="color:#DCDCAA;">Create</span>(<span style="color:#4EC9B0;">Student</span> model)
         {
-            <span style="color:#5C6370;">// ឆែកមើល Validation តាម Model Rules</span>
-            <span style="color:#C678DD;">if</span> (!ModelState.IsValid)
+            <span style="color:#6A9955;">// ឆែកមើល Validation តាម Model Rules</span>
+            <span style="color:#C586C0;">if</span> (!ModelState.IsValid)
             {
-                <span style="color:#C678DD;">return</span> View(model); <span style="color:#5C6370;">// បើខុស បង្ហាញ Form វិញអមជាមួយ Error</span>
+                <span style="color:#C586C0;">return</span> View(model); <span style="color:#6A9955;">// បើខុស បង្ហាញ Form វិញអមជាមួយ Error</span>
             }
 
-            <span style="color:#C678DD;">await</span> _context.Students.AddAsync(model);
-            <span style="color:#C678DD;">await</span> _context.SaveChangesAsync();
+            <span style="color:#569CD6;">await</span> _context.Students.AddAsync(model);
+            <span style="color:#569CD6;">await</span> _context.SaveChangesAsync();
 
-            TempData[<span style="color:#98C379;">"Success"</span>] = <span style="color:#98C379;">"រក្សាទុកទិន្នន័យសិស្សជោគជ័យ!"</span>;
-            <span style="color:#C678DD;">return</span> RedirectToAction(nameof(Index)); <span style="color:#5C6370;">// 302 Redirect ទៅទំព័របញ្ជី</span>
+            TempData[<span style="color:#CE9178;">"Success"</span>] = <span style="color:#CE9178;">"រក្សាទុកទិន្នន័យសិស្សជោគជ័យ!"</span>;
+            <span style="color:#C586C0;">return</span> RedirectToAction(<span style="color:#569CD6;">nameof</span>(Index)); <span style="color:#6A9955;">// 302 Redirect ទៅទំព័របញ្ជី</span>
         }
     }
 }</pre>
@@ -580,58 +612,58 @@
         </div>
 
         <div class="code-window">
-            <div class="code-header" style="background:#064E3B;">
+            <div class="code-header" style="background:#252526;">
                 <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
-                <div class="code-title">Views/Student/Create.cshtml</div>
+                <div class="code-title" style="color:#CCCCCC;">Views/Student/Create.cshtml</div>
             </div>
-<pre><span style="color:#C678DD;">@model</span> SchoolApp.Models.Student
-<span style="color:#C678DD;">@{</span> ViewData[<span style="color:#98C379;">"Title"</span>] = <span style="color:#98C379;">"បន្ថែមនិស្សិតថ្មី"</span>; <span style="color:#C678DD;">}</span>
+<pre><span style="color:#569CD6;">@model</span> SchoolApp.Models.Student
+<span style="color:#569CD6;">@{</span> ViewData[<span style="color:#CE9178;">"Title"</span>] = <span style="color:#CE9178;">"បន្ថែមនិស្សិតថ្មី"</span>; <span style="color:#569CD6;">}</span>
 
-<span style="color:#E06C75;">&lt;div <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"container mt-3"</span> <span style="color:#D19A66;">style</span>=<span style="color:#98C379;">"max-width: 600px;"</span>&gt;</span>
-    <span style="color:#E06C75;">&lt;div <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"card shadow-sm border-0 rounded-3"</span>&gt;</span>
-        <span style="color:#E06C75;">&lt;div <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"card-header bg-success text-white p-3 d-flex align-items-center justify-content-between"</span>&gt;</span>
-            <span style="color:#E06C75;">&lt;h5 <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"m-0 font-khmer fw-bold"</span>&gt;</span>
-                <span style="color:#E06C75;">&lt;i <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"fa-solid fa-user-plus me-2"</span>&gt;&lt;/i&gt;</span>បន្ថែមនិស្សិតថ្មី (Traditional MVC)
-            <span style="color:#E06C75;">&lt;/h5&gt;</span>
-            <span style="color:#E06C75;">&lt;a <span style="color:#D19A66;">asp-action</span>=<span style="color:#98C379;">"Index"</span> <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"btn btn-sm btn-light text-success fw-bold"</span>&gt;</span>
-                <span style="color:#E06C75;">&lt;i <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"fa-solid fa-arrow-left me-1"</span>&gt;&lt;/i&gt;</span>ត្រឡប់ក្រោយ
-            <span style="color:#E06C75;">&lt;/a&gt;</span>
-        <span style="color:#E06C75;">&lt;/div&gt;</span>
-        <span style="color:#E06C75;">&lt;div <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"card-body p-4"</span>&gt;</span>
-            <span style="color:#E06C75;">&lt;form <span style="color:#D19A66;">asp-action</span>=<span style="color:#98C379;">"Create"</span> <span style="color:#D19A66;">method</span>=<span style="color:#98C379;">"post"</span>&gt;</span>
-                <span style="color:#E06C75;">&lt;div <span style="color:#D19A66;">asp-validation-summary</span>=<span style="color:#98C379;">"ModelOnly"</span> <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"alert alert-danger p-2 mb-3 d-none"</span>&gt;&lt;/div&gt;</span>
+<span style="color:#569CD6;">&lt;div</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"container mt-3"</span> <span style="color:#9CDCFE;">style</span>=<span style="color:#CE9178;">"max-width: 600px;"</span><span style="color:#569CD6;">&gt;</span>
+    <span style="color:#569CD6;">&lt;div</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"card shadow-sm border-0 rounded-3"</span><span style="color:#569CD6;">&gt;</span>
+        <span style="color:#569CD6;">&lt;div</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"card-header bg-success text-white p-3 d-flex align-items-center justify-content-between"</span><span style="color:#569CD6;">&gt;</span>
+            <span style="color:#569CD6;">&lt;h5</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"m-0 font-khmer fw-bold"</span><span style="color:#569CD6;">&gt;</span>
+                <span style="color:#569CD6;">&lt;i</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"fa-solid fa-user-plus me-2"</span><span style="color:#569CD6;">&gt;&lt;/i&gt;</span>បន្ថែមនិស្សិតថ្មី (Traditional MVC)
+            <span style="color:#569CD6;">&lt;/h5&gt;</span>
+            <span style="color:#569CD6;">&lt;a</span> <span style="color:#9CDCFE;">asp-action</span>=<span style="color:#CE9178;">"Index"</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"btn btn-sm btn-light text-success fw-bold"</span><span style="color:#569CD6;">&gt;</span>
+                <span style="color:#569CD6;">&lt;i</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"fa-solid fa-arrow-left me-1"</span><span style="color:#569CD6;">&gt;&lt;/i&gt;</span>ត្រឡប់ក្រោយ
+            <span style="color:#569CD6;">&lt;/a&gt;</span>
+        <span style="color:#569CD6;">&lt;/div&gt;</span>
+        <span style="color:#569CD6;">&lt;div</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"card-body p-4"</span><span style="color:#569CD6;">&gt;</span>
+            <span style="color:#569CD6;">&lt;form</span> <span style="color:#9CDCFE;">asp-action</span>=<span style="color:#CE9178;">"Create"</span> <span style="color:#9CDCFE;">method</span>=<span style="color:#CE9178;">"post"</span><span style="color:#569CD6;">&gt;</span>
+                <span style="color:#569CD6;">&lt;div</span> <span style="color:#9CDCFE;">asp-validation-summary</span>=<span style="color:#CE9178;">"ModelOnly"</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"alert alert-danger p-2 mb-3 d-none"</span><span style="color:#569CD6;">&gt;&lt;/div&gt;</span>
 
-                <span style="color:#E06C75;">&lt;div <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"mb-3"</span>&gt;</span>
-                    <span style="color:#E06C75;">&lt;label <span style="color:#D19A66;">asp-for</span>=<span style="color:#98C379;">"FullName"</span> <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"form-label fw-bold text-dark"</span>&gt;</span>ឈ្មោះពេញនិស្សិត<span style="color:#E06C75;">&lt;/label&gt;</span>
-                    <span style="color:#E06C75;">&lt;input <span style="color:#D19A66;">asp-for</span>=<span style="color:#98C379;">"FullName"</span> <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"form-control"</span> <span style="color:#D19A66;">placeholder</span>=<span style="color:#98C379;">"ឧ. សុខ ចាន់នី"</span> /&gt;</span>
-                    <span style="color:#E06C75;">&lt;span <span style="color:#D19A66;">asp-validation-for</span>=<span style="color:#98C379;">"FullName"</span> <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"text-danger small"</span>&gt;&lt;/span&gt;</span>
-                <span style="color:#E06C75;">&lt;/div&gt;</span>
+                <span style="color:#569CD6;">&lt;div</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"mb-3"</span><span style="color:#569CD6;">&gt;</span>
+                    <span style="color:#569CD6;">&lt;label</span> <span style="color:#9CDCFE;">asp-for</span>=<span style="color:#CE9178;">"FullName"</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"form-label fw-bold text-dark"</span><span style="color:#569CD6;">&gt;</span>ឈ្មោះពេញនិស្សិត<span style="color:#569CD6;">&lt;/label&gt;</span>
+                    <span style="color:#569CD6;">&lt;input</span> <span style="color:#9CDCFE;">asp-for</span>=<span style="color:#CE9178;">"FullName"</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"form-control"</span> <span style="color:#9CDCFE;">placeholder</span>=<span style="color:#CE9178;">"ឧ. សុខ ចាន់នី"</span> <span style="color:#569CD6;">/&gt;</span>
+                    <span style="color:#569CD6;">&lt;span</span> <span style="color:#9CDCFE;">asp-validation-for</span>=<span style="color:#CE9178;">"FullName"</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"text-danger small"</span><span style="color:#569CD6;">&gt;&lt;/span&gt;</span>
+                <span style="color:#569CD6;">&lt;/div&gt;</span>
 
-                <span style="color:#E06C75;">&lt;div <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"mb-3"</span>&gt;</span>
-                    <span style="color:#E06C75;">&lt;label <span style="color:#D19A66;">asp-for</span>=<span style="color:#98C379;">"Gender"</span> <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"form-label fw-bold text-dark"</span>&gt;</span>ភេទ<span style="color:#E06C75;">&lt;/label&gt;</span>
-                    <span style="color:#E06C75;">&lt;select <span style="color:#D19A66;">asp-for</span>=<span style="color:#98C379;">"Gender"</span> <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"form-select"</span>&gt;</span>
-                        <span style="color:#E06C75;">&lt;option <span style="color:#D19A66;">value</span>=<span style="color:#98C379;">""</span>&gt;</span>-- ជ្រើសរើសភេទ --<span style="color:#E06C75;">&lt;/option&gt;</span>
-                        <span style="color:#E06C75;">&lt;option <span style="color:#D19A66;">value</span>=<span style="color:#98C379;">"ប្រុស"</span>&gt;</span>ប្រុស (Male)<span style="color:#E06C75;">&lt;/option&gt;</span>
-                        <span style="color:#E06C75;">&lt;option <span style="color:#D19A66;">value</span>=<span style="color:#98C379;">"ស្រី"</span>&gt;</span>ស្រី (Female)<span style="color:#E06C75;">&lt;/option&gt;</span>
-                    <span style="color:#E06C75;">&lt;/select&gt;</span>
-                    <span style="color:#E06C75;">&lt;span <span style="color:#D19A66;">asp-validation-for</span>=<span style="color:#98C379;">"Gender"</span> <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"text-danger small"</span>&gt;&lt;/span&gt;</span>
-                <span style="color:#E06C75;">&lt;/div&gt;</span>
+                <span style="color:#569CD6;">&lt;div</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"mb-3"</span><span style="color:#569CD6;">&gt;</span>
+                    <span style="color:#569CD6;">&lt;label</span> <span style="color:#9CDCFE;">asp-for</span>=<span style="color:#CE9178;">"Gender"</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"form-label fw-bold text-dark"</span><span style="color:#569CD6;">&gt;</span>ភេទ<span style="color:#569CD6;">&lt;/label&gt;</span>
+                    <span style="color:#569CD6;">&lt;select</span> <span style="color:#9CDCFE;">asp-for</span>=<span style="color:#CE9178;">"Gender"</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"form-select"</span><span style="color:#569CD6;">&gt;</span>
+                        <span style="color:#569CD6;">&lt;option</span> <span style="color:#9CDCFE;">value</span>=<span style="color:#CE9178;">""</span><span style="color:#569CD6;">&gt;</span>-- ជ្រើសរើសភេទ --<span style="color:#569CD6;">&lt;/option&gt;</span>
+                        <span style="color:#569CD6;">&lt;option</span> <span style="color:#9CDCFE;">value</span>=<span style="color:#CE9178;">"ប្រុស"</span><span style="color:#569CD6;">&gt;</span>ប្រុស (Male)<span style="color:#569CD6;">&lt;/option&gt;</span>
+                        <span style="color:#569CD6;">&lt;option</span> <span style="color:#9CDCFE;">value</span>=<span style="color:#CE9178;">"ស្រី"</span><span style="color:#569CD6;">&gt;</span>ស្រី (Female)<span style="color:#569CD6;">&lt;/option&gt;</span>
+                    <span style="color:#569CD6;">&lt;/select&gt;</span>
+                    <span style="color:#569CD6;">&lt;span</span> <span style="color:#9CDCFE;">asp-validation-for</span>=<span style="color:#CE9178;">"Gender"</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"text-danger small"</span><span style="color:#569CD6;">&gt;&lt;/span&gt;</span>
+                <span style="color:#569CD6;">&lt;/div&gt;</span>
 
-                <span style="color:#E06C75;">&lt;div <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"mb-4"</span>&gt;</span>
-                    <span style="color:#E06C75;">&lt;label <span style="color:#D19A66;">asp-for</span>=<span style="color:#98C379;">"GPA"</span> <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"form-label fw-bold text-dark"</span>&gt;</span>GPA<span style="color:#E06C75;">&lt;/label&gt;</span>
-                    <span style="color:#E06C75;">&lt;input <span style="color:#D19A66;">asp-for</span>=<span style="color:#98C379;">"GPA"</span> <span style="color:#D19A66;">type</span>=<span style="color:#98C379;">"number"</span> <span style="color:#D19A66;">step</span>=<span style="color:#98C379;">"0.01"</span> <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"form-control"</span> <span style="color:#D19A66;">placeholder</span>=<span style="color:#98C379;">"0.00 - 4.00"</span> /&gt;</span>
-                    <span style="color:#E06C75;">&lt;span <span style="color:#D19A66;">asp-validation-for</span>=<span style="color:#98C379;">"GPA"</span> <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"text-danger small"</span>&gt;&lt;/span&gt;</span>
-                <span style="color:#E06C75;">&lt;/div&gt;</span>
+                <span style="color:#569CD6;">&lt;div</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"mb-4"</span><span style="color:#569CD6;">&gt;</span>
+                    <span style="color:#569CD6;">&lt;label</span> <span style="color:#9CDCFE;">asp-for</span>=<span style="color:#CE9178;">"GPA"</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"form-label fw-bold text-dark"</span><span style="color:#569CD6;">&gt;</span>GPA<span style="color:#569CD6;">&lt;/label&gt;</span>
+                    <span style="color:#569CD6;">&lt;input</span> <span style="color:#9CDCFE;">asp-for</span>=<span style="color:#CE9178;">"GPA"</span> <span style="color:#9CDCFE;">type</span>=<span style="color:#CE9178;">"number"</span> <span style="color:#9CDCFE;">step</span>=<span style="color:#CE9178;">"0.01"</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"form-control"</span> <span style="color:#9CDCFE;">placeholder</span>=<span style="color:#CE9178;">"0.00 - 4.00"</span> <span style="color:#569CD6;">/&gt;</span>
+                    <span style="color:#569CD6;">&lt;span</span> <span style="color:#9CDCFE;">asp-validation-for</span>=<span style="color:#CE9178;">"GPA"</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"text-danger small"</span><span style="color:#569CD6;">&gt;&lt;/span&gt;</span>
+                <span style="color:#569CD6;">&lt;/div&gt;</span>
 
-                <span style="color:#E06C75;">&lt;button <span style="color:#D19A66;">type</span>=<span style="color:#98C379;">"submit"</span> <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"btn btn-success w-100 fw-bold py-2"</span>&gt;</span>
-                    <span style="color:#E06C75;">&lt;i <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"fa-solid fa-floppy-disk me-1"</span>&gt;&lt;/i&gt;</span> រក្សាទុកទិន្នន័យ (Submit Form)
-                <span style="color:#E06C75;">&lt;/button&gt;</span>
-            <span style="color:#E06C75;">&lt;/form&gt;</span>
-        <span style="color:#E06C75;">&lt;/div&gt;</span>
-    <span style="color:#E06C75;">&lt;/div&gt;</span>
-<span style="color:#E06C75;">&lt;/div&gt;</span>
+                <span style="color:#569CD6;">&lt;button</span> <span style="color:#9CDCFE;">type</span>=<span style="color:#CE9178;">"submit"</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"btn btn-success w-100 fw-bold py-2"</span><span style="color:#569CD6;">&gt;</span>
+                    <span style="color:#569CD6;">&lt;i</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"fa-solid fa-floppy-disk me-1"</span><span style="color:#569CD6;">&gt;&lt;/i&gt;</span> រក្សាទុកទិន្នន័យ (Submit Form)
+                <span style="color:#569CD6;">&lt;/button&gt;</span>
+            <span style="color:#569CD6;">&lt;/form&gt;</span>
+        <span style="color:#569CD6;">&lt;/div&gt;</span>
+    <span style="color:#569CD6;">&lt;/div&gt;</span>
+<span style="color:#569CD6;">&lt;/div&gt;</span>
 
-<span style="color:#C678DD;">@section</span> Scripts { <span style="color:#E06C75;">&lt;partial <span style="color:#D19A66;">name</span>=<span style="color:#98C379;">"_ValidationScriptsPartial"</span> /&gt;</span> }</pre>
+<span style="color:#569CD6;">@section</span> Scripts { <span style="color:#569CD6;">&lt;partial</span> <span style="color:#9CDCFE;">name</span>=<span style="color:#CE9178;">"_ValidationScriptsPartial"</span> <span style="color:#569CD6;">/&gt;</span> }</pre>
         </div>
     </div>
     <div class="global-footer">
@@ -702,48 +734,48 @@
         </div>
 
         <div class="code-window">
-            <div class="code-header" style="background:#881337;">
+            <div class="code-header" style="background:#252526;">
                 <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
-                <div class="code-title">Controllers/StudentApiController.cs</div>
+                <div class="code-title" style="color:#CCCCCC;">Controllers/StudentApiController.cs</div>
             </div>
-<pre><span style="color:#C678DD;">using</span> Microsoft.AspNetCore.Mvc;
-<span style="color:#C678DD;">using</span> SchoolApp.Data;
-<span style="color:#C678DD;">using</span> SchoolApp.Models;
+<pre><span style="color:#569CD6;">using</span> Microsoft.AspNetCore.Mvc;
+<span style="color:#569CD6;">using</span> SchoolApp.Data;
+<span style="color:#569CD6;">using</span> SchoolApp.Models;
 
-<span style="color:#C678DD;">namespace</span> SchoolApp.Controllers
+<span style="color:#569CD6;">namespace</span> <span style="color:#4EC9B0;">SchoolApp.Controllers</span>
 {
-    [Route(<span style="color:#98C379;">"api/[controller]"</span>)]
-    [ApiController]
-    <span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">StudentApiController</span> : ControllerBase
+    [<span style="color:#4EC9B0;">Route</span>(<span style="color:#CE9178;">"api/[controller]"</span>)]
+    [<span style="color:#4EC9B0;">ApiController</span>]
+    <span style="color:#569CD6;">public class</span> <span style="color:#4EC9B0;">StudentApiController</span> : <span style="color:#4EC9B0;">ControllerBase</span>
     {
-        <span style="color:#C678DD;">private readonly</span> SchoolDbContext _context;
-        <span style="color:#C678DD;">public</span> <span style="color:#61AFEF;">StudentApiController</span>(SchoolDbContext context) { _context = context; }
+        <span style="color:#569CD6;">private readonly</span> <span style="color:#4EC9B0;">SchoolDbContext</span> _context;
+        <span style="color:#569CD6;">public</span> <span style="color:#DCDCAA;">StudentApiController</span>(<span style="color:#4EC9B0;">SchoolDbContext</span> context) { _context = context; }
 
-        <span style="color:#5C6370;">// POST: api/StudentApi</span>
-        [HttpPost]
-        <span style="color:#C678DD;">public async</span> Task&lt;IActionResult&gt; <span style="color:#61AFEF;">CreateStudent</span>([FromBody] Student model)
+        <span style="color:#6A9955;">// POST: api/StudentApi</span>
+        [<span style="color:#4EC9B0;">HttpPost</span>]
+        <span style="color:#569CD6;">public async</span> <span style="color:#4EC9B0;">Task</span>&lt;<span style="color:#4EC9B0;">IActionResult</span>&gt; <span style="color:#DCDCAA;">CreateStudent</span>([<span style="color:#4EC9B0;">FromBody</span>] <span style="color:#4EC9B0;">Student</span> model)
         {
-            <span style="color:#5C6370;">// ១. ឆែកមើលក្រែង Client ផ្ញើ JSON ទទេមក</span>
-            <span style="color:#C678DD;">if</span> (model == <span style="color:#D19A66;">null</span>)
+            <span style="color:#6A9955;">// ១. ឆែកមើលក្រែង Client ផ្ញើ JSON ទទេមក</span>
+            <span style="color:#C586C0;">if</span> (model == <span style="color:#569CD6;">null</span>)
             {
-                <span style="color:#C678DD;">return</span> BadRequest(<span style="color:#98C379;">"ទិន្នន័យ JSON មិនអាចទទេបានឡើយ!"</span>); <span style="color:#5C6370;">// 400</span>
+                <span style="color:#C586C0;">return</span> BadRequest(<span style="color:#CE9178;">"ទិន្នន័យ JSON មិនអាចទទេបានឡើយ!"</span>); <span style="color:#6A9955;">// 400</span>
             }
 
-            <span style="color:#5C6370;">// ២. សរសេរចូល SQL Server</span>
-            <span style="color:#C678DD;">await</span> _context.Students.AddAsync(model);
-            <span style="color:#C678DD;">await</span> _context.SaveChangesAsync();
+            <span style="color:#6A9955;">// ២. សរសេរចូល SQL Server</span>
+            <span style="color:#569CD6;">await</span> _context.Students.AddAsync(model);
+            <span style="color:#569CD6;">await</span> _context.SaveChangesAsync();
 
-            <span style="color:#5C6370;">// ៣. បញ្ចេញ HTTP 201 Created ភ្ជាប់ជាមួយ URL Resource ថ្មី</span>
-            <span style="color:#C678DD;">return</span> CreatedAtAction(nameof(GetStudentById), <span style="color:#C678DD;">new</span> { id = model.Id }, model);
+            <span style="color:#6A9955;">// ៣. បញ្ចេញ HTTP 201 Created ភ្ជាប់ជាមួយ URL Resource ថ្មី</span>
+            <span style="color:#C586C0;">return</span> CreatedAtAction(<span style="color:#569CD6;">nameof</span>(GetStudentById), <span style="color:#569CD6;">new</span> { id = model.Id }, model);
         }
 
-        <span style="color:#5C6370;">// GET: api/StudentApi/5 (សម្រាប់ប្រើជាមួយ CreatedAtAction)</span>
-        [HttpGet(<span style="color:#98C379;">"{id}"</span>)]
-        <span style="color:#C678DD;">public async</span> Task&lt;IActionResult&gt; <span style="color:#61AFEF;">GetStudentById</span>(<span style="color:#C678DD;">int</span> id)
+        <span style="color:#6A9955;">// GET: api/StudentApi/5 (សម្រាប់ប្រើជាមួយ CreatedAtAction)</span>
+        [<span style="color:#4EC9B0;">HttpGet</span>(<span style="color:#CE9178;">"{id}"</span>)]
+        <span style="color:#569CD6;">public async</span> <span style="color:#4EC9B0;">Task</span>&lt;<span style="color:#4EC9B0;">IActionResult</span>&gt; <span style="color:#DCDCAA;">GetStudentById</span>(<span style="color:#569CD6;">int</span> id)
         {
-            <span style="color:#C678DD;">var</span> student = <span style="color:#C678DD;">await</span> _context.Students.FindAsync(id);
-            <span style="color:#C678DD;">if</span> (student == <span style="color:#D19A66;">null</span>) <span style="color:#C678DD;">return</span> NotFound();
-            <span style="color:#C678DD;">return</span> Ok(student);
+            <span style="color:#569CD6;">var</span> student = <span style="color:#569CD6;">await</span> _context.Students.FindAsync(id);
+            <span style="color:#C586C0;">if</span> (student == <span style="color:#569CD6;">null</span>) <span style="color:#C586C0;">return</span> NotFound();
+            <span style="color:#C586C0;">return</span> Ok(student);
         }
     }
 }</pre>
@@ -785,14 +817,14 @@
         </div>
 
         <div class="code-window">
-            <div class="code-header" style="background:#1E293B;">
+            <div class="code-header" style="background:#252526;">
                 <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
-                <div class="code-title">Swagger Request Body (JSON Sample)</div>
+                <div class="code-title" style="color:#CCCCCC;">Swagger Request Body (JSON Sample)</div>
             </div>
 <pre>{
-  <span style="color:#E06C75;">"fullName"</span>: <span style="color:#98C379;">"សុខ ចាន់នី"</span>,
-  <span style="color:#E06C75;">"gender"</span>: <span style="color:#98C379;">"ស្រី"</span>,
-  <span style="color:#E06C75;">"gpa"</span>: <span style="color:#D19A66;">3.75</span>
+  <span style="color:#9CDCFE;">"fullName"</span>: <span style="color:#CE9178;">"សុខ ចាន់នី"</span>,
+  <span style="color:#9CDCFE;">"gender"</span>: <span style="color:#CE9178;">"ស្រី"</span>,
+  <span style="color:#9CDCFE;">"gpa"</span>: <span style="color:#B5CEA8;">3.75</span>
 }</pre>
         </div>
 
@@ -825,105 +857,105 @@
         </div>
 
         <div class="code-window">
-            <div class="code-header" style="background:#881337;">
+            <div class="code-header" style="background:#252526;">
                 <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
-                <div class="code-title">index.html (Decoupled JS Fetch POST Client)</div>
+                <div class="code-title" style="color:#CCCCCC;">index.html (Decoupled JS Fetch POST Client)</div>
             </div>
-<pre><span style="color:#C678DD;">&lt;!DOCTYPE html&gt;</span>
-<span style="color:#E06C75;">&lt;html <span style="color:#D19A66;">lang</span>=<span style="color:#98C379;">"km"</span>&gt;</span>
-<span style="color:#E06C75;">&lt;head&gt;</span>
-    <span style="color:#E06C75;">&lt;meta <span style="color:#D19A66;">charset</span>=<span style="color:#98C379;">"UTF-8"</span>&gt;</span>
-    <span style="color:#E06C75;">&lt;title&gt;</span>Student API - Data Insertion (POST)<span style="color:#E06C75;">&lt;/title&gt;</span>
-    <span style="color:#E06C75;">&lt;link <span style="color:#D19A66;">href</span>=<span style="color:#98C379;">"https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"</span> <span style="color:#D19A66;">rel</span>=<span style="color:#98C379;">"stylesheet"</span>&gt;</span>
-    <span style="color:#E06C75;">&lt;link <span style="color:#D19A66;">rel</span>=<span style="color:#98C379;">"stylesheet"</span> <span style="color:#D19A66;">href</span>=<span style="color:#98C379;">"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"</span>&gt;</span>
-<span style="color:#E06C75;">&lt;/head&gt;</span>
-<span style="color:#E06C75;">&lt;body <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"bg-light p-4"</span>&gt;</span>
-    <span style="color:#E06C75;">&lt;div <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"container"</span> <span style="color:#D19A66;">style</span>=<span style="color:#98C379;">"max-width: 650px;"</span>&gt;</span>
-        <span style="color:#E06C75;">&lt;div <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"card shadow-lg border-0 rounded-4 overflow-hidden"</span>&gt;</span>
-            <span style="color:#E06C75;">&lt;div <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"card-header bg-danger text-white p-3 d-flex align-items-center justify-content-between"</span>&gt;</span>
-                <span style="color:#E06C75;">&lt;h5 <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"m-0 fw-bold"</span>&gt;&lt;i <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"fa-solid fa-paper-plane me-2"</span>&gt;&lt;/i&gt;</span>បន្ថែមនិស្សិត (JS Fetch API)<span style="color:#E06C75;">&lt;/h5&gt;</span>
-                <span style="color:#E06C75;">&lt;span <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"badge bg-white text-danger fw-bold"</span>&gt;</span>POST /api/StudentApi<span style="color:#E06C75;">&lt;/span&gt;</span>
-            <span style="color:#E06C75;">&lt;/div&gt;</span>
-            <span style="color:#E06C75;">&lt;div <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"card-body p-4"</span>&gt;</span>
-                <span style="color:#5C6370;">&lt;!-- Dynamic Alert Box --&gt;</span>
-                <span style="color:#E06C75;">&lt;div <span style="color:#D19A66;">id</span>=<span style="color:#98C379;">"statusAlert"</span> <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"alert alert-secondary d-none d-flex align-items-center"</span>&gt;&lt;/div&gt;</span>
+<pre><span style="color:#569CD6;">&lt;!DOCTYPE html&gt;</span>
+<span style="color:#569CD6;">&lt;html</span> <span style="color:#9CDCFE;">lang</span>=<span style="color:#CE9178;">"km"</span><span style="color:#569CD6;">&gt;</span>
+<span style="color:#569CD6;">&lt;head&gt;</span>
+    <span style="color:#569CD6;">&lt;meta</span> <span style="color:#9CDCFE;">charset</span>=<span style="color:#CE9178;">"UTF-8"</span><span style="color:#569CD6;">&gt;</span>
+    <span style="color:#569CD6;">&lt;title&gt;</span>Student API - Data Insertion (POST)<span style="color:#569CD6;">&lt;/title&gt;</span>
+    <span style="color:#569CD6;">&lt;link</span> <span style="color:#9CDCFE;">href</span>=<span style="color:#CE9178;">"https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"</span> <span style="color:#9CDCFE;">rel</span>=<span style="color:#CE9178;">"stylesheet"</span><span style="color:#569CD6;">&gt;</span>
+    <span style="color:#569CD6;">&lt;link</span> <span style="color:#9CDCFE;">rel</span>=<span style="color:#CE9178;">"stylesheet"</span> <span style="color:#9CDCFE;">href</span>=<span style="color:#CE9178;">"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"</span><span style="color:#569CD6;">&gt;</span>
+<span style="color:#569CD6;">&lt;/head&gt;</span>
+<span style="color:#569CD6;">&lt;body</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"bg-light p-4"</span><span style="color:#569CD6;">&gt;</span>
+    <span style="color:#569CD6;">&lt;div</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"container"</span> <span style="color:#9CDCFE;">style</span>=<span style="color:#CE9178;">"max-width: 650px;"</span><span style="color:#569CD6;">&gt;</span>
+        <span style="color:#569CD6;">&lt;div</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"card shadow-lg border-0 rounded-4 overflow-hidden"</span><span style="color:#569CD6;">&gt;</span>
+            <span style="color:#569CD6;">&lt;div</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"card-header bg-danger text-white p-3 d-flex align-items-center justify-content-between"</span><span style="color:#569CD6;">&gt;</span>
+                <span style="color:#569CD6;">&lt;h5</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"m-0 fw-bold"</span><span style="color:#569CD6;">&gt;&lt;i</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"fa-solid fa-paper-plane me-2"</span><span style="color:#569CD6;">&gt;&lt;/i&gt;</span>បន្ថែមនិស្សិត (JS Fetch API)<span style="color:#569CD6;">&lt;/h5&gt;</span>
+                <span style="color:#569CD6;">&lt;span</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"badge bg-white text-danger fw-bold"</span><span style="color:#569CD6;">&gt;</span>POST /api/StudentApi<span style="color:#569CD6;">&lt;/span&gt;</span>
+            <span style="color:#569CD6;">&lt;/div&gt;</span>
+            <span style="color:#569CD6;">&lt;div</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"card-body p-4"</span><span style="color:#569CD6;">&gt;</span>
+                <span style="color:#6A9955;">&lt;!-- Dynamic Alert Box --&gt;</span>
+                <span style="color:#569CD6;">&lt;div</span> <span style="color:#9CDCFE;">id</span>=<span style="color:#CE9178;">"statusAlert"</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"alert alert-secondary d-none d-flex align-items-center"</span><span style="color:#569CD6;">&gt;&lt;/div&gt;</span>
 
-                <span style="color:#E06C75;">&lt;form <span style="color:#D19A66;">id</span>=<span style="color:#98C379;">"studentForm"</span>&gt;</span>
-                    <span style="color:#E06C75;">&lt;div <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"mb-3"</span>&gt;</span>
-                        <span style="color:#E06C75;">&lt;label <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"form-label fw-bold"</span>&gt;</span>ឈ្មោះពេញនិស្សិត<span style="color:#E06C75;">&lt;/label&gt;</span>
-                        <span style="color:#E06C75;">&lt;input <span style="color:#D19A66;">type</span>=<span style="color:#98C379;">"text"</span> <span style="color:#D19A66;">id</span>=<span style="color:#98C379;">"txtFullName"</span> <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"form-control"</span> <span style="color:#D19A66;">placeholder</span>=<span style="color:#98C379;">"បញ្ចូលឈ្មោះពេញ"</span> <span style="color:#D19A66;">required</span> /&gt;</span>
-                    <span style="color:#E06C75;">&lt;/div&gt;</span>
-                    <span style="color:#E06C75;">&lt;div <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"mb-3"</span>&gt;</span>
-                        <span style="color:#E06C75;">&lt;label <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"form-label fw-bold"</span>&gt;</span>ភេទ<span style="color:#E06C75;">&lt;/label&gt;</span>
-                        <span style="color:#E06C75;">&lt;select <span style="color:#D19A66;">id</span>=<span style="color:#98C379;">"ddlGender"</span> <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"form-select"</span> <span style="color:#D19A66;">required</span>&gt;</span>
-                            <span style="color:#E06C75;">&lt;option <span style="color:#D19A66;">value</span>=<span style="color:#98C379;">"ប្រុស"</span>&gt;</span>ប្រុស<span style="color:#E06C75;">&lt;/option&gt;</span>
-                            <span style="color:#E06C75;">&lt;option <span style="color:#D19A66;">value</span>=<span style="color:#98C379;">"ស្រី"</span>&gt;</span>ស្រី<span style="color:#E06C75;">&lt;/option&gt;</span>
-                        <span style="color:#E06C75;">&lt;/select&gt;</span>
-                    <span style="color:#E06C75;">&lt;/div&gt;</span>
-                    <span style="color:#E06C75;">&lt;div <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"mb-4"</span>&gt;</span>
-                        <span style="color:#E06C75;">&lt;label <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"form-label fw-bold"</span>&gt;</span>GPA<span style="color:#E06C75;">&lt;/label&gt;</span>
-                        <span style="color:#E06C75;">&lt;input <span style="color:#D19A66;">type</span>=<span style="color:#98C379;">"number"</span> <span style="color:#D19A66;">step</span>=<span style="color:#98C379;">"0.01"</span> <span style="color:#D19A66;">id</span>=<span style="color:#98C379;">"txtGPA"</span> <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"form-control"</span> <span style="color:#D19A66;">placeholder</span>=<span style="color:#98C379;">"0.00 - 4.00"</span> <span style="color:#D19A66;">required</span> /&gt;</span>
-                    <span style="color:#E06C75;">&lt;/div&gt;</span>
-                    <span style="color:#E06C75;">&lt;button <span style="color:#D19A66;">type</span>=<span style="color:#98C379;">"submit"</span> <span style="color:#D19A66;">id</span>=<span style="color:#98C379;">"btnSubmit"</span> <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"btn btn-danger w-100 fw-bold py-2"</span>&gt;</span>
-                        <span style="color:#E06C75;">&lt;i <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"fa-solid fa-floppy-disk me-1"</span>&gt;&lt;/i&gt;</span> រក្សាទុកទិន្នន័យ (Fetch POST)
-                    <span style="color:#E06C75;">&lt;/button&gt;</span>
-                <span style="color:#E06C75;">&lt;/form&gt;</span>
-            <span style="color:#E06C75;">&lt;/div&gt;</span>
-        <span style="color:#E06C75;">&lt;/div&gt;</span>
-    <span style="color:#E06C75;">&lt;/div&gt;</span>
+                <span style="color:#569CD6;">&lt;form</span> <span style="color:#9CDCFE;">id</span>=<span style="color:#CE9178;">"studentForm"</span><span style="color:#569CD6;">&gt;</span>
+                    <span style="color:#569CD6;">&lt;div</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"mb-3"</span><span style="color:#569CD6;">&gt;</span>
+                        <span style="color:#569CD6;">&lt;label</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"form-label fw-bold"</span><span style="color:#569CD6;">&gt;</span>ឈ្មោះពេញនិស្សិត<span style="color:#569CD6;">&lt;/label&gt;</span>
+                        <span style="color:#569CD6;">&lt;input</span> <span style="color:#9CDCFE;">type</span>=<span style="color:#CE9178;">"text"</span> <span style="color:#9CDCFE;">id</span>=<span style="color:#CE9178;">"txtFullName"</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"form-control"</span> <span style="color:#9CDCFE;">placeholder</span>=<span style="color:#CE9178;">"បញ្ចូលឈ្មោះពេញ"</span> <span style="color:#9CDCFE;">required</span> <span style="color:#569CD6;">/&gt;</span>
+                    <span style="color:#569CD6;">&lt;/div&gt;</span>
+                    <span style="color:#569CD6;">&lt;div</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"mb-3"</span><span style="color:#569CD6;">&gt;</span>
+                        <span style="color:#569CD6;">&lt;label</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"form-label fw-bold"</span><span style="color:#569CD6;">&gt;</span>ភេទ<span style="color:#569CD6;">&lt;/label&gt;</span>
+                        <span style="color:#569CD6;">&lt;select</span> <span style="color:#9CDCFE;">id</span>=<span style="color:#CE9178;">"ddlGender"</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"form-select"</span> <span style="color:#9CDCFE;">required</span><span style="color:#569CD6;">&gt;</span>
+                            <span style="color:#569CD6;">&lt;option</span> <span style="color:#9CDCFE;">value</span>=<span style="color:#CE9178;">"ប្រុស"</span><span style="color:#569CD6;">&gt;</span>ប្រុស<span style="color:#569CD6;">&lt;/option&gt;</span>
+                            <span style="color:#569CD6;">&lt;option</span> <span style="color:#9CDCFE;">value</span>=<span style="color:#CE9178;">"ស្រី"</span><span style="color:#569CD6;">&gt;</span>ស្រី<span style="color:#569CD6;">&lt;/option&gt;</span>
+                        <span style="color:#569CD6;">&lt;/select&gt;</span>
+                    <span style="color:#569CD6;">&lt;/div&gt;</span>
+                    <span style="color:#569CD6;">&lt;div</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"mb-4"</span><span style="color:#569CD6;">&gt;</span>
+                        <span style="color:#569CD6;">&lt;label</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"form-label fw-bold"</span><span style="color:#569CD6;">&gt;</span>GPA<span style="color:#569CD6;">&lt;/label&gt;</span>
+                        <span style="color:#569CD6;">&lt;input</span> <span style="color:#9CDCFE;">type</span>=<span style="color:#CE9178;">"number"</span> <span style="color:#9CDCFE;">step</span>=<span style="color:#CE9178;">"0.01"</span> <span style="color:#9CDCFE;">id</span>=<span style="color:#CE9178;">"txtGPA"</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"form-control"</span> <span style="color:#9CDCFE;">placeholder</span>=<span style="color:#CE9178;">"0.00 - 4.00"</span> <span style="color:#9CDCFE;">required</span> <span style="color:#569CD6;">/&gt;</span>
+                    <span style="color:#569CD6;">&lt;/div&gt;</span>
+                    <span style="color:#569CD6;">&lt;button</span> <span style="color:#9CDCFE;">type</span>=<span style="color:#CE9178;">"submit"</span> <span style="color:#9CDCFE;">id</span>=<span style="color:#CE9178;">"btnSubmit"</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"btn btn-danger w-100 fw-bold py-2"</span><span style="color:#569CD6;">&gt;</span>
+                        <span style="color:#569CD6;">&lt;i</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"fa-solid fa-floppy-disk me-1"</span><span style="color:#569CD6;">&gt;&lt;/i&gt;</span> រក្សាទុកទិន្នន័យ (Fetch POST)
+                    <span style="color:#569CD6;">&lt;/button&gt;</span>
+                <span style="color:#569CD6;">&lt;/form&gt;</span>
+            <span style="color:#569CD6;">&lt;/div&gt;</span>
+        <span style="color:#569CD6;">&lt;/div&gt;</span>
+    <span style="color:#569CD6;">&lt;/div&gt;</span>
 
-    <span style="color:#E06C75;">&lt;script&gt;</span>
-        <span style="color:#C678DD;">const</span> apiUrl = <span style="color:#98C379;">'https://localhost:7123/api/StudentApi'</span>;
-        <span style="color:#C678DD;">const</span> form = document.getElementById(<span style="color:#98C379;">'studentForm'</span>);
-        <span style="color:#C678DD;">const</span> btnSubmit = document.getElementById(<span style="color:#98C379;">'btnSubmit'</span>);
-        <span style="color:#C678DD;">const</span> alertBox = document.getElementById(<span style="color:#98C379;">'statusAlert'</span>);
+    <span style="color:#569CD6;">&lt;script&gt;</span>
+        <span style="color:#569CD6;">const</span> apiUrl = <span style="color:#CE9178;">'https://localhost:7123/api/StudentApi'</span>;
+        <span style="color:#569CD6;">const</span> form = document.getElementById(<span style="color:#CE9178;">'studentForm'</span>);
+        <span style="color:#569CD6;">const</span> btnSubmit = document.getElementById(<span style="color:#CE9178;">'btnSubmit'</span>);
+        <span style="color:#569CD6;">const</span> alertBox = document.getElementById(<span style="color:#CE9178;">'statusAlert'</span>);
 
-        form.addEventListener(<span style="color:#98C379;">'submit'</span>, <span style="color:#C678DD;">async function</span>(e) {
-            e.preventDefault(); <span style="color:#5C6370;">// ១. បញ្ឈប់ការ Refresh ទំព័រ</span>
+        form.addEventListener(<span style="color:#CE9178;">'submit'</span>, <span style="color:#569CD6;">async function</span>(e) {
+            e.preventDefault(); <span style="color:#6A9955;">// ១. បញ្ឈប់ការ Refresh ទំព័រ</span>
             
-            <span style="color:#5C6370;">// ២. UI Loading State</span>
-            btnSubmit.disabled = <span style="color:#D19A66;">true</span>;
-            btnSubmit.innerHTML = <span style="color:#98C379;">'&lt;i class="fa-solid fa-spinner fa-spin me-1"&gt;&lt;/i&gt; កំពុងរក្សាទុក...'</span>;
-            alertBox.className = <span style="color:#98C379;">"alert alert-info d-flex align-items-center"</span>;
-            alertBox.innerHTML = <span style="color:#98C379;">'&lt;i class="fa-solid fa-circle-notch fa-spin me-2"&gt;&lt;/i&gt; កំពុងផ្ញើទិន្នន័យ JSON ទៅកាន់ Web API...'</span>;
+            <span style="color:#6A9955;">// ២. UI Loading State</span>
+            btnSubmit.disabled = <span style="color:#569CD6;">true</span>;
+            btnSubmit.innerHTML = <span style="color:#CE9178;">'&lt;i class="fa-solid fa-spinner fa-spin me-1"&gt;&lt;/i&gt; កំពុងរក្សាទុក...'</span>;
+            alertBox.className = <span style="color:#CE9178;">"alert alert-info d-flex align-items-center"</span>;
+            alertBox.innerHTML = <span style="color:#CE9178;">'&lt;i class="fa-solid fa-circle-notch fa-spin me-2"&gt;&lt;/i&gt; កំពុងផ្ញើទិន្នន័យ JSON ទៅកាន់ Web API...'</span>;
 
-            <span style="color:#5C6370;">// ៣. ប្រមូលទិន្នន័យពី Form ធ្វើជា JS Object</span>
-            <span style="color:#C678DD;">const</span> payload = {
-                fullName: document.getElementById(<span style="color:#98C379;">'txtFullName'</span>).value,
-                gender: document.getElementById(<span style="color:#98C379;">'ddlGender'</span>).value,
-                gpa: parseFloat(document.getElementById(<span style="color:#98C379;">'txtGPA'</span>).value)
+            <span style="color:#6A9955;">// ៣. ប្រមូលទិន្នន័យពី Form ធ្វើជា JS Object</span>
+            <span style="color:#569CD6;">const</span> payload = {
+                fullName: document.getElementById(<span style="color:#CE9178;">'txtFullName'</span>).value,
+                gender: document.getElementById(<span style="color:#CE9178;">'ddlGender'</span>).value,
+                gpa: parseFloat(document.getElementById(<span style="color:#CE9178;">'txtGPA'</span>).value)
             };
 
-            <span style="color:#C678DD;">try</span> {
-                <span style="color:#5C6370;">// ៤. ផ្ញើ Fetch POST Request ទៅ Web API</span>
-                <span style="color:#C678DD;">const</span> res = <span style="color:#C678DD;">await</span> fetch(apiUrl, {
-                    method: <span style="color:#98C379;">'POST'</span>,
-                    headers: { <span style="color:#98C379;">'Content-Type'</span>: <span style="color:#98C379;">'application/json'</span> },
+            <span style="color:#C586C0;">try</span> {
+                <span style="color:#6A9955;">// ៤. ផ្ញើ Fetch POST Request ទៅ Web API</span>
+                <span style="color:#569CD6;">const</span> res = <span style="color:#569CD6;">await</span> fetch(apiUrl, {
+                    method: <span style="color:#CE9178;">'POST'</span>,
+                    headers: { <span style="color:#CE9178;">'Content-Type'</span>: <span style="color:#CE9178;">'application/json'</span> },
                     body: JSON.stringify(payload)
                 });
 
-                <span style="color:#C678DD;">if</span> (res.status === <span style="color:#D19A66;">201</span>) {
-                    <span style="color:#C678DD;">const</span> created = <span style="color:#C678DD;">await</span> res.json();
-                    alertBox.className = <span style="color:#98C379;">"alert alert-success d-flex align-items-center"</span>;
-                    alertBox.innerHTML = <span style="color:#98C379;">`&lt;i class="fa-solid fa-circle-check me-2"&gt;&lt;/i&gt; រក្សាទុកជោគជ័យ! អត្តលេខនិស្សិតថ្មីគឺ &lt;b&gt;#${created.id}&lt;/b&gt;`</span>;
+                <span style="color:#C586C0;">if</span> (res.status === <span style="color:#B5CEA8;">201</span>) {
+                    <span style="color:#569CD6;">const</span> created = <span style="color:#569CD6;">await</span> res.json();
+                    alertBox.className = <span style="color:#CE9178;">"alert alert-success d-flex align-items-center"</span>;
+                    alertBox.innerHTML = <span style="color:#CE9178;">`&lt;i class="fa-solid fa-circle-check me-2"&gt;&lt;/i&gt; រក្សាទុកជោគជ័យ! អត្តលេខនិស្សិតថ្មីគឺ &lt;b&gt;#${created.id}&lt;/b&gt;`</span>;
                     form.reset();
-                } <span style="color:#C678DD;">else if</span> (res.status === <span style="color:#D19A66;">400</span>) {
-                    alertBox.className = <span style="color:#98C379;">"alert alert-warning d-flex align-items-center"</span>;
-                    alertBox.innerHTML = <span style="color:#98C379;">`&lt;i class="fa-solid fa-triangle-exclamation me-2"&gt;&lt;/i&gt; ទិន្នន័យមិនត្រឹមត្រូវ (400 Bad Request)`</span>;
-                } <span style="color:#C678DD;">else</span> {
-                    <span style="color:#C678DD;">throw new</span> Error(<span style="color:#98C379;">`HTTP Status Code: ${res.status}`</span>);
+                } <span style="color:#C586C0;">else if</span> (res.status === <span style="color:#B5CEA8;">400</span>) {
+                    alertBox.className = <span style="color:#CE9178;">"alert alert-warning d-flex align-items-center"</span>;
+                    alertBox.innerHTML = <span style="color:#CE9178;">`&lt;i class="fa-solid fa-triangle-exclamation me-2"&gt;&lt;/i&gt; ទិន្នន័យមិនត្រឹមត្រូវ (400 Bad Request)`</span>;
+                } <span style="color:#C586C0;">else</span> {
+                    <span style="color:#C586C0;">throw new</span> Error(<span style="color:#CE9178;">`HTTP Status Code: ${res.status}`</span>);
                 }
-            } <span style="color:#C678DD;">catch</span> (err) {
-                alertBox.className = <span style="color:#98C379;">"alert alert-danger d-flex align-items-center"</span>;
-                alertBox.innerHTML = <span style="color:#98C379;">`&lt;i class="fa-solid fa-circle-xmark me-2"&gt;&lt;/i&gt; បរាជ័យក្នុងការតភ្ជាប់៖ ${err.message}`</span>;
-            } <span style="color:#C678DD;">finally</span> {
-                btnSubmit.disabled = <span style="color:#D19A66;">false</span>;
-                btnSubmit.innerHTML = <span style="color:#98C379;">'&lt;i class="fa-solid fa-floppy-disk me-1"&gt;&lt;/i&gt; រក្សាទុកទិន្នន័យ (Fetch POST)'</span>;
+            } <span style="color:#C586C0;">catch</span> (err) {
+                alertBox.className = <span style="color:#CE9178;">"alert alert-danger d-flex align-items-center"</span>;
+                alertBox.innerHTML = <span style="color:#CE9178;">`&lt;i class="fa-solid fa-circle-xmark me-2"&gt;&lt;/i&gt; បរាជ័យក្នុងការតភ្ជាប់៖ ${err.message}`</span>;
+            } <span style="color:#C586C0;">finally</span> {
+                btnSubmit.disabled = <span style="color:#569CD6;">false</span>;
+                btnSubmit.innerHTML = <span style="color:#CE9178;">'&lt;i class="fa-solid fa-floppy-disk me-1"&gt;&lt;/i&gt; រក្សាទុកទិន្នន័យ (Fetch POST)'</span>;
             }
         });
-    <span style="color:#E06C75;">&lt;/script&gt;</span>
-<span style="color:#E06C75;">&lt;/body&gt;</span>
-<span style="color:#E06C75;">&lt;/html&gt;</span></pre>
+    <span style="color:#569CD6;">&lt;/script&gt;</span>
+<span style="color:#569CD6;">&lt;/body&gt;</span>
+<span style="color:#569CD6;">&lt;/html&gt;</span></pre>
         </div>
     </div>
     <div class="global-footer">
@@ -958,12 +990,12 @@
         </div>
 
         <div class="code-window">
-            <div class="code-header">
+            <div class="code-header" style="background:#252526;">
                 <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
-                <div class="code-title">Views/Student/Create.cshtml (បាតទំព័រ)</div>
+                <div class="code-title" style="color:#CCCCCC;">Views/Student/Create.cshtml (បាតទំព័រ)</div>
             </div>
-<pre><span style="color:#C678DD;">@section</span> Scripts {
-    <span style="color:#E06C75;">&lt;partial <span style="color:#D19A66;">name</span>=<span style="color:#98C379;">"_ValidationScriptsPartial"</span> /&gt;</span>
+<pre><span style="color:#569CD6;">@section</span> Scripts {
+    <span style="color:#569CD6;">&lt;partial</span> <span style="color:#9CDCFE;">name</span>=<span style="color:#CE9178;">"_ValidationScriptsPartial"</span> <span style="color:#569CD6;">/&gt;</span>
 }</pre>
         </div>
 
@@ -976,19 +1008,19 @@
         </div>
 
         <div class="code-window">
-            <div class="code-header">
+            <div class="code-header" style="background:#252526;">
                 <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
-                <div class="code-title">JS Submit Lock Strategy</div>
+                <div class="code-title" style="color:#CCCCCC;">JS Submit Lock Strategy</div>
             </div>
-<pre><span style="color:#C678DD;">const</span> btnSubmit = document.getElementById(<span style="color:#98C379;">'btnSubmit'</span>);
-btnSubmit.disabled = <span style="color:#D19A66;">true</span>; <span style="color:#5C6370;">// បិទប៊ូតុងភ្លាមៗ</span>
-btnSubmit.innerText = <span style="color:#98C379;">"កំពុងរក្សាទុក..."</span>;
+<pre><span style="color:#569CD6;">const</span> btnSubmit = document.getElementById(<span style="color:#CE9178;">'btnSubmit'</span>);
+btnSubmit.disabled = <span style="color:#569CD6;">true</span>; <span style="color:#6A9955;">// បិទប៊ូតុងភ្លាមៗ</span>
+btnSubmit.innerText = <span style="color:#CE9178;">"កំពុងរក្សាទុក..."</span>;
 
-<span style="color:#C678DD;">try</span> {
-    <span style="color:#5C6370;">// ... ដំណើរការ Fetch POST ...</span>
-} <span style="color:#C678DD;">finally</span> {
-    btnSubmit.disabled = <span style="color:#D19A66;">false</span>; <span style="color:#5C6370;">// បើកប៊ូតុងវិញ មិនថាជោគជ័យឬបរាជ័យ</span>
-    btnSubmit.innerText = <span style="color:#98C379;">"រក្សាទុក (Fetch POST)"</span>;
+<span style="color:#C586C0;">try</span> {
+    <span style="color:#6A9955;">// ... ដំណើរការ Fetch POST ...</span>
+} <span style="color:#C586C0;">finally</span> {
+    btnSubmit.disabled = <span style="color:#569CD6;">false</span>; <span style="color:#6A9955;">// បើកប៊ូតុងវិញ មិនថាជោគជ័យឬបរាជ័យ</span>
+    btnSubmit.innerText = <span style="color:#CE9178;">"រក្សាទុក (Fetch POST)"</span>;
 }</pre>
         </div>
     </div>
@@ -1314,29 +1346,50 @@ btnSubmit.innerText = <span style="color:#98C379;">"កំពុងរក្ស�
             <span><i class="fa-solid fa-laptop-code"></i> ៨.១០ លំហាត់អនុវត្តន៍ឌុយអាល់ (Dual-Track Practical Exercises)</span>
             <span class="bloom-badge bloom-l6">6. Create</span>
         </div>
-        <p style="font-size:9.5pt; margin-bottom:12px;">
-            <b>គោលបំណង៖</b> និស្សិតត្រូវអភិវឌ្ឍន៍ **Module គ្រប់គ្រងអ្នកផ្គត់ផ្គង់ (Suppliers Management System)** ដោយប្រើប្រាស់ស្ថាបត្យកម្មទាំងពីរស្របគ្នាក្នុង Project តែមួយ ផ្អែកលើ Entity <code>Supplier (Id, CompanyName, PhoneNumber, Email)</code>៖
+        <p style="font-size:9.5pt; margin-bottom:10px;">
+            <b>គោលបំណង៖</b> និស្សិតត្រូវអភិវឌ្ឍន៍ **Module គ្រប់គ្រងអ្នកផ្គត់ផ្គង់ (Suppliers Management System)** ដោយសរសេរកូដពេញលេញតាមដំណាក់កាល ផ្អែកលើ Entity <code>Supplier (Id, CompanyName, PhoneNumber, Email)</code>៖
         </p>
 
-        <div class="section-title" style="color:var(--mvc-color); border-color:var(--mvc-color); font-size:10.5pt; margin-bottom: 5px;">
-            <div class="section-title-left"><i class="fa-solid fa-window-restore"></i> ភាគទី ១ (Part 1): បញ្ចូលទិន្នន័យតាម Traditional MVC (SSR)</div>
-            <span class="bloom-badge bloom-l3">Track A</span>
+        <div style="background:var(--bg-light); border:1px solid var(--border-dark); border-radius:6px; padding:10px; margin-bottom:10px;">
+            <div style="font-weight:bold; color:var(--accent); font-size:9.5pt; margin-bottom:4px;">
+                <i class="fa-solid fa-folder-tree"></i> រចនាសម្ព័ន្ធ File ដែលត្រូវបង្កើត (Exact Project File Structure):
+            </div>
+            <pre style="background:transparent; color:var(--text-main); font-size:8pt; padding:0;">
+SchoolApp/
+ ├── Models/
+ │    └── Supplier.cs                         <span style="color:var(--text-muted);">(Step 1: Entity Class with Validation)</span>
+ ├── Data/
+ │    └── SchoolDbContext.cs                  <span style="color:var(--text-muted);">(Step 2: Add DbSet&lt;Supplier&gt;)</span>
+ ├── Controllers/
+ │    ├── SupplierController.cs               <span style="color:var(--text-muted);">(Step 3: Track A MVC Controller)</span>
+ │    └── Api/
+ │         └── SupplierApiController.cs      <span style="color:var(--text-muted);">(Step 5: Track B API Controller)</span>
+ ├── Views/
+ │    └── Supplier/
+ │         └── Create.cshtml                  <span style="color:var(--text-muted);">(Step 4: Track A Razor View Form)</span>
+ ├── wwwroot/
+ │    └── suppliers.html                      <span style="color:var(--text-muted);">(Step 6: Track B JS Fetch POST Client)</span>
+ └── Program.cs                               <span style="color:var(--text-muted);">(Step 7: Dual-Track Route & CORS Setup)</span></pre>
         </div>
-        
-        <ul class="obj-list" style="margin-top:0; margin-bottom:12px;">
-            <li><b>កិច្ចការទី ១៖</b> បង្កើត <code>Supplier.cs</code> Model អមជាមួយ Validation Attributes (<code>[Required]</code>, <code>[EmailAddress]</code>)។</li>
-            <li><b>កិច្ចការទី ២៖</b> បង្កើត <code>SupplierController.cs</code> ដែលមាន Action `[HttpGet] Create()` និង `[HttpPost] Create(Supplier model)` ជាមួយ `ModelState.IsValid` និង Antiforgery Validation។</li>
-            <li><b>កិច្ចការទី ៣៖</b> បង្កើត <code>Views/Supplier/Create.cshtml</code> ប្រើប្រាស់ Tag Helpers និងប្រព័ន្ធដកស្រង់សារ Error បង្ហាញលើ UI។</li>
+
+        <div class="section-title" style="color:var(--mvc-color); border-color:var(--mvc-color); font-size:10pt; margin-bottom: 4px;">
+            <div class="section-title-left"><i class="fa-solid fa-window-restore"></i> ភាគទី ១ (Part 1): Track A - Traditional MVC Setup</div>
+            <span class="bloom-badge bloom-l3">SSR Track</span>
+        </div>
+        <ul class="obj-list" style="margin-top:0; margin-bottom:8px; font-size:9pt;">
+            <li><b>ជំហានទី ១៖</b> បង្កើត Class <code>Models/Supplier.cs</code> មាន properties: <code>Id, CompanyName, PhoneNumber, Email</code> ជាមួយ Validation Annotations (<code>[Required]</code>, <code>[EmailAddress]</code>)។</li>
+            <li><b>ជំហានទី ២៖</b> បន្ថែម <code>DbSet&lt;Supplier&gt; Suppliers</code> ទៅក្នុង <code>Data/SchoolDbContext.cs</code>។</li>
+            <li><b>ជំហានទី ៣៖</b> បង្កើត <code>Controllers/SupplierController.cs</code> មាន Action <code>[HttpGet] Create()</code> និង <code>[HttpPost] Create(Supplier model)</code> ភ្ជាប់ជាមួយ <code>[ValidateAntiForgeryToken]</code>។</li>
+            <li><b>ជំហានទី ៤៖</b> បង្កើត <code>Views/Supplier/Create.cshtml</code> ប្រើប្រាស់ Bootstrap 5, Tag Helpers, និង jQuery Validation Scripts។</li>
         </ul>
 
-        <div class="section-title" style="color:var(--api-color); border-color:var(--api-color); font-size:10.5pt; margin-bottom: 5px; margin-top: 10px;">
-            <div class="section-title-left"><i class="fa-solid fa-network-wired"></i> ភាគទី ២ (Part 2): បញ្ចូលទិន្នន័យតាម Decoupled Web API (CSR)</div>
-            <span class="bloom-badge bloom-l6">Track B</span>
+        <div class="section-title" style="color:var(--api-color); border-color:var(--api-color); font-size:10pt; margin-bottom: 4px; margin-top: 6px;">
+            <div class="section-title-left"><i class="fa-solid fa-network-wired"></i> ភាគទី ២ (Part 2): Track B - Decoupled Web API & JS Fetch POST Setup</div>
+            <span class="bloom-badge bloom-l6">CSR Track</span>
         </div>
-
-        <ul class="obj-list" style="margin-top:0; margin-bottom:12px;">
-            <li><b>កិច្ចការទី ៤៖</b> បង្កើត <code>SupplierApiController.cs</code> ភ្ជាប់ Attribute `[ApiController]` និង Action `[HttpPost] CreateSupplier([FromBody] Supplier model)` ដែលត្រឡប់ `201 CreatedAtAction`។</li>
-            <li><b>កិច្ចការទី ៥៖</b> បង្កើត <code>suppliers.html</code> ដាច់ដោយឡែក រួចសរសេរ JavaScript `fetch()` POST ជាមួយ `e.preventDefault()` ព្រមទាំងបន្ថែម Submit Loading State!</li>
+        <ul class="obj-list" style="margin-top:0; margin-bottom:4px; font-size:9pt;">
+            <li><b>ជំហានទី ៥៖</b> បង្កើត <code>Controllers/Api/SupplierApiController.cs</code> ភ្ជាប់ <code>[ApiController]</code>, <code>[HttpPost]</code> ត្រឡប់ <code>201 CreatedAtAction</code>។</li>
+            <li><b>ជំហានទី ៦៖</b> បង្កើត <code>wwwroot/suppliers.html</code> សរសេរ JS <code>async/await fetch()</code> POST ជាមួយ <code>e.preventDefault()</code> និង Submit Lock State!</li>
         </ul>
     </div>
     <div class="global-footer">
@@ -1396,7 +1449,7 @@ btnSubmit.innerText = <span style="color:#98C379;">"កំពុងរក្ស�
     </div>
 </div>
 
-<!-- PAGE 20: SOLUTION - TRACK A TRADITIONAL MVC MODEL & CONTROLLER -->
+<!-- PAGE 20: SOLUTION - TRACK A TRADITIONAL MVC MODEL & CONTROLLER (FULL CODE) -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
@@ -1405,52 +1458,77 @@ btnSubmit.innerText = <span style="color:#98C379;">"កំពុងរក្ស�
     </div>
     <div class="page-content">
         <div class="sub-heading" style="width: 100%; margin-top:0; color:var(--mvc-color);">
-            <span><i class="fa-solid fa-circle-check"></i> ដំណោះស្រាយ Track A: MVC Model & Controller</span>
+            <span><i class="fa-solid fa-circle-check"></i> ដំណោះស្រាយ Track A: Model & MVC Controller (Full Code)</span>
             <span class="bloom-badge bloom-l3">Track A Solution</span>
         </div>
         
-        <div style="font-size:8.5pt; font-weight:bold; color:var(--text-main); margin-bottom:2px;"><span style="color:var(--mvc-color);">១. </span>Models/Supplier.cs</div>
-        <div class="code-window" style="margin:2px 0 8px 0; font-size:7.5pt;">
-            <div class="code-header" style="padding: 3px 8px;">
+        <div style="font-size:8.5pt; font-weight:bold; color:var(--text-main); margin-bottom:2px;"><span style="color:var(--mvc-color);">១. </span>File: Models/Supplier.cs</div>
+        <div class="code-window" style="margin:2px 0 6px 0; font-size:7.5pt;">
+            <div class="code-header" style="padding: 2px 8px;">
                 <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
-                <div class="code-title">Supplier.cs</div>
+                <div class="code-title">Models/Supplier.cs</div>
             </div>
-<pre style="padding: 6px;"><span style="color:#C678DD;">using</span> System.ComponentModel.DataAnnotations;
+<pre style="padding: 4px 8px;"><span style="color:#569CD6;">using</span> System.ComponentModel.DataAnnotations;
 
-<span style="color:#C678DD;">namespace</span> SchoolApp.Models {
-    <span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">Supplier</span> {
-        [Key] <span style="color:#C678DD;">public int</span> Id { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; }
-        [Required(ErrorMessage = <span style="color:#98C379;">"សូមវាយឈ្មោះក្រុមហ៊ុន!"</span>)] <span style="color:#C678DD;">public string</span> CompanyName { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; } = <span style="color:#98C379;">""</span>;
-        [Required(ErrorMessage = <span style="color:#98C379;">"សូមវាយលេខទូរស័ព្ទ!"</span>)] <span style="color:#C678DD;">public string</span> PhoneNumber { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; } = <span style="color:#98C379;">""</span>;
-        [EmailAddress(ErrorMessage = <span style="color:#98C379;">"ទម្រង់អ៊ីមែលមិនត្រឹមត្រូវ!"</span>)] <span style="color:#C678DD;">public string</span>? Email { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; }
+<span style="color:#569CD6;">namespace</span> <span style="color:#4EC9B0;">SchoolApp.Models</span> 
+{
+    <span style="color:#569CD6;">public class</span> <span style="color:#4EC9B0;">Supplier</span> 
+    {
+        [<span style="color:#4EC9B0;">Key</span>] 
+        <span style="color:#569CD6;">public int</span> <span style="color:#9CDCFE;">Id</span> { <span style="color:#569CD6;">get</span>; <span style="color:#569CD6;">set</span>; }
+
+        [<span style="color:#4EC9B0;">Required</span>(ErrorMessage = <span style="color:#CE9178;">"សូមវាយឈ្មោះក្រុមហ៊ុន!"</span>)] 
+        <span style="color:#569CD6;">public string</span> <span style="color:#9CDCFE;">CompanyName</span> { <span style="color:#569CD6;">get</span>; <span style="color:#569CD6;">set</span>; } = <span style="color:#CE9178;">""</span>;
+
+        [<span style="color:#4EC9B0;">Required</span>(ErrorMessage = <span style="color:#CE9178;">"សូមវាយលេខទូរស័ព្ទ!"</span>)] 
+        <span style="color:#569CD6;">public string</span> <span style="color:#9CDCFE;">PhoneNumber</span> { <span style="color:#569CD6;">get</span>; <span style="color:#569CD6;">set</span>; } = <span style="color:#CE9178;">""</span>;
+
+        [<span style="color:#4EC9B0;">EmailAddress</span>(ErrorMessage = <span style="color:#CE9178;">"ទម្រង់អ៊ីមែលមិនត្រឹមត្រូវ!"</span>)] 
+        <span style="color:#569CD6;">public string</span>? <span style="color:#9CDCFE;">Email</span> { <span style="color:#569CD6;">get</span>; <span style="color:#569CD6;">set</span>; }
     }
 }</pre>
         </div>
 
-        <div style="font-size:8.5pt; font-weight:bold; color:var(--text-main); margin-bottom:2px;"><span style="color:var(--mvc-color);">២. </span>Controllers/SupplierController.cs</div>
-        <div class="code-window" style="margin:2px 0 8px 0; font-size:7.5pt;">
-            <div class="code-header" style="padding: 3px 8px;">
+        <div style="font-size:8.5pt; font-weight:bold; color:var(--text-main); margin-bottom:2px;"><span style="color:var(--mvc-color);">២. </span>File: Controllers/SupplierController.cs</div>
+        <div class="code-window" style="margin:2px 0 0 0; font-size:7.5pt;">
+            <div class="code-header" style="padding: 2px 8px;">
                 <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
-                <div class="code-title">SupplierController.cs</div>
+                <div class="code-title">Controllers/SupplierController.cs</div>
             </div>
-<pre style="padding: 6px;"><span style="color:#C678DD;">using</span> Microsoft.AspNetCore.Mvc;
-<span style="color:#C678DD;">using</span> SchoolApp.Data;
-<span style="color:#C678DD;">using</span> SchoolApp.Models;
+<pre style="padding: 4px 8px;"><span style="color:#569CD6;">using</span> Microsoft.AspNetCore.Mvc;
+<span style="color:#569CD6;">using</span> SchoolApp.Data;
+<span style="color:#569CD6;">using</span> SchoolApp.Models;
 
-<span style="color:#C678DD;">namespace</span> SchoolApp.Controllers {
-    <span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">SupplierController</span> : Controller {
-        <span style="color:#C678DD;">private readonly</span> SchoolDbContext _context;
-        <span style="color:#C678DD;">public</span> <span style="color:#61AFEF;">SupplierController</span>(SchoolDbContext context) { _context = context; }
+<span style="color:#569CD6;">namespace</span> <span style="color:#4EC9B0;">SchoolApp.Controllers</span> 
+{
+    <span style="color:#569CD6;">public class</span> <span style="color:#4EC9B0;">SupplierController</span> : <span style="color:#4EC9B0;">Controller</span> 
+    {
+        <span style="color:#569CD6;">private readonly</span> <span style="color:#4EC9B0;">SchoolDbContext</span> _context;
 
-        [HttpGet] <span style="color:#C678DD;">public</span> IActionResult <span style="color:#61AFEF;">Create</span>() =&gt; View();
+        <span style="color:#569CD6;">public</span> <span style="color:#DCDCAA;">SupplierController</span>(<span style="color:#4EC9B0;">SchoolDbContext</span> context) 
+        { 
+            _context = context; 
+        }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        <span style="color:#C678DD;">public async</span> Task&lt;IActionResult&gt; <span style="color:#61AFEF;">Create</span>(Supplier model) {
-            <span style="color:#C678DD;">if</span> (!ModelState.IsValid) <span style="color:#C678DD;">return</span> View(model);
-            <span style="color:#C678DD;">await</span> _context.Suppliers.AddAsync(model);
-            <span style="color:#C678DD;">await</span> _context.SaveChangesAsync();
-            <span style="color:#C678DD;">return</span> RedirectToAction(nameof(Index));
+        <span style="color:#6A9955;">// GET: /Supplier/Create</span>
+        [<span style="color:#4EC9B0;">HttpGet</span>] 
+        <span style="color:#569CD6;">public</span> <span style="color:#4EC9B0;">IActionResult</span> <span style="color:#DCDCAA;">Create</span>() =&gt; View();
+
+        <span style="color:#6A9955;">// POST: /Supplier/Create</span>
+        [<span style="color:#4EC9B0;">HttpPost</span>]
+        [<span style="color:#4EC9B0;">ValidateAntiForgeryToken</span>]
+        <span style="color:#569CD6;">public async</span> <span style="color:#4EC9B0;">Task</span>&lt;<span style="color:#4EC9B0;">IActionResult</span>&gt; <span style="color:#DCDCAA;">Create</span>(<span style="color:#4EC9B0;">Supplier</span> model) 
+        {
+            <span style="color:#C586C0;">if</span> (!ModelState.IsValid) 
+            {
+                <span style="color:#C586C0;">return</span> View(model); <span style="color:#6A9955;">// Form State Retention</span>
+            }
+
+            <span style="color:#569CD6;">await</span> _context.Suppliers.AddAsync(model);
+            <span style="color:#569CD6;">await</span> _context.SaveChangesAsync();
+
+            TempData[<span style="color:#CE9178;">"Success"</span>] = <span style="color:#CE9178;">"រក្សាទុកអ្នកផ្គត់ផ្គង់ជោគជ័យ!"</span>;
+            <span style="color:#C586C0;">return</span> RedirectToAction(<span style="color:#569CD6;">nameof</span>(Index));
         }
     }
 }</pre>
@@ -1462,7 +1540,7 @@ btnSubmit.innerText = <span style="color:#98C379;">"កំពុងរក្ស�
     </div>
 </div>
 
-<!-- PAGE 21: SOLUTION - REDESIGNED TRACK A RAZOR VIEW -->
+<!-- PAGE 21: SOLUTION - REDESIGNED TRACK A RAZOR VIEW (FULL CODE) -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
@@ -1471,54 +1549,55 @@ btnSubmit.innerText = <span style="color:#98C379;">"កំពុងរក្ស�
     </div>
     <div class="page-content">
         <div class="sub-heading" style="width: 100%; margin-top:0; color:var(--mvc-color);">
-            <span><i class="fa-solid fa-circle-check"></i> ដំណោះស្រាយ Track A: Razor View (Views/Supplier/Create.cshtml)</span>
+            <span><i class="fa-solid fa-circle-check"></i> ដំណោះស្រាយ Track A: Razor View Form (Full Code)</span>
             <span class="bloom-badge bloom-l3">Track A View</span>
         </div>
 
-        <div class="code-window" style="margin:2px 0 10px 0; font-size:7.5pt;">
-            <div class="code-header" style="padding: 3px 8px;">
+        <div style="font-size:8.5pt; font-weight:bold; color:var(--text-main); margin-bottom:2px;"><span style="color:var(--mvc-color);">៣. </span>File: Views/Supplier/Create.cshtml</div>
+        <div class="code-window" style="margin:2px 0 0 0; font-size:7pt;">
+            <div class="code-header" style="padding: 2px 8px;">
                 <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
-                <div class="code-title">Create.cshtml</div>
+                <div class="code-title">Views/Supplier/Create.cshtml</div>
             </div>
-<pre style="padding: 6px;"><span style="color:#C678DD;">@model</span> SchoolApp.Models.Supplier
-<span style="color:#C678DD;">@{</span> ViewData[<span style="color:#98C379;">"Title"</span>] = <span style="color:#98C379;">"បន្ថែមអ្នកផ្គត់ផ្គង់"</span>; <span style="color:#C678DD;">}</span>
+<pre style="padding: 4px 8px;"><span style="color:#569CD6;">@model</span> SchoolApp.Models.Supplier
+<span style="color:#569CD6;">@{</span> ViewData[<span style="color:#CE9178;">"Title"</span>] = <span style="color:#CE9178;">"បន្ថែមអ្នកផ្គត់ផ្គង់"</span>; <span style="color:#569CD6;">}</span>
 
-<span style="color:#E06C75;">&lt;div <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"container mt-3"</span> <span style="color:#D19A66;">style</span>=<span style="color:#98C379;">"max-width: 600px;"</span>&gt;</span>
-    <span style="color:#E06C75;">&lt;div <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"card shadow-sm border-0 rounded-3"</span>&gt;</span>
-        <span style="color:#E06C75;">&lt;div <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"card-header bg-success text-white p-3"</span>&gt;</span>
-            <span style="color:#E06C75;">&lt;h5 <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"m-0 fw-bold"</span>&gt;&lt;i <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"fa-solid fa-truck-field me-2"</span>&gt;&lt;/i&gt;</span>បន្ថែមអ្នកផ្គត់ផ្គង់ (MVC Form)<span style="color:#E06C75;">&lt;/h5&gt;</span>
-        <span style="color:#E06C75;">&lt;/div&gt;</span>
-        <span style="color:#E06C75;">&lt;div <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"card-body p-4"</span>&gt;</span>
-            <span style="color:#E06C75;">&lt;form <span style="color:#D19A66;">asp-action</span>=<span style="color:#98C379;">"Create"</span> <span style="color:#D19A66;">method</span>=<span style="color:#98C379;">"post"</span>&gt;</span>
-                <span style="color:#E06C75;">&lt;div <span style="color:#D19A66;">asp-validation-summary</span>=<span style="color:#98C379;">"ModelOnly"</span> <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"alert alert-danger p-2 mb-3 d-none"</span>&gt;&lt;/div&gt;</span>
+<span style="color:#569CD6;">&lt;div</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"container mt-3"</span> <span style="color:#9CDCFE;">style</span>=<span style="color:#CE9178;">"max-width: 600px;"</span><span style="color:#569CD6;">&gt;</span>
+    <span style="color:#569CD6;">&lt;div</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"card shadow-sm border-0 rounded-3"</span><span style="color:#569CD6;">&gt;</span>
+        <span style="color:#569CD6;">&lt;div</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"card-header bg-success text-white p-3"</span><span style="color:#569CD6;">&gt;</span>
+            <span style="color:#569CD6;">&lt;h5</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"m-0 fw-bold"</span><span style="color:#569CD6;">&gt;&lt;i</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"fa-solid fa-truck-field me-2"</span><span style="color:#569CD6;">&gt;&lt;/i&gt;</span>បន្ថែមអ្នកផ្គត់ផ្គង់ (MVC Form)<span style="color:#569CD6;">&lt;/h5&gt;</span>
+        <span style="color:#569CD6;">&lt;/div&gt;</span>
+        <span style="color:#569CD6;">&lt;div</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"card-body p-4"</span><span style="color:#569CD6;">&gt;</span>
+            <span style="color:#569CD6;">&lt;form</span> <span style="color:#9CDCFE;">asp-action</span>=<span style="color:#CE9178;">"Create"</span> <span style="color:#9CDCFE;">method</span>=<span style="color:#CE9178;">"post"</span><span style="color:#569CD6;">&gt;</span>
+                <span style="color:#569CD6;">&lt;div</span> <span style="color:#9CDCFE;">asp-validation-summary</span>=<span style="color:#CE9178;">"ModelOnly"</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"alert alert-danger p-2 mb-3 d-none"</span><span style="color:#569CD6;">&gt;&lt;/div&gt;</span>
 
-                <span style="color:#E06C75;">&lt;div <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"mb-3"</span>&gt;</span>
-                    <span style="color:#E06C75;">&lt;label <span style="color:#D19A66;">asp-for</span>=<span style="color:#98C379;">"CompanyName"</span> <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"form-label fw-bold"</span>&gt;</span>ឈ្មោះក្រុមហ៊ុន<span style="color:#E06C75;">&lt;/label&gt;</span>
-                    <span style="color:#E06C75;">&lt;input <span style="color:#D19A66;">asp-for</span>=<span style="color:#98C379;">"CompanyName"</span> <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"form-control"</span> <span style="color:#D19A66;">placeholder</span>=<span style="color:#98C379;">"បញ្ចូលឈ្មោះក្រុមហ៊ុន"</span> /&gt;</span>
-                    <span style="color:#E06C75;">&lt;span <span style="color:#D19A66;">asp-validation-for</span>=<span style="color:#98C379;">"CompanyName"</span> <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"text-danger small"</span>&gt;&lt;/span&gt;</span>
-                <span style="color:#E06C75;">&lt;/div&gt;</span>
+                <span style="color:#569CD6;">&lt;div</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"mb-3"</span><span style="color:#569CD6;">&gt;</span>
+                    <span style="color:#569CD6;">&lt;label</span> <span style="color:#9CDCFE;">asp-for</span>=<span style="color:#CE9178;">"CompanyName"</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"form-label fw-bold"</span><span style="color:#569CD6;">&gt;</span>ឈ្មោះក្រុមហ៊ុន<span style="color:#569CD6;">&lt;/label&gt;</span>
+                    <span style="color:#569CD6;">&lt;input</span> <span style="color:#9CDCFE;">asp-for</span>=<span style="color:#CE9178;">"CompanyName"</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"form-control"</span> <span style="color:#9CDCFE;">placeholder</span>=<span style="color:#CE9178;">"បញ្ចូលឈ្មោះក្រុមហ៊ុន"</span> <span style="color:#569CD6;">/&gt;</span>
+                    <span style="color:#569CD6;">&lt;span</span> <span style="color:#9CDCFE;">asp-validation-for</span>=<span style="color:#CE9178;">"CompanyName"</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"text-danger small"</span><span style="color:#569CD6;">&gt;&lt;/span&gt;</span>
+                <span style="color:#569CD6;">&lt;/div&gt;</span>
 
-                <span style="color:#E06C75;">&lt;div <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"mb-3"</span>&gt;</span>
-                    <span style="color:#E06C75;">&lt;label <span style="color:#D19A66;">asp-for</span>=<span style="color:#98C379;">"PhoneNumber"</span> <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"form-label fw-bold"</span>&gt;</span>លេខទូរស័ព្ទ<span style="color:#E06C75;">&lt;/label&gt;</span>
-                    <span style="color:#E06C75;">&lt;input <span style="color:#D19A66;">asp-for</span>=<span style="color:#98C379;">"PhoneNumber"</span> <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"form-control"</span> <span style="color:#D19A66;">placeholder</span>=<span style="color:#98C379;">"ឧ. 012 345 678"</span> /&gt;</span>
-                    <span style="color:#E06C75;">&lt;span <span style="color:#D19A66;">asp-validation-for</span>=<span style="color:#98C379;">"PhoneNumber"</span> <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"text-danger small"</span>&gt;&lt;/span&gt;</span>
-                <span style="color:#E06C75;">&lt;/div&gt;</span>
+                <span style="color:#569CD6;">&lt;div</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"mb-3"</span><span style="color:#569CD6;">&gt;</span>
+                    <span style="color:#569CD6;">&lt;label</span> <span style="color:#9CDCFE;">asp-for</span>=<span style="color:#CE9178;">"PhoneNumber"</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"form-label fw-bold"</span><span style="color:#569CD6;">&gt;</span>លេខទូរស័ព្ទ<span style="color:#569CD6;">&lt;/label&gt;</span>
+                    <span style="color:#569CD6;">&lt;input</span> <span style="color:#9CDCFE;">asp-for</span>=<span style="color:#CE9178;">"PhoneNumber"</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"form-control"</span> <span style="color:#9CDCFE;">placeholder</span>=<span style="color:#CE9178;">"ឧ. 012 345 678"</span> <span style="color:#569CD6;">/&gt;</span>
+                    <span style="color:#569CD6;">&lt;span</span> <span style="color:#9CDCFE;">asp-validation-for</span>=<span style="color:#CE9178;">"PhoneNumber"</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"text-danger small"</span><span style="color:#569CD6;">&gt;&lt;/span&gt;</span>
+                <span style="color:#569CD6;">&lt;/div&gt;</span>
 
-                <span style="color:#E06C75;">&lt;div <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"mb-4"</span>&gt;</span>
-                    <span style="color:#E06C75;">&lt;label <span style="color:#D19A66;">asp-for</span>=<span style="color:#98C379;">"Email"</span> <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"form-label fw-bold"</span>&gt;</span>អ៊ីមែល<span style="color:#E06C75;">&lt;/label&gt;</span>
-                    <span style="color:#E06C75;">&lt;input <span style="color:#D19A66;">asp-for</span>=<span style="color:#98C379;">"Email"</span> <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"form-control"</span> <span style="color:#D19A66;">placeholder</span>=<span style="color:#98C379;">"supplier@company.com"</span> /&gt;</span>
-                    <span style="color:#E06C75;">&lt;span <span style="color:#D19A66;">asp-validation-for</span>=<span style="color:#98C379;">"Email"</span> <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"text-danger small"</span>&gt;&lt;/span&gt;</span>
-                <span style="color:#E06C75;">&lt;/div&gt;</span>
+                <span style="color:#569CD6;">&lt;div</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"mb-4"</span><span style="color:#569CD6;">&gt;</span>
+                    <span style="color:#569CD6;">&lt;label</span> <span style="color:#9CDCFE;">asp-for</span>=<span style="color:#CE9178;">"Email"</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"form-label fw-bold"</span><span style="color:#569CD6;">&gt;</span>អ៊ីមែល<span style="color:#569CD6;">&lt;/label&gt;</span>
+                    <span style="color:#569CD6;">&lt;input</span> <span style="color:#9CDCFE;">asp-for</span>=<span style="color:#CE9178;">"Email"</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"form-control"</span> <span style="color:#9CDCFE;">placeholder</span>=<span style="color:#CE9178;">"supplier@company.com"</span> <span style="color:#569CD6;">/&gt;</span>
+                    <span style="color:#569CD6;">&lt;span</span> <span style="color:#9CDCFE;">asp-validation-for</span>=<span style="color:#CE9178;">"Email"</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"text-danger small"</span><span style="color:#569CD6;">&gt;&lt;/span&gt;</span>
+                <span style="color:#569CD6;">&lt;/div&gt;</span>
 
-                <span style="color:#E06C75;">&lt;button <span style="color:#D19A66;">type</span>=<span style="color:#98C379;">"submit"</span> <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"btn btn-success w-100 fw-bold py-2"</span>&gt;</span>
-                    <span style="color:#E06C75;">&lt;i <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"fa-solid fa-floppy-disk me-1"</span>&gt;&lt;/i&gt;</span> រក្សាទុកទិន្នន័យ
-                <span style="color:#E06C75;">&lt;/button&gt;</span>
-            <span style="color:#E06C75;">&lt;/form&gt;</span>
-        <span style="color:#E06C75;">&lt;/div&gt;</span>
-    <span style="color:#E06C75;">&lt;/div&gt;</span>
-<span style="color:#E06C75;">&lt;/div&gt;</span>
+                <span style="color:#569CD6;">&lt;button</span> <span style="color:#9CDCFE;">type</span>=<span style="color:#CE9178;">"submit"</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"btn btn-success w-100 fw-bold py-2"</span><span style="color:#569CD6;">&gt;</span>
+                    <span style="color:#569CD6;">&lt;i</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"fa-solid fa-floppy-disk me-1"</span><span style="color:#569CD6;">&gt;&lt;/i&gt;</span> រក្សាទុកទិន្នន័យ
+                <span style="color:#569CD6;">&lt;/button&gt;</span>
+            <span style="color:#569CD6;">&lt;/form&gt;</span>
+        <span style="color:#569CD6;">&lt;/div&gt;</span>
+    <span style="color:#569CD6;">&lt;/div&gt;</span>
+<span style="color:#569CD6;">&lt;/div&gt;</span>
 
-<span style="color:#C678DD;">@section</span> Scripts { <span style="color:#E06C75;">&lt;partial <span style="color:#D19A66;">name</span>=<span style="color:#98C379;">"_ValidationScriptsPartial"</span> /&gt;</span> }</pre>
+<span style="color:#569CD6;">@section</span> Scripts { <span style="color:#569CD6;">&lt;partial</span> <span style="color:#9CDCFE;">name</span>=<span style="color:#CE9178;">"_ValidationScriptsPartial"</span> <span style="color:#569CD6;">/&gt;</span> }</pre>
         </div>
     </div>
     <div class="global-footer">
@@ -1527,7 +1606,7 @@ btnSubmit.innerText = <span style="color:#98C379;">"កំពុងរក្ស�
     </div>
 </div>
 
-<!-- PAGE 22: SOLUTION - TRACK B WEB API CONTROLLER -->
+<!-- PAGE 22: SOLUTION - TRACK B WEB API CONTROLLER (FULL CODE) -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
@@ -1536,39 +1615,55 @@ btnSubmit.innerText = <span style="color:#98C379;">"កំពុងរក្ស�
     </div>
     <div class="page-content">
         <div class="sub-heading" style="width: 100%; margin-top:0; color:var(--api-color);">
-            <span><i class="fa-solid fa-circle-check"></i> ដំណោះស្រាយ Track B: Web API Controller</span>
+            <span><i class="fa-solid fa-circle-check"></i> ដំណោះស្រាយ Track B: Web API Controller (Full Code)</span>
             <span class="bloom-badge bloom-l3">Track B API</span>
         </div>
 
-        <div style="font-size:8.5pt; font-weight:bold; color:var(--text-main); margin-bottom:2px;"><span style="color:var(--api-color);">១. </span>Controllers/SupplierApiController.cs</div>
-        <div class="code-window" style="margin:2px 0 10px 0; font-size:7.5pt;">
-            <div class="code-header" style="padding: 3px 8px;">
+        <div style="font-size:8.5pt; font-weight:bold; color:var(--text-main); margin-bottom:2px;"><span style="color:var(--api-color);">១. </span>File: Controllers/Api/SupplierApiController.cs</div>
+        <div class="code-window" style="margin:2px 0 0 0; font-size:7.5pt;">
+            <div class="code-header" style="padding: 2px 8px;">
                 <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
-                <div class="code-title">SupplierApiController.cs</div>
+                <div class="code-title">Controllers/Api/SupplierApiController.cs</div>
             </div>
-<pre style="padding: 6px;"><span style="color:#C678DD;">using</span> Microsoft.AspNetCore.Mvc;
-<span style="color:#C678DD;">using</span> SchoolApp.Data;
-<span style="color:#C678DD;">using</span> SchoolApp.Models;
+<pre style="padding: 6px;"><span style="color:#569CD6;">using</span> Microsoft.AspNetCore.Mvc;
+<span style="color:#569CD6;">using</span> Microsoft.EntityFrameworkCore;
+<span style="color:#569CD6;">using</span> SchoolApp.Data;
+<span style="color:#569CD6;">using</span> SchoolApp.Models;
 
-<span style="color:#C678DD;">namespace</span> SchoolApp.Controllers {
-    [Route(<span style="color:#98C379;">"api/[controller]"</span>)]
-    [ApiController]
-    <span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">SupplierApiController</span> : ControllerBase {
-        <span style="color:#C678DD;">private readonly</span> SchoolDbContext _context;
-        <span style="color:#C678DD;">public</span> <span style="color:#61AFEF;">SupplierApiController</span>(SchoolDbContext context) { _context = context; }
+<span style="color:#569CD6;">namespace</span> <span style="color:#4EC9B0;">SchoolApp.Controllers.Api</span> 
+{
+    [<span style="color:#4EC9B0;">Route</span>(<span style="color:#CE9178;">"api/[controller]"</span>)]
+    [<span style="color:#4EC9B0;">ApiController</span>]
+    <span style="color:#569CD6;">public class</span> <span style="color:#4EC9B0;">SupplierApiController</span> : <span style="color:#4EC9B0;">ControllerBase</span> 
+    {
+        <span style="color:#569CD6;">private readonly</span> <span style="color:#4EC9B0;">SchoolDbContext</span> _context;
 
-        [HttpPost]
-        <span style="color:#C678DD;">public async</span> Task&lt;IActionResult&gt; <span style="color:#61AFEF;">CreateSupplier</span>([FromBody] Supplier model) {
-            <span style="color:#C678DD;">if</span> (!ModelState.IsValid) <span style="color:#C678DD;">return</span> BadRequest(ModelState);
-            <span style="color:#C678DD;">await</span> _context.Suppliers.AddAsync(model);
-            <span style="color:#C678DD;">await</span> _context.SaveChangesAsync();
-            <span style="color:#C678DD;">return</span> CreatedAtAction(nameof(GetSupplierById), <span style="color:#C678DD;">new</span> { id = model.Id }, model);
+        <span style="color:#569CD6;">public</span> <span style="color:#DCDCAA;">SupplierApiController</span>(<span style="color:#4EC9B0;">SchoolDbContext</span> context) 
+        { 
+            _context = context; 
         }
 
-        [HttpGet(<span style="color:#98C379;">"{id}"</span>)]
-        <span style="color:#C678DD;">public async</span> Task&lt;IActionResult&gt; <span style="color:#61AFEF;">GetSupplierById</span>(<span style="color:#C678DD;">int</span> id) {
-            <span style="color:#C678DD;">var</span> item = <span style="color:#C678DD;">await</span> _context.Suppliers.FindAsync(id);
-            <span style="color:#C678DD;">return</span> item == <span style="color:#D19A66;">null</span> ? NotFound() : Ok(item);
+        <span style="color:#6A9955;">// POST: api/SupplierApi</span>
+        [<span style="color:#4EC9B0;">HttpPost</span>]
+        <span style="color:#569CD6;">public async</span> <span style="color:#4EC9B0;">Task</span>&lt;<span style="color:#4EC9B0;">IActionResult</span>&gt; <span style="color:#DCDCAA;">CreateSupplier</span>([<span style="color:#4EC9B0;">FromBody</span>] <span style="color:#4EC9B0;">Supplier</span> model) 
+        {
+            <span style="color:#C586C0;">if</span> (!ModelState.IsValid) 
+            {
+                <span style="color:#C586C0;">return</span> BadRequest(ModelState); <span style="color:#6A9955;">// 400 Bad Request</span>
+            }
+
+            <span style="color:#569CD6;">await</span> _context.Suppliers.AddAsync(model);
+            <span style="color:#569CD6;">await</span> _context.SaveChangesAsync();
+
+            <span style="color:#C586C0;">return</span> CreatedAtAction(<span style="color:#569CD6;">nameof</span>(GetSupplierById), <span style="color:#569CD6;">new</span> { id = model.Id }, model); <span style="color:#6A9955;">// 201 Created</span>
+        }
+
+        <span style="color:#6A9955;">// GET: api/SupplierApi/5</span>
+        [<span style="color:#4EC9B0;">HttpGet</span>(<span style="color:#CE9178;">"{id}"</span>)]
+        <span style="color:#569CD6;">public async</span> <span style="color:#4EC9B0;">Task</span>&lt;<span style="color:#4EC9B0;">IActionResult</span>&gt; <span style="color:#DCDCAA;">GetSupplierById</span>(<span style="color:#569CD6;">int</span> id) 
+        {
+            <span style="color:#569CD6;">var</span> item = <span style="color:#569CD6;">await</span> _context.Suppliers.FindAsync(id);
+            <span style="color:#C586C0;">return</span> item == <span style="color:#569CD6;">null</span> ? NotFound() : Ok(item);
         }
     }
 }</pre>
@@ -1580,7 +1675,7 @@ btnSubmit.innerText = <span style="color:#98C379;">"កំពុងរក្ស�
     </div>
 </div>
 
-<!-- PAGE 23: SOLUTION - REDESIGNED TRACK B FRONTEND HTML/JS FETCH POST -->
+<!-- PAGE 23: SOLUTION - REDESIGNED TRACK B FRONTEND HTML/JS FETCH POST (FULL CODE) -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="images/Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'"></div>
@@ -1589,89 +1684,90 @@ btnSubmit.innerText = <span style="color:#98C379;">"កំពុងរក្ស�
     </div>
     <div class="page-content">
         <div class="sub-heading" style="width: 100%; margin-top:0; color:var(--api-color);">
-            <span><i class="fa-solid fa-circle-check"></i> ដំណោះស្រាយ Track B: Frontend UI (suppliers.html)</span>
+            <span><i class="fa-solid fa-circle-check"></i> ដំណោះស្រាយ Track B: Frontend JS Fetch POST (Full Code)</span>
             <span class="bloom-badge bloom-l3">Track B Frontend</span>
         </div>
 
-        <div class="code-window" style="margin:2px 0 10px 0; font-size:7.5pt;">
-            <div class="code-header" style="padding: 3px 8px;">
+        <div style="font-size:8.5pt; font-weight:bold; color:var(--text-main); margin-bottom:2px;"><span style="color:var(--api-color);">២. </span>File: wwwroot/suppliers.html</div>
+        <div class="code-window" style="margin:2px 0 0 0; font-size:7pt;">
+            <div class="code-header" style="padding: 2px 8px;">
                 <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
-                <div class="code-title">suppliers.html</div>
+                <div class="code-title">wwwroot/suppliers.html</div>
             </div>
-<pre style="padding: 6px;"><span style="color:#C678DD;">&lt;!DOCTYPE html&gt;</span>
-<span style="color:#E06C75;">&lt;html <span style="color:#D19A66;">lang</span>=<span style="color:#98C379;">"km"</span>&gt;</span>
-<span style="color:#E06C75;">&lt;head&gt;</span>
-    <span style="color:#E06C75;">&lt;meta <span style="color:#D19A66;">charset</span>=<span style="color:#98C379;">"UTF-8"</span>&gt;</span>
-    <span style="color:#E06C75;">&lt;title&gt;</span>Supplier API Client<span style="color:#E06C75;">&lt;/title&gt;</span>
-    <span style="color:#E06C75;">&lt;link <span style="color:#D19A66;">href</span>=<span style="color:#98C379;">"https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"</span> <span style="color:#D19A66;">rel</span>=<span style="color:#98C379;">"stylesheet"</span>&gt;</span>
-<span style="color:#E06C75;">&lt;/head&gt;</span>
-<span style="color:#E06C75;">&lt;body <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"bg-light p-4"</span>&gt;</span>
-    <span style="color:#E06C75;">&lt;div <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"container"</span> <span style="color:#D19A66;">style</span>=<span style="color:#98C379;">"max-width: 600px;"</span>&gt;</span>
-        <span style="color:#E06C75;">&lt;div <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"card shadow-sm border-0 rounded-3"</span>&gt;</span>
-            <span style="color:#E06C75;">&lt;div <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"card-header bg-danger text-white p-3"</span>&gt;</span>
-                <span style="color:#E06C75;">&lt;h5 <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"m-0 fw-bold"</span>&gt;</span>បន្ថែមអ្នកផ្គត់ផ្គង់ (Fetch POST Client)<span style="color:#E06C75;">&lt;/h5&gt;</span>
-            <span style="color:#E06C75;">&lt;/div&gt;</span>
-            <span style="color:#E06C75;">&lt;div <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"card-body p-4"</span>&gt;</span>
-                <span style="color:#E06C75;">&lt;div <span style="color:#D19A66;">id</span>=<span style="color:#98C379;">"msgAlert"</span> <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"alert alert-info d-none"</span>&gt;&lt;/div&gt;</span>
+<pre style="padding: 4px 8px;"><span style="color:#569CD6;">&lt;!DOCTYPE html&gt;</span>
+<span style="color:#569CD6;">&lt;html</span> <span style="color:#9CDCFE;">lang</span>=<span style="color:#CE9178;">"km"</span><span style="color:#569CD6;">&gt;</span>
+<span style="color:#569CD6;">&lt;head&gt;</span>
+    <span style="color:#569CD6;">&lt;meta</span> <span style="color:#9CDCFE;">charset</span>=<span style="color:#CE9178;">"UTF-8"</span><span style="color:#569CD6;">&gt;</span>
+    <span style="color:#569CD6;">&lt;title&gt;</span>Supplier API Client<span style="color:#569CD6;">&lt;/title&gt;</span>
+    <span style="color:#569CD6;">&lt;link</span> <span style="color:#9CDCFE;">href</span>=<span style="color:#CE9178;">"https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"</span> <span style="color:#9CDCFE;">rel</span>=<span style="color:#CE9178;">"stylesheet"</span><span style="color:#569CD6;">&gt;</span>
+<span style="color:#569CD6;">&lt;/head&gt;</span>
+<span style="color:#569CD6;">&lt;body</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"bg-light p-4"</span><span style="color:#569CD6;">&gt;</span>
+    <span style="color:#569CD6;">&lt;div</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"container"</span> <span style="color:#9CDCFE;">style</span>=<span style="color:#CE9178;">"max-width: 600px;"</span><span style="color:#569CD6;">&gt;</span>
+        <span style="color:#569CD6;">&lt;div</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"card shadow-sm border-0 rounded-3"</span><span style="color:#569CD6;">&gt;</span>
+            <span style="color:#569CD6;">&lt;div</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"card-header bg-danger text-white p-3"</span><span style="color:#569CD6;">&gt;</span>
+                <span style="color:#569CD6;">&lt;h5</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"m-0 fw-bold"</span><span style="color:#569CD6;">&gt;</span>បន្ថែមអ្នកផ្គត់ផ្គង់ (Fetch POST Client)<span style="color:#569CD6;">&lt;/h5&gt;</span>
+            <span style="color:#569CD6;">&lt;/div&gt;</span>
+            <span style="color:#569CD6;">&lt;div</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"card-body p-4"</span><span style="color:#569CD6;">&gt;</span>
+                <span style="color:#569CD6;">&lt;div</span> <span style="color:#9CDCFE;">id</span>=<span style="color:#CE9178;">"msgAlert"</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"alert alert-info d-none"</span><span style="color:#569CD6;">&gt;&lt;/div&gt;</span>
 
-                <span style="color:#E06C75;">&lt;form <span style="color:#D19A66;">id</span>=<span style="color:#98C379;">"supplierForm"</span>&gt;</span>
-                    <span style="color:#E06C75;">&lt;div <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"mb-3"</span>&gt;</span>
-                        <span style="color:#E06C75;">&lt;label <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"form-label fw-bold"</span>&gt;</span>ឈ្មោះក្រុមហ៊ុន<span style="color:#E06C75;">&lt;/label&gt;</span>
-                        <span style="color:#E06C75;">&lt;input <span style="color:#D19A66;">type</span>=<span style="color:#98C379;">"text"</span> <span style="color:#D19A66;">id</span>=<span style="color:#98C379;">"txtCompany"</span> <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"form-control"</span> <span style="color:#D19A66;">required</span> /&gt;</span>
-                    <span style="color:#E06C75;">&lt;/div&gt;</span>
-                    <span style="color:#E06C75;">&lt;div <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"mb-3"</span>&gt;</span>
-                        <span style="color:#E06C75;">&lt;label <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"form-label fw-bold"</span>&gt;</span>លេខទូរស័ព្ទ<span style="color:#E06C75;">&lt;/label&gt;</span>
-                        <span style="color:#E06C75;">&lt;input <span style="color:#D19A66;">type</span>=<span style="color:#98C379;">"text"</span> <span style="color:#D19A66;">id</span>=<span style="color:#98C379;">"txtPhone"</span> <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"form-control"</span> <span style="color:#D19A66;">required</span> /&gt;</span>
-                    <span style="color:#E06C75;">&lt;/div&gt;</span>
-                    <span style="color:#E06C75;">&lt;div <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"mb-4"</span>&gt;</span>
-                        <span style="color:#E06C75;">&lt;label <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"form-label fw-bold"</span>&gt;</span>អ៊ីមែល<span style="color:#E06C75;">&lt;/label&gt;</span>
-                        <span style="color:#E06C75;">&lt;input <span style="color:#D19A66;">type</span>=<span style="color:#98C379;">"email"</span> <span style="color:#D19A66;">id</span>=<span style="color:#98C379;">"txtEmail"</span> <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"form-control"</span> /&gt;</span>
-                    <span style="color:#E06C75;">&lt;/div&gt;</span>
-                    <span style="color:#E06C75;">&lt;button <span style="color:#D19A66;">type</span>=<span style="color:#98C379;">"submit"</span> <span style="color:#D19A66;">id</span>=<span style="color:#98C379;">"btnSubmit"</span> <span style="color:#D19A66;">class</span>=<span style="color:#98C379;">"btn btn-danger w-100 fw-bold py-2"</span>&gt;</span>រក្សាទុកទិន្នន័យ (Fetch POST)<span style="color:#E06C75;">&lt;/button&gt;</span>
-                <span style="color:#E06C75;">&lt;/form&gt;</span>
-            <span style="color:#E06C75;">&lt;/div&gt;</span>
-        <span style="color:#E06C75;">&lt;/div&gt;</span>
-    <span style="color:#E06C75;">&lt;/div&gt;</span>
+                <span style="color:#569CD6;">&lt;form</span> <span style="color:#9CDCFE;">id</span>=<span style="color:#CE9178;">"supplierForm"</span><span style="color:#569CD6;">&gt;</span>
+                    <span style="color:#569CD6;">&lt;div</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"mb-3"</span><span style="color:#569CD6;">&gt;</span>
+                        <span style="color:#569CD6;">&lt;label</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"form-label fw-bold"</span><span style="color:#569CD6;">&gt;</span>ឈ្មោះក្រុមហ៊ុន<span style="color:#569CD6;">&lt;/label&gt;</span>
+                        <span style="color:#569CD6;">&lt;input</span> <span style="color:#9CDCFE;">type</span>=<span style="color:#CE9178;">"text"</span> <span style="color:#9CDCFE;">id</span>=<span style="color:#CE9178;">"txtCompany"</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"form-control"</span> <span style="color:#9CDCFE;">required</span> <span style="color:#569CD6;">/&gt;</span>
+                    <span style="color:#569CD6;">&lt;/div&gt;</span>
+                    <span style="color:#569CD6;">&lt;div</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"mb-3"</span><span style="color:#569CD6;">&gt;</span>
+                        <span style="color:#569CD6;">&lt;label</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"form-label fw-bold"</span><span style="color:#569CD6;">&gt;</span>លេខទូរស័ព្ទ<span style="color:#569CD6;">&lt;/label&gt;</span>
+                        <span style="color:#569CD6;">&lt;input</span> <span style="color:#9CDCFE;">type</span>=<span style="color:#CE9178;">"text"</span> <span style="color:#9CDCFE;">id</span>=<span style="color:#CE9178;">"txtPhone"</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"form-control"</span> <span style="color:#9CDCFE;">required</span> <span style="color:#569CD6;">/&gt;</span>
+                    <span style="color:#569CD6;">&lt;/div&gt;</span>
+                    <span style="color:#569CD6;">&lt;div</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"mb-4"</span><span style="color:#569CD6;">&gt;</span>
+                        <span style="color:#569CD6;">&lt;label</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"form-label fw-bold"</span><span style="color:#569CD6;">&gt;</span>អ៊ីមែល<span style="color:#569CD6;">&lt;/label&gt;</span>
+                        <span style="color:#569CD6;">&lt;input</span> <span style="color:#9CDCFE;">type</span>=<span style="color:#CE9178;">"email"</span> <span style="color:#9CDCFE;">id</span>=<span style="color:#CE9178;">"txtEmail"</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"form-control"</span> <span style="color:#569CD6;">/&gt;</span>
+                    <span style="color:#569CD6;">&lt;/div&gt;</span>
+                    <span style="color:#569CD6;">&lt;button</span> <span style="color:#9CDCFE;">type</span>=<span style="color:#CE9178;">"submit"</span> <span style="color:#9CDCFE;">id</span>=<span style="color:#CE9178;">"btnSubmit"</span> <span style="color:#9CDCFE;">class</span>=<span style="color:#CE9178;">"btn btn-danger w-100 fw-bold py-2"</span><span style="color:#569CD6;">&gt;</span>រក្សាទុកទិន្នន័យ (Fetch POST)<span style="color:#569CD6;">&lt;/button&gt;</span>
+                <span style="color:#569CD6;">&lt;/form&gt;</span>
+            <span style="color:#569CD6;">&lt;/div&gt;</span>
+        <span style="color:#569CD6;">&lt;/div&gt;</span>
+    <span style="color:#569CD6;">&lt;/div&gt;</span>
 
-    <span style="color:#E06C75;">&lt;script&gt;</span>
-        document.getElementById(<span style="color:#98C379;">'supplierForm'</span>).addEventListener(<span style="color:#98C379;">'submit'</span>, <span style="color:#C678DD;">async function</span>(e) {
+    <span style="color:#569CD6;">&lt;script&gt;</span>
+        document.getElementById(<span style="color:#CE9178;">'supplierForm'</span>).addEventListener(<span style="color:#CE9178;">'submit'</span>, <span style="color:#569CD6;">async function</span>(e) {
             e.preventDefault();
-            <span style="color:#C678DD;">const</span> btn = document.getElementById(<span style="color:#98C379;">'btnSubmit'</span>);
-            <span style="color:#C678DD;">const</span> msg = document.getElementById(<span style="color:#98C379;">'msgAlert'</span>);
-            btn.disabled = <span style="color:#D19A66;">true</span>;
+            <span style="color:#569CD6;">const</span> btn = document.getElementById(<span style="color:#CE9178;">'btnSubmit'</span>);
+            <span style="color:#569CD6;">const</span> msg = document.getElementById(<span style="color:#CE9178;">'msgAlert'</span>);
+            btn.disabled = <span style="color:#569CD6;">true</span>;
 
-            <span style="color:#C678DD;">const</span> payload = {
-                companyName: document.getElementById(<span style="color:#98C379;">'txtCompany'</span>).value,
-                phoneNumber: document.getElementById(<span style="color:#98C379;">'txtPhone'</span>).value,
-                email: document.getElementById(<span style="color:#98C379;">'txtEmail'</span>).value
+            <span style="color:#569CD6;">const</span> payload = {
+                companyName: document.getElementById(<span style="color:#CE9178;">'txtCompany'</span>).value,
+                phoneNumber: document.getElementById(<span style="color:#CE9178;">'txtPhone'</span>).value,
+                email: document.getElementById(<span style="color:#CE9178;">'txtEmail'</span>).value
             };
 
-            <span style="color:#C678DD;">try</span> {
-                <span style="color:#C678DD;">const</span> res = <span style="color:#C678DD;">await</span> fetch(<span style="color:#98C379;">'https://localhost:7123/api/SupplierApi'</span>, {
-                    method: <span style="color:#98C379;">'POST'</span>,
-                    headers: { <span style="color:#98C379;">'Content-Type'</span>: <span style="color:#98C379;">'application/json'</span> },
+            <span style="color:#C586C0;">try</span> {
+                <span style="color:#569CD6;">const</span> res = <span style="color:#569CD6;">await</span> fetch(<span style="color:#CE9178;">'https://localhost:7123/api/SupplierApi'</span>, {
+                    method: <span style="color:#CE9178;">'POST'</span>,
+                    headers: { <span style="color:#CE9178;">'Content-Type'</span>: <span style="color:#CE9178;">'application/json'</span> },
                     body: JSON.stringify(payload)
                 });
 
-                <span style="color:#C678DD;">if</span> (res.status === <span style="color:#D19A66;">201</span>) {
-                    <span style="color:#C678DD;">const</span> data = <span style="color:#C678DD;">await</span> res.json();
-                    msg.className = <span style="color:#98C379;">"alert alert-success"</span>;
-                    msg.innerText = <span style="color:#98C379;">`រក្សាទុកជោគជ័យ! អត្តលេខ៖ #${data.id}`</span>;
+                <span style="color:#C586C0;">if</span> (res.status === <span style="color:#B5CEA8;">201</span>) {
+                    <span style="color:#569CD6;">const</span> data = <span style="color:#569CD6;">await</span> res.json();
+                    msg.className = <span style="color:#CE9178;">"alert alert-success d-block"</span>;
+                    msg.innerText = <span style="color:#CE9178;">`រក្សាទុកជោគជ័យ! អត្តលេខ៖ #${data.id}`</span>;
                     this.reset();
-                } <span style="color:#C678DD;">else</span> {
-                    msg.className = <span style="color:#98C379;">"alert alert-warning"</span>;
-                    msg.innerText = <span style="color:#98C379;">"កំហុសទិន្នន័យ (400 Bad Request)"</span>;
+                } <span style="color:#C586C0;">else</span> {
+                    msg.className = <span style="color:#CE9178;">"alert alert-warning d-block"</span>;
+                    msg.innerText = <span style="color:#CE9178;">"កំហុសទិន្នន័យ (400 Bad Request)"</span>;
                 }
-            } <span style="color:#C678DD;">catch</span> (err) {
-                msg.className = <span style="color:#98C379;">"alert alert-danger"</span>;
-                msg.innerText = <span style="color:#98C379;">"បរាជ័យក្នុងការតភ្ជាប់ API Server"</span>;
-            } <span style="color:#C678DD;">finally</span> {
-                btn.disabled = <span style="color:#D19A66;">false</span>;
+            } <span style="color:#C586C0;">catch</span> (err) {
+                msg.className = <span style="color:#CE9178;">"alert alert-danger d-block"</span>;
+                msg.innerText = <span style="color:#CE9178;">"បរាជ័យក្នុងការតភ្ជាប់ API Server"</span>;
+            } <span style="color:#C586C0;">finally</span> {
+                btn.disabled = <span style="color:#569CD6;">false</span>;
             }
         });
-    <span style="color:#E06C75;">&lt;/script&gt;</span>
-<span style="color:#E06C75;">&lt;/body&gt;</span>
-<span style="color:#E06C75;">&lt;/html&gt;</span></pre>
+    <span style="color:#569CD6;">&lt;/script&gt;</span>
+<span style="color:#569CD6;">&lt;/body&gt;</span>
+<span style="color:#569CD6;">&lt;/html&gt;</span></pre>
         </div>
     </div>
     <div class="global-footer">
@@ -1783,3 +1879,6 @@ btnSubmit.innerText = <span style="color:#98C379;">"កំពុងរក្ស�
 
 </body>
 </html>
+
+
+
