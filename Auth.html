@@ -1,0 +1,1389 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Handout: EF Core Code-First (MVC + Web API + Identity + JWT)</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Khmer+OS+Siemreap&family=Khmer+OS+Muol+Light&family=Suwannaphum:wght@400;700;900&family=Battambang:wght@400;700&family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        :root {
+            /* Color Palette */
+            --primary: #0F172A;        
+            --secondary: #0078D4;      
+            --accent: #512BD4;         
+            --mvc-color: #059669; 
+            --api-color: #E11D48; 
+            --success: #10B981;        
+            --warning: #D97706;        
+            --danger: #EF4444;         
+            
+            --text-main: #1E293B;
+            --text-heading: #0F172A;
+            --text-muted: #64748B;
+            
+            --bg-page: #FFFFFF;
+            --bg-workspace: #E2E8F0;
+            --bg-light: #F8FAFC;
+            
+            --border-light: #E2E8F0;
+            --border-dark: #CBD5E1;
+
+            /* VS Code Classic Palette */
+            --vscode-bg: #1E1E1E;
+            --vscode-header: #252526;
+            --vscode-border: #333333;
+            --vscode-text: #D4D4D4;
+            
+            /* Typography Rules */
+            --font-kh-heading: 'Khmer OS Muol Light', 'Suwannaphum', serif;
+            --font-kh-body: 'Khmer OS Siemreap', 'Battambang', sans-serif;
+            --font-en-main: 'Inter', sans-serif;
+            --font-code: 'Consolas', 'Fira Code', monospace;
+            --font-size-base: 11pt;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-workspace);
+            font-family: var(--font-kh-body);
+            font-size: var(--font-size-base);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 30px 15px;
+        }
+
+        /* Print Button Zone */
+        .no-print {
+            background: #FFFFFF; border: 1px solid var(--border-dark); padding: 12px 20px; border-radius: 10px;
+            margin-bottom: 20px; width: 210mm; text-align: center; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .no-print p { margin: 0; font-size: 10pt; color: var(--text-muted); font-family: var(--font-kh-body);}
+        .print-btn {
+            background: var(--accent); color: white; border: none; padding: 8px 20px; border-radius: 6px; 
+            font-family: var(--font-kh-body); font-size: 10pt; font-weight: 700; cursor: pointer;
+            box-shadow: 0 4px 12px rgba(81, 43, 212, 0.3); transition: all 0.2s ease;
+        }
+        .print-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(81, 43, 212, 0.4); }
+
+        /* STRICT A4 PAGE LAYOUT (Optimized to guarantee NO overflows) */
+        .a4-page {
+            width: 210mm; 
+            height: 297mm;
+            background: var(--bg-page); 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1); 
+            margin-bottom: 25px; 
+            position: relative; 
+            border-radius: 4px; 
+            page-break-after: always;
+            box-sizing: border-box;
+            padding: 10mm 12mm;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* HEADER & FOOTER */
+        .global-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 6px 10px; border-bottom: 3px solid var(--accent); background-color: var(--bg-light);
+            border-radius: 4px; margin-bottom: 8px;
+        }
+        .header-item { display: flex; align-items: center; gap: 6px; }
+        .header-item img { height: 30px; object-fit: contain; }
+        .header-text { flex-grow: 1; text-align: center; padding: 0 8px; }
+        .header-text h1 { font-family: var(--font-kh-heading); font-size: 10.5pt; color: var(--accent); margin-bottom: 1px;}
+        .header-text p { font-family: var(--font-en-main); font-size: 7pt; color: var(--text-muted); font-weight: 600; text-transform: uppercase;}
+
+        .global-footer {
+            display: flex; justify-content: space-between; align-items: center;
+            padding-top: 6px; border-top: 1px solid var(--border-light); margin-top: 6px;
+        }
+        .footer-left { display: flex; align-items: center; gap: 6px; font-size: 8.5pt; color: var(--text-main); font-weight: bold;}
+        .footer-right { font-size: 8.5pt; color: white; font-weight: 700; background: var(--accent); padding: 2px 8px; border-radius: 15px;}
+
+        /* Content Zone */
+        .page-content { flex-grow: 1; display: flex; flex-direction: column; justify-content: flex-start; overflow: hidden; }
+
+        /* TYPOGRAPHY */
+        .section-title {
+            border-bottom: 2px solid var(--accent); padding-bottom: 3px; margin: 4px 0 6px 0;
+            font-family: var(--font-kh-heading); font-size: 11pt; color: var(--text-heading);
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .section-title-left { display: flex; align-items: center; gap: 6px; }
+        .section-title i { color: var(--accent); }
+        .sub-heading { font-family: var(--font-kh-heading); font-size: 9.5pt; color: var(--accent); margin: 5px 0 3px 0; display: flex; align-items: center; justify-content: space-between; }
+        .text-block { font-size: 9.5pt; line-height: 1.5; margin-bottom: 5px; text-align: justify; }
+        .highlight { color: var(--accent); font-weight: 700; }
+        .badge-mvc { background: var(--mvc-color); color: white; padding: 1px 6px; border-radius: 3px; font-size: 7.5pt; font-weight: bold; font-family: 'Inter'; }
+        .badge-api { background: var(--api-color); color: white; padding: 1px 6px; border-radius: 3px; font-size: 7.5pt; font-weight: bold; font-family: 'Inter'; }
+        
+        /* Explanation Box for File/Step Purpose */
+        .purpose-box {
+            background: #F0F9FF;
+            border-left: 3px solid var(--secondary);
+            padding: 5px 8px;
+            margin: 4px 0;
+            border-radius: 3px;
+            font-size: 8.5pt;
+            line-height: 1.4;
+            color: #0369A1;
+        }
+        .purpose-box b { font-family: var(--font-kh-heading); color: #0284C7; }
+
+        /* Bloom Badges */
+        .bloom-badge {
+            display: inline-block;
+            padding: 1px 6px;
+            border-radius: 3px;
+            font-size: 7pt;
+            font-weight: bold;
+            color: white;
+            font-family: var(--font-en-main);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .bloom-l1 { background: #64748B; } /* Remember */
+        .bloom-l2 { background: #0284C7; } /* Understand */
+        .bloom-l3 { background: #16A34A; } /* Apply */
+        .bloom-l4 { background: #D97706; } /* Analyze */
+        .bloom-l5 { background: #DC2626; } /* Evaluate */
+        .bloom-l6 { background: #9333EA; } /* Create */
+
+        /* TOC & Lists */
+        .toc-table { width: 100%; border-collapse: collapse; margin: 4px 0; border: 1px solid var(--border-light); border-radius: 6px; overflow: hidden; }
+        .toc-table th { background: var(--accent); color: white; font-family: var(--font-kh-heading); font-size: 8.5pt; padding: 4px 6px; text-align: left; }
+        .toc-table td { padding: 3px 6px; border-bottom: 1px solid var(--border-light); font-size: 8pt; color: var(--text-main); }
+        .toc-num { font-weight: bold; width: 11%; text-align: center; }
+
+        .obj-list { list-style: none; padding-left: 0; margin-top: 4px; }
+        .obj-list li { position: relative; padding-left: 16px; margin-bottom: 4px; font-size: 8.5pt; line-height: 1.4; }
+        .obj-list li::before { content: '•'; position: absolute; left: 3px; color: var(--accent); font-size: 13px; font-weight: bold; top: -1px; }
+
+        /* Tables (General) */
+        table.standard-table { width: 100%; border-collapse: collapse; margin-bottom: 6px; border: 1px solid var(--border-dark); }
+        table.standard-table th, table.standard-table td { border: 1px solid var(--border-dark); padding: 5px 7px; text-align: left; vertical-align: middle; }
+        table.standard-table th { background: var(--accent); color: white; font-family: var(--font-kh-heading); font-size: 8.5pt; text-align: center; }
+        table.standard-table td { font-size: 8pt; line-height: 1.35; }
+
+        /* Visual Frames */
+        .graphic-box { background: var(--bg-light); border: 1px solid var(--border-light); border-radius: 6px; padding: 8px; margin: 4px 0; width: 100%; }
+        .two-column { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 4px 0; align-items: start;}
+
+        /* VS CODE CLASSIC STYLE STYLING (Compact for Zero Overflow) */
+        .code-window { 
+            background: var(--vscode-bg); 
+            border-radius: 5px; 
+            overflow: hidden; 
+            margin: 4px 0 6px 0; 
+            border: 1px solid var(--vscode-border); 
+            box-shadow: 0 3px 8px rgba(0,0,0,0.12);
+        }
+        .code-header { 
+            background: var(--vscode-header); 
+            padding: 3px 8px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            border-bottom: 1px solid var(--vscode-border);
+        }
+        .mac-dots { display: flex; gap: 4px; }
+        .dot { width: 7px; height: 7px; border-radius: 50%; }
+        .dot-r { background: var(--danger); }
+        .dot-y { background: var(--warning); }
+        .dot-g { background: var(--success); }
+        .code-title { color: #CCCCCC; font-family: var(--font-code); font-size: 7.5pt; font-weight: 500;}
+        pre { 
+            padding: 6px 8px; 
+            color: var(--vscode-text); 
+            font-family: var(--font-code); 
+            font-size: 7.1pt; 
+            line-height: 1.3; 
+            overflow-x: auto; 
+            margin: 0; 
+            tab-size: 4;
+        }
+        code.inline-code { font-family: var(--font-code); background: #F1F5F9; color: var(--danger); padding: 1px 4px; border-radius: 3px; font-size: 8pt; font-weight: bold; border: 1px solid var(--border-light); }
+        
+        .lab-box { background: #FEFCE8; border-left: 4px solid #EAB308; padding: 6px 8px; margin: 4px 0; border-radius: 4px; border: 1px solid #FEF08A; }
+        .lab-box h4 { color: #854D0E; margin-bottom: 3px; font-family: var(--font-kh-heading); font-size: 9pt; display: flex; justify-content: space-between; align-items: center;}
+        .lab-box p, .lab-box ol, .lab-box ul { font-size: 8pt; line-height: 1.4; margin: 0; }
+
+        .eval-box { background: #FEF2F2; border-left: 4px solid #EF4444; padding: 6px 8px; margin: 4px 0; border-radius: 4px; border: 1px solid #FCA5A5; }
+        .eval-box h4 { color: #991B1B; margin-bottom: 3px; font-family: var(--font-kh-heading); font-size: 9pt; display: flex; justify-content: space-between; align-items: center;}
+        .eval-box p { font-size: 8pt; line-height: 1.4; margin: 0; }
+
+        /* Quiz Styling */
+        .q-list { list-style: decimal; padding-left: 16px; font-size: 8.5pt; line-height: 1.45; }
+        .q-list li { margin-bottom: 6px; font-weight: bold; }
+        .mcq-opts { list-style-type: upper-alpha; padding-left: 16px; margin-top: 2px; font-weight: normal; display: grid; grid-template-columns: 1fr 1fr; gap: 2px;}
+        .ans-table { width: 100%; border-collapse: collapse; margin-top: 3px;}
+        .ans-table th { background: var(--bg-light); color: var(--text-heading); text-align: center; border: 1px solid var(--border-dark); padding: 2px; font-size: 7.5pt;}
+        .ans-table td { font-weight: bold; color: var(--accent); text-align: center; border: 1px solid var(--border-dark); padding: 2px; font-size: 7.5pt;}
+
+        @media print {
+            body { background: none; padding: 0; margin: 0; display: block; }
+            .no-print { display: none !important; }
+            @page { size: A4 portrait; margin: 0; }
+            .a4-page { width: 210mm !important; height: 297mm !important; margin: 0 !important; box-shadow: none !important; border: none !important; border-radius: 0 !important; }
+            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="no-print">
+    <p><b><i class="fa-solid fa-file-pdf"></i> ណែនាំ៖</b> សូមជ្រើសរើស <b>Margins: None</b> និងបើក <b>Background graphics</b> ពេល Print (១៦ ទំព័រ)។</p>
+    <button class="print-btn" onclick="window.print()"><i class="fa-solid fa-print"></i> បោះពុម្ពឯកសារជា PDF (A4 Handout ១៦ ទំព័រ)</button>
+</div>
+
+<!-- PAGE 1: COVER -->
+<div class="a4-page">
+    <div class="page-content" style="justify-content: center; align-items: center; text-align: center; background: radial-gradient(circle at top, #F8FAFC 0%, #FFFFFF 100%);">
+        <img src="https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png" onerror="this.src='https://via.placeholder.com/130'" style="width: 130px; margin-bottom: 15px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));">
+        <h1 style="font-family: var(--font-kh-heading); font-size: 22pt; color: var(--text-heading); margin-bottom: 2px;">សាកលវិទ្យាល័យអង្គរ</h1>
+        <p style="font-family: var(--font-en-main); font-size: 11pt; color: var(--text-muted); margin-bottom: 20px; font-weight: 600; letter-spacing: 2px;">ANGKOR UNIVERSITY</p>
+        
+        <div style="font-family: var(--font-kh-heading); font-size: 10.5pt; color: var(--text-main); margin-bottom: 18px; background: #F1F5F9; padding: 5px 18px; border-radius: 50px; border: 1px solid var(--border-light); display: inline-flex; align-items: center; gap: 8px;">
+            <i class="fa-solid fa-graduation-cap" style="color:var(--accent);"></i> បរិញ្ញាបត្រ វិទ្យាសាស្ត្រកុំព្យូទ័រ
+        </div>
+        
+        <div style="background: var(--accent); color: white; padding: 8px 18px; border-radius: 8px; font-size: 11pt; font-family: var(--font-kh-heading); margin-bottom: 18px; box-shadow: 0 4px 15px rgba(81, 43, 212, 0.3);">
+            ឯកសារអាន (Handout) - មគ្គុទ្ទេសក៍អនុវត្តន៍ប្រព័ន្ធសុវត្ថិភាព Dual-Auth
+        </div>
+        
+        <h2 style="font-family: var(--font-kh-heading); font-size: 15pt; color: var(--text-heading); margin-bottom: 8px; line-height: 1.4;">
+            ASP.NET Core EF Core Code-First Approach<br>
+            (MVC + RESTful Web API + Identity + JWT Token)
+        </h2>
+        <h3 style="font-family: var(--font-kh-body); font-size: 10pt; color: var(--secondary); margin-bottom: 30px; font-weight: 600;">
+            ការអភិវឌ្ឍកម្មវិធី Web និង Web API ជាមួយប្រព័ន្ធសុវត្ថិភាពទិន្នន័យ Cookie & JWT
+        </h3>
+        
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 6px; background: white; padding: 12px 20px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid var(--border-light); width: 85%;">
+            <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" style="width: 85px; height: 85px; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent); box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+            <p style="font-family: var(--font-kh-body); font-size: 9pt; color: var(--text-muted); margin: 0;">រៀបចំដោយសាស្ត្រាចារ្យ៖</p>
+            <strong style="font-family: var(--font-kh-heading); color: var(--text-heading); font-size: 12pt;">សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</strong>
+        </div>
+    </div>
+</div>
+
+<!-- PAGE 2: TOC & OBJECTIVES -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png" onerror="this.src='https://via.placeholder.com/30'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | EF Core Code-First Dual-Auth</h1><p>ASP.NET CORE MVC & WEB API</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title">
+            <div class="section-title-left"><i class="fa-solid fa-list-ol"></i> មាតិកាមគ្គុទ្ទេសក៍ (Guide Contents)</div>
+        </div>
+        <table class="toc-table">
+            <thead>
+                <tr>
+                    <th style="width: 12%; text-align: center;">ទំព័រ</th>
+                    <th>ខ្លឹមសារអនុវត្តន៍ (Topics & Concepts)</th>
+                    <th style="width: 25%; text-align: center;">Bloom's Level</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td class="toc-num">ទំព័រទី ៣</td><td>ការយល់ដឹង និងប្រយោជន៍នៃ Authentication VS Authorization</td><td style="text-align:center;"><span class="bloom-badge bloom-l2">2. Understand</span></td></tr>
+                <tr><td class="toc-num">ទំព័រទី ៤</td><td>ជំហានទី ១: ការរៀបចំ Project Setup និងដំឡើង NuGet Packages</td><td style="text-align:center;"><span class="bloom-badge bloom-l1">1. Remember</span></td></tr>
+                <tr><td class="toc-num">ទំព័រទី ៥</td><td>ជំហានទី ២: Entity Models (`AppUser`) និង DbContext (`ApplicationDbContext`)</td><td style="text-align:center;"><span class="bloom-badge bloom-l3">3. Apply</span></td></tr>
+                <tr><td class="toc-num">ទំព័រទី ៦</td><td>ជំហានទី ៣ & ៤: Data Transfer Objects (DTOs) និង Repository Interface</td><td style="text-align:center;"><span class="bloom-badge bloom-l3">3. Apply</span></td></tr>
+                <tr><td class="toc-num">ទំព័រទី ៧</td><td>ជំហានទី ៥ & ៦: Concrete Repository Implementation & `appsettings.json`</td><td style="text-align:center;"><span class="bloom-badge bloom-l3">3. Apply</span></td></tr>
+                <tr><td class="toc-num">ទំព័រទី ៨</td><td>ជំហានទី ៧: ការកំណត់ `Program.cs` សម្រាប់ Dual-Auth, Middleware & Seeding</td><td style="text-align:center;"><span class="bloom-badge bloom-l4">4. Analyze</span></td></tr>
+                <tr><td class="toc-num">ទំព័រទី ៩</td><td>ជំហានទី ៨ & ៩: Database Migrations និង Auth API Controller (JWT)</td><td style="text-align:center;"><span class="bloom-badge bloom-l6">6. Create</span></td></tr>
+                <tr><td class="toc-num">ទំព័រទី ១០</td><td>ជំហានទី ១០: AppUser RESTful Web API Controller សម្រាប់ CRUD Protection</td><td style="text-align:center;"><span class="bloom-badge bloom-l6">6. Create</span></td></tr>
+                <tr><td class="toc-num">ទំព័រទី ១១</td><td>ជំហានទី ១១: MVC Controllers (`AccountController` & `AppUserController`)</td><td style="text-align:center;"><span class="bloom-badge bloom-l6">6. Create</span></td></tr>
+                <tr><td class="toc-num">ទំព័រទី ១២</td><td>ជំហានទី ១២: Razor Views (`Login.cshtml` & `Index.cshtml`) សម្រាប់ UI</td><td style="text-align:center;"><span class="bloom-badge bloom-l6">6. Create</span></td></tr>
+                <tr><td class="toc-num">ទំព័រទី ១៣</td><td>ជំហានទី ១៣: ការវិភាគប្រៀបធៀប Cookie-Auth VS JWT-Bearer Auth</td><td style="text-align:center;"><span class="bloom-badge bloom-l4">4. Analyze</span></td></tr>
+                <tr><td class="toc-num">ទំព័រទី ១៤</td><td>ជំហានទី ១៤: សំណួររំលឹកមេរៀន (True/False, MCQs, និង Matching)</td><td style="text-align:center;"><span class="bloom-badge bloom-l2">2. Understand</span></td></tr>
+                <tr><td class="toc-num">ទំព័រទី ១៥</td><td>ជំហានទី ១៥: អត្រាកំណែ និងការបកស្រាយចម្លើយ (Answer Keys)</td><td style="text-align:center;"><span class="bloom-badge bloom-l4">4. Analyze</span></td></tr>
+                <tr><td class="toc-num">ទំព័រទី ១៦</td><td>ជំហានទី ១៦: ការធ្វើតេស្ត និងការផ្ទៀងផ្ទាត់ប្រព័ន្ធ (Swagger & Browser)</td><td style="text-align:center;"><span class="bloom-badge bloom-l5">5. Evaluate</span></td></tr>
+            </tbody>
+        </table>
+
+        <div class="section-title">
+            <div class="section-title-left"><i class="fa-solid fa-bullseye"></i> វត្ថុបំណងនៃការរៀនសូត្រ (Bloom's Objectives)</div>
+        </div>
+        <ul class="obj-list">
+            <li><span class="bloom-badge bloom-l1">1. Remember</span> <b class="highlight">EF Core Concepts:</b> ចងចាំច្បាស់ពីការបង្កើត Database/Tables ចេញពី C# Models ដោយប្រើ EF Core Code-First Migrations។</li>
+            <li><span class="bloom-badge bloom-l2">2. Understand</span> <b class="highlight">Dual Auth Flow:</b> យល់ដឹងពីភាពខុសគ្នារវាង Cookie-Based Authentication (សម្រាប់ MVC SSR) និង JWT Bearer Token (សម្រាប់ Stateless Web APIs)។</li>
+            <li><span class="bloom-badge bloom-l3">3. Apply</span> <b class="highlight">Repository & Async:</b> ចេះអនុវត្តន៍ Repository Pattern និងប្រើ async/await ជាមួយ Entity Framework Core ក្នុងការគ្រប់គ្រង Database Operations។</li>
+            <li><span class="bloom-badge bloom-l4">4. Analyze</span> <b class="highlight">Security Mechanics:</b> វិភាគនិងកំណត់រចនាសម្ព័ន្ធ Middleware ក្នុង `Program.cs` ដើម្បីការពារកុំឱ្យមានការវាយប្រហារ CSRF, XSS និង Unauthorized Access។</li>
+            <li><span class="bloom-badge bloom-l5">5. Evaluate</span> <b class="highlight">System Testing:</b> ធ្វើការវាយតម្លៃនិងធ្វើតេស្តប្រព័ន្ធ Auth ទាំងពីរតាមរយៈ Swagger UI, Postman Header Request និង Browser MVC Views។</li>
+            <li><span class="bloom-badge bloom-l6">6. Create</span> <b class="highlight">Hybrid Application:</b> កសាងគម្រោង ASP.NET Core ដែលគាំទ្រទាំង MVC Views និង RESTful Web API ក្នុង Solution តែមួយដោយជោគជ័យ។</li>
+        </ul>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ២ / ១៦</div>
+    </div>
+</div>
+
+<!-- PAGE 3: DEEP DIVE - AUTHENTICATION VS AUTHORIZATION -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png" onerror="this.src='https://via.placeholder.com/30'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | EF Core Code-First Dual-Auth</h1><p>ASP.NET CORE MVC & WEB API</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0;">
+            <div class="section-title-left"><i class="fa-solid fa-user-shield"></i> ការយល់ដឹងពី Authentication និង Authorization</div>
+            <span class="bloom-badge bloom-l2">2. Understand</span>
+        </div>
+        
+        <div class="text-block">
+            នៅក្នុងប្រព័ន្ធសុវត្ថិភាពទិន្នន័យ (Software Security) ពាក្យពីរម៉ាត់នេះតែងតែដើរទន្ទឹមគ្នា ប៉ុន្តែមានតួនាទី និងភារកិច្ចខុសគ្នាទាំងស្រុង ដែលអ្នកអភិវឌ្ឍន៍ប្រព័ន្ធចាំបាច់ត្រូវយល់ដឹងឱ្យច្បាស់៖
+        </div>
+
+        <!-- AUTHENTICATION BOX -->
+        <div class="graphic-box" style="border-left: 4px solid var(--secondary); background: #F0F9FF; margin-bottom: 8px;">
+            <div style="font-family: var(--font-kh-heading); font-size: 10pt; color: var(--secondary); margin-bottom: 4px;">
+                <i class="fa-solid fa-key"></i> ១. Authentication (AuthN) - "តើអ្នកជានរណា?" (Who are you?)
+            </div>
+            <p style="font-size: 8.5pt; line-height: 1.45; color: var(--text-main); margin-bottom: 4px;">
+                <b>និយមន័យ៖</b> គឺជាដំណើរការ ផ្ទៀងផ្ទាត់អត្តសញ្ញាណ របស់អ្នកប្រើប្រាស់ (User Identity) ថាជាមនុស្សពិតប្រាកដដែលមានគណនីក្នុងប្រព័ន្ធ ឬអត់។ វាធ្វើឡើងតាមរយៈការផ្ទៀងផ្ទាត់ Email/Username និង Password, Biometrics, ឬ OTP Tokens។
+            </p>
+            <div style="background: white; border: 1px solid var(--border-light); padding: 5px; border-radius: 4px; font-size: 8pt; color: #0369A1;">
+                <b>ប្រយោជន៍សំខាន់ៗនៃ Authentication៖</b>
+                <ul style="padding-left: 15px; margin-top: 2px;">
+                    <li>ការពារប្រព័ន្ធមិនឱ្យជនចម្លែក (Anonymous Users) ចូលប្រើប្រាស់ផ្នែកអាថ៌កំបាំងបាន។</li>
+                    <li>បង្កើតជា Digital Identity (Claims, User ID) សម្រាប់កំណត់អត្តសញ្ញាណរាល់សកម្មភាពទាំងអស់ក្នុង App។</li>
+                    <li>នៅក្នុង ASP.NET Core: អនុវត្តតាមរយៈ Cookies (សម្រាប់ MVC Forms) ឬ JWT Bearer Token (សម្រាប់ Web APIs)។</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- AUTHORIZATION BOX -->
+        <div class="graphic-box" style="border-left: 4px solid var(--accent); background: #F3E8FF; margin-bottom: 8px;">
+            <div style="font-family: var(--font-kh-heading); font-size: 10pt; color: var(--accent); margin-bottom: 4px;">
+                <i class="fa-solid fa-user-lock"></i> ២. Authorization (AuthZ) - "តើអ្នកមានសិទ្ធិធ្វើអ្វី?" (What can you do?)
+            </div>
+            <p style="font-size: 8.5pt; line-height: 1.45; color: var(--text-main); margin-bottom: 4px;">
+                <b>និយមន័យ៖</b> គឺជាដំណើរការ ពិនិត្យនិងកំណត់សិទ្ធិ របស់ User ដែលបាន Authenticated រួចហើយ ថាតើគាត់មានសិទ្ធិមើល, បង្កើត (Create), កែប្រែ (Update), ឬលុប (Delete) ទិន្នន័យលើ Resource ណាមួយឡើយ។
+            </p>
+            <div style="background: white; border: 1px solid var(--border-light); padding: 5px; border-radius: 4px; font-size: 8pt; color: #6B21A8;">
+                <b>ប្រយោជន៍សំខាន់ៗនៃ Authorization៖</b>
+                <ul style="padding-left: 15px; margin-top: 2px;">
+                    <li>រៀបចំឋានានុក្រមប្រើប្រាស់ (Role-Based Access Control - RBAC) ដូចជា `Admin`, `Manager`, `User`។</li>
+                    <li>ការពារទិន្នន័យសំខាន់ៗ (Sensitive Data) មិនឱ្យ User ធម្មតាកែប្រែ ឬលុបដោយសេរីបានឡើយ។</li>
+                    <li>នៅក្នុង ASP.NET Core: អនុវត្តតាមរយៈ Attribute <code>[Authorize(Roles = "Admin")]</code> លើ Controller ឬ Action Methods។</li>
+                </ul>
+            </div>
+        </div>
+
+        <table class="standard-table">
+            <thead>
+                <tr>
+                    <th style="width: 20%;">លក្ខណៈ</th>
+                    <th style="width: 40%;">Authentication (AuthN)</th>
+                    <th style="width: 40%;">Authorization (AuthZ)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><b>សំណួរចម្បង</b></td>
+                    <td>"តើអ្នកជានរណា?" (Who are you?)</td>
+                    <td>"តើអ្នកមានសិទ្ធិធ្វើអ្វីខ្លះ?" (What are you allowed to do?)</td>
+                </tr>
+                <tr>
+                    <td><b>លំដាប់ការងារ</b></td>
+                    <td>កើតឡើង <b>មុនគេជានិច្ច</b> (Step 1)</td>
+                    <td>កើតឡើង <b>បន្ទាប់ពី Authenticated រួច</b> (Step 2)</td>
+                </tr>
+                <tr>
+                    <td><b>ឧទាហរណ៍</b></td>
+                    <td>បញ្ចូល Email: `admin@example.com` + Pass: `Admin123!`</td>
+                    <td>Admin មានសិទ្ធិ Delete User, តែ User ធម្មតាមើលបានតែ List</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ៣ / ១៦</div>
+    </div>
+</div>
+
+<!-- PAGE 4: STEP 1 -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png" onerror="this.src='https://via.placeholder.com/30'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | EF Core Code-First Dual-Auth</h1><p>ASP.NET CORE MVC & WEB API</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0;">
+            <div class="section-title-left"><i class="fa-solid fa-gears"></i> ជំហានទី ១: ការរៀបចំ Project និង NuGet Packages</div>
+            <span class="bloom-badge bloom-l1">1. Remember</span>
+        </div>
+        
+        <div class="purpose-box">
+            <b>ប្រយោជន៍នៃជំហាននេះ៖</b> បង្កើតគ្រោងឆ្អឹង Project ដើម និងទាញយក Libraries ផ្លូវការដែលចាំបាច់សម្រាប់ EF Core SQL Operations, ASP.NET Core Identity (User/Role Storage), JWT Token Security, និង Swagger API Documentation។
+        </div>
+
+        <div class="text-block" style="margin-top: 5px;">
+            តារាងខាងក្រោមបង្ហាញពីតួនាទី និងប្រយោជន៍នៃ NuGet Packages នីមួយៗដែលត្រូវដំឡើង៖
+        </div>
+
+        <table class="standard-table" style="margin-bottom: 8px;">
+            <thead>
+                <tr>
+                    <th style="width: 35%;">NuGet Package Name</th>
+                    <th>តួនាទី និងប្រយោជន៍ (Role & Purpose)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><b>Microsoft.AspNetCore.Identity.EntityFrameworkCore</b></td>
+                    <td>ផ្តល់នូវ Tables មានស្រាប់ (AspNetUsers, AspNetRoles) សម្រាប់គ្រប់គ្រង User, Passwords hashing, និង Role claims ក្នុង Database។</td>
+                </tr>
+                <tr>
+                    <td><b>Microsoft.EntityFrameworkCore.SqlServer</b></td>
+                    <td>ជា Database Provider សម្រាប់តភ្ជាប់ EF Core ទៅកាន់ SQL Server Database Engine។</td>
+                </tr>
+                <tr>
+                    <td><b>Microsoft.EntityFrameworkCore.Tools</b></td>
+                    <td>ផ្តល់នូវបញ្ជា Command CLI (ដូចជា `dotnet ef migrations`) សម្រាប់បង្កើត SQL Database ស្វ័យប្រវត្តិ។</td>
+                </tr>
+                <tr>
+                    <td><b>Microsoft.AspNetCore.Authentication.JwtBearer</b></td>
+                    <td>អនុញ្ញាតឱ្យ Web API អាចបកស្រាយ និងផ្ទៀងផ្ទាត់ JWT (JSON Web Tokens) ដែលផ្ញើមកតាម HTTP Bearer Header។</td>
+                </tr>
+                <tr>
+                    <td><b>Swashbuckle.AspNetCore</b></td>
+                    <td>បង្កើត UI ទំព័រ Interactive Swagger Documentation សម្រាប់ធ្វើតេស្ត RESTful Web APIs បានយ៉ាងងាយស្រួល។</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="code-window">
+            <div class="code-header">
+                <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+                <div class="code-title">Terminal / CLI Commands</div>
+            </div>
+<pre>dotnet new mvc -n MyCodeFirstProject
+cd MyCodeFirstProject
+
+<span style="color:#5C6370;"># ដំឡើង NuGet Packages សម្រាប់ EF Core Code-First, Identity, JWT & Swagger UI</span>
+dotnet add package Microsoft.AspNetCore.Identity.EntityFrameworkCore
+dotnet add package Microsoft.EntityFrameworkCore.SqlServer
+dotnet add package Microsoft.EntityFrameworkCore.Tools
+dotnet add package Microsoft.AspNetCore.Authentication.JwtBearer
+dotnet add package Swashbuckle.AspNetCore</pre>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ៤ / ១៦</div>
+    </div>
+</div>
+
+<!-- PAGE 5: STEP 2 (MODELS & DBCONTEXT - SEPARATED TO PREVENT CUT-OFF) -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png" onerror="this.src='https://via.placeholder.com/30'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | EF Core Code-First Dual-Auth</h1><p>ASP.NET CORE MVC & WEB API</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0;">
+            <div class="section-title-left"><i class="fa-solid fa-database"></i> ជំហានទី ២: Domain Entity Models & DbContext</div>
+            <span class="bloom-badge bloom-l3">3. Apply</span>
+        </div>
+        <div class="purpose-box">
+            <b>ប្រយោជន៍នៃជំហាននេះ៖</b> កំណត់រចនាសម្ព័ន្ធ Table តាមរយៈ C# Class (Domain Entity) និងបង្កើត `ApplicationDbContext` ដែលជាស្ពានតភ្ជាប់រវាង C# Code និង SQL Server Database។
+        </div>
+        
+        <div class="sub-heading">២.១ File: `Models/AppUser.cs` (Domain Entity Class)</div>
+        <div class="purpose-box" style="background:#FFFBEB; border-left-color:var(--warning); color:#92400E;">
+            <b>តួនាទីរបស់ File:</b> កំណត់ Columns, Data Types, និង Validation Rules (Data Annotations) សម្រាប់តារាង AppUsers ក្នុង SQL Database។
+        </div>
+        <div class="code-window">
+            <div class="code-header">
+                <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+                <div class="code-title">Models/AppUser.cs</div>
+            </div>
+<pre><span style="color:#C678DD;">using</span> System.ComponentModel.DataAnnotations;
+
+<span style="color:#C678DD;">namespace</span> MyCodeFirstProject.Models
+{
+    <span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">AppUser</span>
+    {
+        [Key]
+        <span style="color:#C678DD;">public int</span> Id { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; }
+
+        [Required(ErrorMessage = <span style="color:#98C379;">"សូមបញ្ចូលឈ្មោះពេញ"</span>)]
+        [StringLength(<span style="color:#D19A66;">100</span>)]
+        [Display(Name = <span style="color:#98C379;">"ឈ្មោះពេញ"</span>)]
+        <span style="color:#C678DD;">public string</span> FullName { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; } = <span style="color:#98C379;">""</span>;
+
+        [Required(ErrorMessage = <span style="color:#98C379;">"សូមបញ្ចូល Email"</span>)]
+        [EmailAddress]
+        [StringLength(<span style="color:#D19A66;">100</span>)]
+        <span style="color:#C678DD;">public string</span> Email { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; } = <span style="color:#98C379;">""</span>;
+
+        [Display(Name = <span style="color:#98C379;">"ស្ថានភាព"</span>)]
+        <span style="color:#C678DD;">public bool</span> IsActive { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; } = <span style="color:#D19A66;">true</span>;
+    }
+}</pre>
+        </div>
+
+        <div class="sub-heading">២.២ File: `Data/ApplicationDbContext.cs` (Identity + Code-First)</div>
+        <div class="purpose-box" style="background:#FFFBEB; border-left-color:var(--warning); color:#92400E;">
+            <b>តួនាទីរបស់ File:</b> រួមបញ្ចូលគ្នារវាង ASP.NET Identity System Tables (AspNetUsers, AspNetRoles) និង Custom Entity Table (`AppUsers`) ចូលទៅក្នុង Database តែមួយ។
+        </div>
+        <div class="code-window">
+            <div class="code-header">
+                <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+                <div class="code-title">Data/ApplicationDbContext.cs</div>
+            </div>
+<pre><span style="color:#C678DD;">using</span> Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+<span style="color:#C678DD;">using</span> Microsoft.EntityFrameworkCore;
+<span style="color:#C678DD;">using</span> MyCodeFirstProject.Models;
+
+<span style="color:#C678DD;">namespace</span> MyCodeFirstProject.Data
+{
+    <span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">ApplicationDbContext</span> : IdentityDbContext
+    {
+        <span style="color:#C678DD;">public</span> <span style="color:#61AFEF;">ApplicationDbContext</span>(DbContextOptions&lt;ApplicationDbContext&gt; options)
+            : <span style="color:#C678DD;">base</span>(options) { }
+
+        <span style="color:#5C6370;">// Code-First DbSet សម្រាប់តារាង AppUsers</span>
+        <span style="color:#C678DD;">public</span> DbSet&lt;AppUser&gt; AppUsers { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; }
+
+        <span style="color:#C678DD;">protected override void</span> <span style="color:#61AFEF;">OnModelCreating</span>(ModelBuilder builder)
+        {
+            <span style="color:#C678DD;">base</span>.OnModelCreating(builder);
+            builder.Entity&lt;AppUser&gt;().HasIndex(u => u.Email).IsUnique();
+        }
+    }
+}</pre>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ៥ / ១៦</div>
+    </div>
+</div>
+
+<!-- PAGE 6: STEP 3 & STEP 4 -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png" onerror="this.src='https://via.placeholder.com/30'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | EF Core Code-First Dual-Auth</h1><p>ASP.NET CORE MVC & WEB API</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0;">
+            <div class="section-title-left"><i class="fa-solid fa-exchange-alt"></i> ជំហានទី ៣: Data Transfer Objects (DTOs)</div>
+            <span class="bloom-badge bloom-l3">3. Apply</span>
+        </div>
+        <div class="purpose-box">
+            <b>ប្រយោជន៍នៃជំហាននេះ៖</b> បង្កើត DTO Classes សម្រាប់ចោះទទួលទិន្នន័យពី Request Body ឬផ្ញើ Response ដោយចាក់សោការពារសុវត្ថិភាព និងលាក់បាំង Field អាថ៌កំបាំង (ការពារ Over-posting attack)។
+        </div>
+        <div class="two-column">
+            <div>
+                <div class="sub-heading">`Models/DTOs/LoginDto.cs`</div>
+                <div class="purpose-box" style="background:#F3E8FF; border-left-color:var(--accent); color:#6B21A8;">
+                    <b>តួនាទី៖</b> ទទួល Credentials ចូលប្រព័ន្ធ។
+                </div>
+                <div class="code-window">
+<pre><span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">LoginDto</span>
+{
+    [Required, EmailAddress]
+    <span style="color:#C678DD;">public string</span> Email { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; } = <span style="color:#98C379;">""</span>;
+
+    [Required, DataType(DataType.Password)]
+    <span style="color:#C678DD;">public string</span> Password { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; } = <span style="color:#98C379;">""</span>;
+
+    <span style="color:#C678DD;">public bool</span> RememberMe { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; }
+}</pre>
+                </div>
+            </div>
+            <div>
+                <div class="sub-heading">`Models/DTOs/TokenResponseDto.cs`</div>
+                <div class="purpose-box" style="background:#F3E8FF; border-left-color:var(--accent); color:#6B21A8;">
+                    <b>តួនាទី៖</b> ហុច JWT Token ទៅ Client។
+                </div>
+                <div class="code-window">
+<pre><span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">TokenResponseDto</span>
+{
+    <span style="color:#C678DD;">public string</span> Token { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; } = <span style="color:#98C379;">""</span>;
+    <span style="color:#C678DD;">public</span> DateTime Expiration { <span style="color:#C678DD;">get</span>; <span style="color:#C678DD;">set</span>; }
+}</pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-title">
+            <div class="section-title-left"><i class="fa-solid fa-layer-group"></i> ជំហានទី ៤: Repository Interface (IAppUserRepository)</div>
+            <span class="bloom-badge bloom-l3">3. Apply</span>
+        </div>
+        <div class="purpose-box">
+            <b>ប្រយោជន៍នៃជំហាននេះ៖</b> អនុវត្តន៍ Repository Pattern ដើម្បីបំបែក Business Logic ចេញពី Data Access Layer ដោយប្រើ Async/Await ផ្តល់ទិន្នន័យរហ័ស លឿន និងងាយស្រួលសរសេរ Unit Test។
+        </div>
+        
+        <div class="sub-heading">៤.១ Interface: `Interfaces/IAppUserRepository.cs`</div>
+        <div class="purpose-box" style="background:#FFFBEB; border-left-color:var(--warning); color:#92400E;">
+            <b>តួនាទីរបស់ File:</b> បង្កើត Contract/Interface កំណត់ឈ្មោះ Methods CRUD ទាំងអស់ដោយមិនទាន់សរសេរ Logic ឡើយ។
+        </div>
+        <div class="code-window">
+            <div class="code-header">
+                <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+                <div class="code-title">Interfaces/IAppUserRepository.cs</div>
+            </div>
+<pre><span style="color:#C678DD;">public interface</span> <span style="color:#61AFEF;">IAppUserRepository</span>
+{
+    Task&lt;IEnumerable&lt;AppUser&gt;&gt; <span style="color:#61AFEF;">GetAllAsync</span>();
+    Task&lt;AppUser?&gt; <span style="color:#61AFEF;">GetByIdAsync</span>(<span style="color:#C678DD;">int</span> id);
+    Task <span style="color:#61AFEF;">InsertAsync</span>(AppUser user);
+    Task <span style="color:#61AFEF;">UpdateAsync</span>(AppUser user);
+    Task <span style="color:#61AFEF;">DeleteAsync</span>(<span style="color:#C678DD;">int</span> id);
+}</pre>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ៦ / ១៦</div>
+    </div>
+</div>
+
+<!-- PAGE 7: STEP 5 & STEP 6 -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png" onerror="this.src='https://via.placeholder.com/30'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | EF Core Code-First Dual-Auth</h1><p>ASP.NET CORE MVC & WEB API</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0;">
+            <div class="section-title-left"><i class="fa-solid fa-code-branch"></i> ជំហានទី ៥: Concrete Repository Implementation</div>
+            <span class="bloom-badge bloom-l3">3. Apply</span>
+        </div>
+        
+        <div class="sub-heading">៥.១ Concrete Repository: `Repositories/AppUserRepository.cs`</div>
+        <div class="purpose-box" style="background:#FFFBEB; border-left-color:var(--warning); color:#92400E;">
+            <b>តួនាទីរបស់ File:</b> អនុវត្តសរសេរកូដជាក់ស្តែងតាម Interface ដោយប្រើ EF Core Async (`ToListAsync`, `FindAsync`, `SaveChangesAsync`)។
+        </div>
+        <div class="code-window">
+            <div class="code-header">
+                <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+                <div class="code-title">Repositories/AppUserRepository.cs</div>
+            </div>
+<pre><span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">AppUserRepository</span> : IAppUserRepository
+{
+    <span style="color:#C678DD;">private readonly</span> ApplicationDbContext _context;
+    <span style="color:#C678DD;">public</span> <span style="color:#61AFEF;">AppUserRepository</span>(ApplicationDbContext context) => _context = context;
+
+    <span style="color:#C678DD;">public async</span> Task&lt;IEnumerable&lt;AppUser&gt;&gt; <span style="color:#61AFEF;">GetAllAsync</span>() 
+        => <span style="color:#C678DD;">await</span> _context.AppUsers.OrderByDescending(u => u.Id).ToListAsync();
+
+    <span style="color:#C678DD;">public async</span> Task&lt;AppUser?&gt; <span style="color:#61AFEF;">GetByIdAsync</span>(<span style="color:#C678DD;">int</span> id) 
+        => <span style="color:#C678DD;">await</span> _context.AppUsers.FindAsync(id);
+
+    <span style="color:#C678DD;">public async</span> Task <span style="color:#61AFEF;">InsertAsync</span>(AppUser user) 
+    { 
+        <span style="color:#C678DD;">await</span> _context.AppUsers.AddAsync(user); 
+        <span style="color:#C678DD;">await</span> _context.SaveChangesAsync(); 
+    }
+
+    <span style="color:#C678DD;">public async</span> Task <span style="color:#61AFEF;">UpdateAsync</span>(AppUser user) 
+    { 
+        _context.AppUsers.Update(user); 
+        <span style="color:#C678DD;">await</span> _context.SaveChangesAsync(); 
+    }
+
+    <span style="color:#C678DD;">public async</span> Task <span style="color:#61AFEF;">DeleteAsync</span>(<span style="color:#C678DD;">int</span> id) 
+    { 
+        <span style="color:#C678DD;">var</span> u = <span style="color:#C678DD;">await</span> _context.AppUsers.FindAsync(id); 
+        <span style="color:#C678DD;">if</span> (u != <span style="color:#D19A66;">null</span>) { _context.AppUsers.Remove(u); <span style="color:#C678DD;">await</span> _context.SaveChangesAsync(); } 
+    }
+}</pre>
+        </div>
+
+        <div class="section-title">
+            <div class="section-title-left"><i class="fa-solid fa-sliders"></i> ជំហានទី ៦: Configuration ក្នុង `appsettings.json`</div>
+            <span class="bloom-badge bloom-l2">2. Understand</span>
+        </div>
+        <div class="purpose-box">
+            <b>ប្រយោជន៍នៃជំហាននេះ និងតួនាទី File៖</b> រក្សាទុកព័ត៌មានកំណត់ប្រព័ន្ធជាលក្ខណៈ Centralized ដូចជា SQL Database Connection String និង Secret Signing Key សម្រាប់បង្កើត JWT Tokens ដោយមិនបាច់ Hardcode ក្នុង C# កូដ។
+        </div>
+        <div class="code-window">
+            <div class="code-header">
+                <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+                <div class="code-title">appsettings.json</div>
+            </div>
+<pre>{
+  <span style="color:#E06C75;">"ConnectionStrings"</span>: {
+    <span style="color:#E06C75;">"DefaultConnection"</span>: <span style="color:#98C379;">"Server=(localdb)\\mssqllocaldb;Database=UserManagementCodeFirstDB;Trusted_Connection=True;MultipleActiveResultSets=true"</span>
+  },
+  <span style="color:#E06C75;">"Jwt"</span>: {
+    <span style="color:#E06C75;">"Key"</span>: <span style="color:#98C379;">"YOUR_VERY_SECRET_KEY_HERE_32_CHARS_OR_MORE_123456"</span>,
+    <span style="color:#E06C75;">"Issuer"</span>: <span style="color:#98C379;">"https://localhost:7123"</span>,
+    <span style="color:#E06C75;">"Audience"</span>: <span style="color:#98C379;">"https://localhost:7123"</span>
+  }
+}</pre>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ៧ / ១៦</div>
+    </div>
+</div>
+
+<!-- PAGE 8: STEP 7 (PROGRAM.CS SEPARATED TO PREVENT CUT-OFF) -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png" onerror="this.src='https://via.placeholder.com/30'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | EF Core Code-First Dual-Auth</h1><p>ASP.NET CORE MVC & WEB API</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0;">
+            <div class="section-title-left"><i class="fa-solid fa-code"></i> ជំហានទី ៧: Program.cs (Dual Auth & Middleware Pipeline)</div>
+            <span class="bloom-badge bloom-l4">4. Analyze</span>
+        </div>
+        <div class="purpose-box">
+            <b>ប្រយោជន៍នៃជំហាននេះ និងតួនាទី File៖</b> បេះដូងនៃកម្មវិធី! ចុះឈ្មោះ Services ក្នុង Dependency Injection Container, រៀបចំ Dual Auth Middleware (Cookie សម្រាប់ MVC និង JWT Bearer សម្រាប់ API), និងសរសេរ Data Seeding បង្កើត Admin User ស្វ័យប្រវត្តិ។
+        </div>
+        <div class="code-window">
+            <div class="code-header">
+                <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+                <div class="code-title">Program.cs</div>
+            </div>
+<pre><span style="color:#C678DD;">var</span> builder = WebApplication.CreateBuilder(args);
+
+<span style="color:#5C6370;">// 1. Register DbContext & Identity Services</span>
+builder.Services.AddDbContext&lt;ApplicationDbContext&gt;(opt =>
+    opt.UseSqlServer(builder.Configuration.GetConnectionString(<span style="color:#98C379;">"DefaultConnection"</span>)));
+builder.Services.AddIdentity&lt;IdentityUser, IdentityRole&gt;()
+    .AddEntityFrameworkStores&lt;ApplicationDbContext&gt;().AddDefaultTokenProviders();
+
+<span style="color:#5C6370;">// 2. Configure Dual Authentication (Cookie for MVC + JWT Bearer for REST Web API)</span>
+builder.Services.ConfigureApplicationCookie(opt => opt.LoginPath = <span style="color:#98C379;">"/Account/Login"</span>);
+builder.Services.AddAuthentication()
+    .AddJwtBearer(opt => {
+        opt.TokenValidationParameters = <span style="color:#C678DD;">new</span> TokenValidationParameters {
+            ValidateIssuer = <span style="color:#D19A66;">true</span>, ValidateAudience = <span style="color:#D19A66;">true</span>, ValidateLifetime = <span style="color:#D19A66;">true</span>,
+            ValidIssuer = builder.Configuration[<span style="color:#98C379;">"Jwt:Issuer"</span>], ValidAudience = builder.Configuration[<span style="color:#98C379;">"Jwt:Audience"</span>],
+            IssuerSigningKey = <span style="color:#C678DD;">new</span> SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration[<span style="color:#98C379;">"Jwt:Key"</span>]!))
+        };
+    });
+
+builder.Services.AddScoped&lt;IAppUserRepository, AppUserRepository&gt;();
+builder.Services.AddControllersWithViews(); 
+builder.Services.AddEndpointsApiExplorer(); 
+builder.Services.AddSwaggerGen();
+
+<span style="color:#C678DD;">var</span> app = builder.Build();
+<span style="color:#C678DD;">if</span> (app.Environment.IsDevelopment()) { app.UseSwagger(); app.UseSwaggerUI(); }
+app.UseHttpsRedirection(); app.UseStaticFiles(); app.UseRouting();
+app.UseAuthentication(); app.UseAuthorization();
+
+<span style="color:#5C6370;">// Data Seeding (Automatic Admin Account Initialization)</span>
+<span style="color:#C678DD;">using</span> (<span style="color:#C678DD;">var</span> scope = app.Services.CreateScope()) {
+    <span style="color:#C678DD;">var</span> um = scope.ServiceProvider.GetRequiredService&lt;UserManager&lt;IdentityUser&gt;&gt;();
+    <span style="color:#C678DD;">var</span> rm = scope.ServiceProvider.GetRequiredService&lt;RoleManager&lt;IdentityRole&gt;&gt;();
+    <span style="color:#C678DD;">if</span> (!<span style="color:#C678DD;">await</span> rm.RoleExistsAsync(<span style="color:#98C379;">"Admin"</span>)) <span style="color:#C678DD;">await</span> rm.CreateAsync(<span style="color:#C678DD;">new</span> IdentityRole(<span style="color:#98C379;">"Admin"</span>));
+    <span style="color:#C678DD;">if</span> (<span style="color:#C678DD;">await</span> um.FindByEmailAsync(<span style="color:#98C379;">"admin@example.com"</span>) == <span style="color:#D19A66;">null</span>) {
+        <span style="color:#C678DD;">var</span> admin = <span style="color:#C678DD;">new</span> IdentityUser { UserName = <span style="color:#98C379;">"admin@example.com"</span>, Email = <span style="color:#98C379;">"admin@example.com"</span>, EmailConfirmed = <span style="color:#D19A66;">true</span> };
+        <span style="color:#C678DD;">if</span> ((<span style="color:#C678DD;">await</span> um.CreateAsync(admin, <span style="color:#98C379;">"Admin123!"</span>)).Succeeded) <span style="color:#C678DD;">await</span> um.AddToRoleAsync(admin, <span style="color:#98C379;">"Admin"</span>);
+    }
+}
+app.MapControllerRoute(name: <span style="color:#98C379;">"default"</span>, pattern: <span style="color:#98C379;">"{controller=AppUser}/{action=Index}/{id?}"</span>);
+app.Run();</pre>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ៨ / ១៦</div>
+    </div>
+</div>
+
+<!-- PAGE 9: STEP 8 & STEP 9 -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png" onerror="this.src='https://via.placeholder.com/30'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | EF Core Code-First Dual-Auth</h1><p>ASP.NET CORE MVC & WEB API</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0;">
+            <div class="section-title-left"><i class="fa-solid fa-terminal"></i> ជំហានទី ៨: EF Core Database Migrations</div>
+            <span class="bloom-badge bloom-l3">3. Apply</span>
+        </div>
+        <div class="purpose-box">
+            <b>ប្រយោជន៍នៃជំហាននេះ៖</b> បម្លែង C# Model classes ទៅជា SQL DDL Script និងបង្កើតតារាងពិតប្រាកដក្នុង SQL Server ដោយស្វ័យប្រវត្តិ។
+        </div>
+        <div class="code-window">
+            <div class="code-header">
+                <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+                <div class="code-title">Terminal / CLI Commands</div>
+            </div>
+<pre>dotnet ef migrations add InitialCodeFirstMigration
+dotnet ef database update</pre>
+        </div>
+
+        <div class="section-title">
+            <div class="section-title-left"><i class="fa-solid fa-key"></i> ជំហានទី ៩: Auth API Controller (JWT Login Endpoint)</div>
+            <span class="bloom-badge bloom-l6">6. Create</span>
+        </div>
+        <div class="purpose-box">
+            <b>ប្រយោជន៍នៃជំហាននេះ និងតួនាទី File៖</b> `AuthApiController.cs` ទទួលខុសត្រូវក្នុងការផ្ទៀងផ្ទាត់ Email/Password ជាមួយ ASP.NET Identity និងបង្កើត Signed JWT Token រួមជាមួយ Claims (Roles, Identity) ហុចទៅឱ្យ Client/API Callers។
+        </div>
+        <div class="code-window">
+            <div class="code-header">
+                <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+                <div class="code-title">Controllers/Api/AuthApiController.cs</div>
+            </div>
+<pre>[Route(<span style="color:#98C379;">"api/[controller]"</span>)]
+[ApiController]
+<span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">AuthApiController</span> : ControllerBase
+{
+    <span style="color:#C678DD;">private readonly</span> UserManager&lt;IdentityUser&gt; _userManager;
+    <span style="color:#C678DD;">private readonly</span> IConfiguration _config;
+
+    <span style="color:#C678DD;">public</span> <span style="color:#61AFEF;">AuthApiController</span>(UserManager&lt;IdentityUser&gt; userManager, IConfiguration config)
+    { _userManager = userManager; _config = config; }
+
+    [HttpPost(<span style="color:#98C379;">"login"</span>)]
+    <span style="color:#C678DD;">public async</span> Task&lt;IActionResult&gt; <span style="color:#61AFEF;">Login</span>([FromBody] LoginDto model)
+    {
+        <span style="color:#C678DD;">var</span> user = <span style="color:#C678DD;">await</span> _userManager.FindByEmailAsync(model.Email);
+        <span style="color:#C678DD;">if</span> (user != <span style="color:#D19A66;">null</span> && <span style="color:#C678DD;">await</span> _userManager.CheckPasswordAsync(user, model.Password))
+        {
+            <span style="color:#C678DD;">var</span> claims = <span style="color:#C678DD;">new</span> List&lt;Claim&gt; {
+                <span style="color:#C678DD;">new</span> Claim(ClaimTypes.Name, user.UserName!),
+                <span style="color:#C678DD;">new</span> Claim(ClaimTypes.NameIdentifier, user.Id)
+            };
+            <span style="color:#C678DD;">foreach</span> (<span style="color:#C678DD;">var</span> role <span style="color:#C678DD;">in await</span> _userManager.GetRolesAsync(user))
+                claims.Add(<span style="color:#C678DD;">new</span> Claim(ClaimTypes.Role, role));
+
+            <span style="color:#C678DD;">var</span> key = <span style="color:#C678DD;">new</span> SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config[<span style="color:#98C379;">"Jwt:Key"</span>]!));
+            <span style="color:#C678DD;">var</span> token = <span style="color:#C678DD;">new</span> JwtSecurityToken(
+                issuer: _config[<span style="color:#98C379;">"Jwt:Issuer"</span>], audience: _config[<span style="color:#98C379;">"Jwt:Audience"</span>],
+                claims: claims, expires: DateTime.Now.AddHours(<span style="color:#D19A66;">3</span>),
+                signingCredentials: <span style="color:#C678DD;">new</span> SigningCredentials(key, SecurityAlgorithms.HmacSha256)
+            );
+
+            <span style="color:#C678DD;">return</span> Ok(<span style="color:#C678DD;">new</span> TokenResponseDto {
+                Token = <span style="color:#C678DD;">new</span> JwtSecurityTokenHandler().WriteToken(token), Expiration = token.ValidTo
+            });
+        }
+        <span style="color:#C678DD;">return</span> Unauthorized(<span style="color:#98C379;">"Email ឬ ពាក្យសម្ងាត់មិនត្រឹមត្រូវ"</span>);
+    }
+}</pre>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ៩ / ១៦</div>
+    </div>
+</div>
+
+<!-- PAGE 10: STEP 10 -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png" onerror="this.src='https://via.placeholder.com/30'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | EF Core Code-First Dual-Auth</h1><p>ASP.NET CORE MVC & WEB API</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0;">
+            <div class="section-title-left"><i class="fa-solid fa-cloud"></i> ជំហានទី ១០: AppUser RESTful Web API Controller</div>
+            <span class="bloom-badge bloom-l6">6. Create</span>
+        </div>
+        <div class="purpose-box">
+            <b>ប្រយោជន៍នៃជំហាននេះ និងតួនាទី File៖</b> `AppUserApiController.cs` ផ្តល់នូវ RESTful CRUD Services (GET, POST, PUT, DELETE) សម្រាប់ Frontend Apps (React, Mobile) ដោយចាក់សោការពារសុវត្ថិភាពទាមទារ JWT Bearer Token ក្នុង Header។
+        </div>
+        <div class="code-window">
+            <div class="code-header">
+                <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+                <div class="code-title">Controllers/Api/AppUserApiController.cs</div>
+            </div>
+<pre>[Route(<span style="color:#98C379;">"api/[controller]"</span>)]
+[ApiController]
+[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+<span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">AppUserApiController</span> : ControllerBase
+{
+    <span style="color:#C678DD;">private readonly</span> IAppUserRepository _userRepo;
+    <span style="color:#C678DD;">public</span> <span style="color:#61AFEF;">AppUserApiController</span>(IAppUserRepository userRepo) => _userRepo = userRepo;
+
+    <span style="color:#5C6370;">// GET: api/AppUserApi</span>
+    [HttpGet]
+    <span style="color:#C678DD;">public async</span> Task&lt;ActionResult&lt;IEnumerable&lt;AppUser&gt;&gt;&gt; <span style="color:#61AFEF;">GetAll</span>() 
+        => Ok(<span style="color:#C678DD;">await</span> _userRepo.GetAllAsync());
+
+    <span style="color:#5C6370;">// GET: api/AppUserApi/5</span>
+    [HttpGet(<span style="color:#98C379;">"{id}"</span>)]
+    <span style="color:#C678DD;">public async</span> Task&lt;ActionResult&lt;AppUser&gt;&gt; <span style="color:#61AFEF;">GetById</span>(<span style="color:#C678DD;">int</span> id)
+    {
+        <span style="color:#C678DD;">var</span> user = <span style="color:#C678DD;">await</span> _userRepo.GetByIdAsync(id);
+        <span style="color:#C678DD;">return</span> user == <span style="color:#D19A66;">null</span> ? NotFound() : Ok(user);
+    }
+
+    <span style="color:#5C6370;">// POST: api/AppUserApi</span>
+    [HttpPost]
+    [Authorize(Roles = <span style="color:#98C379;">"Admin"</span>, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    <span style="color:#C678DD;">public async</span> Task&lt;ActionResult&gt; <span style="color:#61AFEF;">Create</span>([FromBody] AppUser user)
+    {
+        <span style="color:#C678DD;">if</span> (!ModelState.IsValid) <span style="color:#C678DD;">return</span> BadRequest(ModelState);
+        <span style="color:#C678DD;">await</span> _userRepo.InsertAsync(user);
+        <span style="color:#C678DD;">return</span> CreatedAtAction(<span style="color:#C678DD;">nameof</span>(GetById), <span style="color:#C678DD;">new</span> { id = user.Id }, user);
+    }
+
+    <span style="color:#5C6370;">// PUT: api/AppUserApi/5</span>
+    [HttpPut(<span style="color:#98C379;">"{id}"</span>)]
+    [Authorize(Roles = <span style="color:#98C379;">"Admin"</span>, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    <span style="color:#C678DD;">public async</span> Task&lt;IActionResult&gt; <span style="color:#61AFEF;">Update</span>(<span style="color:#C678DD;">int</span> id, [FromBody] AppUser user)
+    {
+        <span style="color:#C678DD;">if</span> (id != user.Id || !ModelState.IsValid) <span style="color:#C678DD;">return</span> BadRequest();
+        <span style="color:#C678DD;">await</span> _userRepo.UpdateAsync(user);
+        <span style="color:#C678DD;">return</span> NoContent();
+    }
+
+    <span style="color:#5C6370;">// DELETE: api/AppUserApi/5</span>
+    [HttpDelete(<span style="color:#98C379;">"{id}"</span>)]
+    [Authorize(Roles = <span style="color:#98C379;">"Admin"</span>, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    <span style="color:#C678DD;">public async</span> Task&lt;IActionResult&gt; <span style="color:#61AFEF;">Delete</span>(<span style="color:#C678DD;">int</span> id)
+    {
+        <span style="color:#C678DD;">if</span> (<span style="color:#C678DD;">await</span> _userRepo.GetByIdAsync(id) == <span style="color:#D19A66;">null</span>) <span style="color:#C678DD;">return</span> NotFound();
+        <span style="color:#C678DD;">await</span> _userRepo.DeleteAsync(id);
+        <span style="color:#C678DD;">return</span> NoContent();
+    }
+}</pre>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ១០ / ១៦</div>
+    </div>
+</div>
+
+<!-- PAGE 11: STEP 11 -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png" onerror="this.src='https://via.placeholder.com/30'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | EF Core Code-First Dual-Auth</h1><p>ASP.NET CORE MVC & WEB API</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0;">
+            <div class="section-title-left"><i class="fa-solid fa-desktop"></i> ជំហានទី ១១: MVC Controllers</div>
+            <span class="bloom-badge bloom-l6">6. Create</span>
+        </div>
+        <div class="purpose-box">
+            <b>ប្រយោជន៍នៃជំហាននេះ៖</b> គ្រប់គ្រងលំហូរទិន្នន័យសម្រាប់ Traditional MVC Razor UI ដោយប្រើ <b>Cookie Authentication</b> (SignInManager) សម្រាប់ការ Login/Logout និងការពារ Views CRUD Operations។
+        </div>
+        
+        <div class="sub-heading">១១.១ File: `Controllers/AccountController.cs` (MVC Cookie Login/Logout)</div>
+        <div class="code-window">
+<pre><span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">AccountController</span> : Controller
+{
+    <span style="color:#C678DD;">private readonly</span> SignInManager&lt;IdentityUser&gt; _signInManager;
+    <span style="color:#C678DD;">public</span> <span style="color:#61AFEF;">AccountController</span>(SignInManager&lt;IdentityUser&gt; signInManager) => _signInManager = signInManager;
+
+    [HttpGet, AllowAnonymous]
+    <span style="color:#C678DD;">public</span> IActionResult <span style="color:#61AFEF;">Login</span>(<span style="color:#C678DD;">string</span>? returnUrl = <span style="color:#D19A66;">null</span>) { ViewData[<span style="color:#98C379;">"ReturnUrl"</span>] = returnUrl; <span style="color:#C678DD;">return</span> View(); }
+
+    [HttpPost, AllowAnonymous, ValidateAntiForgeryToken]
+    <span style="color:#C678DD;">public async</span> Task&lt;IActionResult&gt; <span style="color:#61AFEF;">Login</span>(LoginDto model, <span style="color:#C678DD;">string</span>? returnUrl = <span style="color:#D19A66;">null</span>)
+    {
+        <span style="color:#C678DD;">if</span> (ModelState.IsValid) {
+            <span style="color:#C678DD;">var</span> res = <span style="color:#C678DD;">await</span> _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
+            <span style="color:#C678DD;">if</span> (res.Succeeded) <span style="color:#C678DD;">return</span> RedirectToLocal(returnUrl);
+            ModelState.AddModelError(<span style="color:#98C379;">""</span>, <span style="color:#98C379;">"ការប៉ុនប៉ងចូលប្រើប្រាស់មិនត្រឹមត្រូវ"</span>);
+        }
+        <span style="color:#C678DD;">return</span> View(model);
+    }
+
+    [HttpPost, ValidateAntiForgeryToken]
+    <span style="color:#C678DD;">public async</span> Task&lt;IActionResult&gt; <span style="color:#61AFEF;">Logout</span>() { <span style="color:#C678DD;">await</span> _signInManager.SignOutAsync(); <span style="color:#C678DD;">return</span> RedirectToAction(<span style="color:#98C379;">"Login"</span>); }
+    
+    <span style="color:#C678DD;">private</span> IActionResult <span style="color:#61AFEF;">RedirectToLocal</span>(<span style="color:#C678DD;">string</span>? returnUrl) 
+        => (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl)) ? Redirect(returnUrl) : RedirectToAction(<span style="color:#98C379;">"Index"</span>, <span style="color:#98C379;">"AppUser"</span>);
+}</pre>
+        </div>
+
+        <div class="sub-heading">១១.២ File: `Controllers/AppUserController.cs` (MVC Views Protected CRUD)</div>
+        <div class="code-window">
+<pre>[Authorize]
+<span style="color:#C678DD;">public class</span> <span style="color:#61AFEF;">AppUserController</span> : Controller
+{
+    <span style="color:#C678DD;">private readonly</span> IAppUserRepository _repo;
+    <span style="color:#C678DD;">public</span> <span style="color:#61AFEF;">AppUserController</span>(IAppUserRepository repo) => _repo = repo;
+
+    <span style="color:#C678DD;">public async</span> Task&lt;IActionResult&gt; <span style="color:#61AFEF;">Index</span>() => View(<span style="color:#C678DD;">await</span> _repo.GetAllAsync());
+
+    [Authorize(Roles = <span style="color:#98C379;">"Admin"</span>)] <span style="color:#C678DD;">public</span> IActionResult <span style="color:#61AFEF;">Create</span>() => View();
+
+    [HttpPost, Authorize(Roles = <span style="color:#98C379;">"Admin"</span>), ValidateAntiForgeryToken]
+    <span style="color:#C678DD;">public async</span> Task&lt;IActionResult&gt; <span style="color:#61AFEF;">Create</span>(AppUser user) {
+        <span style="color:#C678DD;">if</span> (ModelState.IsValid) { <span style="color:#C678DD;">await</span> _repo.InsertAsync(user); <span style="color:#C678DD;">return</span> RedirectToAction(nameof(Index)); }
+        <span style="color:#C678DD;">return</span> View(user);
+    }
+
+    [Authorize(Roles = <span style="color:#98C379;">"Admin"</span>)]
+    <span style="color:#C678DD;">public async</span> Task&lt;IActionResult&gt; <span style="color:#61AFEF;">Edit</span>(<span style="color:#C678DD;">int</span> id) => View(<span style="color:#C678DD;">await</span> _repo.GetByIdAsync(id));
+
+    [HttpPost, Authorize(Roles = <span style="color:#98C379;">"Admin"</span>), ValidateAntiForgeryToken]
+    <span style="color:#C678DD;">public async</span> Task&lt;IActionResult&gt; <span style="color:#61AFEF;">Edit</span>(AppUser user) {
+        <span style="color:#C678DD;">if</span> (ModelState.IsValid) { <span style="color:#C678DD;">await</span> _repo.UpdateAsync(user); <span style="color:#C678DD;">return</span> RedirectToAction(nameof(Index)); }
+        <span style="color:#C678DD;">return</span> View(user);
+    }
+
+    [HttpPost, Authorize(Roles = <span style="color:#98C379;">"Admin"</span>), ValidateAntiForgeryToken]
+    <span style="color:#C678DD;">public async</span> Task&lt;IActionResult&gt; <span style="color:#61AFEF;">Delete</span>(<span style="color:#C678DD;">int</span> id) { <span style="color:#C678DD;">await</span> _repo.DeleteAsync(id); <span style="color:#C678DD;">return</span> RedirectToAction(nameof(Index)); }
+}</pre>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ១១ / ១៦</div>
+    </div>
+</div>
+
+<!-- PAGE 12: STEP 12 -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png" onerror="this.src='https://via.placeholder.com/30'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | EF Core Code-First Dual-Auth</h1><p>ASP.NET CORE MVC & WEB API</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0;">
+            <div class="section-title-left"><i class="fa-solid fa-file-code"></i> ជំហានទី ១២: Razor Views (.cshtml) សម្រាប់ MVC UI</div>
+            <span class="bloom-badge bloom-l6">6. Create</span>
+        </div>
+        <div class="purpose-box">
+            <b>ប្រយោជន៍នៃជំហាននេះ៖</b> បង្កើតផ្ទាំង UI (HTML Client-side interface) សម្រាប់ User ធ្វើការ Login និងបង្ហាញតារាងទិន្នន័យ AppUsers ដោយពិនិត្យមើលសិទ្ធិ Role ស្វ័យប្រវត្តិ។
+        </div>
+        
+        <div class="sub-heading">១២.១ File: `Views/Account/Login.cshtml`</div>
+        <div class="code-window">
+<pre>&lt;@model MyCodeFirstProject.Models.DTOs.LoginDto&gt;
+&lt;div class="row justify-content-center mt-4"&gt;
+    &lt;div class="col-md-4"&gt;
+        &lt;h3 class="text-center"&gt;ចូលប្រើប្រាស់ប្រព័ន្ធ (MVC Cookie)&lt;/h3&gt;
+        &lt;form asp-action="Login" method="post"&gt;
+            &lt;div class="mb-3"&gt;
+                &lt;label asp-for="Email"&gt;&lt;/label&gt;
+                &lt;input asp-for="Email" class="form-control" /&gt;
+            &lt;/div&gt;
+            &lt;div class="mb-3"&gt;
+                &lt;label asp-for="Password"&gt;&lt;/label&gt;
+                &lt;input asp-for="Password" class="form-control" /&gt;
+            &lt;/div&gt;
+            &lt;button type="submit" class="btn btn-primary w-100"&gt;ចូលប្រើ&lt;/button&gt;
+        &lt;/form&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</pre>
+        </div>
+
+        <div class="sub-heading">១២.២ File: `Views/AppUser/Index.cshtml`</div>
+        <div class="code-window">
+<pre>&lt;@model IEnumerable&lt;MyCodeFirstProject.Models.AppUser&gt;&gt;
+&lt;@inject SignInManager&lt;IdentityUser&gt; SignInManager&gt;
+
+&lt;div class="d-flex justify-content-between my-3"&gt;
+    &lt;h2&gt;បញ្ជីអ្នកប្រើប្រាស់ (EF Core Code-First)&lt;/h2&gt;
+    @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin")) {
+        &lt;a asp-action="Create" class="btn btn-primary"&gt;បង្កើតថ្មី&lt;/a&gt;
+    }
+&lt;/div&gt;
+
+&lt;table class="table table-bordered table-striped"&gt;
+    &lt;thead class="table-dark"&gt;
+        &lt;tr&gt;
+            &lt;th&gt;ឈ្មោះពេញ&lt;/th&gt;&lt;th&gt;អាសយដ្ឋាន Email&lt;/th&gt;&lt;th&gt;ស្ថានភាព&lt;/th&gt;&lt;th&gt;សកម្មភាព&lt;/th&gt;
+        &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+    @foreach (var u in Model) {
+        &lt;tr&gt;
+            &lt;td&gt;@u.FullName&lt;/td&gt;
+            &lt;td&gt;@u.Email&lt;/td&gt;
+            &lt;td&gt;@(u.IsActive ? "សកម្ម" : "អសកម្ម")&lt;/td&gt;
+            &lt;td&gt;
+                @if (User.IsInRole("Admin")) {
+                    &lt;a asp-action="Edit" asp-route-id="@u.Id" class="btn btn-sm btn-warning"&gt;កែប្រែ&lt;/a&gt;
+                    &lt;form asp-action="Delete" asp-route-id="@u.Id" method="post" class="d-inline"&gt;
+                        &lt;button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('លុប?')"&gt;លុប&lt;/button&gt;
+                    &lt;/form&gt;
+                }
+            &lt;/td&gt;
+        &lt;/tr&gt;
+    }
+    &lt;/tbody&gt;
+&lt;/table&gt;</pre>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ១២ / ១៦</div>
+    </div>
+</div>
+
+<!-- PAGE 13: STEP 13 -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png" onerror="this.src='https://via.placeholder.com/30'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | EF Core Code-First Dual-Auth</h1><p>ASP.NET CORE MVC & WEB API</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0;">
+            <div class="section-title-left"><i class="fa-solid fa-shield-halved"></i> ជំហានទី ១៣: ការវិភាគប្រៀបធៀប Cookie-Auth VS JWT-Bearer Auth</div>
+            <span class="bloom-badge bloom-l4">4. Analyze</span>
+        </div>
+        
+        <div class="text-block">
+            ការយល់ដឹងពីយន្តការសុវត្ថិភាពទាំងពីរគឺជារឿងសំខាន់បំផុតក្នុងការកសាងប្រព័ន្ធ Enterprise Hybrid Application (MVC + Web API)៖
+        </div>
+
+        <table class="standard-table" style="margin-top: 4px;">
+            <thead>
+                <tr>
+                    <th style="width: 20%;">លក្ខណៈវិនិច្ឆ័យ</th>
+                    <th style="width: 40%;">Cookie-Based Auth (MVC)</th>
+                    <th style="width: 40%;">JWT Bearer Auth (REST Web API)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><b>ទីតាំងរក្សាទុក (Storage)</b></td>
+                    <td>HTTP Cookie ក្នុង Browser (HttpOnly, Secure)</td>
+                    <td>Client-side (LocalStorage, SessionStorage, Memory)</td>
+                </tr>
+                <tr>
+                    <td><b>State Management</b></td>
+                    <td><b>Stateful / Session-based:</b> Server រក្សា Session</td>
+                    <td><b>Stateless:</b> Server មិនរក្សា Session ទេ (Token-self contained)</td>
+                </tr>
+                <tr>
+                    <td><b>Header Format</b></td>
+                    <td>បញ្ជូនដោយស្វ័យប្រវត្តតាម <code>Cookie: .AspNetCore.Cookies=...</code></td>
+                    <td>បញ្ជូនតាម Custom Header <code>Authorization: Bearer &lt;Token&gt;</code></td>
+                </tr>
+                <tr>
+                    <td><b>ហានិភ័យសុវត្ថិភាព (Risks)</b></td>
+                    <td>ងាយរងគ្រោះនឹង <b>CSRF Attack</b> (ត្រូវការ Anti-Forgery Token)</td>
+                    <td>ងាយរងគ្រោះនឹង <b>XSS Attack</b> ប្រសិនបកស្រាយ Token ខុសវិធី</td>
+                </tr>
+                <tr>
+                    <td><b>ការប្រើប្រាស់ស័ក្តិសម</b></td>
+                    <td>Monolithic Web Applications, Server-Side Rendering (Razor)</td>
+                    <td>Mobile Apps, SPA Frameworks (React, Angular, Vue), Microservices</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="eval-box" style="margin-top:8px;">
+            <h4><i class="fa-solid fa-lock"></i> យុទ្ធសាស្ត្រការពារសុវត្ថិភាពទិន្នន័យ (Security Best Practices)</h4>
+            <p>
+                <b>១. Token Expiration:</b> ត្រូវកំណត់អាយុកាល Token ឱ្យខ្លី (ឧទាហរណ៍៖ ៣០នាទី ទៅ ៣ម៉ោង) ដើម្បីកាត់បន្ថយហានិភ័យពេលលេចធ្លាយ Token។<br>
+                <b>២. Secret Key Strength:</b> Key ដែលប្រើក្នុង `appsettings.json` ត្រូវតែមានប្រវែងយ៉ាងតិច 32 characters (256 bits) ដើម្បីការពារ Brute Force Attack។<br>
+                <b>៣. Validate Anti-Forgery:</b> ប្រើប្រាស់ <code>[ValidateAntiForgeryToken]</code> លើគ្រប់ POST/PUT/DELETE Actions ក្នុង MVC Controllers។
+            </p>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ១៣ / ១៦</div>
+    </div>
+</div>
+
+<!-- PAGE 14: STEP 14 -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png" onerror="this.src='https://via.placeholder.com/30'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | EF Core Code-First Dual-Auth</h1><p>ASP.NET CORE MVC & WEB API</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="background:var(--accent); color:white; justify-content:center; border-radius:5px; margin:0; padding: 4px 0;">
+            <span><i class="fa-solid fa-pen-to-square"></i> ជំហានទី ១៤: សំណួររំលឹកមេរៀន (Bloom's Taxonomy Quiz)</span>
+        </div>
+        
+        <div class="sub-heading" style="width: 100%; margin-top:6px;">
+            <span>១. សំណួរ ខុស/ត្រូវ (True/False)</span>
+            <span class="bloom-badge bloom-l1">1. Remember</span>
+        </div>
+        <ol class="q-list">
+            <li>EF Core Code-First អនុញ្ញាតឱ្យយើងបង្កើត Database ស្វ័យប្រវត្តិចេញពី C# Entity Models ដោយមិនបាច់សរសេរ SQL Command។</li>
+            <li>JWT (JSON Web Token) ត្រូវការរក្សាទុក Session State នៅលើ Web Server ជានិច្ចដើម្បីផ្ទៀងផ្ទាត់ Identity។</li>
+            <li>`IdentityDbContext` គឺជា Class ដែលមានស្រាប់ក្នុង ASP.NET Core Identity សម្រាប់បង្កើតតារាង User, Role, និង Claims។</li>
+            <li>កូដ `[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]` ប្រើសម្រាប់ការពារ API Endpoints ដោយតម្រូវឱ្យមាន JWT Token។</li>
+            <li>Status code 200 OK គឺជា Response តែមួយគត់ដែលបញ្ជាក់ថា API Auth login ទទួលបានជោគជ័យ។</li>
+        </ol>
+
+        <div class="sub-heading" style="width: 100%; margin-top:8px;">
+            <span>២. សំណួរ ពហុជ្រើសរើស (MCQs)</span>
+            <span class="bloom-badge bloom-l3">3. Apply</span>
+        </div>
+        <ol class="q-list" start="1">
+            <li>តើ Package មួយណាដែលចាំបាច់បំផុតសម្រាប់ការសរសេរ Migration និងបញ្ជា `dotnet ef database update`?
+                <ul class="mcq-opts">
+                    <li>A. Microsoft.EntityFrameworkCore.SqlServer</li>
+                    <li>B. Microsoft.EntityFrameworkCore.Tools</li>
+                    <li>C. Swashbuckle.AspNetCore</li>
+                    <li>D. Microsoft.AspNetCore.Authentication.JwtBearer</li>
+                </ul>
+            </li>
+            <li>តើ Header មួយណាដែលត្រូវប្រើប្រាស់ដើម្បីបញ្ជូន JWT Token ទៅកាន់ Protected Web API?
+                <ul class="mcq-opts">
+                    <li>A. Content-Type: application/json</li>
+                    <li>B. Authorization: Bearer &lt;token&gt;</li>
+                    <li>C. Cookie: .AspNetCore.Identity</li>
+                    <li>D. Accept: token/jwt</li>
+                </ul>
+            </li>
+            <li>ដើម្បីសរសេរ Data Seeding ឱ្យបង្កើត Admin Account ដោយស្វ័យប្រវត្តិ ពេល Start App តើយើងត្រូវប្រើ Service មួយណា?
+                <ul class="mcq-opts">
+                    <li>A. SignInManager&lt;IdentityUser&gt;</li>
+                    <li>B. UserManager&lt;IdentityUser&gt;</li>
+                    <li>C. DbContextOptions</li>
+                    <li>D. IAppUserRepository</li>
+                </ul>
+            </li>
+        </ol>
+
+        <div class="sub-heading" style="width:100%; margin-top:6px;">
+            <span>៣. សំណួរផ្គូផ្គង (Matching)</span>
+            <span class="bloom-badge bloom-l2">2. Understand</span>
+        </div>
+        <div class="two-column" style="gap:6px; align-items:start;">
+            <table class="standard-table">
+                <tr><td style="font-weight:bold;">១. SymmetricSecurityKey</td></tr>
+                <tr><td style="font-weight:bold;">២. AddDbContext</td></tr>
+                <tr><td style="font-weight:bold;">៣. ClaimTypes.Role</td></tr>
+            </table>
+            <table class="standard-table">
+                <tr><td>A. បញ្ចូល Claim ប្រភេទ Role ទៅក្នុង JWT Token។</td></tr>
+                <tr><td>B. ប្រើប្រាស់ Secret Key សម្រាប់ Validate ហត្ថលេខា JWT Token។</td></tr>
+                <tr><td>C. ចុះឈ្មោះ DbContext ទៅក្នុង Dependency Injection Container។</td></tr>
+            </table>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ១៤ / ១៦</div>
+    </div>
+</div>
+
+<!-- PAGE 15: STEP 15 -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png" onerror="this.src='https://via.placeholder.com/30'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | EF Core Code-First Dual-Auth</h1><p>ASP.NET CORE MVC & WEB API</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="background:var(--success); color:white; justify-content:center; border-radius:5px; margin: 0; padding: 4px 0;">
+            <span><i class="fa-solid fa-key" style="color:white; background:transparent;"></i> ជំហានទី ១៥: អត្រាកំណែ (Answer Keys & Solutions)</span>
+        </div>
+            
+        <div class="two-column" style="gap:8px; align-items:start; margin-top: 8px;">
+            <div>
+                <div class="sub-heading" style="margin-top: 0; color:var(--success);">១. ចម្លើយ ខុស/ត្រូវ (True/False)</div>
+                <table class="ans-table">
+                    <tr><th>១</th><th>២</th><th>៣</th><th>៤</th><th>៥</th></tr>
+                    <tr><td>ត្រូវ</td><td>ខុស</td><td>ត្រូវ</td><td>ត្រូវ</td><td>ត្រូវ</td></tr>
+                </table>
+            </div>
+            <div>
+                <div class="sub-heading" style="margin-top: 0; color:var(--success);">២. ចម្លើយ ពហុជ្រើសរើស (MCQs)</div>
+                <table class="ans-table">
+                    <tr><th>១</th><th>២</th><th>៣</th></tr>
+                    <tr><td>B</td><td>B</td><td>B</td></tr>
+                </table>
+            </div>
+        </div>
+        
+        <div class="sub-heading" style="margin-top:6px; color:var(--success);">៣. ចម្លើយ ផ្គូផ្គង (Matching Keys)</div>
+        <table class="ans-table" style="margin-bottom: 8px;">
+            <tr><th>១</th><th>២</th><th>៣</th></tr>
+            <tr><td>B</td><td>C</td><td>A</td></tr>
+        </table>
+
+        <div class="sub-heading" style="margin-top:4px; color:var(--success);">៤. ចម្លើយ សំណួរបកស្រាយ (សង្ខេប)</div>
+        <ul style="font-size:8.2pt; line-height:1.4; padding-left:16px; text-align:justify;">
+            <li style="margin-bottom:3px;"><b>១. មូលហេតុប្រើ Dual Auth Scheme:</b> ដោយសារ MVC ដំណើរការតាមបែប Server-Side Rendering រក្សា State តាម Cookie និង Redirect ទៅ Login Page ពេលអត់ Auth, ចំណែក Web API ដំណើរការតាមបែប Stateless (Client-Server Decoupled) ទទួល JSON តាម HTTP Header Authorization Bearer និងបញ្ចេញ 401 Unauthorized ពេលអត់ Token។ ការដាក់ Dual Auth ធ្វើឱ្យ Framework ស្គាល់ Authenticate Scheme ទាំងពីរក្នុង App តែមួយ។</li>
+            <li style="margin-bottom:0;"><b>២. LocalStorage VS HttpOnly Cookie:</b> LocalStorage ងាយស្រួលប្រើប្រាស់ជាមួយ JS Fetch/Axios ប៉ុន្តែប្រឈមមុខនឹង XSS Attack ខ្ពស់ប្រសិន code មានចន្លោះប្រហោង។ ចំណែក HttpOnly Cookie ការពារ XSS បានល្អ (JS មើលមិនឃើញ) ប៉ុន្តែប្រឈមមុខនឹង CSRF Attack និងពិបាកកំណត់សិទ្ធិប្រើប្រាស់ Cross-Domain Mobile APIs។</li>
+        </ul>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ១៥ / ១៦</div>
+    </div>
+</div>
+
+<!-- PAGE 16: STEP 16 & COMPLETION -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png" onerror="this.src='https://via.placeholder.com/30'"></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | EF Core Code-First Dual-Auth</h1><p>ASP.NET CORE MVC & WEB API</p></div>
+        <div class="header-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg"></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0;">
+            <div class="section-title-left"><i class="fa-solid fa-vial-circle-check"></i> ជំហានទី ១៦: ការធ្វើតេស្ត និងការផ្ទៀងផ្ទាត់ប្រព័ន្ធ (Testing)</div>
+            <span class="bloom-badge bloom-l5">5. Evaluate</span>
+        </div>
+        
+        <div class="lab-box">
+            <h4><i class="fa-solid fa-globe"></i> ១. តេស្តតាមរយៈ Web Browser (MVC Razor Views)</h4>
+            <ol style="padding-left:16px;">
+                <li>Run គម្រោងដោយប្រើបញ្ជា <code>dotnet run</code> ក្នុង Terminal host លើ HTTPS។</li>
+                <li>បើក Browser ទៅកាន់ URL: <code>https://localhost:7123/</code></li>
+                <li>ប្រព័ន្ធនឹង Redirect ដោយស្វ័យប្រវត្តទៅកាន់ទំព័រ Login <code>/Account/Login</code></li>
+                <li>ចូលប្រើប្រាស់ដោយប្រើគណនី Admin ដែលបាន Seed ក្នុង `Program.cs` (`admin@example.com` / `Admin123!`)</li>
+            </ol>
+        </div>
+
+        <div class="lab-box" style="background:#EFF6FF; border-left-color:#3B82F6; border-color:#BFDBFE;">
+            <h4 style="color:#1E40AF;"><i class="fa-solid fa-vial"></i> ២. តេស្ត RESTful Web API តាមរយៈ Swagger UI / Postman</h4>
+            <ol style="color:#1E3A8A; padding-left:16px;">
+                <li>បើក Swagger UI តាមរយៈ URL: <code>https://localhost:7123/swagger</code></li>
+                <li><b>Get JWT Token:</b> ហៅ API <code>POST /api/AuthApi/login</code> ដោយផ្ញើ JSON Payload Login Credentials។</li>
+                <li><b>Authorize Token:</b> ចុចប៊ូតុង <b>Authorize</b> វាយ <code>Bearer &lt;YOUR_JWT_TOKEN&gt;</code>។</li>
+                <li><b>CRUD Test:</b> ធ្វើតេស្ត API Endpoints ទាំងអស់ក្នុង `AppUserApiController` (GET, POST, PUT, DELETE)។</li>
+            </ol>
+        </div>
+
+        <div style="text-align: center; margin-top: 15px; padding: 10px; background: #F8FAFC; border-radius: 8px; border: 1px solid var(--border-light);">
+            <div style="display:flex; justify-content:center; gap:15px; margin-bottom: 8px;">
+                <i class="fa-solid fa-shield-halved" style="font-size: 30px; color: var(--accent);"></i>
+                <i class="fa-solid fa-key" style="font-size: 30px; color: var(--success);"></i>
+                <i class="fa-solid fa-database" style="font-size: 30px; color: var(--secondary);"></i>
+            </div>
+            <h3 style="font-family: var(--font-kh-heading); font-size: 11pt; color: var(--text-heading); margin-bottom: 4px;">
+                អបអរសាទរ! លោកអ្នកបានបញ្ចប់ការសិក្សាពីប្រព័ន្ធ Dual-Auth ដោយជោគជ័យ។
+            </h3>
+            <p style="font-size: 8.5pt; color: var(--text-muted); margin: 0;">
+                * END OF CODE-FIRST DUAL-AUTH GUIDE (16 PAGES COMPLETE) *
+            </p>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><span>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រ ១៦ / ១៦</div>
+    </div>
+</div>
+
+</body>
+</html>
